@@ -9,16 +9,18 @@
 
 import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
-import { getSession } from 'next-auth/client';
+import { getSession, Provider } from 'next-auth/client';
 import { AppProps } from 'next/dist/next-server/lib/router/router';
 import { muiThemeConfig } from '../config';
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
   return (
-    <ThemeProvider theme={createMuiTheme(muiThemeConfig)}>
-      <CssBaseline />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <Provider session={pageProps.session}>
+      <ThemeProvider theme={createMuiTheme(muiThemeConfig)}>
+        <CssBaseline />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </Provider>
   );
 };
 
@@ -29,9 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   const session = await getSession(context);
 
   return {
-    props: {
-      session,
-    },
+    props: { session },
   };
 };
 
