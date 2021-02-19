@@ -9,14 +9,15 @@
 import { useEffect } from 'react';
 import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
-import Head from 'next/head';
-import useTranslation from 'next-translate/useTranslation';
 import { getSession, Provider } from 'next-auth/client';
 import { AppProps } from 'next/dist/next-server/lib/router/router';
-import { muiThemeConfig } from '../config';
+import { DefaultSeo, NextSeo } from 'next-seo';
+import { muiThemeConfig, nextSeoConfigEN, nextSeoConfigFR } from '../config';
 
-const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
-  const { t } = useTranslation();
+const MyApp: NextPage<AppProps> = ({ Component, pageProps, router }) => {
+  const { locale } = router;
+
+  const defaultSeo = (locale?.toLowerCase() ?? 'en') === 'fr' ? nextSeoConfigFR : nextSeoConfigEN;
 
   useEffect(() => {
     // Remove the server-side injected CSS.
@@ -26,10 +27,8 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
 
   return (
     <Provider session={pageProps.session}>
-      <Head>
-        <title>{t('common:app.title')}</title>
-        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-      </Head>
+      <DefaultSeo {...defaultSeo} />
+      <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
       <ThemeProvider theme={createMuiTheme(muiThemeConfig)}>
         <CssBaseline />
         <Component {...pageProps} />

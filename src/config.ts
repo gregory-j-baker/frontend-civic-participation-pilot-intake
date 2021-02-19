@@ -8,6 +8,7 @@
  */
 
 import type { ThemeOptions } from '@material-ui/core';
+import { NextSeoProps } from 'next-seo';
 import { getApplicationVersion, getDateModified, getGitCommit } from './utils/misc-utils';
 
 /**
@@ -26,4 +27,21 @@ export const muiThemeConfig: ThemeOptions = {
   palette: {
     type: 'dark',
   },
+};
+
+/**
+ * Next-SEO specific configuration.
+ */
+export const nextSeoConfigEN: NextSeoProps = {
+  title: undefined,
+  titleTemplate: '%s | Canada Service Corps',
+  defaultTitle: 'Canada Service Corps',
+  description: 'Canada Service Corps Description',
+};
+
+export const nextSeoConfigFR: NextSeoProps = {
+  title: undefined,
+  titleTemplate: '%s | Pilote de participation civique',
+  defaultTitle: 'Pilote de participation civique',
+  description: 'Description du Pilote de participation civique',
 };
