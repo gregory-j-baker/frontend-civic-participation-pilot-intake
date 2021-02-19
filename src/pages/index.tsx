@@ -73,7 +73,7 @@ const AuthInfo: NextPage<{ session: Session | null | undefined }> = ({ session }
             {t('home:auth-info.session')}
           </Typography>
 
-          <Box component="pre" style={{ border: 'thin solid black', borderRadius: '5px', overflow: 'scroll', padding: '0.5rem', width: '350px' }}>
+          <Box component="pre" style={{ backgroundColor: '#666', border: 'thin solid black', borderRadius: '5px', color: '#000', overflow: 'scroll', padding: '0.5rem', textAlign: 'left', width: '350px' }}>
             {JSON.stringify(session, null, 2)}
           </Box>
         </>
