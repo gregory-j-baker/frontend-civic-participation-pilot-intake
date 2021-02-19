@@ -6,16 +6,30 @@
  *
  * @author Greg Baker <gregory.j.baker@hrsdc-rhdcc.gc.ca>
  */
-
+import { useEffect } from 'react';
 import { createMuiTheme, CssBaseline, ThemeProvider } from '@material-ui/core';
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
+import Head from 'next/head';
+import useTranslation from 'next-translate/useTranslation';
 import { getSession, Provider } from 'next-auth/client';
 import { AppProps } from 'next/dist/next-server/lib/router/router';
 import { muiThemeConfig } from '../config';
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    // Remove the server-side injected CSS.
+    const jssStyles = document.querySelector('#jss-server-side');
+    jssStyles?.parentElement?.removeChild(jssStyles);
+  }, []);
+
   return (
     <Provider session={pageProps.session}>
+      <Head>
+        <title>{t('common:app.title')}</title>
+        <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
+      </Head>
       <ThemeProvider theme={createMuiTheme(muiThemeConfig)}>
         <CssBaseline />
         <Component {...pageProps} />
