@@ -1,0 +1,11 @@
+{
+  "auth-info": {
+    "session": "NextAuth.js session",
+    "sign-in": "Sign in",
+    "sign-in-as": "Signed in as:",
+    "sign-out": "Sign out"
+  },
+  "page": {
+    "header": "The power to make an impact"
+  }
+}

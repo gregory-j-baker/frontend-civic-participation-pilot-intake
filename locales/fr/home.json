@@ -1,0 +1,11 @@
+{
+  "auth-info": {
+    "session": "Session NextAuth.js",
+    "sign-in": "Se connecter",
+    "sign-in-as": "Connecté en tant que :",
+    "sign-out": "Déconnexion"
+  },
+  "page": {
+    "header": "Le pouvoir d'avoir un impact"
+  }
+}
