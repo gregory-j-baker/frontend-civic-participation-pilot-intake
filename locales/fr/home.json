@@ -2,7 +2,7 @@
   "auth-info": {
     "session": "Session NextAuth.js",
     "sign-in": "Se connecter",
-    "sign-in-as": "Connecté en tant que :",
+    "sign-in-as": "Connecté en tant que\u00A0:",
     "sign-out": "Déconnexion"
   },
   "page": {
