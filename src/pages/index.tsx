@@ -13,6 +13,7 @@ import type { Session } from 'next-auth/client';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
+import LocaleSwitcher from '../components/LocaleSwitcher';
 import { applicationConfig } from '../config';
 
 const Home: NextPage = () => {
@@ -32,6 +33,8 @@ const Home: NextPage = () => {
         </Typography>
 
         <Image src="/img/maple-leaf.png" alt="logo" width={289} height={340} />
+
+        <LocaleSwitcher />
 
         <AuthInfo session={session} />
       </Box>
