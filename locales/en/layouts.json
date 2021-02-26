@@ -27,6 +27,32 @@
       },
       "icon-alt": "Symbol of the Government of Canada",
       "top-of-page": "Top of page\u00A0"
+    },
+    "header": {
+      "branding": {
+        "country": "Canada",
+        "logo-url": {
+          "canada": "https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg",
+          "goc": "https://www.canada.ca/etc/designs/canada/wet-boew/assets/sig-blk-en.svg"
+        },
+        "main-site-url": "https://www.canada.ca/en.html",
+        "name": "Government of Canada"
+      },
+      "breadcrumb": {
+        "header": "You are here:",
+        "links": [{ "text": "Canada.ca", "href": "https://www.canada.ca/en.html" }]
+      },
+      "language-selection": "Language selection",
+      "search": {
+        "header": "Search",
+        "label": "Search Canada.ca",
+        "placeholder": "Search Canada.ca",
+        "submit": "Search"
+      },
+      "skip-to-nav": {
+        "about-government": "Skip to \u201CAbout government\u201D",
+        "main-content": "Skip to main content"
+      }
     }
   }
 }

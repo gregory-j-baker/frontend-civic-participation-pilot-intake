@@ -12,7 +12,7 @@ const LocaleSwitcher: React.FC = () => {
   return (
     <>
       <section id="wb-lng" className="col-xs-3 col-sm-12 pull-right text-right">
-        <h2 className="wb-inv">Language selection</h2>
+        <h2 className="wb-inv">{t('layouts:main.header.language-selection')}</h2>
         <div className="row">
           <div className="col-md-12">
             <ul className="list-inline mrgn-bttm-0">
