@@ -35,3 +35,18 @@ export const nextSeoConfigFR: NextSeoProps = {
   defaultTitle: 'Pilote de participation civique',
   description: 'Description du Pilote de participation civique',
 };
+
+/**
+ * WET Theme configuration.
+ */
+
+export const theme = {
+  breakpoints: {
+    xxsmallview: 0,
+    xsmallview: 480,
+    smallview: 768,
+    mediumview: 992,
+    largeview: 1200,
+    xlargeview: 1600,
+  },
+};
