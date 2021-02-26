@@ -7,7 +7,6 @@
  * @author Greg Baker <gregory.j.baker@hrsdc-rhdcc.gc.ca>
  */
 
-import type { ThemeOptions } from '@material-ui/core';
 import { NextSeoProps } from 'next-seo';
 import { getApplicationVersion, getDateModified, getGitCommit } from './utils/misc-utils';
 
@@ -18,15 +17,6 @@ export const applicationConfig = {
   dateModified: getDateModified(),
   gitCommit: getGitCommit(),
   version: getApplicationVersion(),
-};
-
-/**
- * Material-ui specific theme
- */
-export const muiThemeConfig: ThemeOptions = {
-  palette: {
-    type: 'dark',
-  },
 };
 
 /**
