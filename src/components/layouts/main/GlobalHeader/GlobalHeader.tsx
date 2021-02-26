@@ -48,16 +48,16 @@ const GlobalHeader: React.FC = () => {
                   <label htmlFor="wb-srch-q" className="wb-inv">
                     Search Canada.ca
                   </label>
-                  <input name="cdn" value="canada" type="hidden" />
-                  <input name="st" value="s" type="hidden" />
-                  <input name="num" value="10" type="hidden" />
-                  <input name="langs" value="en" type="hidden" />
-                  <input name="st1rt" value="1" type="hidden" />
-                  <input name="s5bm3ts21rch" value="x" type="hidden" />
+                  <input name="cdn" value="canada" type="hidden" readOnly />
+                  <input name="st" value="s" type="hidden" readOnly />
+                  <input name="num" value="10" type="hidden" readOnly />
+                  <input name="langs" value="en" type="hidden" readOnly />
+                  <input name="st1rt" value="1" type="hidden" readOnly />
+                  <input name="s5bm3ts21rch" value="x" type="hidden" readOnly />
 
-                  <input id="wb-srch-q" list="wb-srch-q-ac" className="wb-srch-q form-control" name="q" type="search" value="" size={34} maxLength={170} placeholder="Search Canada.ca" />
+                  <input id="wb-srch-q" list="wb-srch-q-ac" className="wb-srch-q form-control" name="q" type="search" size={34} maxLength={170} placeholder="Search Canada.ca" defaultValue="" />
 
-                  <input type="hidden" name="_charset_" value="UTF-8" />
+                  <input type="hidden" name="_charset_" value="UTF-8" readOnly />
 
                   <datalist id="wb-srch-q-ac"></datalist>
                 </div>

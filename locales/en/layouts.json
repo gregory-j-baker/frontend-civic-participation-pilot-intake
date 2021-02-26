@@ -1,0 +1,32 @@
+{
+  "main": {
+    "footer": {
+      "about-government": {
+        "header": "About government",
+        "links": [
+          { "text": "Contact Employment Insurance", "href": "https://www.canada.ca/en/employment-social-development/corporate/contact/ei-individual.html" },
+          { "text": "Departments and agencies", "href": "https://www.canada.ca/en/government/dept.html" },
+          { "text": "Public service and military", "href": "https://www.canada.ca/en/government/publicservice.html" },
+          { "text": "News", "href": "https://www.canada.ca/en/news.html" },
+          { "text": "Treaties, laws and regulations", "href": "https://www.canada.ca/en/government/system/laws.html" },
+          { "text": "Government-wide reporting", "href": "https://www.canada.ca/en/transparency/reporting.html" },
+          { "text": "Prime Minister", "href": "http://pm.gc.ca/en" },
+          { "text": "About government", "href": "https://www.canada.ca/en/government/system.html" },
+          { "text": "Open government", "href": "http://open.canada.ca/en" }
+        ]
+      },
+      "about-this-site": {
+        "header": "About this site",
+        "links": [
+          { "text": "Social media", "href": "https://www.canada.ca/en/social.html" },
+          { "text": "Mobile applications", "href": "https://www.canada.ca/en/mobile.html" },
+          { "text": "About Canada.ca", "href": "https://www.canada.ca/en/government/about.html" },
+          { "text": "Terms and conditions", "href": "https://www.canada.ca/en/transparency/terms.html" },
+          { "text": "Privacy", "href": "https://www.canada.ca/en/transparency/privacy.html" }
+        ]
+      },
+      "icon-alt": "Symbol of the Government of Canada",
+      "top-of-page": "Top of page\u00A0"
+    }
+  }
+}

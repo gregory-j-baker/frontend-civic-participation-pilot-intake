@@ -1,0 +1,32 @@
+{
+  "main": {
+    "footer": {
+      "about-government": {
+        "header": "Au sujet du gouvernement",
+        "links": [
+          { "text": "Communiquer avec l’assurance-emploi", "href": "https://www.canada.ca/fr/emploi-developpement-social/ministere/coordonnees/assurance-emploi-individus.html" },
+          { "text": "Ministères et organismes", "href": "https://www.canada.ca/fr/gouvernement/min.html" },
+          { "text": "Fonction publique et force militaire", "href": "https://www.canada.ca/fr/gouvernement/fonctionpublique.html" },
+          { "text": "Nouvelles", "href": "https://www.canada.ca/fr/nouvelles.html" },
+          { "text": "Traités, lois et règlements", "href": "https://www.canada.ca/fr/gouvernement/systeme/lois.html" },
+          { "text": "Rapports à l'échelle du gouvernement", "href": "https://www.canada.ca/fr/transparence/rapports.html" },
+          { "text": "Premier ministre", "href": "https://pm.gc.ca/fr" },
+          { "text": "À propos du gouvernement", "href": "https://www.canada.ca/fr/gouvernement/systeme.html" },
+          { "text": "Gouvernement ouvert", "href": "http://ouvert.canada.ca/" }
+        ]
+      },
+      "about-this-site": {
+        "header": "À propos de ce site",
+        "links": [
+          { "text": "Médias sociaux", "href": "https://www.canada.ca/fr/sociaux.html" },
+          { "text": "Applications mobiles", "href": "https://www.canada.ca/fr/mobile.html" },
+          { "text": "À propos de Canada.ca", "href": "https://www.canada.ca/fr/gouvernement/a-propos.html" },
+          { "text": "Avis", "href": "https://www.canada.ca/fr/transparence/avis.html" },
+          { "text": "Confidentialité", "href": "https://www.canada.ca/fr/transparence/confidentialite.html" }
+        ]
+      },
+      "icon-alt": "Symbole du gouvernement du Canada",
+      "top-of-page": "Haut de la page\u00A0"
+    }
+  }
+}
