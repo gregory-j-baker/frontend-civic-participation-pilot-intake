@@ -43,6 +43,31 @@
         "links": [{ "text": "Canada.ca", "href": "https://www.canada.ca/fr.html" }]
       },
       "language-selection": "Sélection de la langue",
+      "menu": {
+        "data-ajax-replace": "https://www.canada.ca/content/dam/canada/sitemenu/sitemenu-v2-fr.html",
+        "default-items": [
+          { "text": "Emplois et milieu de travail", "href": "https://www.canada.ca/en/services/jobs.html" },
+          { "text": "Immigration et citoyenneté", "href": "https://www.canada.ca/en/services/immigration-citizenship.html" },
+          { "text": "Voyage et tourisme", "href": "https://voyage.gc.ca/" },
+          { "text": "Entreprises et industrie", "href": "https://www.canada.ca/fr/services/entreprises.html" },
+          { "text": "Prestations", "href": "https://www.canada.ca/en/services/benefits.html" },
+          { "text": "Santé", "href": "https://www.canada.ca/fr/services/sante.html" },
+          { "text": "Impôts", "href": "https://www.canada.ca/fr/services/impots.html" },
+          { "text": "Environnement et ressources naturelles", "href": "https://www.canada.ca/fr/services/environnement.html" },
+          { "text": "Sécurité nationale et défense", "href": "https://www.canada.ca/fr/services/defense.html" },
+          { "text": "Culture, histoire et sport", "href": "https://www.canada.ca/fr/services/culture.html" },
+          { "text": "Services de police, justice et urgences", "href": "https://www.canada.ca/fr/services/police.html" },
+          { "text": "Transport et infrastructure", "href": "https://www.canada.ca/en/services/transport.html" },
+          { "text": "Canada et le monde", "href": "http://international.gc.ca/world-monde/index.aspx?lang=fra" },
+          { "text": "Argent et finances", "href": "https://www.canada.ca/fr/services/finance.html" },
+          { "text": "Science et innovation", "href": "https://www.canada.ca/fr/services/science.html" }
+        ],
+        "header": "Menu",
+        "expand-btn": {
+          "main": "principal\u00A0",
+          "menu": "Menu\u00A0"
+        }
+      },
       "search": {
         "header": "Recherche",
         "label": "Rechercher dans Canada.ca",
