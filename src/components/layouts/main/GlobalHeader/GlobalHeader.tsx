@@ -1,7 +1,7 @@
 import Branding from './Branding';
 import Breadcrumb from './Breadcrumb';
 import LocaleSwitcher from './LocaleSwitcher';
-import Menu from './Menu';
+import Menu from '../Menu';
 import Search from './Search';
 import SkipToNav from './SkipToNav';
 
