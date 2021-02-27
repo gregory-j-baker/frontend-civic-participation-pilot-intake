@@ -1,0 +1,370 @@
+[
+  {
+    "id": "jobs",
+    "text": "Emplois et milieu de travail",
+    "href": "https://www.canada.ca/fr/services/emplois.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/emplois/opportunites.html", "text": "Trouver un emploi" },
+      { "href": "https://www.canada.ca/fr/services/emplois/formation.html", "text": "Formation" },
+      { "href": "https://www.canada.ca/gestion-entreprise", "text": "Embauche et gestion de personnel" },
+      { "href": "https://www.canada.ca/demarrage-entreprise", "text": "Démarrage d'entreprise" },
+      { "href": "https://www.canada.ca/fr/services/emplois/milieu-travail.html", "text": "Normes en milieu de travail" },
+      { "href": "https://www.canada.ca/fr/services/finance/pensions.html", "text": "Pensions et retraite" },
+      { "href": "https://www.canada.ca/fr/services/prestations/ae.html", "text": "Prestations d'assurance-emploi et congés" }
+    ],
+    "must-requested-items": [
+      { "href": "https://www.canada.ca/fr/emploi-developpement-social/programmes/assurance-emploi/ae-liste/assurance-emploi-re/acceder-re.html", "text": "Voir vos Relevés d’emploi" },
+      { "href": "https://www.canada.ca/fr/emploi-developpement-social/services/numero-assurance-sociale.html", "text": "Demander un numéro d’assurance-sociale" },
+      { "href": "https://www.canada.ca/fr/emploi-developpement-social/services/travailleurs-etrangers.html", "text": "Embaucher un travailleur étranger temporaire" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/immigrer-canada/entree-express.html", "text": "Immigrer en tant que travailleur qualifié" }
+    ]
+  },
+  {
+    "id": "cit",
+    "text": "Immigration et citoyenneté",
+    "href": "https://www.canada.ca/fr/services/immigration-citoyennete.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/demande.html", "text": "Ma demande" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/visiter-canada.html", "text": "Visiter" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/immigrer-canada.html", "text": "Immigrer" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/travailler-canada.html", "text": "Travailler" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/etudier-canada.html", "text": "Étudier" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/citoyennete-canadienne.html", "text": "Citoyenneté" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/nouveaux-immigrants.html", "text": "Nouveaux immigrants" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/canadiens.html", "text": "Canadiens" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/refugies.html", "text": "Réfugiés et octroi de l’asile" },
+      { "href": "https://www.canada.ca/fr/services/immigration-citoyennete/application-loi-infractions.html", "text": "Application de la loi et infractions" }
+    ],
+    "must-requested-items": [
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/demande/compte.html", "text": "Se connecter ou créer un compte pour présenter une demande en ligne" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/demande/verifier-etat.html", "text": "Vérifier l’état de sa demande" },
+      { "href": "http://www.cic.gc.ca/francais/information/delais/index.asp", "text": "Vérifier les délais de traitement des demandes" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/demande/formulaires-demande-guides.html", "text": "Trouver un formulaire de demande" },
+      { "href": "http://www.cic.gc.ca/francais/information/frais/index.asp", "text": "Payer les frais" },
+      { "href": "http://www.cic.gc.ca/francais/visiter/visas.asp", "text": "Déterminer si vous avez besoin d’une AVE ou d’un visa pour visiter le Canada" },
+      { "href": "http://www.cic.gc.ca/francais/centre-aide/index-en-vedette-can.asp", "text": "Trouver réponse à ses questions dans le Centre d’aide" }
+    ]
+  },
+  {
+    "id": "travel",
+    "text": "Voyage et tourisme",
+    "href": "https://voyage.gc.ca/",
+    "items": [
+      { "href": "https://voyage.gc.ca/voyager/avertissements", "text": "Conseils aux voyageurs et avertissements" },
+      { "href": "https://voyage.gc.ca/voyage-covid", "text": "COVID-19 : voyage, quarantaine et frontières" },
+      { "href": "https://www.canada.ca/visiter", "text": "Visiter le Canada" },
+      { "href": "https://voyage.gc.ca/voyager", "text": "Voyager à l’étranger" },
+      { "href": "https://voyage.gc.ca/avion", "text": "Voyager en avion" },
+      { "href": "https://voyage.gc.ca/retour", "text": "Retour au Canada" },
+      { "href": "https://www.canada.ca/fr/immigration-refugies-citoyennete/services/passeports-canadiens.html", "text": "Passeports canadiens" },
+      { "href": "https://voyage.gc.ca/tourisme-canadien", "text": "Attraits touristiques, événements et expériences au Canada" },
+      { "href": "https://voyage.gc.ca/assistance/consultez-voyage", "text": "Consultez Voyage" },
+      { "href": "https://voyage.gc.ca/assistance", "text": "Assistance à l’étranger" },
+      { "href": "https://voyage.gc.ca/restez-branches", "text": "Restez branchés" }
+    ],
+    "must-requested-items": [
+      { "href": "https://voyage.gc.ca/voyager/enfant/lettre-de-consentement", "text": "Lettre de consentement pour les enfants qui voyagent à l’étranger" },
+      { "href": "https://www.cbsa-asfc.gc.ca/bwt-taf/menu-fra.html", "text": "Temps d’attente à la frontière Canada - États-Unis" },
+      { "href": "https://voyage.gc.ca/voyager/inscription", "text": "Inscrivez-vous comme Canadien à l’étranger" },
+      { "href": "https://www.cbsa-asfc.gc.ca/prog/nexus/application-demande-fra.html", "text": "Adhérez à NEXUS" },
+      { "href": "https://voyage.gc.ca/retour/douane/ce-que-vous-pouvez-ramener-au-canada", "text": "Ce que vous pouvez ramener au Canada" },
+      { "href": "https://voyage.gc.ca/assistance/ambassades-consulats", "text": "Communiquer avec une ambassade ou un consulat" },
+      { "href": "https://voyage.gc.ca/voyager/le-cannabis-et-les-voyages-a-l-etranger", "text": "Le cannabis et les voyages à l’étranger" }
+    ]
+  },
+  {
+    "id": "biz",
+    "text": "Entreprises et industrie",
+    "href": "https://www.canada.ca/fr/services/entreprises.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/entreprises/lancer.html", "text": "Démarrage d'entreprise" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/subventions.html", "text": "Subventions et financement pour les entreprises" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/impots.html", "text": "Taxes et impôt des entreprises" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/societes-de-regime-federal.html", "text": "Sociétés de régime fédéral" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/engager.html", "text": "Embauche et gestion de personnel" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/commerce.html", "text": "Commerce international et investissements" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/permis.html", "text": "Permis, licences et règlements" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/faire-affaire.html", "text": "Faire affaire avec le gouvernement" },
+      { "href": "https://www.canada.ca/fr/services/science/innovation.html", "text": "Recherche-développement et innovation" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/recherche.html", "text": "Recherche et renseignements d'affaires" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/pi.html", "text": "Propriété intellectuelle et droit d'auteur" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/maintenirfairecroitreameliorerentreprise.html", "text": "Administration de votre entreprise" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/proteger.html", "text": "Protection de votre entreprise" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/faillites.html", "text": "Insolvabilité pour les entreprises" }
+    ],
+    "must-requested-items": [
+      { "href": "https://www.ic.gc.ca/app/scr/cc/CorporationsCanada/fdrlCrpSrch.html", "text": "Trouver une société" },
+      { "href": "https://www.cbsa-asfc.gc.ca/prog/manif/portal-portail-fra.html", "text": "Déclarer vos produits importés" },
+      { "href": "http://www.ic.gc.ca/app/opic-cipo/trdmrks/srch/accueil?lang=fra", "text": "Chercher des marques de commerce" },
+      { "href": "https://www.cbsa-asfc.gc.ca/trade-commerce/tariff-tarif/2018/html/tblmod-1-fra.html", "text": "Réviser les tarifs des douanes pour l’importation de produits" },
+      { "href": "http://www.ic.gc.ca/opic-cipo/cpd/eng/introduction.html", "text": "Trouver un brevet" },
+      { "href": "https://www.cbsa-asfc.gc.ca/comm-fra.html", "text": "Importer et exporter à partir du Canada" },
+      { "href": "http://www.ic.gc.ca/eic/site/075.nsf/fra/accueil", "text": "Trouver un nom pour votre compagnie" },
+      { "href": "https://www.ic.gc.ca/app/scr/cc/CorporationsCanada/hm.html?f=&selectedDirectorUuid=%3BselectedIncorporatorUuid%3D&metricsId=GTM-WQQH22", "text": "Apporter des changements à votre société (Centre de dépôt en ligne)" }
+    ]
+  },
+  {
+    "id": "benny",
+    "text": "Prestations",
+    "href": "https://www.canada.ca/fr/services/prestations.html",
+    "items": [
+      { "href": "http://www.canada.ca/fr/services/prestations/covid-19-prestations-urgence.html", "text": "Prestations et services pour la COVID-19" },
+      { "href": "https://www.canada.ca/fr/services/prestations/ae.html", "text": "Prestations d&#39;assurance-emploi et cong&eacute;s" },
+      { "href": "https://www.canada.ca/fr/services/prestations/famille.html", "text": "Prestations pour les familles et les proches aidants" },
+      { "href": "https://www.canada.ca/fr/services/prestations/pensionspubliques.html", "text": "Pensions publiques" },
+      { "href": "https://www.canada.ca/fr/services/prestations/etudes.html", "text": "Aide financière aux étudiants et planification des études" },
+      { "href": "https://www.canada.ca/fr/services/prestations/logement.html", "text": "Prestations relatives au logement" },
+      { "href": "https://www.canada.ca/fr/services/prestations/handicap.html", "text": "Prestations d’invalidité" },
+
+      { "href": "http://www.canada.ca/fr/services/prestations/clientele.html", "text": "Prestations par clientèle" },
+      { "href": "https://www.canada.ca/fr/services/prestations/calendrier.html", "text": "Dates de paiement des prestations" },
+      { "href": "https://benefitsfinder.services.gc.ca/hm?GoCTemplateCulture=fr-CA&cl=true", "text": "Chercheur de prestations" }
+    ],
+    "must-requested-items": [
+      { "href": "https://www.canada.ca/fr/services/prestations/ae/assurance-emploi-reguliere.html", "text": "Présenter une demande d’assurance-emploi" },
+
+      { "href": "https://www.canada.ca/fr/services/prestations/education/aide-etudiants/bourses-prets.html", "text": "Faire une demande de bourses et de prêts  d’études" },
+      { "href": "https://www.canada.ca/fr/gouvernement/ouvrir-session-dossier-compte-en-ligne.html", "text": "Ouvrir une session pour un compte en ligne  du gouvernement du Canada" },
+
+      { "href": "https://www.tpsgc-pwgsc.gc.ca/recgen/txt/depot-deposit-fra.html", "text": "Inscrivez-vous au dépôt direct" },
+
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/prestations-enfants-familles/calculateur-prestations-enfants-familles.html", "text": "Calculateur de prestations pour enfants et familles" },
+      { "href": "https://www.canada.ca/fr/services/prestations/ae/assurance-emploi-declaration-internet.html", "text": "Soumettre une déclaration d’assurance-emploi" }
+    ]
+  },
+  {
+    "id": "health",
+    "text": "Santé",
+    "href": "https://www.canada.ca/fr/services/sante.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/sante/aliments-et-nutrition.html", "text": "Aliments et nutrition" },
+      { "href": "https://www.canada.ca/fr/sante-publique/services/maladies.html", "text": "Maladies et affections" },
+      { "href": "https://www.canada.ca/fr/sante-publique/sujets/immunisation-et-vaccins.html", "text": "Vaccins et immunisation" },
+      { "href": "https://www.canada.ca/fr/services/sante/medicaments-et-produits-sante.html", "text": "Médicaments et produits de santé" },
+      { "href": "https://www.canada.ca/fr/services/sante/securite-produits.html", "text": "Sécurité des produits" },
+      { "href": "https://www.canada.ca/fr/services/sante/securite-et-risque-pour-sante.html", "text": "Sécurité et risque pour la santé" },
+      { "href": "https://www.canada.ca/fr/services/sante/vie-saine.html", "text": "Vie saine" },
+      { "href": "https://www.canada.ca/fr/services/sante/sante-autochtones.html", "text": "Santé des Autochtones" },
+      { "href": "https://www.canada.ca/fr/services/sante/systeme-et-services-sante.html", "text": "Système et services de santé" },
+      { "href": "https://www.canada.ca/fr/services/sante/science-recherche-et-donnees.html", "text": "Science, recherche et données" }
+    ],
+    "must-requested-items": [
+      {
+        "href": "https://www.canada.ca/fr/sante-canada/services/drogues-medicaments/cannabis/titulaires-licences-demandeurs-industrie/cultivateurs-transformateurs-vendeurs-autorises.html",
+        "text": "Cultivateurs, transformateurs et vendeurs de cannabis qui détiennent une licence"
+      },
+      { "href": "http://www.canadiensensante.gc.ca/recall-alert-rappel-avis/index-fra.php", "text": "Rappels d'aliments et de produits et alertes de sécurité" },
+      { "href": "https://www.canada.ca/fr/sante-canada/services/guides-alimentaires-canada.html", "text": "Guide alimentaire du Canada" }
+    ]
+  },
+  {
+    "id": "taxes",
+    "text": "Impôts",
+    "href": "https://www.canada.ca/fr/services/impots.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/impots/impot-sur-le-revenu.html", "text": "Impôt sur le revenu" },
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/impot/entreprises/sujets/tps-tvh-entreprises.html", "text": "TPS/TVH" },
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/impot/entreprises/sujets/retenues-paie.html", "text": "Retenues sur la paie" },
+      { "href": "https://www.canada.ca/fr/services/impots/numero-dentreprise.html", "text": "Numéro d'entreprise" },
+      { "href": "https://www.canada.ca/fr/services/impots/regimes-depargne-et-de-pension.html", "text": "Régimes d’épargne et de pension" },
+      { "href": "https://www.canada.ca/fr/services/impots/prestations-pour-enfants-et-familles.html", "text": "Prestations pour enfants et familles" },
+      { "href": "https://www.canada.ca/fr/services/impots/taxes-daccise-droits-et-prelevements.html", "text": "Taxes d’accise, droits et prélèvements" },
+      { "href": "https://www.canada.ca/fr/services/impots/bienfaisance.html", "text": "Organismes de bienfaisance et dons" }
+    ],
+    "must-requested-items": [
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-electroniques-particuliers/dossier-particuliers.html", "text": "Mon dossier" },
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-electroniques-entreprises/dossier-entreprise.html", "text": "Mon dossier d'entreprise" },
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/services-electroniques/representer-client.html", "text": "Représenter un client" },
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/services-electroniques/services-electroniques-entreprises/impotnet-tps-tvh.html", "text": "Transmettre une déclaration de TPS/TVH (IMPÔTNET)" },
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/faire-paiement-a-agence-revenu-canada.html", "text": "Faire un paiement à l'Agence du revenu du Canada" },
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/prestations-enfants-familles/dates-versement-prestations.html", "text": "Trouver la date du prochain versement des prestations" }
+    ]
+  },
+  {
+    "id": "enviro",
+    "text": "Environnement et ressources naturelles",
+    "href": "https://www.canada.ca/fr/services/environnement.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/environnement/meteo.html", "text": "Météo, climat et catastrophes naturelles" },
+      { "href": "https://www.canada.ca/fr/services/environnement/energie.html", "text": "Énergie" },
+      { "href": "https://www.canada.ca/fr/services/environnement/ressources-naturelles.html", "text": "Ressources naturelles" },
+      { "href": "https://www.canada.ca/fr/services/environnement/pratiques-agricoles.html", "text": "Pratiques agricoles" },
+      { "href": "https://www.canada.ca/fr/services/environnement/peches.html", "text": "Pêches" },
+      { "href": "https://www.canada.ca/fr/services/environnement/faune-flore-especes.html", "text": "Faune, flore et espèces" },
+      { "href": "https://www.canada.ca/fr/services/environnement/pollution-gestion-dechets.html", "text": "Pollution et gestion des déchets" },
+      { "href": "https://www.canada.ca/fr/services/environnement/conservation.html", "text": "Conservation et protection de l'environnement" }
+    ],
+    "must-requested-items": [
+      { "href": "https://meteo.gc.ca/canada_f.html", "text": "Prévisions météo locales" },
+      { "href": "https://www.rncan.gc.ca/energie/efficacite/transports/20997", "text": "Véhicules écoénergétiques" },
+      { "href": "https://www.rncan.gc.ca/maisons", "text": "Efficacité énergétique des maisons" },
+      { "href": "https://www.canada.ca/fr/environnement-changement-climatique/services/registre-public-especes-peril.html", "text": "Espèces en péril" },
+      { "href": "https://www.canada.ca/fr/environnement-changement-climatique/services/meteo-saisonniere-dangereuse.html", "text": "Préparation aux conditions météorologiques dangereuses" }
+    ]
+  },
+  {
+    "id": "defence",
+    "text": "Sécurité nationale et défense",
+    "href": "https://www.canada.ca/fr/services/defense.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/defense/securitenationale.html", "text": "Sécurité nationale" },
+      { "href": "https://www.canada.ca/fr/services/defense/fac.html", "text": "Forces armées canadiennes" },
+      { "href": "https://www.canada.ca/fr/services/defense/achat-mise-a-niveau-equipement-defense.html", "text": "Achat et mise à niveau d’équipement de la Défense" },
+      { "href": "http://www.tc.gc.ca/fr/services/surete-transports.html", "text": "Sûreté des transports" },
+      { "href": "https://www.canada.ca/fr/services/defense/securiserfrontiere.html", "text": "Sécuriser la frontière" },
+      { "href": "https://www.canada.ca/fr/services/defense/cybersecurite.html", "text": "Cybersécurité" },
+      { "href": "https://www.canada.ca/fr/services/defense/emplois.html", "text": "Emplois en sécurité nationale et en défense" },
+      { "href": "https://www.canada.ca/fr/gouvernement/fonctionpublique/avantagesmilitaires.html", "text": "Services et avantages sociaux du personnel militaire" }
+    ],
+    "must-requested-items": [
+      { "href": "https://forces.ca/fr/carrieres/", "text": "Emplois dans les Forces armées canadiennes" },
+      { "href": "https://www.canada.ca/fr/ministere-defense-nationale/services/histoire-militaire/histoire-patrimoine/insignes-drapeaux/grades/insignes-grade-fonction.html", "text": "Grades militaires" },
+      { "href": "https://www.canada.ca/fr/services/defense/fac/equipement.html", "text": "Équipement de la Défense" },
+      { "href": "http://www.cadets.ca/fr/joignez-vous/cadets.page", "text": "Devenir cadet" },
+      { "href": "http://dgpaapp.forces.gc.ca/fr/politique-defense-canada/index.asp", "text": "Politique de défense du Canada" }
+    ]
+  },
+  {
+    "id": "culture",
+    "text": "Culture, histoire et sport",
+    "href": "https://www.canada.ca/fr/services/culture.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/patrimoine-canadien/services/financement.html", "text": "Financement - Culture, histoire et sport" },
+      { "href": "https://www.canada.ca/fr/services/culture/evenements-celebrations-commemorations.html", "text": "Événements, célébrations et commémorations" },
+      { "href": "https://www.canada.ca/fr/services/culture/attraits-culturels.html", "text": "Lieux et attraits culturels" },
+      { "href": "https://www.canada.ca/fr/services/culture/identite-canadienne-societe.html", "text": "Identité canadienne et société" },
+      { "href": "https://www.canada.ca/fr/services/culture/sport.html", "text": "Sport" },
+      { "href": "https://www.canada.ca/fr/services/culture/histoire-patrimoine.html", "text": "Histoire et patrimoine" },
+      { "href": "https://www.canada.ca/fr/services/culture/arts-media.html", "text": "Arts et média" },
+      { "href": "https://www.canada.ca/fr/services/culture/programmes-culturels-jeunes.html", "text": "Programmes culturels pour les jeunes" },
+      { "href": "https://www.canada.ca/fr/services/culture/commerce-investissement-culturels.html", "text": "Commerce et investissement culturels" }
+    ],
+    "must-requested-items": [
+      { "href": "http://www.veterans.gc.ca/fra/remembrance/memorials/canadian-virtual-war-memorial", "text": "Visitez le Mémorial virtuel de guerre du Canada" },
+      { "href": "https://www.canada.ca/fr/services/culture/identite-canadienne-societe/hymnes-symboles.html", "text": "Hymnes et symboles du Canada" },
+      { "href": "https://crtc.gc.ca/fra/8045/d2018.htm", "text": "Trouvez une décision du CRTC" },
+      { "href": "http://www.bac-lac.gc.ca/fra/recherche/Pages/recherche-ancetres.aspx", "text": "Faites des recherches sur votre histoire familiale" },
+      { "href": "http://www.bac-lac.gc.ca/fra/recensements/Pages/recensements.aspx", "text": "Cherchez des documents de recensement" },
+      { "href": "https://www.canada.ca/fr/services/culture/attraits-culturels/attraits-capitale-canada.html", "text": "Lieux et attraits dans la capitale du Canada" }
+    ]
+  },
+  {
+    "id": "policing",
+    "text": "Services de police, justice et urgences",
+    "href": "https://www.canada.ca/fr/services/police.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/police/servicespolice.html", "text": "Services de police" },
+      { "href": "https://www.canada.ca/fr/services/police/justice.html", "text": "Justice" },
+      { "href": "https://www.canada.ca/fr/services/police/urgences.html", "text": "Urgences" },
+      { "href": "https://www.canada.ca/fr/services/police/correctionnels.html", "text": "Services correctionnels" },
+      { "href": "https://www.canada.ca/fr/services/police/liberationconditionnelle.html", "text": "Libération conditionnelle, suspension du casier, radiation et clémence" },
+      { "href": "https://www.canada.ca/fr/services/police/victimes.html", "text": "Victimes d'actes criminels" }
+    ],
+    "must-requested-items": [
+      { "href": "http://www.rcmp-grc.gc.ca/cfp-pcaf/online_en-ligne/index-fra.htm", "text": "Demander ou renouveler un permis d'arme à feu" },
+      { "href": "http://www.rcmp-grc.gc.ca/fr/verification-casier-judiciaire", "text": "Obtenir une attestation de vérification de casier judiciaire" },
+      { "href": "https://www.canada.ca/fr/commission-liberations-conditionnelles/services/suspension-du-casier/guide-et-formulaires-de-demande.html", "text": "Demander la suspension d’un casier judiciaire" },
+      { "href": "https://www.preparez-vous.gc.ca/cnt/hzd/drng-fr.aspx", "text": "Que faire durant une urgence" },
+      { "href": "https://www.canada.ca/fr/services/police/servicespolice/securite-communautaire-police/conduite-facultes-affaiblies.html", "text": "Connaissez la loi sur la conduite avec facultés affaiblies" },
+      { "href": "https://www.canada.ca/fr/services/police/servicespolice/aider-resoudre-un-crime.html", "text": "Aidez à résoudre un crime" }
+    ]
+  },
+  {
+    "id": "trans",
+    "text": "Transport et infrastructure",
+    "href": "https://www.canada.ca/fr/services/transport.html",
+    "items": [
+      { "href": "http://www.tc.gc.ca/fr/services/aviation.html", "text": "Aviation" },
+      { "href": "http://www.tc.gc.ca/fr/services/maritime.html", "text": "Transport maritime" },
+      { "href": "http://www.tc.gc.ca/fr/services/routier.html", "text": "Transport routier" },
+      { "href": "http://www.tc.gc.ca/fr/services/ferroviaire.html", "text": "Transport ferroviaire" },
+      { "href": "http://www.tc.gc.ca/fr/services/marchandises-dangereuses.html", "text": "Marchandises dangereuses" },
+      { "href": "http://www.tc.gc.ca/fr/services/infrastructures.html", "text": "Infrastructure" }
+    ],
+    "must-requested-items": [
+      { "href": "http://www.tc.gc.ca/fr/services/aviation/securite-drones.html", "text": "Sécurité des drones" },
+      { "href": "http://www.tc.gc.ca/fr/services/surete-transports/aerienne/articles-interdits-bord-avion.html", "text": "Articles interdits à bord d’un avion" },
+      { "href": "http://www.tc.gc.ca/fra/securitemaritime/epe-immabatiments-menu-728.htm", "text": "Immatriculer votre bâtiment" },
+      { "href": "http://www.tc.gc.ca/fr/services/routier/securite-sieges-auto-enfants.html", "text": "Sécurité des sièges d'auto pour enfants" },
+      { "href": "http://www.tc.gc.ca/fra/tmd/clair-tdesm-211.htm", "text": "Transporter des marchandises dangereuses - Règlements" },
+      { "href": "http://www.tc.gc.ca/fr/transports-canada/organisation/lois-reglements/reglements/sor-96-433.html", "text": "Règlement de l’aviation canadien" }
+    ]
+  },
+  {
+    "id": "canworld",
+    "text": "Canada et le monde",
+    "href": "http://international.gc.ca/world-monde/index.aspx?lang=fra",
+    "items": [
+      { "href": "http://international.gc.ca/world-monde/offices-bureaux/index.aspx?lang=fra", "text": "Bureaux internationaux et contacts d’urgence" },
+      { "href": "https://international.gc.ca/world-monde/study_work_travel-etude_travail_voyage/index.aspx?lang=fra", "text": "Étude, travail et voyage partout dans le monde" },
+      { "href": "http://international.gc.ca/world-monde/country-pays/index.aspx?lang=fra", "text": "Information par pays et territoires" },
+      { "href": "https://international.gc.ca/world-monde/stories-histoires/index.aspx?lang=fra", "text": "Histoires" },
+      { "href": "http://international.gc.ca/world-monde/international_relations-relations_internationales/index.aspx?lang=fra", "text": "Relations internationales" },
+      { "href": "http://international.gc.ca/world-monde/issues_development-enjeux_developpement/index.aspx?lang=fra", "text": "Enjeux mondiaux et aide internationale" },
+      { "href": "http://international.gc.ca/world-monde/funding-financement/index.aspx?lang=frag", "text": "Financement d’initiatives internationales" },
+      { "href": "http://www.canada.ca/fr/services/entreprises/commerce/index.html", "text": "Commerce international et investissement" }
+    ],
+    "must-requested-items": [
+      { "href": "https://www.international.gc.ca/world-monde/covid-19/index.aspx?lang=fra", "text": "COVID-19 : Voyages, affaires étrangères, commerce et développement internationaux" },
+      { "href": "http://scholarships-bourses.gc.ca/scholarships-bourses/non_can/opportunities-opportunites.aspx?lang=fra", "text": "Trouver une bourse d’études canadienne en tant qu’étudiant international" },
+      { "href": "http://treaty-accord.gc.ca/index.aspx?Lang=fra", "text": "Traités internationaux signés par le Canada" },
+      { "href": "http://educanada.ca/index.aspx?lang=fra", "text": "Trouver des occasions d’étude ou de recherche au Canada" },
+      { "href": "https://voyage.gc.ca/assistance/ambassades-consulats", "text": "Communiquer avec une ambassade ou un consulat" },
+      { "href": "http://international.gc.ca/protocol-protocole/reps.aspx?lang=fra", "text": "Communiquer avec un représentant étranger au Canada" },
+      { "href": "https://www.international.gc.ca/gac-amc/about-a_propos/services/authentication-authentification/step-etape-1.aspx?lang=fra", "text": "Authentifier un document" }
+    ]
+  },
+  {
+    "id": "money",
+    "text": "Argent et finances",
+    "href": "https://www.canada.ca/fr/services/finance.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/finance/gerer.html", "text": "Gérer votre argent" },
+      { "href": "https://www.canada.ca/fr/services/finance/dettes.html", "text": "Dettes et emprunts" },
+      { "href": "https://www.canada.ca/fr/services/finance/epargne.html", "text": "Épargne et investissement" },
+      { "href": "https://www.canada.ca/fr/services/finance/financementetudes.html", "text": "Financement des études" },
+      { "href": "https://www.canada.ca/fr/services/finance/pensions.html", "text": "Pensions et retraite" },
+      { "href": "https://www.canada.ca/fr/services/finance/fraude.html", "text": "Protection contre la fraude et les escroqueries" },
+      { "href": "https://www.canada.ca/fr/services/finance/outils.html", "text": "Calculatrices et outils financiers" },
+      { "href": "https://www.canada.ca/fr/agence-consommation-matiere-financiere/services/programmes-litteratie-financiere.html", "text": "Programmes de littératie financière" },
+      { "href": "https://www.canada.ca/fr/services/finance/questions-consommation.html", "text": "Questions de consommation" },
+      { "href": "https://www.canada.ca/fr/services/finance/faillite.html", "text": "Insolvabilité" },
+      { "href": "https://www.canada.ca/fr/services/impots.html", "text": "Impôts" },
+      { "href": "https://www.canada.ca/fr/gouvernement/systeme/finances.html", "text": "Finances publiques" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/subventions.html", "text": "Subventions et financement pour les entreprises" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/permis/secteursindustriereglementationfederale/regleservicesfinanciers.html", "text": "Réglementation des services financiers et monétaires" }
+    ],
+    "must-requested-items": [
+      { "href": "https://www.ic.gc.ca/app/scr/bsf-osb/ins/connexion.html?lang=fra", "text": "Trouver un dossier de faillite ou d’insolvabilité" },
+      { "href": "https://www.canada.ca/fr/services/emplois/education/aide-financiere-etudiants/pret-etudiants.html", "text": "Prêts étudiants" },
+      { "href": "https://www.tpsgc-pwgsc.gc.ca/recgen/txt/depot-deposit-fra.html", "text": "Inscrivez-vous au dépôt direct" },
+      { "href": "https://www.canada.ca/fr/agence-consommation-matiere-financiere/services/hypotheques.html", "text": "Obtenir des renseignements sur les hypothèques" },
+      { "href": "https://www.canada.ca/fr/agence-consommation-matiere-financiere/services/dossier-pointage-credit.html", "text": "Dossiers et cotes de crédit" },
+      { "href": "http://itools-ioutils.fcac-acfc.gc.ca/BC-CB/NetInc-RevNet-fra.aspx", "text": "Faire un budget" },
+      { "href": "https://www.canada.ca/fr/agence-revenu/services/impot/administrateurs-regimes-enregistres/fesp/plafonds-cd-reer-rpdb-celi-mgap.html", "text": "Taux et limites de contribution" }
+    ]
+  },
+  {
+    "id": "science",
+    "text": "Science et innovation",
+    "href": "https://www.canada.ca/fr/services/science.html",
+    "items": [
+      { "href": "https://www.canada.ca/fr/services/science/financementrecherche.html", "text": "Financement, subventions et prix pour la recherche" },
+      { "href": "https://www.canada.ca/fr/services/science/themesscientifiques.html", "text": "Thèmes scientifiques" },
+      { "href": "https://www.canada.ca/fr/services/science/donnees-ouvertes.html", "text": "Données ouvertes, statistiques et archives" },
+      { "href": "https://www.canada.ca/fr/services/science/instituts.html", "text": "Instituts et établissements de recherches" },
+      { "href": "https://www.canada.ca/fr/services/science/innovation.html", "text": "R-D et innovation" },
+      { "href": "https://www.canada.ca/fr/services/entreprises/pi.html", "text": "Propriété intellectuelle et droit d'auteur" },
+      { "href": "https://www.canada.ca/fr/services/science/repertoirescientifiques.html", "text": "Répertoire des scientifiques et des professionnels de la recherche" },
+      { "href": "https://www.canada.ca/fr/services/science/ressourcespedagogiques.html", "text": "Ressources pédagogiques scientifiques" }
+    ],
+    "must-requested-items": [
+      { "href": "https://www.nrc-cnrc.gc.ca/fra/publications/centre_codes/2015_code_national_batiment.html", "text": "Code national du bâtiment" },
+      { "href": "https://www.nrc-cnrc.gc.ca/fra/services/heure/horloge_web.html#tzpanel-4", "text": "Heures officielles au Canada" },
+      { "href": "https://www.nrc-cnrc.gc.ca/fra/services/levers/index.html", "text": "Trouver les heures de levers et de couchers du soleil" },
+      { "href": "https://www.nrc-cnrc.gc.ca/fra/pari/services/aide_financiere.html", "text": "Bourses pour l’innovation technologique (PARI)" },
+      { "href": "https://science-libraries.canada.ca/fra/accueil/", "text": "Bibliothèque scientifique fédérale" },
+      { "href": "http://asc-csa.gc.ca/fra/astronomie/auroramax/hd-480.asp", "text": "Aurores boréales en direct" }
+    ]
+  }
+]
