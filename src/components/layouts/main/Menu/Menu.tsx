@@ -1,7 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import useCurrentBreakpoint from '../../../../hooks/useCurrentBreakpoint';
 import { theme } from '../../../../config';
+import { time } from 'node:console';
 
 type TMenuData = {
   id: string;
@@ -29,9 +30,9 @@ const Menu: React.FC = () => {
 
   const menuData = useMemo(() => t<[TMenuData]>('menu:data', {}, { returnObjects: true }), [t]);
 
+  const [hoveredMenuId, setHoveredMenuId] = useState<string | undefined>();
   const [selectedMenuId, setSelectedMenuId] = useState<string>(menuData[0].id);
   const [mostRequestedExpanded, setMostRequestedExpanded] = useState<boolean>(false);
-
   const selectedMenuData = useMemo(() => menuData.find(({ id }) => id === selectedMenuId), [menuData, selectedMenuId]);
 
   const handleMenuOnChange = (e: React.MouseEvent<HTMLAnchorElement>, menuId: string): void => {
@@ -47,6 +48,27 @@ const Menu: React.FC = () => {
     setMostRequestedExpanded((prev) => !prev);
   };
 
+  const handleOnMouseEnter = (menuId: string): void => setHoveredMenuId(menuId);
+  const handleOnMouseLeave = (): void => setHoveredMenuId(undefined);
+  const handleOnFocus = (menuId: string): void => setHoveredMenuId(menuId);
+  const handleOnBlur = (): void => setHoveredMenuId(undefined);
+
+  const onHoveredTimeout = useCallback((): void => {
+    if (hoveredMenuId !== undefined) {
+      setMostRequestedExpanded(false);
+      setSelectedMenuId(hoveredMenuId);
+    }
+  }, [hoveredMenuId]);
+
+  useEffect(() => {
+    const timer = hoveredMenuId !== undefined ? setTimeout(onHoveredTimeout, 500) : undefined;
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [hoveredMenuId, onHoveredTimeout]);
+
   return (
     <nav className="gcweb-v2 gcweb-menu" typeof="SiteNavigationElement">
       <div className="container">
@@ -59,7 +81,18 @@ const Menu: React.FC = () => {
         <ul role="menu" aria-orientation="vertical">
           {menuData.map(({ id, text }) => (
             <li key={id} role="presentation">
-              <a role="menuitem" tabIndex={0} aria-haspopup="true" aria-controls={`gc-mnu-${id}`} aria-expanded={id === selectedMenuId} href="#" onClick={(e) => handleMenuOnChange(e, id)}>
+              <a
+                role="menuitem"
+                tabIndex={0}
+                aria-haspopup="true"
+                aria-controls={`gc-mnu-${id}`}
+                aria-expanded={id === selectedMenuId}
+                href="#"
+                onMouseEnter={() => handleOnMouseEnter(id)}
+                onMouseLeave={handleOnMouseLeave}
+                onFocus={() => handleOnFocus(id)}
+                onBlur={handleOnBlur}
+                onClick={(e) => handleMenuOnChange(e, id)}>
                 {text}
               </a>
               {selectedMenuData && (
