@@ -96,7 +96,7 @@ const Menu: React.FC = () => {
                 {text}
               </a>
               {selectedMenuData && (
-                <ul id="gc-mnu-jobs" role="menu" aria-orientation="vertical">
+                <ul id={`gc-mnu-${id}`} role="menu" aria-orientation="vertical">
                   <li role="presentation">
                     <a role="menuitem" tabIndex={-1} href={selectedMenuData.href}>
                       {selectedMenuData.text}
