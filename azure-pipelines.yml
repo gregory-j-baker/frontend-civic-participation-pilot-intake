@@ -1,0 +1,195 @@
+#
+# Pipeline will only fire when commits have been pushed
+# to master or release/** (ex: release/v1.0.0)
+#
+trigger:
+  - 'master'
+  - 'release/**'
+
+#
+# Pipeline will also fire when a pull request targeting
+# either master or release/** has been submitted.
+#
+# This is to add build success criteria to the pull requests.
+#
+pr:
+  - 'master'
+  - 'release/**'
+
+#
+# Build using a linux agent (need docker).
+#
+pool:
+  vmImage: 'ubuntu-latest'
+
+#
+# Variables used in multiple tasks.
+#
+variables:
+  AzureSubscription: 'EsPBProdSub'
+  ContainerRegistry: 'youthdigitalgateway.azurecr.io'
+  ContainerRegistryName: 'youthdigitalgateway'
+  ImageRepository: 'youth-digital-gateway/civic-participation-pilot/frontend-intake'
+  IsMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+  IsRelease: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
+
+#
+# This pipeline contains a single do-everything job with multiple, sequential steps.
+#
+steps:
+  # - script: dir $(Build.SourcesDirectory)
+  #
+  # Step: DownloadSettingsXML
+  #
+  # This step fetches the Maven settings.xml file for Nexus deployment.
+  #
+  - task: 'DownloadSecureFile@1'
+    name: 'DownloadSettingsXML'
+    inputs:
+      secureFile: 'settings.xml'
+
+  #
+  # Step: GetProjectVersion
+  #
+  # This step uses a bash shell to determine the Git commit SHA
+  # and the Maven pom version. These values are useful when
+  # tagging and deploying the docker image.
+  #
+  - task: 'AzureCLI@2'
+    name: 'GetProjectVersion'
+    displayName: 'Evaluate Git SHA and NPM project version'
+    inputs:
+      azureSubscription: $(AzureSubscription)
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+        echo "##vso[task.setvariable variable=BuildDate;]$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+        echo "##vso[task.setvariable variable=GitSha;]$(git rev-parse --short HEAD)"
+        echo "##vso[task.setvariable variable=ProjectVersion;]$(npm run env | grep npm_package_version | cut -d '=' -f 2)"
+
+  # - task: SonarQubePrepare@4
+  #   inputs:
+  #     SonarQube: 'ydg-sonar-new-dns'
+  #     scannerMode: 'CLI'
+  #     configMode: 'manual'
+  #     cliProjectKey: 'ydg-react-frontend'
+  #     cliProjectName: 'ydg-react-frontend'
+  #     cliSources: './src/'
+  #     extraProperties: |
+  #       # Additional properties that will be passed to the scanner,
+  #       # Put one key=value per line, example:
+  #       # sonar.exclusions=**/*.bin
+  #       sonar.javascript.exclusions = **/node_modules/**, **/bower_components/**, **/dist/**
+  #       sonar.javascript.file.suffixes=.js,.jsx
+
+  # - task: PowerShell@2
+  #   displayName: "Remove branch info"
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: |
+  #       $params = "$env:SONARQUBE_SCANNER_PARAMS" -replace '"sonar.branch.name.*\,'
+  #       Write-Host "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS;]$params"
+
+  # - task: PowerShell@2
+  #   displayName: "Remove pull request info"
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: |
+  #       $params = "$env:SONARQUBE_SCANNER_PARAMS" -replace '"sonar.pullrequest.*"\,'
+  #       Write-Host "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS;]$params"
+
+  # - task: SonarQubeAnalyze@4
+
+  # - task: PowerShell@2
+  #   displayName: "Set Artifact staging directory"
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: |
+  #       Write-Host "##vso[task.setvariable variable=buildartifactStagingDirectory]$(System.DefaultWorkingDirectory)"
+
+  # - task: SonarQubePublish@4
+  #   displayName: "Publish Sonar report"
+  #   inputs:
+  #     pollingTimeoutSec: '300'
+
+  # - task: Bash@3
+  #   displayName: "Check Sonar Quality Gatecheck"
+  #   inputs:
+  #     targetType: 'inline'
+  #     script: |
+  #       #!/bin/bash
+  #       jq --version
+  #       SONAR_URL='https://sonarqube.youth-digital-gateway.ca/api/qualitygates/project_status?projectKey=ydg-react-frontend'
+  #       SONAR_AUTH='d10401e4af6c4588e87d03cfbb59d8303b3eb289:'
+  #       SONAR_STATUS=$(curl -s -u $SONAR_AUTH $SONAR_URL | jq --raw-output '.projectStatus.status')
+  #       if [ "$SONAR_STATUS" = "OK" ]; then
+  #         echo "Sonar Quality Gate status is: $SONAR_STATUS"
+  #       else
+  #         echo "Sonar Quality Gate status is: $SONAR_STATUS"
+  #         #Break Build
+  #         exit 1
+  #       fi
+
+  #
+  # Step: BuildOciImage
+  #
+  # Builds the OCI (docker) image.
+  #
+  - task: Docker@2
+    name: 'BuildOciImage'
+    displayName: Build OCI container image
+    condition: not(or(eq(variables.IsMaster, true), eq(variables.IsRelease, true)))
+    env:
+      GitSha: '$(GetProjectVersion.GitSha)'
+      ProjectVersion: '$(GetProjectVersion.ProjectVersion)'
+    inputs:
+      command: build
+      containerRegistry: $(ContainerRegistry)
+      repository: $(ImageRepository)
+      tags: |
+        latest
+        $(ProjectVersion)
+
+  #
+  # Step: BuildAndPushOciImage
+  #
+  # Builds the OCI (docker) image and pushes it to ACR.
+  # This build step only triggers for 'master' and 'release/**'
+  # branches, because we don't want to push images for every PR.
+  #
+  - task: Docker@2
+    name: 'BuildAndPushOciImage'
+    displayName: Build and push OCI container image
+    condition: or(eq(variables.IsMaster, true), eq(variables.IsRelease, true))
+    env:
+      GitSha: '$(GetProjectVersion.GitSha)'
+      ProjectVersion: '$(GetProjectVersion.ProjectVersion)'
+    inputs:
+      command: buildAndPush
+      containerRegistry: $(ContainerRegistry)
+      repository: $(ImageRepository)
+      tags: |
+        latest
+        $(ProjectVersion)
+
+  #
+  # Step: CleanUpRepository
+  #
+  # This step removes any old unused images
+  # from the container repository. Since we
+  # are publishing all SNAPSHOT builds to the
+  # repository, over time the repository will
+  # become full of old images that will never
+  # be deployed again. Deleting them makes sense.
+  #
+  - task: 'AzureCLI@2'
+    name: 'CleanUpRepository'
+    displayName: 'Clean up stale OCI container images (older than 7 days)'
+    condition: or(eq(variables.IsMaster, true), eq(variables.IsRelease, true))
+    inputs:
+      azureSubscription: $(AzureSubscription)
+      scriptLocation: inlineScript
+      scriptType: bash
+      inlineScript: |
+        az acr login --name $(ContainerRegistryName)
+        az acr run --cmd "acr purge --filter '$(ImageRepository):.*' --ago 7d --untagged" --registry $(ContainerRegistryName) /dev/null
