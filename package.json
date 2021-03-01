@@ -7,7 +7,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "start:docker": "npx next telemetry disable > /dev/null && yarn build && npm prune --production --no-audit && rm -rf .next/cache && yarn start"
+    "start:docker": "yarn build && npm prune --production --no-audit && rm -rf .next/cache && yarn start"
   },
   "dependencies": {
     "next": "^10.0.7",
