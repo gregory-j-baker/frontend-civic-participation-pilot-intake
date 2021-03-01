@@ -1,11 +1,13 @@
 {
+  "$schema": "https://json.schemastore.org/package",
   "name": "civic-participation-pilot-frontend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "start:docker": "npx next telemetry disable > /dev/null && yarn build && npm prune --production --no-audit && rm -rf .next/cache && yarn start"
   },
   "dependencies": {
     "next": "^10.0.7",
