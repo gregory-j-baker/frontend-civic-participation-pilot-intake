@@ -1,8 +1,8 @@
-import { useState, useMemo, useEffect, useCallback } from 'react';
+import { useState, useMemo, useEffect, useCallback, HtmlHTMLAttributes } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import useCurrentBreakpoint from '../../../../hooks/useCurrentBreakpoint';
 import { theme } from '../../../../config';
-import { time } from 'node:console';
+import { getNextElementSibling, getPreviousElementSibling } from '../../../../utils/misc-utils';
 
 type TMenuData = {
   id: string;
@@ -26,7 +26,7 @@ const Menu: React.FC = () => {
   const { t } = useTranslation();
   const currentBreakpoint = useCurrentBreakpoint();
 
-  const [expanded, setExpanded] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const menuData = useMemo(() => t<[TMenuData]>('menu:data', {}, { returnObjects: true }), [t]);
 
@@ -53,7 +53,7 @@ const Menu: React.FC = () => {
   const handleOnFocus = (menuId: string): void => setHoveredMenuId(menuId);
   const handleOnBlur = (): void => setHoveredMenuId(undefined);
 
-  const onHoveredTimeout = useCallback((): void => {
+  const onHoveredTimeoutCallback = useCallback((): void => {
     if (hoveredMenuId !== undefined) {
       setMostRequestedExpanded(false);
       setSelectedMenuId(hoveredMenuId);
@@ -61,24 +61,121 @@ const Menu: React.FC = () => {
   }, [hoveredMenuId]);
 
   useEffect(() => {
-    const timer = hoveredMenuId !== undefined ? setTimeout(onHoveredTimeout, 500) : undefined;
+    const timer = hoveredMenuId !== undefined ? setTimeout(onHoveredTimeoutCallback, 300) : undefined;
     return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
+      if (timer) clearTimeout(timer);
     };
-  }, [hoveredMenuId, onHoveredTimeout]);
+  }, [hoveredMenuId, onHoveredTimeoutCallback]);
+
+  const handleMenueItemOnKeydown = useCallback(
+    (event: React.KeyboardEvent<HTMLAnchorElement>): void => {
+      const key = event.key;
+      const menuItem = event.currentTarget;
+      // const hasPopup = menuItem.getAttribute('aria-haspopup') === 'true';
+      const menu = menuItem.closest("ul[role='menu']") as HTMLUListElement;
+      const inMenuBar = menu.classList.contains('menubar');
+
+      // Define keys
+      const TAB_KEY = 'Tab',
+        ENTER_KEY = 'Enter',
+        ESC_KEY = 'Escape',
+        LEFT_KEY = 'ArrowLeft',
+        UP_KEY = 'ArrowUp',
+        RIGHT_KEY = 'ArrowRight',
+        DOWN_KEY = 'ArrowDown',
+        SPACE_KEY = ' ';
+
+      if (!(event.ctrlKey || event.altKey || event.metaKey)) {
+        // Tab key = Hide all sub-menus
+        if (key === TAB_KEY) {
+          setMenuOpen(false);
+        }
+        //Enter or spacebar on a link = follow the link and close menus
+        else if (menuItem.nodeName === 'A' && menuItem.hasAttribute('href') && menuItem.getAttribute('href') !== '#' && (key === ENTER_KEY || key === SPACE_KEY)) {
+          event.preventDefault();
+          menuItem.click();
+          setMenuOpen(false);
+        } else if (inMenuBar) {
+          // Left arrow or Escape = focus open/close menu button
+          if (key === LEFT_KEY || key === ESC_KEY) {
+            event.preventDefault();
+            document.querySelector<HTMLButtonElement>('nav.gcweb-menu button')?.focus();
+          }
+          // Right arrow, Enter or Space = focus sub-menu home link
+          else if (selectedMenuData && (key === RIGHT_KEY || key === ENTER_KEY || key === SPACE_KEY)) {
+            event.preventDefault();
+            if (selectedMenuId) {
+              document.querySelector<HTMLAnchorElement>(`.gc-mnu-${selectedMenuId}-home`)?.focus();
+            }
+          }
+          // focus previous sibling
+          else if (key === UP_KEY) {
+            event.preventDefault();
+            const parent = menuItem.closest('li') as HTMLElement;
+            if (parent.previousElementSibling) {
+              parent.previousElementSibling.querySelector<HTMLAnchorElement>('a[role=menuitem]')?.focus();
+            }
+          }
+          // focus mext sibling
+          else if (key === DOWN_KEY) {
+            event.preventDefault();
+            const parent = menuItem.closest('li') as HTMLElement;
+            if (parent.nextElementSibling) {
+              parent.nextElementSibling.querySelector<HTMLAnchorElement>('a[role=menuitem]')?.focus();
+            }
+          }
+        } else {
+          const inSubMenu = menuItem.closest('ul[role=menu]')?.id === `gc-mnu-${selectedMenuId}-sub`;
+
+          // Left arrow or Escape = focus menubar menu item
+          if (key === LEFT_KEY || key === ESC_KEY) {
+            event.preventDefault();
+            document.querySelector<HTMLAnchorElement>(`a[aria-controls=gc-mnu-${selectedMenuId}]`)?.focus();
+          }
+          // focus previous sibling
+          else if (key === UP_KEY) {
+            event.preventDefault();
+            const parent = menuItem.closest('li') as HTMLElement;
+            const sibling = getPreviousElementSibling(parent, '[role=presentation]');
+
+            if (sibling) {
+              sibling.querySelector<HTMLAnchorElement>('a[role=menuitem]')?.focus();
+            } else if (inSubMenu) {
+              // focus last element of parent menu
+              const parentMenu = document.querySelector(`#gc-mnu-${selectedMenuId}`) as HTMLUListElement;
+              parentMenu.querySelector<HTMLAnchorElement>('li[role=presentation]:last-child a[role=menuitem]')?.focus();
+            }
+          }
+          // focus mext sibling
+          else if (key === DOWN_KEY) {
+            event.preventDefault();
+            const parent = menuItem.closest('li') as HTMLElement;
+            const sibling = getNextElementSibling(parent, '[role=presentation]');
+
+            if (sibling) {
+              sibling.querySelector<HTMLAnchorElement>('a[role=menuitem]')?.focus();
+            } else if (!inSubMenu) {
+              // focus first element of child menu
+              const subMenu = menu.querySelector("ul[role='menu']") as HTMLUListElement;
+              subMenu.querySelector<HTMLAnchorElement>('li[role=presentation]:first-child a[role=menuitem]')?.focus();
+            }
+          }
+        }
+      }
+    },
+    [selectedMenuData, selectedMenuId]
+  );
 
   return (
     <nav className="gcweb-v2 gcweb-menu" typeof="SiteNavigationElement">
       <div className="container">
         <h2 className="wb-inv">{t('menu:header')}</h2>
-        <button type="button" aria-haspopup="true" aria-expanded={expanded} onClick={() => setExpanded((prev) => !prev)}>
+        <button type="button" aria-haspopup="true" aria-expanded={menuOpen} onClick={() => setMenuOpen((prev) => !prev)}>
           <span className="wb-inv">{t('menu:expand-btn.main')}</span>
           {t('menu:expand-btn.menu')}
           <span className="expicon glyphicon glyphicon-chevron-down"></span>
         </button>
-        <ul role="menu" aria-orientation="vertical">
+        <ul role="menu" aria-orientation="vertical" className="menubar">
           {menuData.map(({ id, text }) => (
             <li key={id} role="presentation">
               <a
@@ -92,13 +189,14 @@ const Menu: React.FC = () => {
                 onMouseLeave={handleOnMouseLeave}
                 onFocus={() => handleOnFocus(id)}
                 onBlur={handleOnBlur}
-                onClick={(e) => handleMenuOnChange(e, id)}>
+                onClick={(e) => handleMenuOnChange(e, id)}
+                onKeyDown={handleMenueItemOnKeydown}>
                 {text}
               </a>
               {selectedMenuData && (
                 <ul id={`gc-mnu-${id}`} role="menu" aria-orientation="vertical">
                   <li role="presentation">
-                    <a role="menuitem" tabIndex={-1} href={selectedMenuData.href}>
+                    <a role="menuitem" tabIndex={-1} href={selectedMenuData.href} className={`gc-mnu-${id}-home`} onKeyDown={handleMenueItemOnKeydown}>
                       {selectedMenuData.text}
                       <span className="visible-xs-inline visible-sm-inline">{t('menu:home-append')}</span>
                     </a>
@@ -106,7 +204,7 @@ const Menu: React.FC = () => {
                   <li role="separator"></li>
                   {selectedMenuData.items.map(({ href, text }) => (
                     <li key={text} role="presentation">
-                      <a role="menuitem" tabIndex={-1} href={href}>
+                      <a role="menuitem" tabIndex={-1} href={href} onKeyDown={handleMenueItemOnKeydown}>
                         {text}
                       </a>
                     </li>
@@ -121,13 +219,14 @@ const Menu: React.FC = () => {
                       aria-haspopup="true"
                       aria-controls={`gc-mnu-${id}-sub`}
                       aria-expanded={(currentBreakpoint !== undefined && currentBreakpoint >= theme.breakpoints.mediumview) || mostRequestedExpanded}
-                      onClick={handleMostRequestedOnClick}>
+                      onClick={handleMostRequestedOnClick}
+                      onKeyDown={handleMenueItemOnKeydown}>
                       {t('menu:most-requested')}
                     </a>
                     <ul id={`gc-mnu-${id}-sub`} role="menu" aria-orientation="vertical">
                       {selectedMenuData.mostRequestedItems.map(({ href, text }) => (
                         <li key={text} role="presentation">
-                          <a role="menuitem" tabIndex={-1} href={href}>
+                          <a role="menuitem" tabIndex={-1} href={href} onKeyDown={handleMenueItemOnKeydown}>
                             {text}
                           </a>
                         </li>
