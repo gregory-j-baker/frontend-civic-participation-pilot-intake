@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package",
-  "name": "civic-participation-pilot-frontend",
+  "name": "frontend-civic-participation-pilot-intake",
   "version": "0.0.0",
   "private": true,
   "scripts": {
