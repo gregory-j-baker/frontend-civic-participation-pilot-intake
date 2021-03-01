@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/package",
-  "name": "frontend-civic-participation-pilot-intake",
+  "name": "frontend-starter-next-js-wet",
   "version": "0.0.0",
   "private": true,
   "scripts": {
