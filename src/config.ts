@@ -24,15 +24,15 @@ export const applicationConfig = {
  */
 export const nextSeoConfigEN: NextSeoProps = {
   title: undefined,
-  titleTemplate: '%s - Canada.ca',
-  defaultTitle: 'Canada.ca',
+  titleTemplate: '%s - Civic Participation Pilot - Canada.ca',
+  defaultTitle: 'Civic Participation Pilot - Canada.ca',
   description: 'Get quick, easy access to all Government of Canada services and information.',
 };
 
 export const nextSeoConfigFR: NextSeoProps = {
   title: undefined,
-  titleTemplate: '%s - Canada.ca',
-  defaultTitle: 'Canada.ca',
+  titleTemplate: '%s - Pilote de participation civique - Canada.ca',
+  defaultTitle: 'Pilote de participation civique - Canada.ca',
   description: 'Accédez rapidement et facilement à tous les services et renseignements du gouvernement du Canada.',
 };
 
