@@ -101,8 +101,13 @@ const Menu: React.FC = () => {
             event.preventDefault();
             document.querySelector<HTMLButtonElement>('nav.gcweb-menu button')?.focus();
           }
-          // Right arrow, Enter or Space = focus sub-menu home link
-          else if (selectedMenuData && (key === RIGHT_KEY || key === ENTER_KEY || key === SPACE_KEY)) {
+          // Enter or Space = click menu item
+          else if (selectedMenuData && (key === ENTER_KEY || key === SPACE_KEY)) {
+            event.preventDefault();
+            menuItem.click();
+          }
+          // Right arrow = focus sub-menu home link
+          else if (selectedMenuData && key === RIGHT_KEY) {
             event.preventDefault();
             if (selectedMenuId) {
               document.querySelector<HTMLAnchorElement>(`.gc-mnu-${selectedMenuId}-home`)?.focus();

@@ -8,7 +8,7 @@ const MainLayout: React.FC = (): JSX.Element => {
 
   // set html element class for breakpoint
   useEffect(() => {
-    if (typeof window !== undefined && currentBreakpoint !== undefined) {
+    if (currentBreakpoint !== undefined) {
       const elHtml = document.querySelector('html');
 
       if (elHtml) {
