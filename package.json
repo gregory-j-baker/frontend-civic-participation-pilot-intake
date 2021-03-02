@@ -7,9 +7,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "start:docker": "yarn build && npm prune --production --no-audit && rm -rf .next/cache && yarn start"
+    "start:docker": "yarn build && yarn start"
   },
   "dependencies": {
+    "@microsoft/applicationinsights-web": "^2.5.11",
     "next": "^10.0.7",
     "next-auth": "^3.5.1",
     "next-seo": "^4.20.0",

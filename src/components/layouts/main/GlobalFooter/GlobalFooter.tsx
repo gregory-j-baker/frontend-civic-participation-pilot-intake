@@ -34,12 +34,12 @@ const GlobalFooter: React.FC = () => {
               </nav>
               <div className="col-xs-6 visible-sm visible-xs tofpg">
                 <a href="#wb-cont">
-                  {t('layouts:main.footer.about-this-site.links')}
+                  {t('layouts:main.footer.top-of-page')}
                   <span className="glyphicon glyphicon-chevron-up"></span>
                 </a>
               </div>
               <div className="col-xs-6 col-md-2 text-right">
-                <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg" alt={t('icon-alt')} />
+                <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg" alt={t('layouts:main.footer.icon-alt')} />
               </div>
             </div>
           </div>

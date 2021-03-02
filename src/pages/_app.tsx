@@ -6,14 +6,15 @@
  *
  * @author Greg Baker <gregory.j.baker@hrsdc-rhdcc.gc.ca>
  */
-import { useEffect } from 'react';
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
-import { getSession, Provider } from 'next-auth/client';
-import { AppProps } from 'next/dist/next-server/lib/router/router';
+import React, { useEffect } from 'react';
+import { AppProps } from 'next/app';
 import { DefaultSeo, NextSeo } from 'next-seo';
 import { nextSeoConfigEN, nextSeoConfigFR } from '../config';
+import { Provider } from 'next-auth/client';
+import AppInsightsPageViewTracking from '../components/AppInsightsPageViewTracking';
 
-const MyApp: NextPage<AppProps> = ({ Component, pageProps, router }) => {
+const MyApp: React.FC<AppProps> = (props) => {
+  const { Component, pageProps, router } = props;
   const { locale } = router;
 
   const defaultSeo = (locale?.toLowerCase() ?? 'en') === 'fr' ? nextSeoConfigFR : nextSeoConfigEN;
@@ -29,19 +30,9 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps, router }) => {
       <DefaultSeo {...defaultSeo} />
       <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
       <Component {...pageProps} />
+      <AppInsightsPageViewTracking />
     </Provider>
   );
-};
-
-/**
- * See https://next-auth.js.org/tutorials/securing-pages-and-api-routes#server-side
- */
-export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const session = await getSession(context);
-
-  return {
-    props: { session },
-  };
 };
 
 export default MyApp;
