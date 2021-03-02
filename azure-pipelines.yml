@@ -26,10 +26,10 @@ pool:
 # Variables used in multiple tasks.
 #
 variables:
-  AzureSubscription: 'EsPBProdSub'
-  ContainerRegistry: 'youthdigitalgateway.azurecr.io'
-  ContainerRegistryName: 'youthdigitalgateway'
-  ImageRepository: 'youth-digital-gateway/civic-participation-pilot/frontend-intake'
+  AzureSubscription: 'EsDSub'
+  ContainerRegistry: 'portalsolutions.azurecr.io'
+  ContainerRegistryName: 'portalsolutions'
+  ImageRepository: 'civic-participation-pilot/frontend-intake'
   IsMaster: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
   IsRelease: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')]
 
