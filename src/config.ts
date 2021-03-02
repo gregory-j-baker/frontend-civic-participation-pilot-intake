@@ -24,16 +24,16 @@ export const applicationConfig = {
  */
 export const nextSeoConfigEN: NextSeoProps = {
   title: undefined,
-  titleTemplate: '%s | Canada Service Corps',
-  defaultTitle: 'Canada Service Corps',
-  description: 'Canada Service Corps Description',
+  titleTemplate: '%s - Canada.ca',
+  defaultTitle: 'Canada.ca',
+  description: 'Get quick, easy access to all Government of Canada services and information.',
 };
 
 export const nextSeoConfigFR: NextSeoProps = {
   title: undefined,
-  titleTemplate: '%s | Pilote de participation civique',
-  defaultTitle: 'Pilote de participation civique',
-  description: 'Description du Pilote de participation civique',
+  titleTemplate: '%s - Canada.ca',
+  defaultTitle: 'Canada.ca',
+  description: 'Accédez rapidement et facilement à tous les services et renseignements du gouvernement du Canada.',
 };
 
 /**

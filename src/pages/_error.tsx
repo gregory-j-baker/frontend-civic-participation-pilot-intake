@@ -1,8 +1,9 @@
 import { NextPage, NextPageContext } from 'next';
 import { ApplicationInsights as AppInsightsWeb } from '@microsoft/applicationinsights-web';
 import { useEffect } from 'react';
+import useTranslation from 'next-translate/useTranslation';
 
-enum SourceEnum {
+export enum SourceEnum {
   Client,
   Server,
 }
@@ -10,11 +11,12 @@ enum SourceEnum {
 interface Props {
   statusCode?: number;
   err?: Error | null;
-  source: SourceEnum;
+  source?: SourceEnum;
 }
 
 const Error: NextPage<Props> = ({ statusCode, err, source }) => {
   const instrumentationKey = process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY;
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (instrumentationKey) {
@@ -30,17 +32,16 @@ const Error: NextPage<Props> = ({ statusCode, err, source }) => {
     }
   }, [instrumentationKey, statusCode, err]);
 
-  if (source === SourceEnum.Server) return <p>{statusCode ? `An error ${statusCode} occurred on server` : 'An error occurred on server'}</p>;
-  return <p>{statusCode ? `An error ${statusCode} occurred on client` : 'An error occurred on client'}</p>;
+  if (source && source === SourceEnum.Server) {
+    return <p>{statusCode ? t('common:error.server.with-status-code', { statusCode }) : t('common:error.server.without-status-code')}</p>;
+  }
+
+  return <p>{statusCode ? t('common:error.client.with-status-code', { statusCode }) : t('common:error.client.without-status-code')}</p>;
 };
 
 Error.getInitialProps = async ({ res, err }: NextPageContext) => {
   const statusCode = res ? res?.statusCode : err ? err.statusCode : 404;
   return { statusCode, err, source: SourceEnum.Server };
-};
-
-Error.defaultProps = {
-  source: SourceEnum.Client,
 };
 
 export default Error;

@@ -5,5 +5,15 @@
   "language": {
     "en": "English",
     "fr": "Français"
+  },
+  "error": {
+    "client": {
+      "with-status-code": "Une erreur {{statusCode}} s'est produite sur le client",
+      "without-status-code": "Une erreur s'est produite sur le client"
+    },
+    "server": {
+      "with-status-code": "Une erreur {{statusCode}} s'est produite sur le serveur",
+      "without-status-code": "Une erreur s'est produite sur le serveur"
+    }
   }
 }
