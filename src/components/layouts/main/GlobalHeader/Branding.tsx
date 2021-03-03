@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-const Branding: React.FC = () => {
+const Branding = (): JSX.Element => {
   const { t, lang } = useTranslation();
 
   return (

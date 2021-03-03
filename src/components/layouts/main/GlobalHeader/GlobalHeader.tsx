@@ -5,7 +5,11 @@ import Menu from '../Menu';
 import Search from './Search';
 import SkipToNav from './SkipToNav';
 
-const GlobalHeader: React.FC = () => {
+interface GlobalHeaderProps {
+  showBreadcrumb: boolean;
+}
+
+const GlobalHeader = ({ showBreadcrumb }: GlobalHeaderProps): JSX.Element => {
   return (
     <div className="global-header">
       <SkipToNav />
@@ -18,7 +22,7 @@ const GlobalHeader: React.FC = () => {
           </div>
         </div>
         <Menu />
-        <Breadcrumb />
+        {showBreadcrumb && <Breadcrumb />}
       </header>
     </div>
   );

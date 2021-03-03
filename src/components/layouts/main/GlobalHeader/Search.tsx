@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-const Search: React.FC = () => {
+const Search = (): JSX.Element => {
   const { t, lang } = useTranslation();
 
   return (

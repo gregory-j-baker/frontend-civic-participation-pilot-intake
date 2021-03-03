@@ -15,7 +15,7 @@ import AppInsightsPageViewTracking from '../components/AppInsightsPageViewTracki
 
 import '../styles/globals.css';
 
-const MyApp: React.FC<AppProps> = (props) => {
+const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps, router } = props;
   const { locale } = router;
 

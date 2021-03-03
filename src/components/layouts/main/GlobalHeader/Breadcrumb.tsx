@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-const Breadcrumb: React.FC = () => {
+const Breadcrumb = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (

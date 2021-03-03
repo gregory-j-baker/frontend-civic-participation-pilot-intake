@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
 
-const LocaleSwitcher: React.FC = () => {
+const LocaleSwitcher = (): JSX.Element => {
   const { pathname } = useRouter();
   const { t, lang } = useTranslation();
 

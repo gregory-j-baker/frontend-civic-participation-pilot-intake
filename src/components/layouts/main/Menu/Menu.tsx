@@ -1,10 +1,10 @@
-import { useState, useMemo, useEffect, useCallback, HtmlHTMLAttributes } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import useCurrentBreakpoint from '../../../../hooks/useCurrentBreakpoint';
 import { theme } from '../../../../config';
 import { getNextElementSibling, getPreviousElementSibling } from '../../../../utils/misc-utils';
 
-type TMenuData = {
+interface TMenuData {
   id: string;
   text: string;
   href: string;
@@ -20,9 +20,9 @@ type TMenuData = {
       text: string;
     }
   ];
-};
+}
 
-const Menu: React.FC = () => {
+const Menu = (): JSX.Element => {
   const { t } = useTranslation();
   const currentBreakpoint = useCurrentBreakpoint();
 

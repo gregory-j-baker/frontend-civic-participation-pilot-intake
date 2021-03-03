@@ -1,6 +1,6 @@
 import useTranslation from 'next-translate/useTranslation';
 
-const SkipToNav: React.FC = () => {
+const SkipToNav = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (

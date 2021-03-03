@@ -1,7 +1,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
 
-const GlobalFooter: React.FC = () => {
+const GlobalFooter = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (
