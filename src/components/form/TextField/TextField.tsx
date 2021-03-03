@@ -28,8 +28,9 @@ const TextField = ({ className, disabled, error, field, gutterBottom, helperText
 
   const fieldId = `form-text-field-${field}`;
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const val = event.target.value;
+  const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
+    const target = event.target as HTMLTextAreaElement;
+    const val = target.value;
     onChange({ field, value: val.length > 0 ? val : null });
   };
 

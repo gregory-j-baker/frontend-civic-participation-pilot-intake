@@ -3,6 +3,7 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import FormControl from 'react-bootstrap/lib/FormControl';
 import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import { FormEvent } from 'react';
 
 export interface ITextAreaFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
@@ -28,8 +29,9 @@ const TextAreaField = ({ className, disabled, error, field, gutterBottom, helper
 
   const fieldId = `form-text-field-${field}`;
 
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const val = event.target.value;
+  const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
+    const target = event.target as HTMLInputElement;
+    const val = target.value;
     onChange({ field, value: val.length > 0 ? val : null });
   };
 
