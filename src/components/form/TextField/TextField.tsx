@@ -35,16 +35,14 @@ const TextField = ({ className, disabled, error, field, gutterBottom, helperText
   };
 
   return (
-    <div className={gutterBottom ? 'tw-mb-3' : 'tw-mb-0}'}>
-      <FormGroup controlId={fieldId} validationState={error ? 'error' : null}>
-        <ControlLabel className={`${required ? 'required' : null}`}>
-          <span className="field-name">{label}</span>
-          {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}
-        </ControlLabel>
-        <FormControl type="text" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} maxLength={maxLength} multiline={multiline} placeholder={placeholder} className={className} />
-        {helperText && <HelpBlock>{helperText}</HelpBlock>}
-      </FormGroup>
-    </div>
+    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-8' : 'tw-mb-0'}>
+      <ControlLabel className={`${required ? 'required' : null}`}>
+        <span className="field-name">{label}</span>
+        {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}
+      </ControlLabel>
+      <FormControl type="text" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} maxLength={maxLength} multiline={multiline} placeholder={placeholder} className={className} />
+      {helperText && <HelpBlock>{helperText}</HelpBlock>}
+    </FormGroup>
   );
 };
 
