@@ -3,12 +3,12 @@ import ResponsiveHandler from '../../../ResponsiveHandler';
 import GlobalFooter from '../GlobalFooter';
 import GlobalHeader from '../GlobalHeader';
 
-interface MainLayoutProps extends FunctionComponent {
+interface IMainLayoutProps extends FunctionComponent {
   children: React.ReactNode;
   showBreadcrumb: boolean;
 }
 
-const MainLayout = ({ children, showBreadcrumb }: MainLayoutProps): JSX.Element => (
+const MainLayout = ({ children, showBreadcrumb }: IMainLayoutProps): JSX.Element => (
   <div className="tw-flex tw-flex-col tw-min-h-screen">
     <ResponsiveHandler />
     <GlobalHeader showBreadcrumb={showBreadcrumb} />

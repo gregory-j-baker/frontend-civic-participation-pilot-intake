@@ -8,13 +8,13 @@ export enum SourceEnum {
   Server,
 }
 
-interface Props {
+interface IError {
   statusCode?: number;
   err?: Error | null;
   source?: SourceEnum;
 }
 
-const Error: NextPage<Props> = ({ statusCode, err, source }) => {
+const Error: NextPage<IError> = ({ statusCode, err, source }) => {
   const instrumentationKey = process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY;
   const { t } = useTranslation();
 

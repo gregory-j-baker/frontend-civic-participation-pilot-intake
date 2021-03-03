@@ -4,7 +4,7 @@ import useCurrentBreakpoint from '../../../../hooks/useCurrentBreakpoint';
 import { theme } from '../../../../config';
 import { getNextElementSibling, getPreviousElementSibling } from '../../../../utils/misc-utils';
 
-interface TMenuData {
+interface IMenuData {
   id: string;
   text: string;
   href: string;
@@ -28,7 +28,7 @@ const Menu = (): JSX.Element => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const menuData = useMemo(() => t<[TMenuData]>('menu:data', {}, { returnObjects: true }), [t]);
+  const menuData = useMemo(() => t<[IMenuData]>('menu:data', {}, { returnObjects: true }), [t]);
 
   const [hoveredMenuId, setHoveredMenuId] = useState<string | undefined>();
   const [selectedMenuId, setSelectedMenuId] = useState<string>(menuData[0].id);
@@ -223,7 +223,7 @@ const Menu = (): JSX.Element => {
                       tabIndex={-1}
                       aria-haspopup="true"
                       aria-controls={`gc-mnu-${id}-sub`}
-                      aria-expanded={(currentBreakpoint !== undefined && currentBreakpoint >= theme.breakpoints.mediumview) || mostRequestedExpanded}
+                      aria-expanded={(currentBreakpoint !== undefined && currentBreakpoint >= theme.breakpoints.md) || mostRequestedExpanded}
                       onClick={handleMostRequestedOnClick}
                       onKeyDown={handleMenueItemOnKeydown}>
                       {t('menu:most-requested')}

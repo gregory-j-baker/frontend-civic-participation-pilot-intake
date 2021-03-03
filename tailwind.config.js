@@ -1,7 +1,15 @@
 module.exports = {
   purge: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: false, // or 'media' or 'class',
   theme: {
+    fontFamily: {
+      sans: ['"Noto Sans"', 'sans-serif'],
+    },
+    screens: {
+      sm: '768px',
+      md: '992px',
+      lg: '1200px',
+    },
     extend: {},
   },
   variants: {
@@ -9,4 +17,7 @@ module.exports = {
   },
   plugins: [],
   prefix: 'tw-',
+  corePlugins: {
+    fontFamily: false,
+  },
 };

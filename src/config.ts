@@ -42,11 +42,9 @@ export const nextSeoConfigFR: NextSeoProps = {
 
 export const theme = {
   breakpoints: {
-    xxsmallview: 0,
-    xsmallview: 480,
-    smallview: 768,
-    mediumview: 992,
-    largeview: 1200,
-    xlargeview: 1600,
+    xs: 0,
+    sm: 768,
+    md: 992,
+    lg: 1200,
   },
 };

@@ -6,16 +6,27 @@
  *
  * @author Greg Baker <gregory.j.baker@hrsdc-rhdcc.gc.ca>
  */
-import type { NextPage } from 'next';
+import { useState } from 'react';
+import { NextPage } from 'next';
+import TextField from '../components/form/TextField';
+import { ITextFieldOnChangeEvent } from '../components/form/TextField/TextField';
 import MainLayout from '../components/layouts/main/MainLayout';
-import { applicationConfig } from '../config';
+
+interface IFormData {
+  [x: string]: string | null;
+  firstName: string | null;
+}
 
 const Home: NextPage = () => {
+  const [formData, setFormData] = useState<IFormData>({ firstName: null });
+
+  const onFieldChange: ITextFieldOnChangeEvent = ({ field, value }) => {
+    setFormData((prev) => ({ ...prev, [field as keyof IFormData]: value }));
+  };
+
   return (
     <MainLayout>
-      <p>
-        v{applicationConfig.version}-{applicationConfig.gitCommit}
-      </p>
+      <TextField field={nameof<IFormData>((o) => o.firstName)} label="First name" value={formData.firstName} onChange={onFieldChange} required gutterBottom className="tw-w-full md:tw-w-1/2" />
     </MainLayout>
   );
 };

@@ -25,5 +25,6 @@
       "with-status-code": "An error {{statusCode}} occurred on the server",
       "without-status-code": "An error occurred on server"
     }
-  }
+  },
+  "field-required": "(required)"
 }
