@@ -13,6 +13,8 @@ import { nextSeoConfigEN, nextSeoConfigFR } from '../config';
 import { Provider } from 'next-auth/client';
 import AppInsightsPageViewTracking from '../components/AppInsightsPageViewTracking';
 
+import '../styles/globals.css';
+
 const MyApp: React.FC<AppProps> = (props) => {
   const { Component, pageProps, router } = props;
   const { locale } = router;
