@@ -6,7 +6,7 @@
  *
  * @author Greg Baker <gregory.j.baker@hrsdc-rhdcc.gc.ca>
  */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { AppProps } from 'next/app';
 import { DefaultSeo, NextSeo } from 'next-seo';
 import { nextSeoConfigEN, nextSeoConfigFR } from '../config';
@@ -20,12 +20,6 @@ const MyApp: React.FC<AppProps> = (props) => {
   const { locale } = router;
 
   const defaultSeo = (locale?.toLowerCase() ?? 'en') === 'fr' ? nextSeoConfigFR : nextSeoConfigEN;
-
-  useEffect(() => {
-    // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector('#jss-server-side');
-    jssStyles?.parentElement?.removeChild(jssStyles);
-  }, []);
 
   return (
     <Provider session={pageProps.session}>
