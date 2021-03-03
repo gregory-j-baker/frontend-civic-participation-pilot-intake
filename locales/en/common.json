@@ -6,6 +6,16 @@
     "en": "English",
     "fr": "Français"
   },
+  "custom-404": {
+    "header": "We couldn't find that Web page",
+    "error-code": "Error 404",
+    "description": "We're sorry you ended up here. Sometimes a page gets moved or deleted, but hopefully we can help you find what you're looking for. What next?",
+    "links": {
+      "home": "Return to the <0 href=\"https://www.canada.ca/en.html\">home page</0>;",
+      "site-map": "Consult the <0 href=\"https://www.canada.ca/en/sitemap.html\">site map</0>; or",
+      "Contact us": "<0 href=\"https://www.canada.ca/en/contact.html\">Contact us</0> and we'll help you out."
+    }
+  },
   "error": {
     "client": {
       "with-status-code": "An error {{statusCode}} occurred on the client",

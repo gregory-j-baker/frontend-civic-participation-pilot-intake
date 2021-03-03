@@ -1,7 +1,8 @@
-import React from 'react';
+import useTranslation from 'next-translate/useTranslation';
 import MainLayout from '../components/layouts/main/MainLayout';
 
 const Custom404 = (): JSX.Element => {
+  const { t, lang } = useTranslation();
   return (
     <MainLayout showBreadcrumb={false}>
       <div className="mwstext section">
@@ -10,26 +11,40 @@ const Custom404 = (): JSX.Element => {
             <span className="glyphicon glyphicon-warning-sign glyphicon-error"></span>
           </div>
           <div className="col-xs-9 col-sm-10 col-md-11">
-            <h1 className="mrgn-tp-md">Nous ne pouvons trouver cette page Web</h1>
+            <h1 className="mrgn-tp-md">{t('common:custom-404.header')}</h1>
             <p className="pagetag">
-              <b>Erreur 404</b>
+              <b>{t('common:custom-404.error-code')}</b>
             </p>
           </div>
         </div>
         <div className="row mrgn-bttm-lg">
           <div className="col-md-12">
-            <p>Nous sommes désolés que vous ayez abouti ici. Il arrive parfois qu’une page ait été déplacée ou supprimée. Heureusement, nous pouvons vous aider à trouver ce que vous cherchez. Que faire?</p>
-            <ul>
-              <li>
-                Retournez à la <a href="/fr.html">page d’accueil</a>;
-              </li>
-              <li>
-                Consultez le <a href="/fr/plan.html">plan du site</a>;
-              </li>
-              <li>
-                <a href="/fr/contact.html">Communiquez avec nous</a> pour obtenir de l’aide.
-              </li>
-            </ul>
+            <p>{t('common:custom-404.description')}</p>
+            {lang === 'fr' ? (
+              <ul>
+                <li>
+                  Retournez à la <a href="https://www.canada.ca/fr.html">page d’accueil</a>;
+                </li>
+                <li>
+                  Consultez le <a href="https://www.canada.ca/fr/plan.html">plan du site</a>;
+                </li>
+                <li>
+                  <a href="https://www.canada.ca/fr/contact.html">Communiquez avec nous</a> pour obtenir de l’aide.
+                </li>
+              </ul>
+            ) : (
+              <ul>
+                <li>
+                  Return to the <a href="https://www.canada.ca/en.html">home page</a>;
+                </li>
+                <li>
+                  Consult the <a href="https://www.canada.ca/en/sitemap.html">site map</a>; or
+                </li>
+                <li>
+                  <a href="https://www.canada.ca/en/contact.html">Contact us</a> and we&apos;ll help you out.
+                </li>
+              </ul>
+            )}
           </div>
         </div>
       </div>
