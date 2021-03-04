@@ -6,23 +6,18 @@
  */
 
 import { useState, useMemo } from 'react';
-import useTranslation from 'next-translate/useTranslation';
 import { NextPage } from 'next';
-import MainLayout from '../components/layouts/main/MainLayout';
+import useTranslation from 'next-translate/useTranslation';
 import { theme } from '../config';
+import { Button } from '../components/Button';
+import { CheckboxeField, ICheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField';
+import { RadiosField, IRadiosFieldOnChangeEvent, IRadiosFieldOption } from '../components/form/RadiosField';
+import { SelectField, ISelectFieldOnChangeEvent, ISelectFieldOption } from '../components/form/SelectField';
+import { TextField, ITextFieldOnChangeEvent } from '../components/form/TextField';
+import { TextAreaField, ITextAreaFieldOnChangeEvent } from '../components/form/TextAreaField';
+import { MainLayout } from '../components/layouts/main/MainLayout';
 import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
-import TextField from '../components/form/TextField';
-import { ITextFieldOnChangeEvent } from '../components/form/TextField/TextField';
-import TextAreaField from '../components/form/TextAreaField';
-import SelectField from '../components/form/SelectField';
-import { ISelectFieldOnChangeEvent, ISelectFieldOption } from '../components/form/SelectField/SelectField';
-import RadiosField from '../components/form/RadiosField';
-import { IRadiosFieldOnChangeEvent, IRadiosFieldOption } from '../components/form/RadiosField/RadiosField';
-import { ITextAreaFieldOnChangeEvent } from '../components/form/TextAreaField/TextAreaField';
-import CheckboxeField from '../components/form/CheckboxeField';
-import { ICheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField/CheckboxeField';
-import Button from '../components/Button';
 
 interface IFormData {
   [key: string]: boolean | string | string[] | null;

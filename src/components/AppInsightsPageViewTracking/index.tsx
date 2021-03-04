@@ -5,4 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default } from './AppInsightsPageViewTracking';
+export { default as AppInsightsPageViewTracking } from './AppInsightsPageViewTracking';
+export * from './AppInsightsPageViewTracking';

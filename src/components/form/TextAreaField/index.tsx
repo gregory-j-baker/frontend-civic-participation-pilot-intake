@@ -5,4 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default } from './TextAreaField';
+export { default as TextAreaField } from './TextAreaField';
+export * from './TextAreaField';

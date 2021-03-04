@@ -5,4 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default } from './Menu';
+export { default as Menu } from './Menu';
+export * from './Menu';

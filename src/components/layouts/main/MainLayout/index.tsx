@@ -5,4 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default } from './MainLayout';
+export { default as MainLayout } from './MainLayout';
+export * from './MainLayout';

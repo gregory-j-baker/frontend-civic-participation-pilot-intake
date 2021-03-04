@@ -6,7 +6,7 @@
  */
 
 import useTranslation from 'next-translate/useTranslation';
-import MainLayout from '../components/layouts/main/MainLayout';
+import { MainLayout } from '../components/layouts/main/MainLayout';
 
 const Custom404 = (): JSX.Element => {
   const { t, lang } = useTranslation();

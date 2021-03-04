@@ -6,9 +6,9 @@
  */
 
 import { FunctionComponent } from 'react';
-import ResponsiveHandler from '../../../ResponsiveHandler';
-import GlobalFooter from '../GlobalFooter';
-import GlobalHeader from '../GlobalHeader';
+import { ResponsiveHandler } from '../../../ResponsiveHandler';
+import { GlobalFooter } from '../GlobalFooter';
+import { GlobalHeader } from '../GlobalHeader';
 
 interface IMainLayoutProps extends FunctionComponent {
   children: React.ReactNode;

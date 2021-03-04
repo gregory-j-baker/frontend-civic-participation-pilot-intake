@@ -5,4 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default } from './CheckboxesField';
+export { default as CheckboxesField } from './CheckboxesField';
+export * from './CheckboxesField';

@@ -10,7 +10,7 @@ import { AppProps } from 'next/app';
 import { DefaultSeo, NextSeo } from 'next-seo';
 import { nextSeoConfigEN, nextSeoConfigFR } from '../config';
 import { Provider } from 'next-auth/client';
-import AppInsightsPageViewTracking from '../components/AppInsightsPageViewTracking';
+import { AppInsightsPageViewTracking } from '../components/AppInsightsPageViewTracking';
 
 import '../styles/globals.css';
 import '../styles/wet-boew.css';

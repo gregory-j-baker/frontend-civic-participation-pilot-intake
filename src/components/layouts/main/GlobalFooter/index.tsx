@@ -5,4 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default } from './GlobalFooter';
+export { default as GlobalFooter } from './GlobalFooter';
+export * from './GlobalFooter';
