@@ -1,8 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import HelpBlock from 'react-bootstrap/lib/HelpBlock';
+import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 
 export interface ITextFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
@@ -40,7 +37,7 @@ const TextField = ({ className, disabled, error, field, gutterBottom, helperText
         <span className="field-name">{label}</span>
         {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}
       </ControlLabel>
-      <FormControl type="text" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} maxLength={maxLength} placeholder={placeholder} className={className} />
+      <FormControl type="text" id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
     </FormGroup>
   );

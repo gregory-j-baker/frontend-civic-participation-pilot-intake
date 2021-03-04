@@ -1,9 +1,5 @@
 import useTranslation from 'next-translate/useTranslation';
-import FormGroup from 'react-bootstrap/lib/FormGroup';
-import ControlLabel from 'react-bootstrap/lib/ControlLabel';
-import FormControl from 'react-bootstrap/lib/FormControl';
-import HelpBlock from 'react-bootstrap/lib/HelpBlock';
-import { FormEvent } from 'react';
+import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 
 export interface ITextAreaFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
@@ -27,7 +23,7 @@ export interface ITextAreaFieldProps {
 const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, placeholder, required, rows, value }: ITextAreaFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
-  const fieldId = `form-text-field-${field}`;
+  const fieldId = `form-text-area-field-${field}`;
 
   const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
     const target = event.target as HTMLInputElement;
