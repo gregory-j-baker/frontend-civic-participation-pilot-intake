@@ -9,6 +9,9 @@ import { useState, useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { NextPage } from 'next';
 import MainLayout from '../components/layouts/main/MainLayout';
+import { theme } from '../config';
+import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
+import { getYears } from '../utils/misc-utils';
 import TextField from '../components/form/TextField';
 import { ITextFieldOnChangeEvent } from '../components/form/TextField/TextField';
 import TextAreaField from '../components/form/TextAreaField';
@@ -19,13 +22,13 @@ import { IRadiosFieldOnChangeEvent, IRadiosFieldOption } from '../components/for
 import CheckboxesField from '../components/form/CheckboxesField';
 import { ICheckboxesFieldOnChangeEvent, ICheckboxesFieldOption } from '../components/form/CheckboxesField/CheckboxesField';
 import { ITextAreaFieldOnChangeEvent } from '../components/form/TextAreaField/TextAreaField';
-import { getYears } from '../utils/misc-utils';
 
 interface IFormData {
   [key: string]: string | string[] | null;
   canadienCitizenOrProctedPerson: string | null;
   email: string | null;
   firstName: string | null;
+  gender: string | null;
   lastName: string | null;
   preferedContactLanguage: string | null;
   province: string | null;
@@ -34,11 +37,14 @@ interface IFormData {
 
 const Home: NextPage = () => {
   const { t } = useTranslation();
+  const currentBreakpoint = useCurrentBreakpoint();
+  const { breakpoints } = theme;
 
   const [formData, setFormData] = useState<IFormData>({
     canadienCitizenOrProctedPerson: null,
     email: null,
     firstName: null,
+    gender: null,
     lastName: null,
     preferedContactLanguage: null,
     province: null,
@@ -92,13 +98,23 @@ const Home: NextPage = () => {
     []
   );
 
+  const genderOptions = useMemo<IRadiosFieldOption[]>(
+    () => [
+      { value: 'male', text: 'Male' },
+      { value: 'female', text: 'Female' },
+      { value: 'another', text: 'Another gender not listed' },
+      { value: 'noanswer', text: 'Prefer not to answer' },
+    ],
+    [t]
+  );
+
   return (
     <MainLayout>
       <h3>{t('home:application-form.header')}</h3>
       <h4 className="tw-border-b-2 tw-pb-5 tw-mb-10">{t('home:application-form.personal-information.header')}</h4>
-      <TextField field={nameof<IFormData>((o) => o.firstName)} label={t('home:application-form.personal-information.first-name')} value={formData.firstName} onChange={onFieldChange} required gutterBottom className="tw-w-full md:tw-w-1/3" />
-      <TextField field={nameof<IFormData>((o) => o.lastName)} label={t('home:application-form.personal-information.last-name')} value={formData.lastName} onChange={onFieldChange} required gutterBottom className="tw-w-full md:tw-w-1/3" />
-      <TextField field={nameof<IFormData>((o) => o.email)} label={t('home:application-form.personal-information.email-address')} value={formData.email} onChange={onFieldChange} required gutterBottom className="tw-w-full md:tw-w-1/2" />
+      <TextField field={nameof<IFormData>((o) => o.firstName)} label={t('home:application-form.personal-information.first-name')} value={formData.firstName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
+      <TextField field={nameof<IFormData>((o) => o.lastName)} label={t('home:application-form.personal-information.last-name')} value={formData.lastName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
+      <TextField field={nameof<IFormData>((o) => o.email)} label={t('home:application-form.personal-information.email-address')} value={formData.email} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12" />
       <SelectField
         field={nameof<IFormData>((o) => o.yearOfBirth)}
         label={t('home:application-form.personal-information.year-of-birth')}
@@ -138,6 +154,16 @@ const Home: NextPage = () => {
         required
         gutterBottom
         className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+      />
+      <RadiosField
+        field={nameof<IFormData>((o) => o.gender)}
+        label={t('home:application-form.personal-information.gender')}
+        value={formData.gender}
+        onChange={onFieldChange}
+        options={genderOptions}
+        required
+        gutterBottom
+        inline={(currentBreakpoint ?? 0) >= breakpoints.md}
       />
     </MainLayout>
   );
