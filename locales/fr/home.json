@@ -14,7 +14,8 @@
       "header": "Partie 1: Renseignements personnels",
       "first-name": "Prénom",
       "last-name": "Nom de famille",
-      "email-address": "Adresse courriel"
+      "email-address": "Adresse courriel",
+      "year-of-birth": "Quelle année êtes-vous né?"
     }
   }
 }

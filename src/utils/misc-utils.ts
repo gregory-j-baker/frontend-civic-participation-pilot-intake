@@ -57,3 +57,16 @@ export const getNextElementSibling = (elem: Element, selector?: string | null): 
 
   return null;
 };
+
+export const getYears = ({ startYear }: { startYear?: number }): number[] => {
+  const currentYear = new Date().getFullYear();
+  const years = [];
+
+  let year = startYear || currentYear - 50;
+
+  while (year <= currentYear) {
+    years.push(year++);
+  }
+
+  return years;
+};

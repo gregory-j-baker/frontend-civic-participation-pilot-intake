@@ -19,18 +19,20 @@ import { IRadiosFieldOnChangeEvent, IRadiosFieldOption } from '../components/for
 import CheckboxesField from '../components/form/CheckboxesField';
 import { ICheckboxesFieldOnChangeEvent, ICheckboxesFieldOption } from '../components/form/CheckboxesField/CheckboxesField';
 import { ITextAreaFieldOnChangeEvent } from '../components/form/TextAreaField/TextAreaField';
+import { getYears } from '../utils/misc-utils';
 
 interface IFormData {
   [key: string]: string | string[] | null;
   email: string | null;
   firstName: string | null;
   lastName: string | null;
+  yearOfBirth: string | null;
 }
 
 const Home: NextPage = () => {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState<IFormData>({ email: null, firstName: null, lastName: null });
+  const [formData, setFormData] = useState<IFormData>({ email: null, firstName: null, lastName: null, yearOfBirth: null });
 
   const onFieldChange: ITextFieldOnChangeEvent & ITextAreaFieldOnChangeEvent & ISelectFieldOnChangeEvent & IRadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormData((prev) => ({ ...prev, [field as keyof IFormData]: value }));
@@ -47,10 +49,10 @@ const Home: NextPage = () => {
     });
   };*/
 
-  /*const selectFieldOptions = useMemo(
-    () => ['1', '2', '3'].map<ISelectFieldOption>((value) => ({ value, text: `Select Option ${value}` })),
-    []
-  );*/
+  const yearOfBirthOptions = useMemo<ISelectFieldOption[]>(() => {
+    const years = getYears({}).map((year) => ({ value: year.toString(), text: `${year}` }));
+    return [{ value: '', test: '' }, ...years] as ISelectFieldOption[];
+  }, []);
 
   return (
     <MainLayout>
@@ -59,6 +61,16 @@ const Home: NextPage = () => {
       <TextField field={nameof<IFormData>((o) => o.firstName)} label={t('home:application-form.personal-information.first-name')} value={formData.firstName} onChange={onFieldChange} required gutterBottom className="tw-w-full md:tw-w-1/3" />
       <TextField field={nameof<IFormData>((o) => o.lastName)} label={t('home:application-form.personal-information.last-name')} value={formData.lastName} onChange={onFieldChange} required gutterBottom className="tw-w-full md:tw-w-1/3" />
       <TextField field={nameof<IFormData>((o) => o.email)} label={t('home:application-form.personal-information.email-address')} value={formData.email} onChange={onFieldChange} required gutterBottom className="tw-w-full md:tw-w-1/2" />
+      <SelectField
+        field={nameof<IFormData>((o) => o.yearOfBirth)}
+        label={t('home:application-form.personal-information.year-of-birth')}
+        value={formData.yearOfBirth}
+        onChange={onFieldChange}
+        options={yearOfBirthOptions}
+        required
+        gutterBottom
+        className="tw-w-40"
+      />
     </MainLayout>
   );
 };

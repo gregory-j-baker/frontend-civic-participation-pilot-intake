@@ -14,7 +14,8 @@
       "header": "Part 1: Personal information",
       "first-name": "First name",
       "last-name": "Last name",
-      "email-address": "Email address"
+      "email-address": "Email address",
+      "year-of-birth": "What year were you born?"
     }
   }
 }
