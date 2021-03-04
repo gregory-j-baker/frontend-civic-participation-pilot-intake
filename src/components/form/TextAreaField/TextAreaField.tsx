@@ -39,7 +39,7 @@ const TextAreaField = ({ className, disabled, error, field, gutterBottom, helper
   };
 
   return (
-    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-8' : 'tw-mb-0'} bsSize="small">
+    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'} bsSize="small">
       <ControlLabel className={`${required ? 'required' : null}`}>
         <span className="field-name">{label}</span>
         {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}

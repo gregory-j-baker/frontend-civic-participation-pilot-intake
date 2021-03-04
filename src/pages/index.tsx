@@ -26,12 +26,14 @@ import { ITextAreaFieldOnChangeEvent } from '../components/form/TextAreaField/Te
 interface IFormData {
   [key: string]: string | string[] | null;
   aboutYourself: string | null;
+  accessDedicatedDevice: string | null;
   canadienCitizenOrProctedPerson: string | null;
   email: string | null;
   educationLevel: string | null;
   facilitateParticipation: string | null;
   firstName: string | null;
   gender: string | null;
+  internetAccess: string | null;
   partCSCPilot: string | null;
   positiveImpact: string | null;
   lastName: string | null;
@@ -47,12 +49,14 @@ const Home: NextPage = () => {
 
   const [formData, setFormData] = useState<IFormData>({
     aboutYourself: null,
+    accessDedicatedDevice: null,
     canadienCitizenOrProctedPerson: null,
     email: null,
     educationLevel: null,
     facilitateParticipation: null,
     firstName: null,
     gender: null,
+    internetAccess: null,
     partCSCPilot: null,
     positiveImpact: null,
     lastName: null,
@@ -128,6 +132,25 @@ const Home: NextPage = () => {
     []
   );
 
+  const internetAccessOptions = useMemo<ISelectFieldOption[]>(
+    () => [
+      { value: '', text: '' },
+      { value: 'yes', text: 'Yes' },
+      { value: 'intermittent', text: 'Intermittent' },
+      { value: 'outsidehome', text: 'Outside of my home' },
+      { value: 'no', text: 'No' },
+    ],
+    []
+  );
+
+  const accessDedicatedDeviceOptions = useMemo<IRadiosFieldOption[]>(
+    () => [
+      { value: 'yes', text: t('common:yes') },
+      { value: 'no', text: t('common:no') },
+    ],
+    [t]
+  );
+
   return (
     <MainLayout>
       <h3 className="tw-mb-20">{t('home:application-form.header')}</h3>
@@ -192,7 +215,6 @@ const Home: NextPage = () => {
         onChange={onFieldChange}
         options={educationLevelOptions}
         required
-        gutterBottom
         className="tw-w-full md:tw-w-8/12"
       />
       <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-12">{t('home:application-form.expression-of-interest-questions.header')}</h4>
@@ -215,6 +237,26 @@ const Home: NextPage = () => {
         required
         gutterBottom
         className="tw-w-full"
+      />
+      <SelectField
+        field={nameof<IFormData>((o) => o.internetAccess)}
+        label={t('home:application-form.expression-of-interest-questions.internet-access')}
+        value={formData.internetAccess}
+        onChange={onFieldChange}
+        options={internetAccessOptions}
+        required
+        gutterBottom
+        className="tw-w-full md:tw-w-8/12"
+      />
+      <RadiosField
+        field={nameof<IFormData>((o) => o.accessDedicatedDevice)}
+        label={t('home:application-form.expression-of-interest-questions.access-dedicated-device')}
+        value={formData.accessDedicatedDevice}
+        onChange={onFieldChange}
+        options={accessDedicatedDeviceOptions}
+        required
+        gutterBottom
+        inline
       />
     </MainLayout>
   );

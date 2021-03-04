@@ -25,7 +25,9 @@
     "expression-of-interest-questions": {
       "header": "Partie 2 : Questions d'expression d'intérêt",
       "about-yourself": "Parlez-nous de vous, décrivez vos forces, vos passions et ce qui vous motive. Quelles compétences ou connaissances pouvez-vous apporter au projet pilote d'engagement civique du Service canadien des services du Canada?",
+      "access-dedicated-device": "Avez-vous accès à un appareil dédié sur lequel travailler?",
       "facilitate-participation": "Y a-t-il autre chose que vous voulez que nous sachions à votre sujet ou est-ce que nous pourrions faire quelque chose pour faciliter votre participation à ce programme?",
+      "internet-access": "Avez-vous accès à Internet fiable?",
       "part-csc-pilot": "Pourquoi voulez-vous faire partie du programme pilote d'engagement civique du Service Service Canada? Comment prévoyez-vous utiliser ce que vous avez appris au cours de votre expérience du Service Service Canada dans votre communauté après le programme?",
       "positive-impact": "Si vous pouviez avoir un impact positif sur un problème dans votre communauté, quel problème voudriez-vous aborder et pourquoi?"
     }
