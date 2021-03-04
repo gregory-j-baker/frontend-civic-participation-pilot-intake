@@ -13,6 +13,7 @@ import { Provider } from 'next-auth/client';
 import AppInsightsPageViewTracking from '../components/AppInsightsPageViewTracking';
 
 import '../styles/globals.css';
+import '../styles/wet-boew.css';
 
 const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps, router } = props;
