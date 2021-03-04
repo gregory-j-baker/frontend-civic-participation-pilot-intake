@@ -27,6 +27,7 @@ interface IFormData {
   [key: string]: string | string[] | null;
   canadienCitizenOrProctedPerson: string | null;
   email: string | null;
+  educationLevel: string | null;
   firstName: string | null;
   gender: string | null;
   lastName: string | null;
@@ -43,6 +44,7 @@ const Home: NextPage = () => {
   const [formData, setFormData] = useState<IFormData>({
     canadienCitizenOrProctedPerson: null,
     email: null,
+    educationLevel: null,
     firstName: null,
     gender: null,
     lastName: null,
@@ -105,7 +107,17 @@ const Home: NextPage = () => {
       { value: 'another', text: 'Another gender not listed' },
       { value: 'noanswer', text: 'Prefer not to answer' },
     ],
-    [t]
+    []
+  );
+
+  const educationLevelOptions = useMemo<ISelectFieldOption[]>(
+    () => [
+      { value: '', text: '' },
+      { value: 'nocert', text: 'No certificate, diploma or degree' },
+      { value: 'highschool', text: 'Secondary (high) school diploma or equivalency certificate' },
+      { value: 'noanswer', text: 'Prefer not to answer' },
+    ],
+    []
   );
 
   return (
@@ -164,6 +176,16 @@ const Home: NextPage = () => {
         required
         gutterBottom
         inline={(currentBreakpoint ?? 0) >= breakpoints.md}
+      />
+      <SelectField
+        field={nameof<IFormData>((o) => o.educationLevel)}
+        label={t('home:application-form.personal-information.education-level')}
+        value={formData.educationLevel}
+        onChange={onFieldChange}
+        options={educationLevelOptions}
+        required
+        gutterBottom
+        className="tw-w-full md:tw-w-8/12"
       />
     </MainLayout>
   );
