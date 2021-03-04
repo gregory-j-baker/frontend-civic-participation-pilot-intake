@@ -7,5 +7,14 @@
   },
   "page": {
     "header": "The power to make an impact"
+  },
+  "application-form": {
+    "header": "Application form",
+    "personal-information": {
+      "header": "Part 1: Personal information",
+      "first-name": "First name",
+      "last-name": "Last name",
+      "email-address": "Email address"
+    }
   }
 }

@@ -7,5 +7,14 @@
   },
   "page": {
     "header": "Le pouvoir d'avoir un impact"
+  },
+  "application-form": {
+    "header": "Formulaire de demande",
+    "personal-information": {
+      "header": "Partie 1: Renseignements personnels",
+      "first-name": "Prénom",
+      "last-name": "Nom de famille",
+      "email-address": "Adresse courriel"
+    }
   }
 }
