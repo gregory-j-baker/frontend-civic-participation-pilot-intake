@@ -17,6 +17,7 @@
       "first-name": "Prénom",
       "last-name": "Nom de famille",
       "prefered-contact-language": "Dans quelle langue officielle préférez-vous être contacté?",
+      "province": "Quelle province ou quel territoire est votre résidence principale?",
       "year-of-birth": "Quelle année êtes-vous né?"
     }
   }

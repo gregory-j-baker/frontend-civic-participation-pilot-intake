@@ -17,6 +17,7 @@
       "first-name": "First name",
       "last-name": "Last name",
       "prefered-contact-language": "In which official language would you prefer to be contacted?",
+      "province": "Which province or territory is your principle residence?",
       "year-of-birth": "What year were you born?"
     }
   }

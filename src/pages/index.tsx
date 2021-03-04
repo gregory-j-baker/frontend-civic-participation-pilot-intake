@@ -28,6 +28,7 @@ interface IFormData {
   firstName: string | null;
   lastName: string | null;
   preferedContactLanguage: string | null;
+  province: string | null;
   yearOfBirth: string | null;
 }
 
@@ -40,6 +41,7 @@ const Home: NextPage = () => {
     firstName: null,
     lastName: null,
     preferedContactLanguage: null,
+    province: null,
     yearOfBirth: null,
   });
 
@@ -79,6 +81,17 @@ const Home: NextPage = () => {
     [t]
   );
 
+  const provinceOptions = useMemo<ISelectFieldOption[]>(
+    () => [
+      { value: '', text: '' },
+      { value: 'AB', text: 'Alberta' },
+      { value: 'BC', text: 'British Columbia' },
+      { value: 'ON', text: 'Ontario' },
+      { value: 'NB', text: 'New Brunswick' },
+    ],
+    []
+  );
+
   return (
     <MainLayout>
       <h3>{t('home:application-form.header')}</h3>
@@ -115,6 +128,16 @@ const Home: NextPage = () => {
         required
         gutterBottom
         inline
+      />
+      <SelectField
+        field={nameof<IFormData>((o) => o.province)}
+        label={t('home:application-form.personal-information.province')}
+        value={formData.province}
+        onChange={onFieldChange}
+        options={provinceOptions}
+        required
+        gutterBottom
+        className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
       />
     </MainLayout>
   );
