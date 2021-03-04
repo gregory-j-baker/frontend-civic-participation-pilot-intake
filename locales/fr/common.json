@@ -26,5 +26,7 @@
       "without-status-code": "Une erreur s'est produite sur le serveur"
     }
   },
-  "field-required": "(obligatoire)"
+  "field-required": "(obligatoire)",
+  "yes": "Oui",
+  "no": "Non"
 }

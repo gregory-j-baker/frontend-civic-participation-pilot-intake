@@ -23,6 +23,7 @@ import { getYears } from '../utils/misc-utils';
 
 interface IFormData {
   [key: string]: string | string[] | null;
+  canadienCitizenOrProctedPerson: string | null;
   email: string | null;
   firstName: string | null;
   lastName: string | null;
@@ -32,7 +33,7 @@ interface IFormData {
 const Home: NextPage = () => {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState<IFormData>({ email: null, firstName: null, lastName: null, yearOfBirth: null });
+  const [formData, setFormData] = useState<IFormData>({ canadienCitizenOrProctedPerson: null, email: null, firstName: null, lastName: null, yearOfBirth: null });
 
   const onFieldChange: ITextFieldOnChangeEvent & ITextAreaFieldOnChangeEvent & ISelectFieldOnChangeEvent & IRadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormData((prev) => ({ ...prev, [field as keyof IFormData]: value }));
@@ -51,8 +52,15 @@ const Home: NextPage = () => {
 
   const yearOfBirthOptions = useMemo<ISelectFieldOption[]>(() => {
     const years = getYears({}).map((year) => ({ value: year.toString(), text: `${year}` }));
-    return [{ value: '', test: '' }, ...years] as ISelectFieldOption[];
+    return [{ value: '', text: '' }, ...years];
   }, []);
+
+  const canadienCitizenOrProctedPersonOptions = useMemo<IRadiosFieldOption[]>(() => {
+    return [
+      { value: 'yes', text: t('common:yes') },
+      { value: 'no', text: t('common:no') },
+    ];
+  }, [t]);
 
   return (
     <MainLayout>
@@ -70,6 +78,16 @@ const Home: NextPage = () => {
         required
         gutterBottom
         className="tw-w-40"
+      />
+      <RadiosField
+        field={nameof<IFormData>((o) => o.canadienCitizenOrProctedPerson)}
+        label={t('home:application-form.personal-information.canadien-citizen-or-procted-person')}
+        value={formData.canadienCitizenOrProctedPerson}
+        onChange={onFieldChange}
+        options={canadienCitizenOrProctedPersonOptions}
+        required
+        gutterBottom
+        inline
       />
     </MainLayout>
   );

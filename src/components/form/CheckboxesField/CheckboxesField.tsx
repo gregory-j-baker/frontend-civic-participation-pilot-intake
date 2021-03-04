@@ -51,14 +51,13 @@ const CheckboxesField = ({ className, error, field, gutterBottom, helperText, in
         <span className="field-name">{label}</span>
         {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}
       </ControlLabel>
-      {options.map((option) => (
-        <React.Fragment key={option.value}>
-          <Checkbox value={option.value} onChange={handleOnChange} checked={checkedValues.includes(option.value)} disabled={option.disabled} className={className} inline={inline}>
+      <div>
+        {options.map((option) => (
+          <Checkbox key={option.value} value={option.value} onChange={handleOnChange} checked={checkedValues.includes(option.value)} disabled={option.disabled} className={`${inline ? 'tw-mr-4' : ''} ${className}`} inline={inline}>
             {option.text}
           </Checkbox>
-          {inline && ' '}
-        </React.Fragment>
-      ))}
+        ))}
+      </div>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
     </FormGroup>
   );

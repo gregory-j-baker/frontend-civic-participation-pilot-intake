@@ -26,5 +26,7 @@
       "without-status-code": "An error occurred on server"
     }
   },
-  "field-required": "(required)"
+  "field-required": "(required)",
+  "yes": "Yes",
+  "no": "No"
 }

@@ -52,14 +52,13 @@ const RadiosField = ({ className, error, field, gutterBottom, helperText, inline
         <span className="field-name">{label}</span>
         {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}
       </ControlLabel>
-      {options.map((option) => (
-        <React.Fragment key={option.value}>
-          <Radio key={option.value} name={groupName} value={option.value} onChange={handleOnChange} checked={option.value === selectedValue} disabled={option.disabled} className={className} inline={inline}>
+      <div>
+        {options.map((option) => (
+          <Radio key={option.value} name={groupName} value={option.value} onChange={handleOnChange} checked={option.value === selectedValue} disabled={option.disabled} className={`${inline ? 'tw-mr-4' : ''} ${className}`} inline={inline}>
             {option.text}
           </Radio>
-          {inline && ' '}
-        </React.Fragment>
-      ))}
+        ))}
+      </div>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
     </FormGroup>
   );
