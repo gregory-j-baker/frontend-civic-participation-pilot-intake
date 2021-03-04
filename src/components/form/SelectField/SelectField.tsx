@@ -46,7 +46,7 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
   const selectedValue = options?.find((option) => option.value === value)?.value ?? '';
 
   return (
-    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-12' : 'tw-mb-0'}>
       <ControlLabel className={`${required ? 'required' : null}`}>
         <span className="field-name">{label}</span>
         {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}
