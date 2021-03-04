@@ -11,7 +11,7 @@
   "application-form": {
     "header": "Formulaire de demande",
     "personal-information": {
-      "header": "Partie 1: Renseignements personnels",
+      "header": "Partie 1 : Renseignements personnels",
       "canadien-citizen-or-procted-person": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée? (Une personne protégée est une personne à qui le statut de réfugié est accordé en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la demande ou la demande n'a pas par la suite été réputée rejetée en vertu des paragraphes 108 (3), 109 (3) ou 114 (4) ou cette loi.",
       "email-address": "Adresse courriel",
       "education-level": "Quel est votre plus haut niveau d'éducation formelle achevé ou auquel vous êtes actuellement inscrit? (Veuillez noter qu'il n'y a aucune exigence d'éducation pour ce programme)",
@@ -21,6 +21,13 @@
       "prefered-contact-language": "Dans quelle langue officielle préférez-vous être contacté?",
       "province": "Quelle province ou quel territoire est votre résidence principale?",
       "year-of-birth": "Quelle année êtes-vous né?"
+    },
+    "expression-of-interest-questions": {
+      "header": "Partie 2 : Questions d'expression d'intérêt",
+      "about-yourself": "Parlez-nous de vous, décrivez vos forces, vos passions et ce qui vous motive. Quelles compétences ou connaissances pouvez-vous apporter au projet pilote d'engagement civique du Service canadien des services du Canada?",
+      "facilitate-participation": "Y a-t-il autre chose que vous voulez que nous sachions à votre sujet ou est-ce que nous pourrions faire quelque chose pour faciliter votre participation à ce programme?",
+      "part-csc-pilot": "Pourquoi voulez-vous faire partie du programme pilote d'engagement civique du Service Service Canada? Comment prévoyez-vous utiliser ce que vous avez appris au cours de votre expérience du Service Service Canada dans votre communauté après le programme?",
+      "positive-impact": "Si vous pouviez avoir un impact positif sur un problème dans votre communauté, quel problème voudriez-vous aborder et pourquoi?"
     }
   }
 }

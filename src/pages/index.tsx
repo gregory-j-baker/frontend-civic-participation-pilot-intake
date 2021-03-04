@@ -25,11 +25,15 @@ import { ITextAreaFieldOnChangeEvent } from '../components/form/TextAreaField/Te
 
 interface IFormData {
   [key: string]: string | string[] | null;
+  aboutYourself: string | null;
   canadienCitizenOrProctedPerson: string | null;
   email: string | null;
   educationLevel: string | null;
+  facilitateParticipation: string | null;
   firstName: string | null;
   gender: string | null;
+  partCSCPilot: string | null;
+  positiveImpact: string | null;
   lastName: string | null;
   preferedContactLanguage: string | null;
   province: string | null;
@@ -42,11 +46,15 @@ const Home: NextPage = () => {
   const { breakpoints } = theme;
 
   const [formData, setFormData] = useState<IFormData>({
+    aboutYourself: null,
     canadienCitizenOrProctedPerson: null,
     email: null,
     educationLevel: null,
+    facilitateParticipation: null,
     firstName: null,
     gender: null,
+    partCSCPilot: null,
+    positiveImpact: null,
     lastName: null,
     preferedContactLanguage: null,
     province: null,
@@ -122,8 +130,8 @@ const Home: NextPage = () => {
 
   return (
     <MainLayout>
-      <h3>{t('home:application-form.header')}</h3>
-      <h4 className="tw-border-b-2 tw-pb-5 tw-mb-10">{t('home:application-form.personal-information.header')}</h4>
+      <h3 className="tw-mb-20">{t('home:application-form.header')}</h3>
+      <h4 className="tw-border-b-2 tw-pb-5 tw-mb-12">{t('home:application-form.personal-information.header')}</h4>
       <TextField field={nameof<IFormData>((o) => o.firstName)} label={t('home:application-form.personal-information.first-name')} value={formData.firstName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
       <TextField field={nameof<IFormData>((o) => o.lastName)} label={t('home:application-form.personal-information.last-name')} value={formData.lastName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
       <TextField field={nameof<IFormData>((o) => o.email)} label={t('home:application-form.personal-information.email-address')} value={formData.email} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12" />
@@ -186,6 +194,27 @@ const Home: NextPage = () => {
         required
         gutterBottom
         className="tw-w-full md:tw-w-8/12"
+      />
+      <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-12">{t('home:application-form.expression-of-interest-questions.header')}</h4>
+      <TextAreaField field={nameof<IFormData>((o) => o.partCSCPilot)} label={t('home:application-form.expression-of-interest-questions.part-csc-pilot')} value={formData.partCSCPilot} onChange={onFieldChange} required gutterBottom className="tw-w-full" />
+      <TextAreaField field={nameof<IFormData>((o) => o.aboutYourself)} label={t('home:application-form.expression-of-interest-questions.about-yourself')} value={formData.aboutYourself} onChange={onFieldChange} required gutterBottom className="tw-w-full" />
+      <TextAreaField
+        field={nameof<IFormData>((o) => o.positiveImpact)}
+        label={t('home:application-form.expression-of-interest-questions.positive-impact')}
+        value={formData.positiveImpact}
+        onChange={onFieldChange}
+        required
+        gutterBottom
+        className="tw-w-full"
+      />
+      <TextAreaField
+        field={nameof<IFormData>((o) => o.facilitateParticipation)}
+        label={t('home:application-form.expression-of-interest-questions.facilitate-participation')}
+        value={formData.facilitateParticipation}
+        onChange={onFieldChange}
+        required
+        gutterBottom
+        className="tw-w-full"
       />
     </MainLayout>
   );

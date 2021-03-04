@@ -21,6 +21,13 @@
       "prefered-contact-language": "In which official language would you prefer to be contacted?",
       "province": "Which province or territory is your principle residence?",
       "year-of-birth": "What year were you born?"
+    },
+    "expression-of-interest-questions": {
+      "header": "Part 2: Expression of interest questions",
+      "about-yourself": "Tell us about yourself, describe your strengths, passions and what motivates you. What skills or knowledge can you bring to the Canada Service Corps Civic Engagement Pilot?",
+      "facilitate-participation": "Is there anything else you want us to know about you or is there something we could do that facilitate your participation in this program?",
+      "part-csc-pilot": "Why do you want to be part of Canada Service Corps Civic Engagement Pilot? How do you plan on using what you learn during your Canada Service Corps experience in your community after the program?",
+      "positive-impact": "If you could make a positive impact on one issue in your community what issue would you want to address and why?"
     }
   }
 }
