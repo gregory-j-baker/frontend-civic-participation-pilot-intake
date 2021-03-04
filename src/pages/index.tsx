@@ -22,6 +22,7 @@ import { IRadiosFieldOnChangeEvent, IRadiosFieldOption } from '../components/for
 import { ITextAreaFieldOnChangeEvent } from '../components/form/TextAreaField/TextAreaField';
 import CheckboxeField from '../components/form/CheckboxeField';
 import { ICheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField/CheckboxeField';
+import Button from '../components/Button';
 
 interface IFormData {
   [key: string]: boolean | string | string[] | null;
@@ -255,8 +256,11 @@ const Home: NextPage = () => {
         required
         inline
       />
-      <div className=" tw-my-32">
+      <div className="tw-mt-32">
         <CheckboxeField field={nameof<IFormData>((o) => o.consent)} label={t('home:application-form.consent')} checked={formData.consent} onChange={onCheckboxFieldChange} />
+      </div>
+      <div className="tw-my-20">
+        <Button onClick={(event) => console.log(event)}>{t('home:application-form.submit')}</Button>
       </div>
     </MainLayout>
   );

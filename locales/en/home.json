@@ -32,6 +32,7 @@
       "internet-access": "Do you have access to reliable internet?",
       "part-csc-pilot": "Why do you want to be part of Canada Service Corps Civic Engagement Pilot? How do you plan on using what you learn during your Canada Service Corps experience in your community after the program?",
       "positive-impact": "If you could make a positive impact on one issue in your community what issue would you want to address and why?"
-    }
+    },
+    "submit": "Submit application"
   }
 }
