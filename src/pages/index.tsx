@@ -27,13 +27,21 @@ interface IFormData {
   email: string | null;
   firstName: string | null;
   lastName: string | null;
+  preferedContactLanguage: string | null;
   yearOfBirth: string | null;
 }
 
 const Home: NextPage = () => {
   const { t } = useTranslation();
 
-  const [formData, setFormData] = useState<IFormData>({ canadienCitizenOrProctedPerson: null, email: null, firstName: null, lastName: null, yearOfBirth: null });
+  const [formData, setFormData] = useState<IFormData>({
+    canadienCitizenOrProctedPerson: null,
+    email: null,
+    firstName: null,
+    lastName: null,
+    preferedContactLanguage: null,
+    yearOfBirth: null,
+  });
 
   const onFieldChange: ITextFieldOnChangeEvent & ITextAreaFieldOnChangeEvent & ISelectFieldOnChangeEvent & IRadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormData((prev) => ({ ...prev, [field as keyof IFormData]: value }));
@@ -55,12 +63,21 @@ const Home: NextPage = () => {
     return [{ value: '', text: '' }, ...years];
   }, []);
 
-  const canadienCitizenOrProctedPersonOptions = useMemo<IRadiosFieldOption[]>(() => {
-    return [
+  const preferedContactLanguageOptions = useMemo<IRadiosFieldOption[]>(
+    () => [
+      { value: 'en', text: t('common:language.en') },
+      { value: 'fr', text: t('common:language.fr') },
+    ],
+    [t]
+  );
+
+  const canadienCitizenOrProctedPersonOptions = useMemo<IRadiosFieldOption[]>(
+    () => [
       { value: 'yes', text: t('common:yes') },
       { value: 'no', text: t('common:no') },
-    ];
-  }, [t]);
+    ],
+    [t]
+  );
 
   return (
     <MainLayout>
@@ -78,6 +95,16 @@ const Home: NextPage = () => {
         required
         gutterBottom
         className="tw-w-40"
+      />
+      <RadiosField
+        field={nameof<IFormData>((o) => o.preferedLanguage)}
+        label={t('home:application-form.personal-information.prefered-contact-language')}
+        value={formData.preferedContactLanguage}
+        onChange={onFieldChange}
+        options={preferedContactLanguageOptions}
+        required
+        gutterBottom
+        inline
       />
       <RadiosField
         field={nameof<IFormData>((o) => o.canadienCitizenOrProctedPerson)}
