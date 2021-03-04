@@ -15,13 +15,13 @@ export enum SourceEnum {
   Server,
 }
 
-interface IError {
+interface ErrorProps {
   statusCode?: number;
   err?: Error | null;
   source?: SourceEnum;
 }
 
-const Error: NextPage<IError> = ({ statusCode, err, source }) => {
+const Error: NextPage<ErrorProps> = ({ statusCode, err, source }) => {
   const instrumentationKey = process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY;
   const { t } = useTranslation();
 

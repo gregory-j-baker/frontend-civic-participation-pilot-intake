@@ -9,17 +9,17 @@ import React from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { Checkbox, ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
 
-export interface ICheckboxesFieldOnChangeEvent {
+export interface CheckboxesFieldOnChangeEvent {
   (event: { field: string; value: string | null; checked: boolean }): void;
 }
 
-export interface ICheckboxesFieldOption {
+export interface CheckboxesFieldOption {
   disabled?: boolean;
   value: string;
   text: string;
 }
 
-export interface ICheckboxesFieldProps {
+export interface CheckboxesFieldProps {
   className?: string;
   error?: boolean;
   field: string;
@@ -27,15 +27,15 @@ export interface ICheckboxesFieldProps {
   helperText?: string;
   inline?: boolean;
   label: string;
-  onChange: ICheckboxesFieldOnChangeEvent;
-  options: ICheckboxesFieldOption[];
+  onChange: CheckboxesFieldOnChangeEvent;
+  options: CheckboxesFieldOption[];
   placeholder?: string;
   required?: boolean;
   rows?: number;
   values?: string[] | null;
 }
 
-const CheckboxesField = ({ className, error, field, gutterBottom, helperText, inline, label, onChange, options, required, values }: ICheckboxesFieldProps): JSX.Element => {
+const CheckboxesField = ({ className, error, field, gutterBottom, helperText, inline, label, onChange, options, required, values }: CheckboxesFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const handleOnChange: React.FormEventHandler<Checkbox> = (event) => {

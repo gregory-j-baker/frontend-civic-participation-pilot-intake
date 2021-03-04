@@ -8,11 +8,11 @@
 import useTranslation from 'next-translate/useTranslation';
 import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 
-export interface ITextAreaFieldOnChangeEvent {
+export interface TextAreaFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
 }
 
-export interface ITextAreaFieldProps {
+export interface TextAreaFieldProps {
   className?: string;
   disabled?: boolean;
   error?: boolean;
@@ -20,14 +20,14 @@ export interface ITextAreaFieldProps {
   gutterBottom?: boolean;
   helperText?: string;
   label: string;
-  onChange: ITextAreaFieldOnChangeEvent;
+  onChange: TextAreaFieldOnChangeEvent;
   placeholder?: string;
   required?: boolean;
   rows?: number;
   value?: string | null;
 }
 
-const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, placeholder, required, rows, value }: ITextAreaFieldProps): JSX.Element => {
+const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, placeholder, required, rows, value }: TextAreaFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-text-area-field-${field}`;

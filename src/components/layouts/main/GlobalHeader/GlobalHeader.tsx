@@ -12,11 +12,11 @@ import { Menu } from '../Menu';
 import Search from './Search';
 import SkipToNav from './SkipToNav';
 
-interface IGlobalHeaderProps {
+interface GlobalHeaderProps {
   showBreadcrumb: boolean;
 }
 
-const GlobalHeader = ({ showBreadcrumb }: IGlobalHeaderProps): JSX.Element => {
+const GlobalHeader = ({ showBreadcrumb }: GlobalHeaderProps): JSX.Element => {
   return (
     <div className="global-header">
       <SkipToNav />

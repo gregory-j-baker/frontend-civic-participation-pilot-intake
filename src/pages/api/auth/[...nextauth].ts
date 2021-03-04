@@ -10,11 +10,11 @@ import type { User } from 'next-auth';
 import NextAuth from 'next-auth';
 import type { GenericObject, SessionBase } from 'next-auth/_utils';
 
-interface IAzureActiveDirectoryProvider {
+interface AzureActiveDirectoryProvider {
   oid: string;
 }
 
-interface ISessionUser extends User {
+interface SessionUser extends User {
   accessToken?: string;
 }
 
@@ -39,7 +39,7 @@ const handler: NextApiHandler = (req, res) =>
         authorizationParams: { response_mode: 'query', response_type: 'code' },
         params: { grant_type: 'authorization_code' },
 
-        profile: (profile: IAzureActiveDirectoryProvider) => {
+        profile: (profile: AzureActiveDirectoryProvider) => {
           return { ...profile, id: profile.oid };
         },
       },
@@ -49,7 +49,7 @@ const handler: NextApiHandler = (req, res) =>
         if (account?.accessToken) token.accessToken = account.accessToken;
         return token;
       },
-      session: async (session: SessionBase, user: ISessionUser) => {
+      session: async (session: SessionBase, user: SessionUser) => {
         if (user?.accessToken) session.accessToken = user.accessToken;
         return session;
       },

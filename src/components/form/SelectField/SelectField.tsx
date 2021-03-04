@@ -8,16 +8,16 @@
 import useTranslation from 'next-translate/useTranslation';
 import { ControlLabel, FormControl, FormGroup, HelpBlock } from 'react-bootstrap';
 
-export interface ISelectFieldOnChangeEvent {
+export interface SelectFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
 }
 
-export interface ISelectFieldOption {
+export interface SelectFieldOption {
   value: string;
   text: string;
 }
 
-export interface ISelectFieldProps {
+export interface SelectFieldProps {
   className?: string;
   disabled?: boolean;
   error?: boolean;
@@ -25,15 +25,15 @@ export interface ISelectFieldProps {
   gutterBottom?: boolean;
   helperText?: string;
   label: string;
-  onChange: ISelectFieldOnChangeEvent;
-  options: ISelectFieldOption[];
+  onChange: SelectFieldOnChangeEvent;
+  options: SelectFieldOption[];
   placeholder?: string;
   required?: boolean;
   rows?: number;
   value?: string | null;
 }
 
-const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, options, placeholder, required, value }: ISelectFieldProps): JSX.Element => {
+const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, options, placeholder, required, value }: SelectFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const fieldId = `form-select-field-${field}`;
 

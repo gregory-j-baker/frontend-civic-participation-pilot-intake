@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface IButtonOnClickEvent {
+export interface ButtonOnClickEvent {
   (event: React.MouseEvent<HTMLButtonElement>): void;
 }
 
-export interface IButtonProps {
+export interface ButtonProps {
   disabled?: boolean;
   children: React.ReactNode;
-  onClick?: IButtonOnClickEvent;
+  onClick?: ButtonOnClickEvent;
 }
 
-const Button = ({ disabled, children, onClick }: IButtonProps): JSX.Element => {
+const Button = ({ disabled, children, onClick }: ButtonProps): JSX.Element => {
   const rootClasses = 'tw-border tw-text-white tw-rounded-md tw-px-6 tw-py-4 tw-transition tw-duration-500 tw-ease tw-select-none focus:tw-outline-none focus:tw-shadow-outline';
   const defaultClasses = `${rootClasses} tw-border-green-600 tw-bg-green-600 hover:tw-bg-green-700`;
   const disabledClasses = `${rootClasses} tw-border-green-300 tw-bg-green-300`;

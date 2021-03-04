@@ -11,7 +11,7 @@ import useCurrentBreakpoint from '../../../../hooks/useCurrentBreakpoint';
 import { theme } from '../../../../config';
 import { getNextElementSibling, getPreviousElementSibling } from '../../../../utils/misc-utils';
 
-interface IMenuData {
+interface MenuData {
   id: string;
   text: string;
   href: string;
@@ -35,7 +35,7 @@ const Menu = (): JSX.Element => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const menuData = useMemo(() => t<[IMenuData]>('menu:data', {}, { returnObjects: true }), [t]);
+  const menuData = useMemo(() => t<[MenuData]>('menu:data', {}, { returnObjects: true }), [t]);
 
   const [hoveredMenuId, setHoveredMenuId] = useState<string | undefined>();
   const [selectedMenuId, setSelectedMenuId] = useState<string>(menuData[0].id);

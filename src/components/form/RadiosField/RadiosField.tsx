@@ -9,17 +9,17 @@ import React from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { ControlLabel, FormGroup, HelpBlock, Radio } from 'react-bootstrap';
 
-export interface IRadiosFieldOnChangeEvent {
+export interface RadiosFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
 }
 
-export interface IRadiosFieldOption {
+export interface RadiosFieldOption {
   disabled?: boolean;
   value: string;
   text: string;
 }
 
-export interface IRadiosFieldProps {
+export interface RadiosFieldProps {
   className?: string;
   error?: boolean;
   field: string;
@@ -27,15 +27,15 @@ export interface IRadiosFieldProps {
   helperText?: string;
   inline?: boolean;
   label: string;
-  onChange: IRadiosFieldOnChangeEvent;
-  options: IRadiosFieldOption[];
+  onChange: RadiosFieldOnChangeEvent;
+  options: RadiosFieldOption[];
   placeholder?: string;
   required?: boolean;
   rows?: number;
   value?: string | null;
 }
 
-const RadiosField = ({ className, error, field, gutterBottom, helperText, inline, label, onChange, options, required, value }: IRadiosFieldProps): JSX.Element => {
+const RadiosField = ({ className, error, field, gutterBottom, helperText, inline, label, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const groupName = `form-radios-field-${field}`;
 
