@@ -10,6 +10,7 @@
   },
   "application-form": {
     "header": "Application form",
+    "consent": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
     "personal-information": {
       "header": "Part 1: Personal information",
       "canadien-citizen-or-procted-person": "Are you a Canadian citizen, permanent resident, or protected person? (A procted person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or that Act.",
@@ -18,6 +19,7 @@
       "first-name": "First name",
       "gender": "To which gender identity do you most identify?",
       "last-name": "Last name",
+      "major-age": "I certify that I am over the age of majority in my province",
       "prefered-contact-language": "In which official language would you prefer to be contacted?",
       "province": "Which province or territory is your principle residence?",
       "year-of-birth": "What year were you born?"

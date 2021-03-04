@@ -10,6 +10,7 @@
   },
   "application-form": {
     "header": "Formulaire de demande",
+    "consent": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
     "personal-information": {
       "header": "Partie 1 : Renseignements personnels",
       "canadien-citizen-or-procted-person": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée? (Une personne protégée est une personne à qui le statut de réfugié est accordé en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la demande ou la demande n'a pas par la suite été réputée rejetée en vertu des paragraphes 108 (3), 109 (3) ou 114 (4) ou cette loi.",
@@ -18,6 +19,7 @@
       "first-name": "Prénom",
       "gender": "À quelle identité de genre vous identifiez-vous le plus?",
       "last-name": "Nom de famille",
+      "major-age": "Je certifie que j'ai trop d'âge de la majorité dans ma province",
       "prefered-contact-language": "Dans quelle langue officielle préférez-vous être contacté?",
       "province": "Quelle province ou quel territoire est votre résidence principale?",
       "year-of-birth": "Quelle année êtes-vous né?"

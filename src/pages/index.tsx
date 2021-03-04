@@ -19,21 +19,23 @@ import SelectField from '../components/form/SelectField';
 import { ISelectFieldOnChangeEvent, ISelectFieldOption } from '../components/form/SelectField/SelectField';
 import RadiosField from '../components/form/RadiosField';
 import { IRadiosFieldOnChangeEvent, IRadiosFieldOption } from '../components/form/RadiosField/RadiosField';
-import CheckboxesField from '../components/form/CheckboxesField';
-import { ICheckboxesFieldOnChangeEvent, ICheckboxesFieldOption } from '../components/form/CheckboxesField/CheckboxesField';
 import { ITextAreaFieldOnChangeEvent } from '../components/form/TextAreaField/TextAreaField';
+import CheckboxeField from '../components/form/CheckboxeField';
+import { ICheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField/CheckboxeField';
 
 interface IFormData {
-  [key: string]: string | string[] | null;
+  [key: string]: boolean | string | string[] | null;
   aboutYourself: string | null;
   accessDedicatedDevice: string | null;
   canadienCitizenOrProctedPerson: string | null;
+  consent: boolean;
   email: string | null;
   educationLevel: string | null;
   facilitateParticipation: string | null;
   firstName: string | null;
   gender: string | null;
   internetAccess: string | null;
+  majorAge: boolean;
   partCSCPilot: string | null;
   positiveImpact: string | null;
   lastName: string | null;
@@ -51,12 +53,14 @@ const Home: NextPage = () => {
     aboutYourself: null,
     accessDedicatedDevice: null,
     canadienCitizenOrProctedPerson: null,
+    consent: false,
     email: null,
     educationLevel: null,
     facilitateParticipation: null,
     firstName: null,
     gender: null,
     internetAccess: null,
+    majorAge: false,
     partCSCPilot: null,
     positiveImpact: null,
     lastName: null,
@@ -69,16 +73,9 @@ const Home: NextPage = () => {
     setFormData((prev) => ({ ...prev, [field as keyof IFormData]: value }));
   };
 
-  /*const onCheckboxesFieldChange: ICheckboxesFieldOnChangeEvent = ({ field, value, checked }) => {
-    setFormData((prevData) => {
-      let prevField = (prevData[field] as string[] | null) ?? [];
-
-      if (checked && value) prevField.push(value);
-      else prevField = prevField.filter((val) => val !== value);
-
-      return { ...prevData, [field as keyof IFormData]: prevField.length > 0 ? prevField : null };
-    });
-  };*/
+  const onCheckboxFieldChange: ICheckboxeFieldOnChangeEvent = ({ field, checked }) => {
+    setFormData((prev) => ({ ...prev, [field as keyof IFormData]: checked }));
+  };
 
   const yearOfBirthOptions = useMemo<ISelectFieldOption[]>(() => {
     const years = getYears({}).map((year) => ({ value: year.toString(), text: `${year}` }));
@@ -168,6 +165,7 @@ const Home: NextPage = () => {
         gutterBottom
         className="tw-w-40"
       />
+      <CheckboxeField field={nameof<IFormData>((o) => o.majorAge)} label={t('home:application-form.personal-information.major-age')} checked={formData.majorAge} onChange={onCheckboxFieldChange} required gutterBottom />
       <RadiosField
         field={nameof<IFormData>((o) => o.preferedLanguage)}
         label={t('home:application-form.personal-information.prefered-contact-language')}
@@ -255,9 +253,11 @@ const Home: NextPage = () => {
         onChange={onFieldChange}
         options={accessDedicatedDeviceOptions}
         required
-        gutterBottom
         inline
       />
+      <div className=" tw-my-32">
+        <CheckboxeField field={nameof<IFormData>((o) => o.consent)} label={t('home:application-form.consent')} checked={formData.consent} onChange={onCheckboxFieldChange} />
+      </div>
     </MainLayout>
   );
 };
