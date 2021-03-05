@@ -146,8 +146,8 @@ const Home: NextPage = () => {
 
   return (
     <MainLayout>
-      <h3 className="tw-mb-20">{t('home:application-form.header')}</h3>
-      <h4 className="tw-border-b-2 tw-pb-5 tw-mb-16">{t('home:application-form.personal-information.header')}</h4>
+      <h3 className="tw-m-0 tw-mb-14">{t('home:application-form.header')}</h3>
+      <h4 className="tw-border-b-4 tw-pb-4 tw-m-0 tw-mb-12">{t('home:application-form.personal-information.header')}</h4>
       <TextField
         field={nameof<FormDataState>((o) => o.firstName)}
         label={t('home:application-form.personal-information.first-name')}
@@ -219,7 +219,7 @@ const Home: NextPage = () => {
         required
         className="tw-w-full md:tw-w-8/12"
       />
-      <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-16">{t('home:application-form.expression-of-interest-questions.header')}</h4>
+      <h4 className="tw-border-b-4 tw-pb-4 tw-mt-16 tw-m-0 tw-mb-12">{t('home:application-form.expression-of-interest-questions.header')}</h4>
       <TextAreaField
         field={nameof<FormDataState>((o) => o.partCSCPilot)}
         label={t('home:application-form.expression-of-interest-questions.part-csc-pilot')}
@@ -275,10 +275,10 @@ const Home: NextPage = () => {
         required
         inline
       />
-      <div className="tw-mt-32">
+      <div className="tw-mt-20">
         <CheckboxeField field={nameof<FormDataState>((o) => o.consent)} label={t('home:application-form.consent')} checked={formData.consent} onChange={onCheckboxFieldChange} />
       </div>
-      <div className="tw-my-20">
+      <div className="tw-my-16">
         <Button onClick={(event) => console.log(event)}>{t('home:application-form.submit')}</Button>
       </div>
     </MainLayout>

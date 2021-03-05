@@ -46,10 +46,10 @@ const CheckboxesField = ({ className, error, field, gutterBottom, helperText, in
   const checkedValues = options?.map((el) => el.value).filter((value) => (values ?? []).includes(value)) ?? [];
 
   return (
-    <FormGroup validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-12' : 'tw-mb-0'} bsSize="small">
+    <FormGroup validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
       <ControlLabel className={`${required ? 'required' : null}`}>
         <span className="field-name">{label}</span>
-        {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}
+        {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
       </ControlLabel>
       <div>
         {options.map((option) => (

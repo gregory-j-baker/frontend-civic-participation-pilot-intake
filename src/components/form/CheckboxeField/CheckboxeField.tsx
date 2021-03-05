@@ -39,13 +39,11 @@ const CheckboxeField = ({ className, checked, disabled, error, field, gutterBott
   };
 
   return (
-    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-12' : 'tw-mb-0'} bsSize="small">
+    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
       <Checkbox id={fieldId} onChange={handleOnChange} checked={checked} disabled={disabled} className={className} style={{ fontSize: 'inherit' }}>
         <ControlLabel className={`${required ? 'required' : null}`}>
-          <span className="field-name tw-font-bold" style={{ fontSize: '1em;' }}>
-            {label}
-          </span>
-          {required && <strong className="required tw-ml-1">{t('common:field-required')}</strong>}
+          <span className="field-name tw-font-bold tw-text-xl">{label}</span>
+          {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
         </ControlLabel>
       </Checkbox>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
