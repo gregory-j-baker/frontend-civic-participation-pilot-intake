@@ -28,6 +28,7 @@ import useGenders, { genderStaticProps } from '../hooks/api/useGenders';
 import useIndigenousTypes, { indigenousTypeStaticProps } from '../hooks/api/useIndigenousTypes';
 import useInternetQualities, { internetQualitiesStaticProps } from '../hooks/api/useInternetQualities';
 import useLanguages, { languagesStaticProps } from '../hooks/api/useLanguages';
+import useProvinces, { provincesStaticProps } from '../hooks/api/useProvinces';
 import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
 
@@ -62,6 +63,7 @@ const Home: NextPage = () => {
   const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes();
   const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities();
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
+  const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces();
 
   const [formData, setFormDataState] = useState<FormDataState>({
     aboutYourself: null,
@@ -110,28 +112,6 @@ const Home: NextPage = () => {
       { value: 'no', text: t('common:no') },
     ],
     [t]
-  );
-
-  const provinceOptions = useMemo<SelectFieldOption[]>(
-    () => [
-      { value: '', text: '' },
-      { value: 'AB', text: 'Alberta' },
-      { value: 'BC', text: 'British Columbia' },
-      { value: 'ON', text: 'Ontario' },
-      { value: 'NB', text: 'New Brunswick' },
-    ],
-    []
-  );
-
-  const internetAccessOptions = useMemo<SelectFieldOption[]>(
-    () => [
-      { value: '', text: '' },
-      { value: 'yes', text: 'Yes' },
-      { value: 'intermittent', text: 'Intermittent' },
-      { value: 'outsidehome', text: 'Outside of my home' },
-      { value: 'no', text: 'No' },
-    ],
-    []
   );
 
   const accessDedicatedDeviceOptions = useMemo<RadiosFieldOption[]>(
@@ -188,16 +168,29 @@ const Home: NextPage = () => {
         gutterBottom
         inline
       />
-      <SelectField
-        field={nameof<FormDataState>((o) => o.province)}
-        label={t('home:application-form.personal-information.province')}
-        value={formData.province}
-        onChange={onFieldChange}
-        options={provinceOptions}
-        required
-        gutterBottom
-        className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-      />
+
+      {
+        // TODO :: GjB :: how should we deal with the loading and error states here?
+        !isProvincesLoading && !provincesError && (
+          <SelectField
+            field={nameof<FormDataState>((o) => o.province)}
+            label={t('home:application-form.personal-information.province')}
+            value={formData.province}
+            onChange={onFieldChange}
+            options={[
+              { value: '', text: t('common:please-select') },
+              ...(provinces?._embedded.provinces.map((province) => ({
+                value: province.id,
+                text: lang === 'fr' ? province.descriptionFr : province.descriptionEn,
+              })) as SelectFieldOption[]),
+            ]}
+            required
+            gutterBottom
+            className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+          />
+        )
+      }
+
 
       {
         // TODO :: GjB :: how should we deal with the loading and error states here?
@@ -312,6 +305,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   await queryClient.prefetchQuery('education-levels', () => educationLevelStaticProps);
   await queryClient.prefetchQuery('genders', () => genderStaticProps);
+  await queryClient.prefetchQuery('provinces', () => provincesStaticProps);
 
   return {
     props: {
