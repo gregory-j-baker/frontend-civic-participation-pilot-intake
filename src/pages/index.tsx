@@ -27,6 +27,7 @@ import useEducationLevels, { educationLevelStaticProps } from '../hooks/api/useE
 import useGenders, { genderStaticProps } from '../hooks/api/useGenders';
 import useIndigenousTypes, { indigenousTypeStaticProps } from '../hooks/api/useIndigenousTypes';
 import useInternetQualities, { internetQualitiesStaticProps } from '../hooks/api/useInternetQualities';
+import useLanguages, { languagesStaticProps } from '../hooks/api/useLanguages';
 import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
 
@@ -60,6 +61,7 @@ const Home: NextPage = () => {
   const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
   const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes();
   const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities();
+  const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
 
   const [formData, setFormDataState] = useState<FormDataState>({
     aboutYourself: null,
