@@ -98,14 +98,6 @@ const Home: NextPage = () => {
     return [{ value: '', text: '' }, ...years];
   }, []);
 
-  const preferedContactLanguageOptions = useMemo<RadiosFieldOption[]>(
-    () => [
-      { value: 'en', text: t('common:language.en') },
-      { value: 'fr', text: t('common:language.fr') },
-    ],
-    [t]
-  );
-
   const canadienCitizenOrProctedPersonOptions = useMemo<RadiosFieldOption[]>(
     () => [
       { value: 'yes', text: t('common:yes') },
@@ -148,16 +140,29 @@ const Home: NextPage = () => {
         className="tw-w-40"
       />
       <CheckboxeField field={nameof<FormDataState>((o) => o.majorAge)} label={t('home:application-form.personal-information.major-age')} checked={formData.majorAge} onChange={onCheckboxFieldChange} required gutterBottom />
-      <RadiosField
-        field={nameof<FormDataState>((o) => o.preferedLanguage)}
-        label={t('home:application-form.personal-information.prefered-contact-language')}
-        value={formData.preferedContactLanguage}
-        onChange={onFieldChange}
-        options={preferedContactLanguageOptions}
-        required
-        gutterBottom
-        inline
-      />
+
+      {
+        // TODO :: GjB :: how should we deal with the loading and error states here?
+        !isLanguagesLoading && !languagesError && (
+          <SelectField
+            field={nameof<FormDataState>((o) => o.preferedLanguage)}
+            label={t('home:application-form.personal-information.prefered-contact-language')}
+            value={formData.preferedContactLanguage}
+            onChange={onFieldChange}
+            options={[
+              { value: '', text: t('common:please-select') },
+              ...(languages?._embedded.languages.map((language) => ({
+                value: language.id,
+                text: lang === 'fr' ? language.descriptionFr : language.descriptionEn,
+              })) as SelectFieldOption[]),
+            ]}
+            required
+            gutterBottom
+            className="tw-w-full md:tw-w-8/12"
+          />
+        )
+      }
+
       <RadiosField
         field={nameof<FormDataState>((o) => o.canadienCitizenOrProctedPerson)}
         label={t('home:application-form.personal-information.canadien-citizen-or-procted-person')}
@@ -190,7 +195,6 @@ const Home: NextPage = () => {
           />
         )
       }
-
 
       {
         // TODO :: GjB :: how should we deal with the loading and error states here?
@@ -271,16 +275,30 @@ const Home: NextPage = () => {
         gutterBottom
         className="tw-w-full"
       />
-      <SelectField
-        field={nameof<FormDataState>((o) => o.internetAccess)}
-        label={t('home:application-form.expression-of-interest-questions.internet-access')}
-        value={formData.internetAccess}
-        onChange={onFieldChange}
-        options={internetAccessOptions}
-        required
-        gutterBottom
-        className="tw-w-full md:tw-w-8/12"
-      />
+
+      {
+        // TODO :: GjB :: how should we deal with the loading and error states here?
+        !isInternetQualitiesLoading && !internetQualitiesError && (
+          <SelectField
+            field={nameof<FormDataState>((o) => o.internetAccess)}
+            label={t('home:application-form.expression-of-interest-questions.internet-access')}
+            value={formData.internetAccess}
+            onChange={onFieldChange}
+            options={[
+              { value: '', text: t('common:please-select') },
+              ...(internetQualities?._embedded.internetQualities.map((internetQuality) => ({
+                value: internetQuality.id,
+                text: lang === 'fr' ? internetQuality.descriptionFr : internetQuality.descriptionEn,
+              })) as SelectFieldOption[]),
+              { value: 'NONE', text: t('common:no') },
+            ]}
+            required
+            gutterBottom
+            className="tw-w-full md:tw-w-8/12"
+          />
+        )
+      }
+
       <RadiosField
         field={nameof<FormDataState>((o) => o.accessDedicatedDevice)}
         label={t('home:application-form.expression-of-interest-questions.access-dedicated-device')}
@@ -305,6 +323,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
   await queryClient.prefetchQuery('education-levels', () => educationLevelStaticProps);
   await queryClient.prefetchQuery('genders', () => genderStaticProps);
+  await queryClient.prefetchQuery('indigenous-types', () => indigenousTypeStaticProps);
+  await queryClient.prefetchQuery('internet-qualities', () => internetQualitiesStaticProps);
+  await queryClient.prefetchQuery('languages', () => languagesStaticProps);
   await queryClient.prefetchQuery('provinces', () => provincesStaticProps);
 
   return {
