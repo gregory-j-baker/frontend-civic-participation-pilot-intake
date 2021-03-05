@@ -24,6 +24,7 @@ import { TextField } from '../components/form/TextField';
 import { MainLayout } from '../components/layouts/main/MainLayout';
 import { theme } from '../config';
 import useEducationLevels, { educationLevelStaticProps } from '../hooks/api/useEducationLevels';
+import useGenders, { genderStaticProps } from '../hooks/api/useGenders';
 import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
 
@@ -54,6 +55,7 @@ const Home: NextPage = () => {
   const { breakpoints } = theme;
 
   const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
+  const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
 
   const [formData, setFormDataState] = useState<FormDataState>({
     aboutYourself: null,
@@ -111,16 +113,6 @@ const Home: NextPage = () => {
       { value: 'BC', text: 'British Columbia' },
       { value: 'ON', text: 'Ontario' },
       { value: 'NB', text: 'New Brunswick' },
-    ],
-    []
-  );
-
-  const genderOptions = useMemo<RadiosFieldOption[]>(
-    () => [
-      { value: 'male', text: 'Male' },
-      { value: 'female', text: 'Female' },
-      { value: 'another', text: 'Another gender not listed' },
-      { value: 'noanswer', text: 'Prefer not to answer' },
     ],
     []
   );
@@ -200,16 +192,28 @@ const Home: NextPage = () => {
         gutterBottom
         className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
       />
-      <RadiosField
-        field={nameof<FormDataState>((o) => o.gender)}
-        label={t('home:application-form.personal-information.gender')}
-        value={formData.gender}
-        onChange={onFieldChange}
-        options={genderOptions}
-        required
-        gutterBottom
-        inline={(currentBreakpoint ?? 0) >= breakpoints.md}
-      />
+
+      {
+        // TODO :: GjB :: how should we deal with the loading and error states here?
+        !isGendersLoading && !gendersError && (
+          <RadiosField
+            field={nameof<FormDataState>((o) => o.gender)}
+            label={t('home:application-form.personal-information.gender')}
+            value={formData.gender}
+            onChange={onFieldChange}
+            options={
+              genders?._embedded.genders.map((gender) => ({
+                value: gender.id,
+                text: lang === 'fr' ? gender.descriptionFr : gender.descriptionEn,
+              })) as RadiosFieldOption[]
+            }
+            required
+            gutterBottom
+            inline={(currentBreakpoint ?? 0) >= breakpoints.md}
+          />
+        )
+      }
+
       {
         // TODO :: GjB :: how should we deal with the loading and error states here?
         !isEducationLevelsLoading && !educationLevelsError && (
@@ -230,6 +234,7 @@ const Home: NextPage = () => {
           />
         )
       }
+
       <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-16">{t('home:application-form.expression-of-interest-questions.header')}</h4>
       <TextAreaField
         field={nameof<FormDataState>((o) => o.partCSCPilot)}
@@ -300,6 +305,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery('education-levels', () => educationLevelStaticProps);
+  await queryClient.prefetchQuery('genders', () => genderStaticProps);
 
   return {
     props: {
