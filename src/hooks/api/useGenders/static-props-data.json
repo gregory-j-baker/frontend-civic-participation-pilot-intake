@@ -1,0 +1,24 @@
+{
+  "_embedded": {
+    "genders": [
+      {
+        "id": "8be28fb2-f5be-44fc-a01b-5dd6ebf64ab8",
+        "code": "MALE",
+        "descriptionEn": "Male",
+        "descriptionFr": "Male"
+      },
+      {
+        "id": "cc2c4b21-3b44-43d2-993e-af5f2e705923",
+        "code": "FEMALE",
+        "descriptionEn": "Female",
+        "descriptionFr": "Female"
+      },
+      {
+        "id": "895e411e-b6b4-4aa4-9ddc-0dadef7d88aa",
+        "code": "OTHER",
+        "descriptionEn": "Another gender not listed",
+        "descriptionFr": "Another gender not listed"
+      }
+    ]
+  }
+}
