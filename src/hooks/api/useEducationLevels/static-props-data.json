@@ -1,0 +1,47 @@
+{
+  "_embedded": {
+    "educationLevels": [
+      {
+        "id": "fea0ffeb-5675-43dc-b900-a4198757f4eb",
+        "code": "NONE",
+        "descriptionEn": "No certificate, diploma or degree",
+        "descriptionFr": "No certificate, diploma or degree",
+        "uiDisplayOrder": 0
+      },
+      {
+        "id": "dea50408-be53-4abd-8cb7-3420aa94e4e9",
+        "code": "SECONDARY",
+        "descriptionEn": "Secondary (high) school diploma or equivalency certificate",
+        "descriptionFr": "Secondary (high) school diploma or equivalency certificate",
+        "uiDisplayOrder": 100
+      },
+      {
+        "id": "8d47ccef-4908-4866-8e35-bb90792005e6",
+        "code": "APPRENTICESHIP",
+        "descriptionEn": "Apprenticeship or trades certificate of diploma",
+        "descriptionFr": "Apprenticeship or trades certificate of diploma"
+      },
+      {
+        "id": "29885e6b-4a8d-4d5f-8ac3-cde8c1bb2a1a",
+        "code": "COLLEGE",
+        "descriptionEn": "College, CEGEP or other non university certificate or diploma",
+        "descriptionFr": "College, CEGEP or other non university certificate or diploma",
+        "uiDisplayOrder": 300
+      },
+      {
+        "id": "8953ab96-fefd-419c-92a7-b4e085f62da9",
+        "code": "UNDERGRAD",
+        "descriptionEn": "University certificate or diploma below bachelor level",
+        "descriptionFr": "University certificate or diploma below bachelor level",
+        "uiDisplayOrder": 400
+      },
+      {
+        "id": "50d3a5a3-2447-463c-9a2d-689c343788e7",
+        "code": "DEGREE",
+        "descriptionEn": "University certificate, diploma or degree at bachelor level or above",
+        "descriptionFr": "University certificate, diploma or degree at bachelor level or above",
+        "uiDisplayOrder": -500
+      }
+    ]
+  }
+}

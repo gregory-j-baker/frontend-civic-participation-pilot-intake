@@ -18,6 +18,13 @@ export const applicationConfig = {
 };
 
 /**
+ * API specific configuration.
+ */
+export const apiConfig = {
+  baseUri: process.env.NEXT_PUBLIC_API_INTAKE_BASE_URI,
+};
+
+/**
  * Next-SEO specific configuration.
  */
 export const nextSeoConfigEN: NextSeoProps = {

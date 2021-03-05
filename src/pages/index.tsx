@@ -5,17 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useState, useMemo } from 'react';
-import { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import useTranslation from 'next-translate/useTranslation';
-import { theme } from '../config';
+import { useMemo, useState } from 'react';
+import { QueryClient } from 'react-query';
+import { dehydrate } from 'react-query/hydration';
 import { Button } from '../components/Button';
-import { CheckboxeField, CheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField';
-import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../components/form/RadiosField';
-import { SelectField, SelectFieldOnChangeEvent, SelectFieldOption } from '../components/form/SelectField';
-import { TextField, TextFieldOnChangeEvent } from '../components/form/TextField';
-import { TextAreaField, TextAreaFieldOnChangeEvent } from '../components/form/TextAreaField';
+import type { CheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField';
+import { CheckboxeField } from '../components/form/CheckboxeField';
+import type { RadiosFieldOnChangeEvent, RadiosFieldOption } from '../components/form/RadiosField';
+import { RadiosField } from '../components/form/RadiosField';
+import type { SelectFieldOnChangeEvent, SelectFieldOption } from '../components/form/SelectField';
+import { SelectField } from '../components/form/SelectField';
+import type { TextAreaFieldOnChangeEvent } from '../components/form/TextAreaField';
+import { TextAreaField } from '../components/form/TextAreaField';
+import type { TextFieldOnChangeEvent } from '../components/form/TextField';
+import { TextField } from '../components/form/TextField';
 import { MainLayout } from '../components/layouts/main/MainLayout';
+import { theme } from '../config';
+import useEducationLevels, { educationLevelStaticProps } from '../hooks/api/useEducationLevels';
 import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
 
@@ -41,9 +49,11 @@ interface FormDataState {
 }
 
 const Home: NextPage = () => {
-  const { t } = useTranslation();
+  const { lang, t } = useTranslation();
   const currentBreakpoint = useCurrentBreakpoint();
   const { breakpoints } = theme;
+
+  const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
 
   const [formData, setFormDataState] = useState<FormDataState>({
     aboutYourself: null,
@@ -110,16 +120,6 @@ const Home: NextPage = () => {
       { value: 'male', text: 'Male' },
       { value: 'female', text: 'Female' },
       { value: 'another', text: 'Another gender not listed' },
-      { value: 'noanswer', text: 'Prefer not to answer' },
-    ],
-    []
-  );
-
-  const educationLevelOptions = useMemo<SelectFieldOption[]>(
-    () => [
-      { value: '', text: '' },
-      { value: 'nocert', text: 'No certificate, diploma or degree' },
-      { value: 'highschool', text: 'Secondary (high) school diploma or equivalency certificate' },
       { value: 'noanswer', text: 'Prefer not to answer' },
     ],
     []
@@ -210,16 +210,27 @@ const Home: NextPage = () => {
         gutterBottom
         inline={(currentBreakpoint ?? 0) >= breakpoints.md}
       />
-      <SelectField
-        field={nameof<FormDataState>((o) => o.educationLevel)}
-        label={t('home:application-form.personal-information.education-level')}
-        value={formData.educationLevel}
-        onChange={onFieldChange}
-        options={educationLevelOptions}
-        required
-        className="tw-w-full md:tw-w-8/12"
-      />
-      <h4 className="tw-border-b-4 tw-pb-4 tw-mt-16 tw-m-0 tw-mb-12">{t('home:application-form.expression-of-interest-questions.header')}</h4>
+      {
+        // TODO :: GjB :: how should we deal with the loading and error states here?
+        !isEducationLevelsLoading && !educationLevelsError && (
+          <SelectField
+            field={nameof<FormDataState>((o) => o.educationLevel)}
+            label={t('home:application-form.personal-information.education-level')}
+            value={formData.educationLevel}
+            onChange={onFieldChange}
+            options={[
+              { value: '', text: t('common:please-select') },
+              ...(educationLevels?._embedded.educationLevels.map((educationLevel) => ({
+                value: educationLevel.id,
+                text: lang === 'fr' ? educationLevel.descriptionFr : educationLevel.descriptionEn,
+              })) as SelectFieldOption[]),
+            ]}
+            required
+            className="tw-w-full md:tw-w-8/12"
+          />
+        )
+      }
+      <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-16">{t('home:application-form.expression-of-interest-questions.header')}</h4>
       <TextAreaField
         field={nameof<FormDataState>((o) => o.partCSCPilot)}
         label={t('home:application-form.expression-of-interest-questions.part-csc-pilot')}
@@ -283,6 +294,18 @@ const Home: NextPage = () => {
       </div>
     </MainLayout>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery('education-levels', () => educationLevelStaticProps);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default Home;

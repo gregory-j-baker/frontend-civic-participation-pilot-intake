@@ -27,6 +27,7 @@
     }
   },
   "field-required": "(required)",
+  "please-select": "Please select...",
   "yes": "Yes",
   "no": "No"
 }

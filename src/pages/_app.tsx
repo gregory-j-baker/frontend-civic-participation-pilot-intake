@@ -5,15 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
-import { AppProps } from 'next/app';
+import { Provider as AuthProvider } from 'next-auth/client';
 import { DefaultSeo, NextSeo } from 'next-seo';
-import { nextSeoConfigEN, nextSeoConfigFR } from '../config';
-import { Provider } from 'next-auth/client';
+import { AppProps } from 'next/app';
+import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { AppInsightsPageViewTracking } from '../components/AppInsightsPageViewTracking';
+import { nextSeoConfigEN, nextSeoConfigFR } from '../config';
 
 import '../styles/globals.css';
 import '../styles/wet-boew.css';
+
+const queryClient = new QueryClient();
 
 const MyApp = (props: AppProps): JSX.Element => {
   const { Component, pageProps, router } = props;
@@ -22,12 +25,14 @@ const MyApp = (props: AppProps): JSX.Element => {
   const defaultSeo = (locale?.toLowerCase() ?? 'en') === 'fr' ? nextSeoConfigFR : nextSeoConfigEN;
 
   return (
-    <Provider session={pageProps.session}>
-      <DefaultSeo {...defaultSeo} />
-      <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
-      <Component {...pageProps} />
-      <AppInsightsPageViewTracking />
-    </Provider>
+    <AuthProvider session={pageProps.session}>
+      <QueryClientProvider client={queryClient}>
+        <DefaultSeo {...defaultSeo} />
+        <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
+        <Component {...pageProps} />
+        <AppInsightsPageViewTracking />
+      </QueryClientProvider>
+    </AuthProvider>
   );
 };
 
