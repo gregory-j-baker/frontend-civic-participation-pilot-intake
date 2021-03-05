@@ -40,7 +40,7 @@
         "code": "DEGREE",
         "descriptionEn": "University certificate, diploma or degree at bachelor level or above",
         "descriptionFr": "University certificate, diploma or degree at bachelor level or above",
-        "uiDisplayOrder": -500
+        "uiDisplayOrder": 500
       }
     ]
   }
