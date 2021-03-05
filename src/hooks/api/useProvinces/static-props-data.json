@@ -1,0 +1,84 @@
+{
+  "_embedded": {
+    "provinces": [
+      {
+        "id": "90710750-e0e6-4fa6-9481-618554cd912d",
+        "code": "AL",
+        "descriptionEn": "Alberta",
+        "descriptionFr": "Alberta"
+      },
+      {
+        "id": "02915d4c-e03d-4e5d-8bc1-db3f3317a25d",
+        "code": "BC",
+        "descriptionEn": "British Columbia",
+        "descriptionFr": "British Columbia"
+      },
+      {
+        "id": "673f29d5-a4a4-4c52-b82c-266e89feb06e",
+        "code": "MN",
+        "descriptionEn": "Manitoba",
+        "descriptionFr": "Manitoba"
+      },
+      {
+        "id": "e09b7ca2-1664-4dd2-9aa3-6de3d28d6606",
+        "code": "NB",
+        "descriptionEn": "New Brunswick",
+        "descriptionFr": "New Brunswick"
+      },
+      {
+        "id": "f909594f-6cda-4b21-b1ba-b118b5a52c0f",
+        "code": "NL",
+        "descriptionEn": "Newfoundland and Labrador",
+        "descriptionFr": "Newfoundland and Labrador"
+      },
+      {
+        "id": "fb0081ff-bc03-454b-aab1-cf90984139f6",
+        "code": "NT",
+        "descriptionEn": "Northwest Territories",
+        "descriptionFr": "Northwest Territories"
+      },
+      {
+        "id": "ec8209e8-6b5d-4341-b47f-6e314972d5a3",
+        "code": "NS",
+        "descriptionEn": "Nova Scotia",
+        "descriptionFr": "Nova Scotia"
+      },
+      {
+        "id": "1a251cfe-255a-4bc6-88d9-c4a0103e6c07",
+        "code": "NV",
+        "descriptionEn": "Nunavut",
+        "descriptionFr": "Nunavut"
+      },
+      {
+        "id": "6839ee07-6b01-4694-b389-1cfcbe6473e3",
+        "code": "ON",
+        "descriptionEn": "Ontario",
+        "descriptionFr": "Ontario"
+      },
+      {
+        "id": "dbcfe16d-fbfe-44e9-8ab7-756bf714fa94",
+        "code": "PEI",
+        "descriptionEn": "Prince Edward Island",
+        "descriptionFr": "Prince Edward Island"
+      },
+      {
+        "id": "4b6a102e-3bc1-431a-ad5f-b334af18700d",
+        "code": "QUE",
+        "descriptionEn": "Quebec",
+        "descriptionFr": "Quebec"
+      },
+      {
+        "id": "76270d80-fe76-417d-8f07-49708227ebc9",
+        "code": "SK",
+        "descriptionEn": "Saskatchewan",
+        "descriptionFr": "Saskatchewan"
+      },
+      {
+        "id": "1ac898d1-eb0e-49e5-8ae3-786b8d90ad25",
+        "code": "YK",
+        "descriptionEn": "Yukon",
+        "descriptionFr": "Yukon"
+      }
+    ]
+  }
+}
