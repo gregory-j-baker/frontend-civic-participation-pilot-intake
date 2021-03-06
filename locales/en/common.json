@@ -29,5 +29,9 @@
   "field-required": "(required)",
   "please-select": "Please select...",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "loading": {
+    "header": "Loading...",
+    "description": "This may take a few seconds, please don't close this page."
+  }
 }

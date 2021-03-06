@@ -1,0 +1,30 @@
+/**
+ * Copyright (c) 2021 Her Majesty the Queen in Right of Canada, as represented by the Employment and Social Development Canada
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.pageLoadingSpinner {
+  border-top-color: rgba(5, 150, 105, 1);
+  -webkit-animation: spinner 1.5s linear infinite;
+  animation: pageLoadingSpinnerKeyframes 1.5s linear infinite;
+}
+
+@-webkit-keyframes pageLoadingSpinnerKeyframes {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes pageLoadingSpinnerKeyframes {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -19,7 +19,7 @@
       "first-name": "First name",
       "gender": "To which gender identity do you most identify?",
       "last-name": "Last name",
-      "major-age": "I certify that I am over the age of majority in my province",
+      "is-province-major": "I certify that I am over the age of majority in my province",
       "prefered-contact-language": "In which official language would you prefer to be contacted?",
       "province": "Which province or territory is your principle residence?",
       "year-of-birth": "What year were you born?"
@@ -29,7 +29,7 @@
       "about-yourself": "Tell us about yourself, describe your strengths, passions and what motivates you. What skills or knowledge can you bring to the Canada Service Corps Civic Engagement Pilot?",
       "access-dedicated-device": "Do you have access to a dedecated device on which to work?",
       "facilitate-participation": "Is there anything else you want us to know about you or is there something we could do that facilitate your participation in this program?",
-      "internet-access": "Do you have access to reliable internet?",
+      "internet-quality": "Do you have access to reliable internet?",
       "part-csc-pilot": "Why do you want to be part of Canada Service Corps Civic Engagement Pilot? How do you plan on using what you learn during your Canada Service Corps experience in your community after the program?",
       "positive-impact": "If you could make a positive impact on one issue in your community what issue would you want to address and why?"
     },

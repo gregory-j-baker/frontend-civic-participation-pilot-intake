@@ -22,6 +22,7 @@ import { TextAreaField } from '../components/form/TextAreaField';
 import type { TextFieldOnChangeEvent } from '../components/form/TextField';
 import { TextField } from '../components/form/TextField';
 import { MainLayout } from '../components/layouts/main/MainLayout';
+import { PageLoadingSpinner } from '../components/PageLoadingSpinner';
 import { theme } from '../config';
 import useEducationLevels, { educationLevelStaticProps } from '../hooks/api/useEducationLevels';
 import useGenders, { genderStaticProps } from '../hooks/api/useGenders';
@@ -31,6 +32,7 @@ import useLanguages, { languagesStaticProps } from '../hooks/api/useLanguages';
 import useProvinces, { provincesStaticProps } from '../hooks/api/useProvinces';
 import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
+import Error from './_error';
 
 interface FormDataState {
   [key: string]: boolean | string | string[] | null;
@@ -43,12 +45,12 @@ interface FormDataState {
   facilitateParticipation: string | null;
   firstName: string | null;
   gender: string | null;
-  internetAccess: string | null;
-  majorAge: boolean;
+  internetQuality: string | null;
+  isProvinceMajor: boolean;
   partCSCPilot: string | null;
   positiveImpact: string | null;
   lastName: string | null;
-  preferedContactLanguage: string | null;
+  preferedLanguage: string | null;
   province: string | null;
   yearOfBirth: string | null;
 }
@@ -60,7 +62,7 @@ const Home: NextPage = () => {
 
   const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
   const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
-  const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes();
+  const { isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes();
   const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities();
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces();
@@ -75,12 +77,12 @@ const Home: NextPage = () => {
     facilitateParticipation: null,
     firstName: null,
     gender: null,
-    internetAccess: null,
-    majorAge: false,
+    internetQuality: null,
+    isProvinceMajor: false,
     partCSCPilot: null,
     positiveImpact: null,
     lastName: null,
-    preferedContactLanguage: null,
+    preferedLanguage: null,
     province: null,
     yearOfBirth: null,
   });
@@ -93,11 +95,38 @@ const Home: NextPage = () => {
     setFormDataState((prev) => ({ ...prev, [field as keyof FormDataState]: checked }));
   };
 
+  // year of birth select options
   const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => {
     const years = getYears({}).map((year) => ({ value: year.toString(), text: `${year}` }));
     return [{ value: '', text: '' }, ...years];
   }, []);
 
+  // prefered language select options
+  const preferedLanguageOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isLanguagesLoading || languagesError) return [];
+
+    return [{ value: '', text: t('common:please-select') }, ...(languages?._embedded.languages.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [])];
+  }, [t, lang, isLanguagesLoading, languagesError, languages]);
+
+  // province select options
+  const provinceOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isProvincesLoading || provincesError) return [];
+    return [{ value: '', text: t('common:please-select') }, ...(provinces?._embedded.provinces.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [])];
+  }, [t, lang, isProvincesLoading, provincesError, provinces]);
+
+  // gender radio options
+  const genderOptions = useMemo<RadiosFieldOption[]>(() => {
+    if (isGendersLoading || gendersError) return [];
+    return genders?._embedded.genders.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [];
+  }, [lang, isGendersLoading, gendersError, genders]);
+
+  // education level select options
+  const educationLevelOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isEducationLevelsLoading || educationLevelsError) return [];
+    return [{ value: '', text: t('common:please-select') }, ...(educationLevels?._embedded.educationLevels.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [])];
+  }, [t, lang, isEducationLevelsLoading, educationLevelsError, educationLevels]);
+
+  // canadien citizen or procted person radio options
   const canadienCitizenOrProctedPersonOptions = useMemo<RadiosFieldOption[]>(
     () => [
       { value: 'yes', text: t('common:yes') },
@@ -106,6 +135,17 @@ const Home: NextPage = () => {
     [t]
   );
 
+  // internet quality select options
+  const internetQualityOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isInternetQualitiesLoading || internetQualitiesError) return [];
+    return [
+      { value: '', text: t('common:please-select') },
+      ...(internetQualities?._embedded.internetQualities.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []),
+      { value: 'NONE', text: t('common:no') },
+    ];
+  }, [t, lang, isInternetQualitiesLoading, internetQualitiesError, internetQualities]);
+
+  // access dedicated device radio options
   const accessDedicatedDeviceOptions = useMemo<RadiosFieldOption[]>(
     () => [
       { value: 'yes', text: t('common:yes') },
@@ -114,206 +154,194 @@ const Home: NextPage = () => {
     [t]
   );
 
+  if (educationLevelsError || gendersError || indigenousTypesError || internetQualitiesError || internetQualitiesError || languagesError || provincesError) {
+    return <Error err={(educationLevelsError ?? gendersError ?? indigenousTypesError ?? internetQualitiesError ?? internetQualitiesError ?? languagesError ?? provincesError) as Error} />;
+  }
+
   return (
     <MainLayout>
-      <h3 className="tw-m-0 tw-mb-14">{t('home:application-form.header')}</h3>
-      <h4 className="tw-border-b-4 tw-pb-4 tw-m-0 tw-mb-12">{t('home:application-form.personal-information.header')}</h4>
-      <TextField
-        field={nameof<FormDataState>((o) => o.firstName)}
-        label={t('home:application-form.personal-information.first-name')}
-        value={formData.firstName}
-        onChange={onFieldChange}
-        required
-        gutterBottom
-        className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-      />
-      <TextField field={nameof<FormDataState>((o) => o.lastName)} label={t('home:application-form.personal-information.last-name')} value={formData.lastName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
-      <TextField field={nameof<FormDataState>((o) => o.email)} label={t('home:application-form.personal-information.email-address')} value={formData.email} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12" />
-      <SelectField
-        field={nameof<FormDataState>((o) => o.yearOfBirth)}
-        label={t('home:application-form.personal-information.year-of-birth')}
-        value={formData.yearOfBirth}
-        onChange={onFieldChange}
-        options={yearOfBirthOptions}
-        required
-        gutterBottom
-        className="tw-w-40"
-      />
-      <CheckboxeField field={nameof<FormDataState>((o) => o.majorAge)} label={t('home:application-form.personal-information.major-age')} checked={formData.majorAge} onChange={onCheckboxFieldChange} required gutterBottom />
-
-      {
-        // TODO :: GjB :: how should we deal with the loading and error states here?
-        !isLanguagesLoading && !languagesError && (
-          <SelectField
-            field={nameof<FormDataState>((o) => o.preferedLanguage)}
-            label={t('home:application-form.personal-information.prefered-contact-language')}
-            value={formData.preferedContactLanguage}
+      {isEducationLevelsLoading || isGendersLoading || isIndigenousTypesLoading || isInternetQualitiesLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
+        <PageLoadingSpinner />
+      ) : (
+        <>
+          <h3 className="tw-m-0 tw-mb-14">{t('home:application-form.header')}</h3>
+          <h4 className="tw-border-b-4 tw-pb-4 tw-m-0 tw-mb-12">{t('home:application-form.personal-information.header')}</h4>
+          <TextField
+            field={nameof<FormDataState>((o) => o.firstName)}
+            label={t('home:application-form.personal-information.first-name')}
+            value={formData.firstName}
             onChange={onFieldChange}
-            options={[
-              { value: '', text: t('common:please-select') },
-              ...(languages?._embedded.languages.map((language) => ({
-                value: language.id,
-                text: lang === 'fr' ? language.descriptionFr : language.descriptionEn,
-              })) as SelectFieldOption[]),
-            ]}
-            required
-            gutterBottom
-            className="tw-w-full md:tw-w-8/12"
-          />
-        )
-      }
-
-      <RadiosField
-        field={nameof<FormDataState>((o) => o.canadienCitizenOrProctedPerson)}
-        label={t('home:application-form.personal-information.canadien-citizen-or-procted-person')}
-        value={formData.canadienCitizenOrProctedPerson}
-        onChange={onFieldChange}
-        options={canadienCitizenOrProctedPersonOptions}
-        required
-        gutterBottom
-        inline
-      />
-
-      {
-        // TODO :: GjB :: how should we deal with the loading and error states here?
-        !isProvincesLoading && !provincesError && (
-          <SelectField
-            field={nameof<FormDataState>((o) => o.province)}
-            label={t('home:application-form.personal-information.province')}
-            value={formData.province}
-            onChange={onFieldChange}
-            options={[
-              { value: '', text: t('common:please-select') },
-              ...(provinces?._embedded.provinces.map((province) => ({
-                value: province.id,
-                text: lang === 'fr' ? province.descriptionFr : province.descriptionEn,
-              })) as SelectFieldOption[]),
-            ]}
             required
             gutterBottom
             className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
           />
-        )
-      }
+          <TextField
+            field={nameof<FormDataState>((o) => o.lastName)}
+            label={t('home:application-form.personal-information.last-name')}
+            value={formData.lastName}
+            onChange={onFieldChange}
+            required
+            gutterBottom
+            className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+          />
+          <TextField
+            field={nameof<FormDataState>((o) => o.email)}
+            label={t('home:application-form.personal-information.email-address')}
+            value={formData.email}
+            onChange={onFieldChange}
+            required
+            gutterBottom
+            className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+          />
+          <SelectField
+            field={nameof<FormDataState>((o) => o.yearOfBirth)}
+            label={t('home:application-form.personal-information.year-of-birth')}
+            value={formData.yearOfBirth}
+            onChange={onFieldChange}
+            options={yearOfBirthOptions}
+            required
+            gutterBottom
+            className="tw-w-40"
+          />
+          <CheckboxeField field={nameof<FormDataState>((o) => o.isProvinceMajor)} label={t('home:application-form.personal-information.is-province-major')} checked={formData.isProvinceMajor} onChange={onCheckboxFieldChange} required gutterBottom />
 
-      {
-        // TODO :: GjB :: how should we deal with the loading and error states here?
-        !isGendersLoading && !gendersError && (
+          {/* TODO :: GjB :: how should we deal with the loading and error states here? */}
+          {!isLanguagesLoading && !languagesError && (
+            <SelectField
+              field={nameof<FormDataState>((o) => o.preferedLanguage)}
+              label={t('home:application-form.personal-information.prefered-contact-language')}
+              value={formData.preferedLanguage}
+              onChange={onFieldChange}
+              options={preferedLanguageOptions}
+              required
+              gutterBottom
+              className="tw-w-full md:tw-w-8/12"
+            />
+          )}
+
           <RadiosField
-            field={nameof<FormDataState>((o) => o.gender)}
-            label={t('home:application-form.personal-information.gender')}
-            value={formData.gender}
+            field={nameof<FormDataState>((o) => o.canadienCitizenOrProctedPerson)}
+            label={t('home:application-form.personal-information.canadien-citizen-or-procted-person')}
+            value={formData.canadienCitizenOrProctedPerson}
             onChange={onFieldChange}
-            options={
-              genders?._embedded.genders.map((gender) => ({
-                value: gender.id,
-                text: lang === 'fr' ? gender.descriptionFr : gender.descriptionEn,
-              })) as RadiosFieldOption[]
-            }
+            options={canadienCitizenOrProctedPersonOptions}
             required
             gutterBottom
-            inline={(currentBreakpoint ?? 0) >= breakpoints.md}
+            inline
           />
-        )
-      }
 
-      {
-        // TODO :: GjB :: how should we deal with the loading and error states here?
-        !isEducationLevelsLoading && !educationLevelsError && (
-          <SelectField
-            field={nameof<FormDataState>((o) => o.educationLevel)}
-            label={t('home:application-form.personal-information.education-level')}
-            value={formData.educationLevel}
+          {/* TODO :: GjB :: how should we deal with the loading and error states here? */}
+          {!isProvincesLoading && !provincesError && (
+            <SelectField
+              field={nameof<FormDataState>((o) => o.province)}
+              label={t('home:application-form.personal-information.province')}
+              value={formData.province}
+              onChange={onFieldChange}
+              options={provinceOptions}
+              required
+              gutterBottom
+              className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+            />
+          )}
+
+          {/* TODO :: GjB :: how should we deal with the loading and error states here? */}
+          {!isGendersLoading && !gendersError && (
+            <RadiosField
+              field={nameof<FormDataState>((o) => o.gender)}
+              label={t('home:application-form.personal-information.gender')}
+              value={formData.gender}
+              onChange={onFieldChange}
+              options={genderOptions}
+              required
+              gutterBottom
+              inline={(currentBreakpoint ?? 0) >= breakpoints.md}
+            />
+          )}
+
+          {/* TODO :: GjB :: how should we deal with the loading and error states here? */}
+          {!isEducationLevelsLoading && !educationLevelsError && (
+            <SelectField
+              field={nameof<FormDataState>((o) => o.educationLevel)}
+              label={t('home:application-form.personal-information.education-level')}
+              value={formData.educationLevel}
+              onChange={onFieldChange}
+              options={educationLevelOptions}
+              required
+              className="tw-w-full md:tw-w-8/12"
+            />
+          )}
+
+          <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-16">{t('home:application-form.expression-of-interest-questions.header')}</h4>
+          <TextAreaField
+            field={nameof<FormDataState>((o) => o.partCSCPilot)}
+            label={t('home:application-form.expression-of-interest-questions.part-csc-pilot')}
+            value={formData.partCSCPilot}
             onChange={onFieldChange}
-            options={[
-              { value: '', text: t('common:please-select') },
-              ...(educationLevels?._embedded.educationLevels.map((educationLevel) => ({
-                value: educationLevel.id,
-                text: lang === 'fr' ? educationLevel.descriptionFr : educationLevel.descriptionEn,
-              })) as SelectFieldOption[]),
-            ]}
-            required
-            className="tw-w-full md:tw-w-8/12"
-          />
-        )
-      }
-
-      <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-16">{t('home:application-form.expression-of-interest-questions.header')}</h4>
-      <TextAreaField
-        field={nameof<FormDataState>((o) => o.partCSCPilot)}
-        label={t('home:application-form.expression-of-interest-questions.part-csc-pilot')}
-        value={formData.partCSCPilot}
-        onChange={onFieldChange}
-        required
-        gutterBottom
-        className="tw-w-full"
-      />
-      <TextAreaField
-        field={nameof<FormDataState>((o) => o.aboutYourself)}
-        label={t('home:application-form.expression-of-interest-questions.about-yourself')}
-        value={formData.aboutYourself}
-        onChange={onFieldChange}
-        required
-        gutterBottom
-        className="tw-w-full"
-      />
-      <TextAreaField
-        field={nameof<FormDataState>((o) => o.positiveImpact)}
-        label={t('home:application-form.expression-of-interest-questions.positive-impact')}
-        value={formData.positiveImpact}
-        onChange={onFieldChange}
-        required
-        gutterBottom
-        className="tw-w-full"
-      />
-      <TextAreaField
-        field={nameof<FormDataState>((o) => o.facilitateParticipation)}
-        label={t('home:application-form.expression-of-interest-questions.facilitate-participation')}
-        value={formData.facilitateParticipation}
-        onChange={onFieldChange}
-        required
-        gutterBottom
-        className="tw-w-full"
-      />
-
-      {
-        // TODO :: GjB :: how should we deal with the loading and error states here?
-        !isInternetQualitiesLoading && !internetQualitiesError && (
-          <SelectField
-            field={nameof<FormDataState>((o) => o.internetAccess)}
-            label={t('home:application-form.expression-of-interest-questions.internet-access')}
-            value={formData.internetAccess}
-            onChange={onFieldChange}
-            options={[
-              { value: '', text: t('common:please-select') },
-              ...(internetQualities?._embedded.internetQualities.map((internetQuality) => ({
-                value: internetQuality.id,
-                text: lang === 'fr' ? internetQuality.descriptionFr : internetQuality.descriptionEn,
-              })) as SelectFieldOption[]),
-              { value: 'NONE', text: t('common:no') },
-            ]}
             required
             gutterBottom
-            className="tw-w-full md:tw-w-8/12"
+            className="tw-w-full"
           />
-        )
-      }
+          <TextAreaField
+            field={nameof<FormDataState>((o) => o.aboutYourself)}
+            label={t('home:application-form.expression-of-interest-questions.about-yourself')}
+            value={formData.aboutYourself}
+            onChange={onFieldChange}
+            required
+            gutterBottom
+            className="tw-w-full"
+          />
+          <TextAreaField
+            field={nameof<FormDataState>((o) => o.positiveImpact)}
+            label={t('home:application-form.expression-of-interest-questions.positive-impact')}
+            value={formData.positiveImpact}
+            onChange={onFieldChange}
+            required
+            gutterBottom
+            className="tw-w-full"
+          />
+          <TextAreaField
+            field={nameof<FormDataState>((o) => o.facilitateParticipation)}
+            label={t('home:application-form.expression-of-interest-questions.facilitate-participation')}
+            value={formData.facilitateParticipation}
+            onChange={onFieldChange}
+            required
+            gutterBottom
+            className="tw-w-full"
+          />
 
-      <RadiosField
-        field={nameof<FormDataState>((o) => o.accessDedicatedDevice)}
-        label={t('home:application-form.expression-of-interest-questions.access-dedicated-device')}
-        value={formData.accessDedicatedDevice}
-        onChange={onFieldChange}
-        options={accessDedicatedDeviceOptions}
-        required
-        inline
-      />
-      <div className="tw-mt-20">
-        <CheckboxeField field={nameof<FormDataState>((o) => o.consent)} label={t('home:application-form.consent')} checked={formData.consent} onChange={onCheckboxFieldChange} />
-      </div>
-      <div className="tw-my-16">
-        <Button onClick={(event) => console.log(event)}>{t('home:application-form.submit')}</Button>
-      </div>
+          {
+            // TODO :: GjB :: how should we deal with the loading and error states here?
+            !isInternetQualitiesLoading && !internetQualitiesError && (
+              <SelectField
+                field={nameof<FormDataState>((o) => o.internetQuality)}
+                label={t('home:application-form.expression-of-interest-questions.internet-quality')}
+                value={formData.internetQuality}
+                onChange={onFieldChange}
+                options={internetQualityOptions}
+                required
+                gutterBottom
+                className="tw-w-full md:tw-w-8/12"
+              />
+            )
+          }
+
+          <RadiosField
+            field={nameof<FormDataState>((o) => o.accessDedicatedDevice)}
+            label={t('home:application-form.expression-of-interest-questions.access-dedicated-device')}
+            value={formData.accessDedicatedDevice}
+            onChange={onFieldChange}
+            options={accessDedicatedDeviceOptions}
+            required
+            inline
+          />
+          <div className="tw-mt-20">
+            <CheckboxeField field={nameof<FormDataState>((o) => o.consent)} label={t('home:application-form.consent')} checked={formData.consent} onChange={onCheckboxFieldChange} />
+          </div>
+          <div className="tw-my-16">
+            <Button onClick={(event) => console.log(event)}>{t('home:application-form.submit')}</Button>
+          </div>
+        </>
+      )}
     </MainLayout>
   );
 };
