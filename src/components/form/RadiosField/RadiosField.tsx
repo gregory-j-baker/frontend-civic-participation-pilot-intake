@@ -31,7 +31,6 @@ export interface RadiosFieldProps {
   options: RadiosFieldOption[];
   placeholder?: string;
   required?: boolean;
-  rows?: number;
   value?: string | null;
 }
 

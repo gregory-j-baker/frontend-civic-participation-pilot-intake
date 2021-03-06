@@ -25,7 +25,6 @@ export interface CheckboxeFieldProps {
   onChange: CheckboxeFieldOnChangeEvent;
   placeholder?: string;
   required?: boolean;
-  rows?: number;
 }
 
 const CheckboxeField = ({ className, checked, disabled, error, field, gutterBottom, helperText, label, onChange, required }: CheckboxeFieldProps): JSX.Element => {

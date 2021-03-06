@@ -28,7 +28,6 @@ export interface SelectFieldProps {
   onChange: SelectFieldOnChangeEvent;
   options: SelectFieldOption[];
   required?: boolean;
-  rows?: number;
   value?: string | null;
 }
 

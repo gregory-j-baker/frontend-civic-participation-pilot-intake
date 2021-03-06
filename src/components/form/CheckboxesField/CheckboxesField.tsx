@@ -31,7 +31,6 @@ export interface CheckboxesFieldProps {
   options: CheckboxesFieldOption[];
   placeholder?: string;
   required?: boolean;
-  rows?: number;
   values?: string[] | null;
 }
 

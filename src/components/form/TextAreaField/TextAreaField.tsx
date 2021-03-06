@@ -38,13 +38,15 @@ const TextAreaField = ({ className, disabled, error, field, gutterBottom, helper
     onChange({ field, value: val.length > 0 ? val : null });
   };
 
+  const contentRows = (value ?? '').split('\n').length;
+
   return (
     <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
       <ControlLabel className={`${required ? 'required' : null}`}>
         <span className="field-name">{label}</span>
         {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
       </ControlLabel>
-      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} className={className} rows={rows ?? 5} />
+      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} className={className} rows={Math.max(contentRows, rows ?? 5)} />
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
     </FormGroup>
   );
