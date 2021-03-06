@@ -159,7 +159,7 @@ const Home: NextPage = () => {
   }
 
   return (
-    <MainLayout>
+    <MainLayout showBreadcrumb={false}>
       {isEducationLevelsLoading || isGendersLoading || isIndigenousTypesLoading || isInternetQualitiesLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
@@ -337,7 +337,7 @@ const Home: NextPage = () => {
           <div className="tw-mt-20">
             <CheckboxeField field={nameof<FormDataState>((o) => o.consent)} label={t('home:application-form.consent')} checked={formData.consent} onChange={onCheckboxFieldChange} />
           </div>
-          <div className="tw-my-16">
+          <div className="tw-mt-16">
             <Button onClick={(event) => console.log(event)}>{t('home:application-form.submit')}</Button>
           </div>
         </>

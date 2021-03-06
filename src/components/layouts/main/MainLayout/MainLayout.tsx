@@ -19,7 +19,7 @@ const MainLayout = ({ children, showBreadcrumb }: MainLayoutProps): JSX.Element 
   <div className="tw-flex tw-flex-col tw-min-h-screen">
     <ResponsiveHandler />
     <GlobalHeader showBreadcrumb={showBreadcrumb} />
-    <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" className="container">
+    <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" className="container tw-py-4 md:tw-py-6">
       {children}
     </main>
     <div className="tw-mt-auto">
