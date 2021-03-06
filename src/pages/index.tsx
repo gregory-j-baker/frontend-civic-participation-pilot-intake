@@ -193,6 +193,7 @@ const Home: NextPage = () => {
             options={yearOfBirthOptions}
             required
             gutterBottom
+            emptyOption
             className="tw-w-40"
           />
           <CheckboxeField field={nameof<FormDataState>((o) => o.isProvinceMajor)} label={t('home:application-form.personal-information.is-province-major')} checked={formData.isProvinceMajor} onChange={onCheckboxFieldChange} required gutterBottom />

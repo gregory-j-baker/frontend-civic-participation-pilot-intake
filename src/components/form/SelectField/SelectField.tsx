@@ -42,9 +42,7 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
     onChange({ field, value: val.length > 0 ? val : null });
   };
 
-  const selectedValue = options?.find((option) => option.value === value)?.value ?? undefined;
-
-  console.log(selectedValue);
+  const selectedValue = options?.find((option) => option.value === value)?.value ?? '';
 
   return (
     <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
@@ -52,14 +50,12 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
         <span className="field-name">{label}</span>
         {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
       </ControlLabel>
-      <FormControl componentClass="select" id={fieldId} onChange={handleOnChange} disabled={disabled} className={className}>
-        {selectedValue === undefined && (
-          <option value="" disabled hidden selected={selectedValue === undefined}>
-            {t('common:please-select')}
-          </option>
-        )}
+      <FormControl componentClass="select" id={fieldId} value={selectedValue} onChange={handleOnChange} disabled={disabled} className={className}>
+        <option value="" disabled hidden>
+          {t('common:please-select')}
+        </option>
         {options.map((option) => (
-          <option key={option.value} value={option.value} selected={option.value === selectedValue}>
+          <option key={option.value} value={option.value}>
             {option.text}
           </option>
         ))}
