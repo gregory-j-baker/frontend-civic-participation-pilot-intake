@@ -22,12 +22,13 @@ export interface CheckboxeFieldProps {
   gutterBottom?: boolean;
   helperText?: string;
   label: string;
+  labelClassName?: string;
   onChange: CheckboxeFieldOnChangeEvent;
   placeholder?: string;
   required?: boolean;
 }
 
-const CheckboxeField = ({ className, checked, disabled, error, field, gutterBottom, helperText, label, onChange, required }: CheckboxeFieldProps): JSX.Element => {
+const CheckboxeField = ({ className, checked, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, required }: CheckboxeFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-checkboxe-field-${field}`;
@@ -40,14 +41,18 @@ const CheckboxeField = ({ className, checked, disabled, error, field, gutterBott
   return (
     <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
       <Checkbox id={fieldId} onChange={handleOnChange} checked={checked} disabled={disabled} className={className} style={{ fontSize: 'inherit' }}>
-        <ControlLabel className={`${required ? 'required' : null}`}>
-          <span className="field-name tw-font-bold tw-text-xl">{label}</span>
-          {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
+        <ControlLabel className={required ? 'required' : undefined}>
+          <span className={`field-name ${labelClassName} tw-mr-2`}>{label}</span>
+          {required && <strong className={`${labelClassName} required`}>{t('common:field-required')}</strong>}
         </ControlLabel>
       </Checkbox>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
     </FormGroup>
   );
+};
+
+CheckboxeField.defaultProps = {
+  labelClassName: 'tw-font-bold',
 };
 
 export default CheckboxeField;

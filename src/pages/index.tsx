@@ -234,10 +234,11 @@ const Home: NextPage = () => {
 
           <SelectField
             field={nameof<FormDataState>((o) => o.canadienCitizen)}
-            label={t('home:application-form.personal-information.canadien-citizen')}
+            label={t('home:application-form.personal-information.canadien-citizen.label')}
             value={formData.canadienCitizen}
             onChange={onFieldChange}
             options={yesNoOptions}
+            helperText={t('home:application-form.personal-information.canadien-citizen.helper-text')}
             required
             gutterBottom
           />
@@ -264,12 +265,13 @@ const Home: NextPage = () => {
             className="tw-w-full sm:tw-w-6/12"
           />
 
-          <h5 className="tw-m-0 tw-mb-4">{t('home:application-form.personal-information.identity.header')}</h5>
+          <div className="tw-p-6 tw-rounded-md tw-shadow-md tw-mb-8 tw-border tw-border-black tw-border-opacity-20 tw-bg-black tw-bg-opacity-5">
+            <h5 className="tw-m-0 tw-mb-10 tw-text-lg">{t('home:application-form.personal-information.identity.header')}</h5>
 
-          <div className="tw-p-6 tw-rounded-md tw-shadow-md tw-mb-8 tw-border tw-border-gray-300">
             <SelectField
               field={nameof<FormDataState>((o) => o.identityDisability)}
               label={t('home:application-form.personal-information.identity.disability')}
+              labelClassName="tw-font-normal"
               value={formData.identityDisability}
               onChange={onFieldChange}
               options={yesNoNoPreferNotAnswerOptions}
@@ -281,6 +283,7 @@ const Home: NextPage = () => {
             <SelectField
               field={nameof<FormDataState>((o) => o.identityVisibleMinority)}
               label={t('home:application-form.personal-information.identity.visible-minority')}
+              labelClassName="tw-font-normal"
               value={formData.identityVisibleMinority}
               onChange={onFieldChange}
               options={yesNoNoPreferNotAnswerOptions}
@@ -292,6 +295,7 @@ const Home: NextPage = () => {
             <SelectField
               field={nameof<FormDataState>((o) => o.identityIndigenous)}
               label={t('home:application-form.personal-information.identity.indigenous')}
+              labelClassName="tw-font-normal"
               value={formData.identityIndigenous}
               onChange={onFieldChange}
               options={indigenousTypeOptions}
@@ -303,6 +307,7 @@ const Home: NextPage = () => {
             <SelectField
               field={nameof<FormDataState>((o) => o.identityLGBTQ2)}
               label={t('home:application-form.personal-information.identity.lgbtq2')}
+              labelClassName="tw-font-normal"
               value={formData.identityLGBTQ2}
               onChange={onFieldChange}
               options={yesNoNoPreferNotAnswerOptions}
@@ -314,6 +319,7 @@ const Home: NextPage = () => {
             <SelectField
               field={nameof<FormDataState>((o) => o.identityRuralRemoteArea)}
               label={t('home:application-form.personal-information.identity.rural-remote-area')}
+              labelClassName="tw-font-normal"
               value={formData.identityRuralRemoteArea}
               onChange={onFieldChange}
               options={yesNoNoPreferNotAnswerOptions}
@@ -325,6 +331,7 @@ const Home: NextPage = () => {
             <SelectField
               field={nameof<FormDataState>((o) => o.identityNewcomer)}
               label={t('home:application-form.personal-information.identity.newcomer')}
+              labelClassName="tw-font-normal"
               value={formData.identityNewcomer}
               onChange={onFieldChange}
               options={yesNoNoPreferNotAnswerOptions}
@@ -335,7 +342,8 @@ const Home: NextPage = () => {
 
           <SelectField
             field={nameof<FormDataState>((o) => o.educationLevel)}
-            label={t('home:application-form.personal-information.education-level')}
+            label={t('home:application-form.personal-information.education-level.label')}
+            helperText={t('home:application-form.personal-information.education-level.helper-text')}
             value={formData.educationLevel}
             onChange={onFieldChange}
             options={educationLevelOptions}

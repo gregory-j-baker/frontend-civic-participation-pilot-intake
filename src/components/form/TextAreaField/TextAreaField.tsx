@@ -20,6 +20,7 @@ export interface TextAreaFieldProps {
   gutterBottom?: boolean;
   helperText?: string;
   label: string;
+  labelClassName?: string;
   onChange: TextAreaFieldOnChangeEvent;
   placeholder?: string;
   required?: boolean;
@@ -27,7 +28,7 @@ export interface TextAreaFieldProps {
   value?: string | null;
 }
 
-const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, placeholder, required, rows, value }: TextAreaFieldProps): JSX.Element => {
+const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, placeholder, required, rows, value }: TextAreaFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-text-area-field-${field}`;
@@ -42,12 +43,12 @@ const TextAreaField = ({ className, disabled, error, field, gutterBottom, helper
 
   return (
     <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${required ? 'required' : null}`}>
-        <span className="field-name">{label}</span>
-        {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+        <span className="field-name tw-mr-2">{label}</span>
+        {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
-      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} className={className} rows={Math.max(contentRows, rows ?? 5)} />
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} className={className} rows={Math.max(contentRows, rows ?? 5)} />
     </FormGroup>
   );
 };

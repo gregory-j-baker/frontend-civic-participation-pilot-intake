@@ -27,6 +27,7 @@ export interface RadiosFieldProps {
   helperText?: string;
   inline?: boolean;
   label: string;
+  labelClassName?: string;
   onChange: RadiosFieldOnChangeEvent;
   options: RadiosFieldOption[];
   placeholder?: string;
@@ -34,7 +35,7 @@ export interface RadiosFieldProps {
   value?: string | null;
 }
 
-const RadiosField = ({ className, error, field, gutterBottom, helperText, inline, label, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
+const RadiosField = ({ className, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const groupName = `form-radios-field-${field}`;
 
@@ -47,10 +48,11 @@ const RadiosField = ({ className, error, field, gutterBottom, helperText, inline
 
   return (
     <FormGroup validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${required ? 'required' : null}`}>
-        <span className="field-name">{label}</span>
-        {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+        <span className="field-name tw-mr-2">{label}</span>
+        {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
+      {helperText && <HelpBlock>{helperText}</HelpBlock>}
       <div>
         {options.map((option) => (
           <Radio key={option.value} name={groupName} value={option.value} onChange={handleOnChange} checked={option.value === selectedValue} disabled={option.disabled} className={`${inline ? 'tw-mr-4' : ''} ${className}`} inline={inline}>
@@ -58,7 +60,6 @@ const RadiosField = ({ className, error, field, gutterBottom, helperText, inline
           </Radio>
         ))}
       </div>
-      {helperText && <HelpBlock>{helperText}</HelpBlock>}
     </FormGroup>
   );
 };

@@ -13,9 +13,15 @@
     "consent": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
     "personal-information": {
       "header": "Partie 1 : Renseignements personnels",
-      "canadien-citizen": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée? (Une personne protégée est une personne à qui le statut de réfugié est accordé en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la demande ou la demande n'a pas par la suite été réputée rejetée en vertu des paragraphes 108 (3), 109 (3) ou 114 (4) ou cette loi.",
+      "canadien-citizen": {
+        "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
+        "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108 (3), 109 (3) ou 114 (4) oucet acte."
+      },
       "email-address": "Adresse courriel",
-      "education-level": "Quel est votre plus haut niveau d'éducation formelle achevé ou auquel vous êtes actuellement inscrit? (Veuillez noter qu'il n'y a aucune exigence d'éducation pour ce programme)",
+      "education-level": {
+        "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
+        "helper-text": "Veuillez noter qu'il n'y a pas d'obligation d'éducation pour ce programme."
+      },
       "first-name": "Prénom",
       "gender": "À quelle identité de genre vous identifiez-vous le plus?",
       "identity": {

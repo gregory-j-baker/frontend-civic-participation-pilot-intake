@@ -25,13 +25,14 @@ export interface SelectFieldProps {
   gutterBottom?: boolean;
   helperText?: string;
   label: string;
+  labelClassName?: string;
   onChange: SelectFieldOnChangeEvent;
   options: SelectFieldOption[];
   required?: boolean;
   value?: string | null;
 }
 
-const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, options, required, value }: SelectFieldProps): JSX.Element => {
+const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, options, required, value }: SelectFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const fieldId = `form-select-field-${field}`;
 
@@ -45,10 +46,11 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
 
   return (
     <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${required ? 'required' : null}`}>
-        <span className="field-name">{label}</span>
-        {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+        <span className="field-name tw-mr-2">{label}</span>
+        {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
+      {helperText && <HelpBlock>{helperText}</HelpBlock>}
       <FormControl componentClass="select" id={fieldId} value={selectedValue} onChange={handleOnChange} disabled={disabled} className={className}>
         <option value="" disabled hidden>
           {t('common:please-select')}
@@ -59,7 +61,6 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
           </option>
         ))}
       </FormControl>
-      {helperText && <HelpBlock>{helperText}</HelpBlock>}
     </FormGroup>
   );
 };

@@ -27,6 +27,7 @@ export interface CheckboxesFieldProps {
   helperText?: string;
   inline?: boolean;
   label: string;
+  labelClassName?: string;
   onChange: CheckboxesFieldOnChangeEvent;
   options: CheckboxesFieldOption[];
   placeholder?: string;
@@ -34,7 +35,7 @@ export interface CheckboxesFieldProps {
   values?: string[] | null;
 }
 
-const CheckboxesField = ({ className, error, field, gutterBottom, helperText, inline, label, onChange, options, required, values }: CheckboxesFieldProps): JSX.Element => {
+const CheckboxesField = ({ className, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, values }: CheckboxesFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const handleOnChange: React.FormEventHandler<Checkbox> = (event) => {
@@ -46,10 +47,11 @@ const CheckboxesField = ({ className, error, field, gutterBottom, helperText, in
 
   return (
     <FormGroup validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${required ? 'required' : null}`}>
-        <span className="field-name">{label}</span>
-        {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+        <span className="field-name tw-mr-2">{label}</span>
+        {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
+      {helperText && <HelpBlock>{helperText}</HelpBlock>}
       <div>
         {options.map((option) => (
           <Checkbox key={option.value} value={option.value} onChange={handleOnChange} checked={checkedValues.includes(option.value)} disabled={option.disabled} className={`${inline ? 'tw-mr-4' : ''} ${className}`} inline={inline}>
@@ -57,7 +59,6 @@ const CheckboxesField = ({ className, error, field, gutterBottom, helperText, in
           </Checkbox>
         ))}
       </div>
-      {helperText && <HelpBlock>{helperText}</HelpBlock>}
     </FormGroup>
   );
 };

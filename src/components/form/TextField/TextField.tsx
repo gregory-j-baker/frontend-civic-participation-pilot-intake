@@ -20,6 +20,7 @@ export interface TextFieldProps {
   gutterBottom?: boolean;
   helperText?: string;
   label: string;
+  labelClassName?: string;
   onChange: TextFieldOnChangeEvent;
   maxLength?: number;
   placeholder?: string;
@@ -27,7 +28,7 @@ export interface TextFieldProps {
   value?: string | null;
 }
 
-const TextField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, maxLength, placeholder, required, value }: TextFieldProps): JSX.Element => {
+const TextField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, maxLength, placeholder, required, value }: TextFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-text-field-${field}`;
@@ -40,12 +41,12 @@ const TextField = ({ className, disabled, error, field, gutterBottom, helperText
 
   return (
     <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${required ? 'required' : null}`}>
-        <span className="field-name">{label}</span>
-        {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+        <span className="field-name tw-mr-2">{label}</span>
+        {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
-      <FormControl type="text" id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      <FormControl type="text" id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />
     </FormGroup>
   );
 };
