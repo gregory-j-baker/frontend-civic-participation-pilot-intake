@@ -27,13 +27,12 @@ export interface SelectFieldProps {
   label: string;
   onChange: SelectFieldOnChangeEvent;
   options: SelectFieldOption[];
-  placeholder?: string;
   required?: boolean;
   rows?: number;
   value?: string | null;
 }
 
-const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, options, placeholder, required, value }: SelectFieldProps): JSX.Element => {
+const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, onChange, options, required, value }: SelectFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const fieldId = `form-select-field-${field}`;
 
@@ -43,7 +42,9 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
     onChange({ field, value: val.length > 0 ? val : null });
   };
 
-  const selectedValue = options?.find((option) => option.value === value)?.value ?? '';
+  const selectedValue = options?.find((option) => option.value === value)?.value ?? undefined;
+
+  console.log(selectedValue);
 
   return (
     <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
@@ -51,9 +52,14 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
         <span className="field-name">{label}</span>
         {required && <strong className="required tw-ml-2">{t('common:field-required')}</strong>}
       </ControlLabel>
-      <FormControl componentClass="select" id={fieldId} value={selectedValue} onChange={handleOnChange} disabled={disabled} placeholder={placeholder} className={className}>
+      <FormControl componentClass="select" id={fieldId} onChange={handleOnChange} disabled={disabled} className={className}>
+        {selectedValue === undefined && (
+          <option value="" disabled hidden selected={selectedValue === undefined}>
+            {t('common:please-select')}
+          </option>
+        )}
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} selected={option.value === selectedValue}>
             {option.text}
           </option>
         ))}

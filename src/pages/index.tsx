@@ -96,23 +96,19 @@ const Home: NextPage = () => {
   };
 
   // year of birth select options
-  const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => {
-    const years = getYears({}).map((year) => ({ value: year.toString(), text: `${year}` }));
-    return [{ value: '', text: '' }, ...years];
-  }, []);
+  const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({}).map((year) => ({ value: year.toString(), text: `${year}` })), []);
 
   // prefered language select options
   const preferedLanguageOptions = useMemo<SelectFieldOption[]>(() => {
     if (isLanguagesLoading || languagesError) return [];
-
-    return [{ value: '', text: t('common:please-select') }, ...(languages?._embedded.languages.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [])];
-  }, [t, lang, isLanguagesLoading, languagesError, languages]);
+    return languages?._embedded.languages.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [];
+  }, [lang, isLanguagesLoading, languagesError, languages]);
 
   // province select options
   const provinceOptions = useMemo<SelectFieldOption[]>(() => {
     if (isProvincesLoading || provincesError) return [];
-    return [{ value: '', text: t('common:please-select') }, ...(provinces?._embedded.provinces.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [])];
-  }, [t, lang, isProvincesLoading, provincesError, provinces]);
+    return provinces?._embedded.provinces.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [];
+  }, [lang, isProvincesLoading, provincesError, provinces]);
 
   // gender radio options
   const genderOptions = useMemo<RadiosFieldOption[]>(() => {
@@ -123,8 +119,8 @@ const Home: NextPage = () => {
   // education level select options
   const educationLevelOptions = useMemo<SelectFieldOption[]>(() => {
     if (isEducationLevelsLoading || educationLevelsError) return [];
-    return [{ value: '', text: t('common:please-select') }, ...(educationLevels?._embedded.educationLevels.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [])];
-  }, [t, lang, isEducationLevelsLoading, educationLevelsError, educationLevels]);
+    return educationLevels?._embedded.educationLevels.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [];
+  }, [lang, isEducationLevelsLoading, educationLevelsError, educationLevels]);
 
   // canadien citizen or procted person radio options
   const canadienCitizenOrProctedPersonOptions = useMemo<RadiosFieldOption[]>(
@@ -138,11 +134,7 @@ const Home: NextPage = () => {
   // internet quality select options
   const internetQualityOptions = useMemo<SelectFieldOption[]>(() => {
     if (isInternetQualitiesLoading || internetQualitiesError) return [];
-    return [
-      { value: '', text: t('common:please-select') },
-      ...(internetQualities?._embedded.internetQualities.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []),
-      { value: 'NONE', text: t('common:no') },
-    ];
+    return [...(internetQualities?._embedded.internetQualities.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: 'NONE', text: t('common:no') }];
   }, [t, lang, isInternetQualitiesLoading, internetQualitiesError, internetQualities]);
 
   // access dedicated device radio options
@@ -205,19 +197,16 @@ const Home: NextPage = () => {
           />
           <CheckboxeField field={nameof<FormDataState>((o) => o.isProvinceMajor)} label={t('home:application-form.personal-information.is-province-major')} checked={formData.isProvinceMajor} onChange={onCheckboxFieldChange} required gutterBottom />
 
-          {/* TODO :: GjB :: how should we deal with the loading and error states here? */}
-          {!isLanguagesLoading && !languagesError && (
-            <SelectField
-              field={nameof<FormDataState>((o) => o.preferedLanguage)}
-              label={t('home:application-form.personal-information.prefered-contact-language')}
-              value={formData.preferedLanguage}
-              onChange={onFieldChange}
-              options={preferedLanguageOptions}
-              required
-              gutterBottom
-              className="tw-w-full md:tw-w-8/12"
-            />
-          )}
+          <SelectField
+            field={nameof<FormDataState>((o) => o.preferedLanguage)}
+            label={t('home:application-form.personal-information.prefered-contact-language')}
+            value={formData.preferedLanguage}
+            onChange={onFieldChange}
+            options={preferedLanguageOptions}
+            required
+            gutterBottom
+            className="tw-w-full md:tw-w-8/12"
+          />
 
           <RadiosField
             field={nameof<FormDataState>((o) => o.canadienCitizenOrProctedPerson)}
@@ -230,46 +219,37 @@ const Home: NextPage = () => {
             inline
           />
 
-          {/* TODO :: GjB :: how should we deal with the loading and error states here? */}
-          {!isProvincesLoading && !provincesError && (
-            <SelectField
-              field={nameof<FormDataState>((o) => o.province)}
-              label={t('home:application-form.personal-information.province')}
-              value={formData.province}
-              onChange={onFieldChange}
-              options={provinceOptions}
-              required
-              gutterBottom
-              className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-            />
-          )}
+          <SelectField
+            field={nameof<FormDataState>((o) => o.province)}
+            label={t('home:application-form.personal-information.province')}
+            value={formData.province}
+            onChange={onFieldChange}
+            options={provinceOptions}
+            required
+            gutterBottom
+            className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+          />
 
-          {/* TODO :: GjB :: how should we deal with the loading and error states here? */}
-          {!isGendersLoading && !gendersError && (
-            <RadiosField
-              field={nameof<FormDataState>((o) => o.gender)}
-              label={t('home:application-form.personal-information.gender')}
-              value={formData.gender}
-              onChange={onFieldChange}
-              options={genderOptions}
-              required
-              gutterBottom
-              inline={(currentBreakpoint ?? 0) >= breakpoints.md}
-            />
-          )}
+          <RadiosField
+            field={nameof<FormDataState>((o) => o.gender)}
+            label={t('home:application-form.personal-information.gender')}
+            value={formData.gender}
+            onChange={onFieldChange}
+            options={genderOptions}
+            required
+            gutterBottom
+            inline={(currentBreakpoint ?? 0) >= breakpoints.md}
+          />
 
-          {/* TODO :: GjB :: how should we deal with the loading and error states here? */}
-          {!isEducationLevelsLoading && !educationLevelsError && (
-            <SelectField
-              field={nameof<FormDataState>((o) => o.educationLevel)}
-              label={t('home:application-form.personal-information.education-level')}
-              value={formData.educationLevel}
-              onChange={onFieldChange}
-              options={educationLevelOptions}
-              required
-              className="tw-w-full md:tw-w-8/12"
-            />
-          )}
+          <SelectField
+            field={nameof<FormDataState>((o) => o.educationLevel)}
+            label={t('home:application-form.personal-information.education-level')}
+            value={formData.educationLevel}
+            onChange={onFieldChange}
+            options={educationLevelOptions}
+            required
+            className="tw-w-full md:tw-w-8/12"
+          />
 
           <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-16">{t('home:application-form.expression-of-interest-questions.header')}</h4>
           <TextAreaField
@@ -309,21 +289,16 @@ const Home: NextPage = () => {
             className="tw-w-full"
           />
 
-          {
-            // TODO :: GjB :: how should we deal with the loading and error states here?
-            !isInternetQualitiesLoading && !internetQualitiesError && (
-              <SelectField
-                field={nameof<FormDataState>((o) => o.internetQuality)}
-                label={t('home:application-form.expression-of-interest-questions.internet-quality')}
-                value={formData.internetQuality}
-                onChange={onFieldChange}
-                options={internetQualityOptions}
-                required
-                gutterBottom
-                className="tw-w-full md:tw-w-8/12"
-              />
-            )
-          }
+          <SelectField
+            field={nameof<FormDataState>((o) => o.internetQuality)}
+            label={t('home:application-form.expression-of-interest-questions.internet-quality')}
+            value={formData.internetQuality}
+            onChange={onFieldChange}
+            options={internetQualityOptions}
+            required
+            gutterBottom
+            className="tw-w-full md:tw-w-8/12"
+          />
 
           <RadiosField
             field={nameof<FormDataState>((o) => o.accessDedicatedDevice)}
