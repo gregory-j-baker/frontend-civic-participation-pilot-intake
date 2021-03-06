@@ -6,6 +6,7 @@
  */
 
 import type { GetStaticProps, NextPage } from 'next';
+import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useMemo, useState } from 'react';
 import { QueryClient } from 'react-query';
@@ -173,12 +174,17 @@ const Home: NextPage = () => {
 
   return (
     <MainLayout showBreadcrumb={false}>
+      <NextSeo title={t('home:page.header')} />
+      <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+        {t('common:app.title')}
+      </h1>
+      <h2 className="tw-border-b-2 tw-pb-4 tw-m-0 tw-mb-12 tw-text-2xl">{t('home:page.header')}</h2>
       {isEducationLevelsLoading || isGendersLoading || isIndigenousTypesLoading || isInternetQualitiesLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
-          <h3 className="tw-m-0 tw-mb-14">{t('home:application-form.header')}</h3>
-          <h4 className="tw-border-b-2 tw-pb-4 tw-m-0 tw-mb-12">{t('home:application-form.personal-information.header')}</h4>
+          <h3 className="tw-m-0 tw-mb-14 tw-text-2xl">{t('home:application-form.header')}</h3>
+          <h4 className="tw-border-b-2 tw-pb-4 tw-m-0 tw-mb-12 tw-text-xl">{t('home:application-form.personal-information.header')}</h4>
           <TextField
             field={nameof<FormDataState>((o) => o.firstName)}
             label={t('home:application-form.personal-information.first-name')}
@@ -337,7 +343,7 @@ const Home: NextPage = () => {
             className="tw-w-full md:tw-w-8/12"
           />
 
-          <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-16">{t('home:application-form.expression-of-interest-questions.header')}</h4>
+          <h4 className="tw-border-b-2 tw-pb-5 tw-mt-20 tw-mb-16 tw-text-xl">{t('home:application-form.expression-of-interest-questions.header')}</h4>
 
           <TextAreaField
             field={nameof<FormDataState>((o) => o.aboutYourself)}
