@@ -30,6 +30,7 @@
   "please-select": "Please select...",
   "yes": "Yes",
   "no": "No",
+  "prefer-not-answer": "Prefer not to answer",
   "loading": {
     "header": "Loading...",
     "description": "This may take a few seconds, please don't close this page."

@@ -13,14 +13,24 @@
     "consent": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
     "personal-information": {
       "header": "Part 1: Personal information",
-      "canadien-citizen-or-procted-person": "Are you a Canadian citizen, permanent resident, or protected person? (A procted person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or that Act.",
+      "canadien-citizen": "Are you a Canadian citizen, permanent resident, or protected person? (A procted person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or that Act.",
       "email-address": "Email address",
       "education-level": "What is your highest level of formal education completed, or enrolled in currently? (Please note that there is no education requirement for this program)",
       "first-name": "First name",
       "gender": "To which gender identity do you most identify?",
+      "identity": {
+        "header": "Please select the description with which you identify.",
+        "disability": "I am a person living with a disability",
+        "visible-minority": "I am a member of a visible monority community",
+        "indigenous": "I am a member of an indigenous community",
+        "lgbtq2": "I am a member of the LGBTQ2 community",
+        "rural-remote-area": "I live in a rural or remote area",
+        "newcomer": "I am recent newcomer to Canada, within the last 5 years"
+      },
       "last-name": "Last name",
       "is-province-major": "I certify that I am over the age of majority in my province",
-      "prefered-contact-language": "In which official language would you prefer to be contacted?",
+      "is-province-major-link": "Find the age of majority in your province",
+      "prefered-language": "In which official language would you prefer to be contacted?",
       "province": "Which province or territory is your principle residence?",
       "year-of-birth": "What year were you born?"
     },
@@ -28,9 +38,9 @@
       "header": "Part 2: Expression of interest questions",
       "about-yourself": "Tell us about yourself, describe your strengths, passions and what motivates you. What skills or knowledge can you bring to the Canada Service Corps Civic Engagement Pilot?",
       "access-dedicated-device": "Do you have access to a dedecated device on which to work?",
-      "facilitate-participation": "Is there anything else you want us to know about you or is there something we could do that facilitate your participation in this program?",
+      "facilitate-participation": "The Civic Participation Pilot is aiming to ensure inclusivity of youth from diverse identities, demographics, learning styles and abilities and educational backgrounds - is there anything you feel would facilitate your participation in this pilot?",
+      "hear-about-cpp": "How did you hear about the Civic Participation Pilot?",
       "internet-quality": "Do you have access to reliable internet?",
-      "part-csc-pilot": "Why do you want to be part of Canada Service Corps Civic Engagement Pilot? How do you plan on using what you learn during your Canada Service Corps experience in your community after the program?",
       "positive-impact": "If you could make a positive impact on one issue in your community what issue would you want to address and why?"
     },
     "submit": "Submit application"

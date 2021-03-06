@@ -13,14 +13,24 @@
     "consent": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
     "personal-information": {
       "header": "Partie 1 : Renseignements personnels",
-      "canadien-citizen-or-procted-person": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée? (Une personne protégée est une personne à qui le statut de réfugié est accordé en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la demande ou la demande n'a pas par la suite été réputée rejetée en vertu des paragraphes 108 (3), 109 (3) ou 114 (4) ou cette loi.",
+      "canadien-citizen": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée? (Une personne protégée est une personne à qui le statut de réfugié est accordé en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la demande ou la demande n'a pas par la suite été réputée rejetée en vertu des paragraphes 108 (3), 109 (3) ou 114 (4) ou cette loi.",
       "email-address": "Adresse courriel",
       "education-level": "Quel est votre plus haut niveau d'éducation formelle achevé ou auquel vous êtes actuellement inscrit? (Veuillez noter qu'il n'y a aucune exigence d'éducation pour ce programme)",
       "first-name": "Prénom",
       "gender": "À quelle identité de genre vous identifiez-vous le plus?",
+      "identity": {
+        "header": "Veuillez sélectionner la description avec laquelle vous identifiez.",
+        "disability": "Je suis une personne vivant avec un handicap",
+        "visible-minority": "Je suis membre d'une communauté minoritaire visible",
+        "indigenous": "Je suis membre d'une communauté autochtone",
+        "lgbtq2": "Je suis membre de la communauté LGBTQ2",
+        "rural-remote-area": "Je vis dans une zone rurale ou éloignée",
+        "newcomer": "Je suis récemment nouveau venu au Canada, au cours des 5 dernières années"
+      },
       "last-name": "Nom de famille",
       "is-province-major": "Je certifie que j'ai trop d'âge de la majorité dans ma province",
-      "prefered-contact-language": "Dans quelle langue officielle préférez-vous être contacté?",
+      "is-province-major-link": "Trouvez l'âge de la majorité dans votre province",
+      "prefered-language": "Dans quelle langue officielle préférez-vous être contacté?",
       "province": "Quelle province ou quel territoire est votre résidence principale?",
       "year-of-birth": "Quelle année êtes-vous né?"
     },
@@ -28,9 +38,9 @@
       "header": "Partie 2 : Questions d'expression d'intérêt",
       "about-yourself": "Parlez-nous de vous, décrivez vos forces, vos passions et ce qui vous motive. Quelles compétences ou connaissances pouvez-vous apporter au projet pilote d'engagement civique du Service canadien des services du Canada?",
       "access-dedicated-device": "Avez-vous accès à un appareil dédié sur lequel travailler?",
-      "facilitate-participation": "Y a-t-il autre chose que vous voulez que nous sachions à votre sujet ou est-ce que nous pourrions faire quelque chose pour faciliter votre participation à ce programme?",
+      "facilitate-participation": "Le pilote de participation civique vise à assurer l'inclusion des jeunes d'identités diverses, de données démographiques, de styles d'apprentissage et de capacités et de milieux éducatifs - y a-t-il quelque chose que vous ressentez faciliterait votre participation à ce pilote?",
+      "hear-about-cpp": "Comment avez-vous entendu parler du pilote de participation civique?",
       "internet-quality": "Avez-vous accès à Internet fiable?",
-      "part-csc-pilot": "Pourquoi voulez-vous faire partie du programme pilote d'engagement civique du Service Service Canada? Comment prévoyez-vous utiliser ce que vous avez appris au cours de votre expérience du Service Service Canada dans votre communauté après le programme?",
       "positive-impact": "Si vous pouviez avoir un impact positif sur un problème dans votre communauté, quel problème voudriez-vous aborder et pourquoi?"
     },
     "submit": "Soumettre la demande"
