@@ -10,10 +10,10 @@
   },
   "application-form": {
     "header": "Formulaire de demande",
-    "consent": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
+    "is-information-consented": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
     "personal-information": {
       "header": "Partie 1 : Renseignements personnels",
-      "canadien-citizen": {
+      "is-canadien-citizen": {
         "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
         "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108 (3), 109 (3) ou 114 (4) oucet acte."
       },
@@ -26,28 +26,28 @@
       "gender": "À quelle identité de genre vous identifiez-vous le plus?",
       "identity": {
         "header": "Veuillez sélectionner la description avec laquelle vous identifiez.",
-        "disability": "Je suis une personne vivant avec un handicap",
-        "visible-minority": "Je suis membre d'une communauté minoritaire visible",
-        "indigenous": "Je suis membre d'une communauté autochtone",
-        "lgbtq2": "Je suis membre de la communauté LGBTQ2",
-        "rural-remote-area": "Je vis dans une zone rurale ou éloignée",
-        "newcomer": "Je suis récemment nouveau venu au Canada, au cours des 5 dernières années"
+        "is-disabled": "Je suis une personne vivant avec un handicap",
+        "is-minority": "Je suis membre d'une communauté minoritaire visible",
+        "indigenous-type": "Je suis membre d'une communauté autochtone",
+        "is-lgbtq": "Je suis membre de la communauté LGBTQ2",
+        "is-rural": "Je vis dans une zone rurale ou éloignée",
+        "is-newcomer": "Je suis récemment nouveau venu au Canada, au cours des 5 dernières années"
       },
       "last-name": "Nom de famille",
-      "is-province-major": "Je certifie que j'ai trop d'âge de la majorité dans ma province",
-      "is-province-major-link": "Trouvez l'âge de la majorité dans votre province",
-      "prefered-language": "Dans quelle langue officielle préférez-vous être contacté?",
+      "is-province-major-certified": "Je certifie que j'ai trop d'âge de la majorité dans ma province",
+      "is-province-major-certified-link": "Trouvez l'âge de la majorité dans votre province",
+      "language": "Dans quelle langue officielle préférez-vous être contacté?",
       "province": "Quelle province ou quel territoire est votre résidence principale?",
-      "year-of-birth": "Quelle année êtes-vous né?"
+      "birth-year": "Quelle année êtes-vous né?"
     },
     "expression-of-interest-questions": {
       "header": "Partie 2 : Questions d'expression d'intérêt",
-      "about-yourself": "Parlez-nous de vous, décrivez vos forces, vos passions et ce qui vous motive. Quelles compétences ou connaissances pouvez-vous apporter au projet pilote d'engagement civique du Service canadien des services du Canada?",
-      "access-dedicated-device": "Avez-vous accès à un appareil dédié sur lequel travailler?",
-      "facilitate-participation": "Le pilote de participation civique vise à assurer l'inclusion des jeunes d'identités diverses, de données démographiques, de styles d'apprentissage et de capacités et de milieux éducatifs - y a-t-il quelque chose que vous ressentez faciliterait votre participation à ce pilote?",
+      "skills-interest": "Parlez-nous de vous, décrivez vos forces, vos passions et ce qui vous motive. Quelles compétences ou connaissances pouvez-vous apporter au projet pilote d'engagement civique du Service canadien des services du Canada?",
+      "has-dedicated-device": "Avez-vous accès à un appareil dédié sur lequel travailler?",
+      "program-interest": "Le pilote de participation civique vise à assurer l'inclusion des jeunes d'identités diverses, de données démographiques, de styles d'apprentissage et de capacités et de milieux éducatifs - y a-t-il quelque chose que vous ressentez faciliterait votre participation à ce pilote?",
       "hear-about-cpp": "Comment avez-vous entendu parler du pilote de participation civique?",
       "internet-quality": "Avez-vous accès à Internet fiable?",
-      "positive-impact": "Si vous pouviez avoir un impact positif sur un problème dans votre communauté, quel problème voudriez-vous aborder et pourquoi?"
+      "community-interest": "Si vous pouviez avoir un impact positif sur un problème dans votre communauté, quel problème voudriez-vous aborder et pourquoi?"
     },
     "submit": "Soumettre la demande"
   }
