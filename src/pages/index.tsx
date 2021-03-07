@@ -8,7 +8,7 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { QueryClient } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import { Button } from '../components/Button';
@@ -59,6 +59,8 @@ interface FormDataState {
   skillsInterest?: string;
 }
 
+const PERSISTING_STORAGE_FORM_DATA_KEY = 'CPP_APPLICATION_FORM_DATA_STATE';
+
 const Home: NextPage = () => {
   const { lang, t } = useTranslation();
 
@@ -69,7 +71,18 @@ const Home: NextPage = () => {
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces();
 
-  const [formData, setFormDataState] = useState<FormDataState>({ isInformationConsented: false, isProvinceMajorCertified: false });
+  const [formData, setFormDataState] = useState<FormDataState>(() => {
+    const defaultState: FormDataState = { isInformationConsented: false, isProvinceMajorCertified: false };
+
+    if (typeof window === 'undefined') return defaultState;
+
+    const storageData = window.sessionStorage.getItem(PERSISTING_STORAGE_FORM_DATA_KEY);
+    return { ...defaultState, ...(storageData ? JSON.parse(storageData) : {}) };
+  });
+
+  useEffect(() => {
+    window.sessionStorage.setItem(PERSISTING_STORAGE_FORM_DATA_KEY, JSON.stringify(formData));
+  }, [formData]);
 
   const onFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent & SelectFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
@@ -427,7 +440,7 @@ const Home: NextPage = () => {
           />
 
           <div className="tw-mt-20">
-            <CheckboxeField field={nameof<FormDataState>((o) => o.consent)} label={t('home:application-form.is-information-consented')} checked={formData.isInformationConsented} onChange={onCheckboxFieldChange} />
+            <CheckboxeField field={nameof<FormDataState>((o) => o.isInformationConsented)} label={t('home:application-form.is-information-consented')} checked={formData.isInformationConsented} onChange={onCheckboxFieldChange} />
           </div>
 
           <div className="tw-mt-16">
