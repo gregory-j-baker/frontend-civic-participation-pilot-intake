@@ -12,7 +12,7 @@
     "header": "Formulaire de demande",
     "is-information-consented": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
     "personal-information": {
-      "header": "Partie 1 : Renseignements personnels",
+      "header": "Renseignements personnels",
       "is-canadien-citizen": {
         "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
         "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108 (3), 109 (3) ou 114 (4) oucet acte."
@@ -41,7 +41,7 @@
       "birth-year": "Quelle année êtes-vous né?"
     },
     "expression-of-interest-questions": {
-      "header": "Partie 2 : Questions d'expression d'intérêt",
+      "header": "Questions d'expression d'intérêt",
       "skills-interest": "Parlez-nous de vous, décrivez vos forces, vos passions et ce qui vous motive. Quelles compétences ou connaissances pouvez-vous apporter au projet pilote d'engagement civique du Service canadien des services du Canada?",
       "has-dedicated-device": "Avez-vous accès à un appareil dédié sur lequel travailler?",
       "program-interest": "Le pilote de participation civique vise à assurer l'inclusion des jeunes d'identités diverses, de données démographiques, de styles d'apprentissage et de capacités et de milieux éducatifs - y a-t-il quelque chose que vous ressentez faciliterait votre participation à ce pilote?",

@@ -71,6 +71,11 @@ const getColorClasses: getColorClassesFunc = (color) => {
         defaultColorClasses: 'tw-bg-teal-600 hover:tw-bg-teal-700 tw-text-white tw-border-teal-700',
         outlineClasses: 'tw-bg-transparent hover:tw-bg-teal-700 tw-text-teal-700 hover:tw-text-white tw-border-teal-700',
       };
+    case TailwindColor.white:
+      return {
+        defaultColorClasses: 'tw-bg-white hover:tw-bg-gray-100 tw-text-gray-600 tw-border-gray-600',
+        outlineClasses: 'tw-bg-transparent hover:tw-bg-gray-100 tw-text-gray-600 tw-border-gray-600',
+      };
     case TailwindColor.yellow:
       return {
         defaultColorClasses: 'tw-bg-yellow-600 hover:tw-bg-yellow-700 tw-text-white tw-border-yellow-700',
@@ -87,12 +92,12 @@ const getColorClasses: getColorClassesFunc = (color) => {
 const Button = ({ className, color, disabled, children, onClick, outline }: ButtonProps): JSX.Element => {
   const colorClasses = useMemo(() => getColorClasses(color ?? TailwindColor.green), [color]);
 
-  const defaultClasses = `${colorClasses.defaultColorClasses} tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded`;
+  const defaultClasses = `${colorClasses.defaultColorClasses} tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded-md tw-shadow-sm`;
   const outlineClasses = `tw-bg-transparent ${colorClasses.outlineClasses} tw-font-semibold tw-py-2 tw-px-4 tw-border hover:tw-border-transparent tw-rounded`;
   const disabledClasses = `tw-opacity-50 tw-cursor-not-allowed`;
 
   return (
-    <button type="button" disabled={disabled} onClick={onClick} className={`${outline ? outlineClasses : defaultClasses} ${disabled ? disabledClasses : null} ${className}`}>
+    <button type="button" disabled={disabled} onClick={onClick} className={` ${outline ? outlineClasses : defaultClasses} ${disabled ? disabledClasses : null} ${className}`}>
       {children}
     </button>
   );

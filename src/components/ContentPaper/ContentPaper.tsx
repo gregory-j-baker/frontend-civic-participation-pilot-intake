@@ -8,10 +8,12 @@
 export interface ContentPaperProps {
   className?: string;
   children: React.ReactNode;
+  disablePadding?: boolean;
+  gutterBottom?: boolean;
 }
 
-const ContentPaper = ({ className, children }: ContentPaperProps): JSX.Element => {
-  return <div className={`tw-rounded tw-overflow-hidden tw-shadow-lg tw-border tw-border-gray-400 tw-mb-8 tw-px-6 tw-py-6 ${className}`}>{children}</div>;
+const ContentPaper = ({ className, children, disablePadding, gutterBottom }: ContentPaperProps): JSX.Element => {
+  return <div className={`tw-rounded tw-overflow-hidden tw-shadow-md ${!disablePadding ? 'tw-py-4 tw-px-6' : null} tw-border ${gutterBottom ?? false ? 'tw-mb-8' : null} ${className}`}>{children}</div>;
 };
 
 export default ContentPaper;
