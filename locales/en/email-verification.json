@@ -19,5 +19,15 @@
     "form": {
       "submit": "Visit the CSC website"
     }
+  },
+  "success": {
+    "page": {
+      "title": "Email verification's validated",
+      "header": "Thank you for validating your email address",
+      "sub-header": "Your application process is now complete"
+    },
+    "form": {
+      "submit": "Visit the CSC website"
+    }
   }
 }

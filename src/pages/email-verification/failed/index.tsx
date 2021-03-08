@@ -43,7 +43,7 @@ const EmailVerficationFailed: NextPage = () => {
           <Button onClick={handleOnSubmit}>{t('email-verification:failed.form.submit')}</Button>
         </div>
         <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">
-          <Image src="/img/undraw_cancel_u1it.svg" alt="" layout="fill" objectFit="contain" />
+          <Image src="/img/undraw_cancel_u1it.svg" alt="" layout="fill" />
         </div>
       </div>
     </MainLayout>

@@ -19,5 +19,15 @@
     "form": {
       "submit": "Visitez le site Web du CSC"
     }
+  },
+  "success": {
+    "page": {
+      "title": "Vérification du courrier électronique validé",
+      "header": "Merci de valider votre adresse email",
+      "sub-header": "Votre processus de candidature est maintenant complet"
+    },
+    "form": {
+      "submit": "Visitez le site Web du CSC"
+    }
   }
 }

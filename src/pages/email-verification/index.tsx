@@ -71,7 +71,7 @@ const EmailVerfication: NextPage = () => {
           </div>
         </div>
         <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">
-          <Image src="/img/undraw_authentication_fsn5.svg" alt="" layout="fill" objectFit="contain" />
+          <Image src="/img/undraw_authentication_fsn5.svg" alt="" layout="fill" />
         </div>
       </div>
     </MainLayout>
