@@ -6,6 +6,25 @@
  */
 
 /**
+ * Enum representing Tailwind CSS colors.
+ * @see https://v1.tailwindcss.com/docs/customizing-colors#default-color-palette
+ */
+export enum TailwindColor {
+  black = 'black',
+  blue = 'blue',
+  gray = 'gray',
+  green = 'green',
+  indigo = 'indigo',
+  orange = 'orange',
+  pink = 'pink',
+  purple = 'purple',
+  red = 'red',
+  teal = 'teal',
+  white = 'white',
+  yellow = 'yellow',
+}
+
+/**
  * Type representing HATEOAS links. Note that this shape is specifc to Spring Boot's HATEOAS implementation.
  */
 export interface HateoasCollection {

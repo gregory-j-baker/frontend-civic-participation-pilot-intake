@@ -12,6 +12,7 @@ import { useMemo, useState, useEffect } from 'react';
 import { QueryClient } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import { Button } from '../components/Button';
+import ContentPaper from '../components/ContentPaper/ContentPaper';
 import type { CheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField';
 import { CheckboxeField } from '../components/form/CheckboxeField';
 import type { SelectFieldOnChangeEvent, SelectFieldOption } from '../components/form/SelectField';
@@ -291,8 +292,8 @@ const Home: NextPage = () => {
             className="tw-w-full sm:tw-w-6/12"
           />
 
-          <div className="tw-p-6 tw-rounded-md tw-shadow-md tw-mb-8 tw-border tw-border-black tw-border-opacity-20 tw-bg-black tw-bg-opacity-5">
-            <h5 className="tw-m-0 tw-mb-10 tw-text-lg">{t('home:application-form.personal-information.identity.header')}</h5>
+          <ContentPaper>
+            <h5 className="tw-m-0 tw-mb-8 tw-text-lg">{t('home:application-form.personal-information.identity.header')}</h5>
 
             <SelectField
               field={nameof<FormDataState>((o) => o.isDisabled)}
@@ -364,7 +365,7 @@ const Home: NextPage = () => {
               required
               className="tw-w-6/12 md:tw-w-4/12"
             />
-          </div>
+          </ContentPaper>
 
           <SelectField
             field={nameof<FormDataState>((o) => o.educationLevelId)}

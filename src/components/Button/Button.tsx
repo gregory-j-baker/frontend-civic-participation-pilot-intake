@@ -4,29 +4,34 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
+import { TailwindColor } from '../../common/types';
 export interface ButtonOnClickEvent {
   (event: React.MouseEvent<HTMLButtonElement>): void;
 }
 
 export interface ButtonProps {
+  className?: string;
+  color?: TailwindColor;
   disabled?: boolean;
   children: React.ReactNode;
   onClick?: ButtonOnClickEvent;
+  outline?: boolean;
 }
 
-const Button = ({ disabled, children, onClick }: ButtonProps): JSX.Element => {
-  const rootClasses = 'tw-border tw-text-lg tw-text-white tw-rounded-md tw-px-4 tw-py-2 tw-transition tw-duration-500 tw-ease tw-select-none focus:tw-outline-none focus:tw-shadow-outline';
-  const defaultClasses = `${rootClasses} tw-border-green-600 tw-bg-green-600 hover:tw-bg-green-700`;
-  const disabledClasses = `${rootClasses} tw-border-green-300 tw-bg-green-300`;
+const Button = ({ className, color, disabled, children, onClick, outline }: ButtonProps): JSX.Element => {
+  const defaultClasses = `tw-bg-${color}-600 hover:tw-bg-${color}-700 tw-text-white tw-font-semibold tw-py-2 tw-px-4 tw-border tw-border-${color}-700 tw-rounded`;
+  const outlineClasses = `tw-bg-transparent hover:tw-bg-${color}-700 tw-text-${color}-700 tw-font-semibold hover:tw-text-white tw-py-2 tw-px-4 tw-border tw-border-${color}-700 hover:tw-border-transparent tw-rounded`;
+  const disabledClasses = `tw-opacity-50 tw-cursor-not-allowed`;
 
   return (
-    <button type="button" disabled={disabled} onClick={onClick} className={disabled ? disabledClasses : defaultClasses}>
+    <button type="button" disabled={disabled} onClick={onClick} className={`${outline ? outlineClasses : defaultClasses} ${disabled ? disabledClasses : null} ${className}`}>
       {children}
     </button>
   );
 };
 
-Button.propTypes = {};
+Button.defaultProps = {
+  color: TailwindColor.green,
+};
 
 export default Button;
