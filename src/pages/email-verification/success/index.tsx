@@ -10,9 +10,9 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
-import { Button, ButtonOnClickEvent } from '../../components/Button';
-import { TextField, TextFieldOnChangeEvent } from '../../components/form/TextField';
-import { MainLayout } from '../../components/layouts/main/MainLayout';
+import { Button, ButtonOnClickEvent } from '../../../components/Button';
+import { TextField, TextFieldOnChangeEvent } from '../../../components/form/TextField';
+import { MainLayout } from '../../../components/layouts/main/MainLayout';
 
 interface FormDataState {
   [key: string]: string | number | undefined;
@@ -20,7 +20,7 @@ interface FormDataState {
   attempts: number;
 }
 
-const EmailVerfication: NextPage = () => {
+const EmailVerficationSuccess: NextPage = () => {
   const { t } = useTranslation();
 
   const [formData, setFormDataState] = useState<FormDataState>({ attempts: 0 });
@@ -78,4 +78,4 @@ const EmailVerfication: NextPage = () => {
   );
 };
 
-export default EmailVerfication;
+export default EmailVerficationSuccess;

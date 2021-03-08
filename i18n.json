@@ -4,6 +4,7 @@
   "pages": {
     "*": ["common", "layouts", "menu"],
     "/": ["home"],
-    "/email-verification": ["email-verification"]
+    "/email-verification": ["email-verification"],
+    "/email-verification/failed": ["email-verification"]
   }
 }
