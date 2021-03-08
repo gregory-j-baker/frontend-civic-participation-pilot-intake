@@ -1,0 +1,13 @@
+{
+  "page": {
+    "title": "Vérifiez votre adresse courriel",
+    "header": "Vérifiez votre boîte de réception pour un code de vérification à six chiffres",
+    "description": "Merci à vous de vous intéresser au pilote CSC-CPP, veuillez confirmer les informations ci-dessous et entrez le code de vérification pour valider votre adresse courriel.Si vous ne pouvez pas accéder à votre courrier électronique pour le moment, appuyez sur \"Je le ferai plus tard\" et cliquez sur le lien de vérification de le courriel directement à la fois."
+  },
+  "form": {
+    "verification-code": "Code de vérification à six chiffres",
+    "verification-code-attempts": "{{attempts}}/{{maxAttempts}} tentatives restantes",
+    "submit": "Soumettre",
+    "cancel": "Je le ferai plus tard"
+  }
+}

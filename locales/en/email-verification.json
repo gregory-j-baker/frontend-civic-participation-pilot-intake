@@ -1,0 +1,13 @@
+{
+  "page": {
+    "title": "Verify your email address",
+    "header": "Check your inbox for a six digit verification code",
+    "description": "Thank your for your interest in the CSC-CPP pilot, please confirm information below and enter the verification code to validate your email. If you can't access your email at the moment, press \"I will do this later\" and click the verification link from the email directly at at later time."
+  },
+  "form": {
+    "verification-code": "Six digit verification code",
+    "verification-code-attempts": "{{attempts}}/{{maxAttempts}} attempts remaining",
+    "submit": "Submit application",
+    "cancel": "I will do it later"
+  }
+}

@@ -3,6 +3,7 @@
   "defaultLocale": "en",
   "pages": {
     "*": ["common", "layouts", "menu"],
-    "/": ["home"]
+    "/": ["home"],
+    "/email-verification": ["email-verification"]
   }
 }
