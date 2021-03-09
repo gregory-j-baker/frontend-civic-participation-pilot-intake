@@ -24,12 +24,14 @@ import { MainLayout } from '../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent, WizardOnSubmitClickEvent } from '../components/Wizard';
 import { WizardStep } from '../components/WizardStep';
+import { theme } from '../config';
 import useEducationLevels, { educationLevelStaticProps } from '../hooks/api/useEducationLevels';
 import useGenders, { genderStaticProps } from '../hooks/api/useGenders';
 import useIndigenousTypes, { indigenousTypeStaticProps } from '../hooks/api/useIndigenousTypes';
 import useInternetQualities, { internetQualitiesStaticProps } from '../hooks/api/useInternetQualities';
 import useLanguages, { languagesStaticProps } from '../hooks/api/useLanguages';
 import useProvinces, { provincesStaticProps } from '../hooks/api/useProvinces';
+import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
 import Error from './_error';
 
@@ -66,6 +68,8 @@ const NO_ANSWER_VALUE = '--prefer-not-answer';
 
 const Home: NextPage = () => {
   const { lang, t } = useTranslation();
+
+  const currentBreakpoint = useCurrentBreakpoint();
 
   const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
   const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
@@ -219,7 +223,16 @@ const Home: NextPage = () => {
                   </a>
                 </div>
 
-                <RadiosField field={nameof<FormDataState>((o) => o.languageId)} label={t('home:application-form.field.language')} value={formData.languageId} onChange={onFieldChange} options={preferedLanguageOptions} required gutterBottom inline />
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.languageId)}
+                  label={t('home:application-form.field.language')}
+                  value={formData.languageId}
+                  onChange={onFieldChange}
+                  options={preferedLanguageOptions}
+                  required
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
 
                 <RadiosField
                   field={nameof<FormDataState>((o) => o.isCanadianCitizen)}
@@ -230,7 +243,7 @@ const Home: NextPage = () => {
                   helperText={t('home:application-form.field.is-canadien-citizen.helper-text')}
                   required
                   gutterBottom
-                  inline
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
 
                 <SelectField
@@ -263,7 +276,7 @@ const Home: NextPage = () => {
                   onChange={onFieldChange}
                   options={educationLevelOptions}
                   required
-                  className="tw-w-full md:tw-w-8/12"
+                  className="tw-w-full"
                 />
               </>
             </WizardStep>
@@ -277,7 +290,7 @@ const Home: NextPage = () => {
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   gutterBottom
-                  inline
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
 
                 <RadiosField
@@ -288,7 +301,7 @@ const Home: NextPage = () => {
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   gutterBottom
-                  inline
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
 
                 <SelectField
@@ -299,6 +312,7 @@ const Home: NextPage = () => {
                   options={indigenousTypeOptions}
                   required
                   gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
                 />
 
                 <RadiosField
@@ -309,7 +323,7 @@ const Home: NextPage = () => {
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   gutterBottom
-                  inline
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
 
                 <RadiosField
@@ -320,7 +334,7 @@ const Home: NextPage = () => {
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   gutterBottom
-                  inline
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
 
                 <RadiosField
@@ -330,7 +344,7 @@ const Home: NextPage = () => {
                   onChange={onFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
-                  inline
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
               </>
             </WizardStep>
@@ -382,7 +396,7 @@ const Home: NextPage = () => {
                   options={yesNoOptions}
                   required
                   gutterBottom
-                  inline
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
 
                 <SelectField
