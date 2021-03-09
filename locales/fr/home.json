@@ -1,53 +1,47 @@
 {
-  "auth-info": {
-    "session": "Session NextAuth.js",
-    "sign-in": "Se connecter",
-    "sign-in-as": "Connecté en tant que\u00A0:",
-    "sign-out": "Déconnexion"
-  },
   "page": {
     "header": "Étape 5. Appliquer"
   },
   "application-form": {
     "header": "Formulaire de demande",
-    "is-information-consented": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
-    "personal-information": {
-      "header": "Renseignements personnels",
-      "is-canadien-citizen": {
-        "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
-        "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108 (3), 109 (3) ou 114 (4) oucet acte."
-      },
-      "email-address": "Adresse courriel",
+    "wizard-step": "Section",
+    "step": {
+      "personal-information": "Renseignements personnels",
+      "identity": "Veuillez sélectionner la description avec laquelle vous identifiez.",
+      "expression-of-interest": "Expression des questions d'intérêt",
+      "consent": "Consentement"
+    },
+    "field": {
+      "birth-year": "En quelle année es-tu né?",
+      "community-interest": "Si vous pouviez avoir un impact positif sur un problème de votre communauté, quel problème voudriez-vous aborder et pourquoi?",
       "education-level": {
         "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
         "helper-text": "Veuillez noter qu'il n'y a pas d'obligation d'éducation pour ce programme."
       },
+      "email-address": "Adresse courriel",
       "first-name": "Prénom",
       "gender": "À quelle identité de genre vous identifiez-vous le plus?",
-      "identity": {
-        "header": "Veuillez sélectionner la description avec laquelle vous identifiez.",
-        "is-disabled": "Je suis une personne vivant avec un handicap",
-        "is-minority": "Je suis membre d'une communauté minoritaire visible",
-        "indigenous-type": "Je suis membre d'une communauté autochtone",
-        "is-lgbtq": "Je suis membre de la communauté LGBTQ2",
-        "is-rural": "Je vis dans une zone rurale ou éloignée",
-        "is-newcomer": "Je suis récemment nouveau venu au Canada, au cours des 5 dernières années"
+      "has-dedicated-device": "Avez-vous accès à un appareil dédié sur lequel travailler?",
+      "hear-about-cpp": "Comment avez-vous entendu parler du pilote de participation civique?",
+      "indigenous-type": "Je suis membre d'une communauté autochtone",
+      "internet-quality": "Avez-vous accès à Internet fiable?",
+      "is-canadien-citizen": {
+        "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
+        "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108(3), 109(3) ou 114(4) oucet acte."
       },
-      "last-name": "Nom de famille",
+      "is-disabled": "Je suis une personne vivant avec un handicap",
+      "is-information-consented": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
+      "is-lgbtq": "Je suis membre de la communauté LGBTQ2",
+      "is-minority": "Je suis membre d'une communauté minoritaire visible",
+      "is-newcomer": "Je suis récemment nouveau venu au Canada, au cours des 5 dernières années",
       "is-province-major-certified": "Je certifie que j'ai trop d'âge de la majorité dans ma province",
       "is-province-major-certified-link": "Trouvez l'âge de la majorité dans votre province",
-      "language": "Dans quelle langue officielle préférez-vous être contacté?",
-      "province": "Quelle province ou quel territoire est votre résidence principale?",
-      "birth-year": "Quelle année êtes-vous né?"
-    },
-    "expression-of-interest-questions": {
-      "header": "Questions d'expression d'intérêt",
-      "skills-interest": "Parlez-nous de vous, décrivez vos forces, vos passions et ce qui vous motive. Quelles compétences ou connaissances pouvez-vous apporter au projet pilote d'engagement civique du Service canadien des services du Canada?",
-      "has-dedicated-device": "Avez-vous accès à un appareil dédié sur lequel travailler?",
+      "is-rural": "Je vis dans une zone rurale ou éloignée",
+      "language": "Dans quelle langue officielle préféreriez-vous être contacté?",
+      "last-name": "Nom de famille",
       "program-interest": "Le pilote de participation civique vise à assurer l'inclusion des jeunes d'identités diverses, de données démographiques, de styles d'apprentissage et de capacités et de milieux éducatifs - y a-t-il quelque chose que vous ressentez faciliterait votre participation à ce pilote?",
-      "hear-about-cpp": "Comment avez-vous entendu parler du pilote de participation civique?",
-      "internet-quality": "Avez-vous accès à Internet fiable?",
-      "community-interest": "Si vous pouviez avoir un impact positif sur un problème dans votre communauté, quel problème voudriez-vous aborder et pourquoi?"
+      "province": "Quelle province ou territoire est votre résidence principale?",
+      "skills-interest": "Parlez-nous de vous-même, décrivez vos forces, vos passions et vos motivations.Quelles compétences ou connaissances pouvez-vous apporter au pilote canadien de l'engagement civique du corps de service?"
     },
     "submit": "Soumettre la demande"
   }

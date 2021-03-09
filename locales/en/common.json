@@ -35,6 +35,9 @@
     "header": "Loading...",
     "description": "This may take a few seconds, please don't close this page."
   },
+  "textarea": {
+    "word-limit": "{{count}} out of {{limit}} words maximum"
+  },
   "wizard": {
     "next": "Next",
     "previous": "Previous",

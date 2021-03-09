@@ -35,6 +35,9 @@
     "header": "Chargement en cours...",
     "description": "Cela peut prendre quelques secondes, s'il vous plaît ne fermez pas cette page."
   },
+  "textarea": {
+    "word-limit": "{{count}} mots sur {{limit}} maximum"
+  },
   "wizard": {
     "next": "Suivant",
     "previous": "Précédent",
