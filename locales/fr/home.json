@@ -12,7 +12,10 @@
       "consent": "Consentement"
     },
     "field": {
-      "birth-year": "En quelle année es-tu né?",
+      "birth-year": {
+        "label": "En quelle année es-tu né?",
+        "helper-text": "Veuillez noter que pour être éligible, vous devez avoir entre 18 et 30 ans et l'âge de la majorité dans votre province ou votre territoire de résidence."
+      },
       "community-interest": "Si vous pouviez avoir un impact positif sur un problème de votre communauté, quel problème voudriez-vous aborder et pourquoi?",
       "education-level": {
         "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",

@@ -214,7 +214,16 @@ const Home: NextPage = () => {
                 <TextField field={nameof<FormDataState>((o) => o.lastName)} label={t('home:application-form.field.last-name')} value={formData.lastName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
                 <TextField field={nameof<FormDataState>((o) => o.email)} label={t('home:application-form.field.email-address')} value={formData.email} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12" />
 
-                <SelectField field={nameof<FormDataState>((o) => o.birthYear)} label={t('home:application-form.field.birth-year')} value={formData.birthYear?.toString()} onChange={onFieldChange} options={yearOfBirthOptions} required gutterBottom />
+                <SelectField
+                  field={nameof<FormDataState>((o) => o.birthYear)}
+                  label={t('home:application-form.field.birth-year.label')}
+                  helperText={t('home:application-form.field.birth-year.helper-text')}
+                  value={formData.birthYear?.toString()}
+                  onChange={onFieldChange}
+                  options={yearOfBirthOptions}
+                  required
+                  gutterBottom
+                />
 
                 <CheckboxeField field={nameof<FormDataState>((o) => o.isProvinceMajorCertified)} label={t('home:application-form.field.is-province-major-certified')} checked={formData.isProvinceMajorCertified} onChange={onCheckboxFieldChange} required />
                 <div className="tw-mb-8 tw-pl-10">
