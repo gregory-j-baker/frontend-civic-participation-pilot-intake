@@ -37,17 +37,8 @@ const TextAreaField = ({ className, disabled, error, field, gutterBottom, helper
   const fieldId = `form-text-area-field-${field}`;
 
   const getWordCount = useCallback((val?: string | null): number => {
-    let count = 0;
-
-    val?.split('\n').forEach((line) =>
-      line.split(' ').forEach((segment) => {
-        if (segment.length > 0) {
-          ++count;
-        }
-      })
-    );
-
-    return count;
+    const reg = new RegExp(/\S+/g);
+    return val?.match(reg)?.length ?? 0;
   }, []);
 
   const wordCount = useMemo(() => getWordCount(value), [getWordCount, value]);
