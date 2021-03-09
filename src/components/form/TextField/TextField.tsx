@@ -21,14 +21,14 @@ export interface TextFieldProps {
   helperText?: string;
   label: string;
   labelClassName?: string;
-  onChange: TextFieldOnChangeEvent;
   maxLength?: number;
+  onChange: TextFieldOnChangeEvent;
   placeholder?: string;
   required?: boolean;
   value?: string | null;
 }
 
-const TextField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, maxLength, placeholder, required, value }: TextFieldProps): JSX.Element => {
+const TextField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, value }: TextFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-text-field-${field}`;

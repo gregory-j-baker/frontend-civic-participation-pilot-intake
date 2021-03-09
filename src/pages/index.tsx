@@ -11,9 +11,6 @@ import useTranslation from 'next-translate/useTranslation';
 import { useMemo, useState, useEffect } from 'react';
 import { QueryClient } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
-import { TailwindColor } from '../common/types';
-import { Button, ButtonOnClickEvent } from '../components/Button';
-import ContentPaper from '../components/ContentPaper/ContentPaper';
 import type { CheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField';
 import { CheckboxeField } from '../components/form/CheckboxeField';
 import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../components/form/RadiosField';
@@ -25,6 +22,8 @@ import type { TextFieldOnChangeEvent } from '../components/form/TextField';
 import { TextField } from '../components/form/TextField';
 import { MainLayout } from '../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../components/PageLoadingSpinner';
+import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent, WizardOnSubmitClickEvent } from '../components/Wizard';
+import { WizardStep } from '../components/WizardStep';
 import useEducationLevels, { educationLevelStaticProps } from '../hooks/api/useEducationLevels';
 import useGenders, { genderStaticProps } from '../hooks/api/useGenders';
 import useIndigenousTypes, { indigenousTypeStaticProps } from '../hooks/api/useIndigenousTypes';
@@ -36,7 +35,6 @@ import Error from './_error';
 
 interface FormDataState {
   [key: string]: boolean | string | number | null | undefined;
-  activeStep: number;
   birthYear?: number;
   communityInterest?: string;
   educationLevelId?: string;
@@ -76,7 +74,7 @@ const Home: NextPage = () => {
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces();
 
   const [formData, setFormDataState] = useState<FormDataState>(() => {
-    const defaultState: FormDataState = { activeStep: 1, isInformationConsented: false, isProvinceMajorCertified: false };
+    const defaultState: FormDataState = { isInformationConsented: false, isProvinceMajorCertified: false };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -87,8 +85,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     window.sessionStorage.setItem(PERSISTING_STORAGE_FORM_DATA_KEY, JSON.stringify(formData));
   }, [formData]);
-
-  const steps = useMemo<string[]>(() => [t('home:application-form.personal-information.header'), t('home:application-form.personal-information.identity.header'), t('home:application-form.expression-of-interest-questions.header'), 'Consent'], [t]);
 
   const onFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent & SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
@@ -128,31 +124,18 @@ const Home: NextPage = () => {
     setFormDataState((prev) => ({ ...prev, [field as keyof FormDataState]: checked }));
   };
 
-  const handleBack: ButtonOnClickEvent = (event) => {
+  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
-
-    setFormDataState((prev) => {
-      if (prev.activeStep === 1) return prev;
-      return { ...prev, activeStep: prev.activeStep - 1 };
-    });
+    return true;
   };
 
-  const handleNext: ButtonOnClickEvent = (event) => {
+  const handleWizardOnNextClick: WizardOnNextClickEvent = (event) => {
     event.preventDefault();
-
-    setFormDataState((prev) => {
-      if (prev.activeStep === steps.length) return prev;
-      return { ...prev, activeStep: prev.activeStep + 1 };
-    });
+    return true;
   };
 
-  const handleSubmit: ButtonOnClickEvent = (event) => {
+  const handleWizardOnSubmitClick: WizardOnSubmitClickEvent = (event) => {
     event.preventDefault();
-
-    if (formData.activeStep === steps.length) {
-      console.log('Submit form to API');
-      console.dir(formData);
-    }
   };
 
   // year of birth select options
@@ -237,287 +220,204 @@ const Home: NextPage = () => {
       ) : (
         <>
           <h3 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('home:application-form.header')}</h3>
-          <ContentPaper disablePadding>
-            <div className="tw-border-b-2 tw-mx-6 tw-py-4">
-              <div className="tw-uppercase tw-tracking-wide tw-text-sm tw-font-bold tw-text-gray-500 tw-mb-1 tw-leading-tight">{`Section: ${formData.activeStep} of ${steps.length}`}</div>
-              <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-items-center md:tw-justify-between">
-                <div className="tw-text-xl tw-font-bold tw-leading-tight">{steps[formData.activeStep - 1]}</div>
-              </div>
-            </div>
-            <div className="tw-my-8 tw-mx-6">
-              {formData.activeStep === 1 && (
-                <>
-                  <TextField
-                    field={nameof<FormDataState>((o) => o.firstName)}
-                    label={t('home:application-form.personal-information.first-name')}
-                    value={formData.firstName}
-                    onChange={onFieldChange}
-                    required
-                    gutterBottom
-                    className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-                  />
-                  <TextField
-                    field={nameof<FormDataState>((o) => o.lastName)}
-                    label={t('home:application-form.personal-information.last-name')}
-                    value={formData.lastName}
-                    onChange={onFieldChange}
-                    required
-                    gutterBottom
-                    className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-                  />
-                  <TextField
-                    field={nameof<FormDataState>((o) => o.email)}
-                    label={t('home:application-form.personal-information.email-address')}
-                    value={formData.email}
-                    onChange={onFieldChange}
-                    required
-                    gutterBottom
-                    className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-                  />
+          <Wizard stepText={t('home:application-form.wizard-step')} submitText={t('home:application-form.submit')} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick} onSubmitClick={handleWizardOnSubmitClick}>
+            <WizardStep header={t('home:application-form.step.personal-information')}>
+              <>
+                <TextField field={nameof<FormDataState>((o) => o.firstName)} label={t('home:application-form.field.first-name')} value={formData.firstName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
+                <TextField field={nameof<FormDataState>((o) => o.lastName)} label={t('home:application-form.field.last-name')} value={formData.lastName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
+                <TextField field={nameof<FormDataState>((o) => o.email)} label={t('home:application-form.field.email-address')} value={formData.email} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12" />
 
-                  <SelectField
-                    field={nameof<FormDataState>((o) => o.birthYear)}
-                    label={t('home:application-form.personal-information.birth-year')}
-                    value={formData.birthYear?.toString()}
-                    onChange={onFieldChange}
-                    options={yearOfBirthOptions}
-                    required
-                    gutterBottom
-                  />
+                <SelectField field={nameof<FormDataState>((o) => o.birthYear)} label={t('home:application-form.field.birth-year')} value={formData.birthYear?.toString()} onChange={onFieldChange} options={yearOfBirthOptions} required gutterBottom />
 
-                  <CheckboxeField
-                    field={nameof<FormDataState>((o) => o.isProvinceMajorCertified)}
-                    label={t('home:application-form.personal-information.is-province-major-certified')}
-                    checked={formData.isProvinceMajorCertified}
-                    onChange={onCheckboxFieldChange}
-                    required
-                  />
-                  <div className="tw-mb-8 tw-pl-10">
-                    <a href="http://example.com" target="_blank" rel="noreferrer">
-                      {t('home:application-form.personal-information.is-province-major-certified-link')}
-                    </a>
-                  </div>
+                <CheckboxeField field={nameof<FormDataState>((o) => o.isProvinceMajorCertified)} label={t('home:application-form.field.is-province-major-certified')} checked={formData.isProvinceMajorCertified} onChange={onCheckboxFieldChange} required />
+                <div className="tw-mb-8 tw-pl-10">
+                  <a href="http://example.com" target="_blank" rel="noreferrer">
+                    {t('home:application-form.field.is-province-major-certified-link')}
+                  </a>
+                </div>
 
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.languageId)}
-                    label={t('home:application-form.personal-information.language')}
-                    value={formData.languageId}
-                    onChange={onFieldChange}
-                    options={preferedLanguageOptions}
-                    required
-                    gutterBottom
-                    inline
-                  />
+                <RadiosField field={nameof<FormDataState>((o) => o.languageId)} label={t('home:application-form.field.language')} value={formData.languageId} onChange={onFieldChange} options={preferedLanguageOptions} required gutterBottom inline />
 
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.isCanadianCitizen)}
-                    label={t('home:application-form.personal-information.is-canadien-citizen.label')}
-                    value={formData.isCanadianCitizen?.toString()}
-                    onChange={onFieldChange}
-                    options={yesNoOptions}
-                    helperText={t('home:application-form.personal-information.is-canadien-citizen.helper-text')}
-                    required
-                    gutterBottom
-                    inline
-                  />
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.isCanadianCitizen)}
+                  label={t('home:application-form.field.is-canadien-citizen.label')}
+                  value={formData.isCanadianCitizen?.toString()}
+                  onChange={onFieldChange}
+                  options={yesNoOptions}
+                  helperText={t('home:application-form.field.is-canadien-citizen.helper-text')}
+                  required
+                  gutterBottom
+                  inline
+                />
 
-                  <SelectField
-                    field={nameof<FormDataState>((o) => o.provinceId)}
-                    label={t('home:application-form.personal-information.province')}
-                    value={formData.provinceId}
-                    onChange={onFieldChange}
-                    options={provinceOptions}
-                    required
-                    gutterBottom
-                    className="tw-w-full sm:tw-w-6/12"
-                  />
+                <SelectField
+                  field={nameof<FormDataState>((o) => o.provinceId)}
+                  label={t('home:application-form.field.province')}
+                  value={formData.provinceId}
+                  onChange={onFieldChange}
+                  options={provinceOptions}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
+                />
 
-                  <SelectField
-                    field={nameof<FormDataState>((o) => o.genderId)}
-                    label={t('home:application-form.personal-information.gender')}
-                    value={formData.genderId}
-                    onChange={onFieldChange}
-                    options={genderOptions}
-                    required
-                    gutterBottom
-                    className="tw-w-full sm:tw-w-6/12"
-                  />
+                <SelectField
+                  field={nameof<FormDataState>((o) => o.genderId)}
+                  label={t('home:application-form.field.gender')}
+                  value={formData.genderId}
+                  onChange={onFieldChange}
+                  options={genderOptions}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
+                />
 
-                  <SelectField
-                    field={nameof<FormDataState>((o) => o.educationLevelId)}
-                    label={t('home:application-form.personal-information.education-level.label')}
-                    helperText={t('home:application-form.personal-information.education-level.helper-text')}
-                    value={formData.educationLevelId}
-                    onChange={onFieldChange}
-                    options={educationLevelOptions}
-                    required
-                    className="tw-w-full md:tw-w-8/12"
-                  />
-                </>
-              )}
+                <SelectField
+                  field={nameof<FormDataState>((o) => o.educationLevelId)}
+                  label={t('home:application-form.field.education-level.label')}
+                  helperText={t('home:application-form.field.education-level.helper-text')}
+                  value={formData.educationLevelId}
+                  onChange={onFieldChange}
+                  options={educationLevelOptions}
+                  required
+                  className="tw-w-full md:tw-w-8/12"
+                />
+              </>
+            </WizardStep>
+            <WizardStep header={t('home:application-form.step.identity')}>
+              <>
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.isDisabled)}
+                  label={t('home:application-form.field.is-disabled')}
+                  value={formData.isDisabled === null ? 'none' : formData.isDisabled?.toString()}
+                  onChange={onFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  required
+                  gutterBottom
+                  inline
+                />
 
-              {formData.activeStep === 2 && (
-                <>
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.isDisabled)}
-                    label={t('home:application-form.personal-information.identity.is-disabled')}
-                    value={formData.isDisabled === null ? 'none' : formData.isDisabled?.toString()}
-                    onChange={onFieldChange}
-                    options={yesNoNoPreferNotAnswerOptions}
-                    required
-                    gutterBottom
-                    inline
-                  />
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.isMinority)}
+                  label={t('home:application-form.field.is-minority')}
+                  value={formData.isMinority === null ? 'none' : formData.isMinority?.toString()}
+                  onChange={onFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  required
+                  gutterBottom
+                  inline
+                />
 
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.isMinority)}
-                    label={t('home:application-form.personal-information.identity.is-minority')}
-                    value={formData.isMinority === null ? 'none' : formData.isMinority?.toString()}
-                    onChange={onFieldChange}
-                    options={yesNoNoPreferNotAnswerOptions}
-                    required
-                    gutterBottom
-                    inline
-                  />
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.indigenousTypeId)}
+                  label={t('home:application-form.field.indigenous-type')}
+                  value={formData.indigenousTypeId}
+                  onChange={onFieldChange}
+                  options={indigenousTypeOptions}
+                  required
+                  gutterBottom
+                  inline
+                />
 
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.indigenousTypeId)}
-                    label={t('home:application-form.personal-information.identity.indigenous-type')}
-                    value={formData.indigenousTypeId}
-                    onChange={onFieldChange}
-                    options={indigenousTypeOptions}
-                    required
-                    gutterBottom
-                    inline
-                  />
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.isLgbtq)}
+                  label={t('home:application-form.field.is-lgbtq')}
+                  value={formData.isLgbtq === null ? 'none' : formData.isLgbtq?.toString()}
+                  onChange={onFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  required
+                  gutterBottom
+                  inline
+                />
 
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.isLgbtq)}
-                    label={t('home:application-form.personal-information.identity.is-lgbtq')}
-                    value={formData.isLgbtq === null ? 'none' : formData.isLgbtq?.toString()}
-                    onChange={onFieldChange}
-                    options={yesNoNoPreferNotAnswerOptions}
-                    required
-                    gutterBottom
-                    inline
-                  />
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.isRural)}
+                  label={t('home:application-form.field.is-rural')}
+                  value={formData.isRural === null ? 'none' : formData.isRural?.toString()}
+                  onChange={onFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  required
+                  gutterBottom
+                  inline
+                />
 
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.isRural)}
-                    label={t('home:application-form.personal-information.identity.is-rural')}
-                    value={formData.isRural === null ? 'none' : formData.isRural?.toString()}
-                    onChange={onFieldChange}
-                    options={yesNoNoPreferNotAnswerOptions}
-                    required
-                    gutterBottom
-                    inline
-                  />
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.isNewcomer)}
+                  label={t('home:application-form.field.is-newcomer')}
+                  value={formData.isNewcomer === null ? 'none' : formData.isNewcomer?.toString()}
+                  onChange={onFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  required
+                  inline
+                />
+              </>
+            </WizardStep>
+            <WizardStep header={t('home:application-form.step.expression-of-interest-questions')}>
+              <>
+                <TextAreaField
+                  field={nameof<FormDataState>((o) => o.skillsInterest)}
+                  label={t('home:application-form.field.skills-interest')}
+                  value={formData.skillsInterest}
+                  onChange={onFieldChange}
+                  required
+                  gutterBottom
+                  className="tw-w-full"
+                  wordLimit={250}
+                />
 
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.isNewcomer)}
-                    label={t('home:application-form.personal-information.identity.is-newcomer')}
-                    value={formData.isNewcomer === null ? 'none' : formData.isNewcomer?.toString()}
-                    onChange={onFieldChange}
-                    options={yesNoNoPreferNotAnswerOptions}
-                    required
-                    inline
-                  />
-                </>
-              )}
+                <TextAreaField
+                  field={nameof<FormDataState>((o) => o.communityInterest)}
+                  label={t('home:application-form.field.community-interest')}
+                  value={formData.communityInterest}
+                  onChange={onFieldChange}
+                  required
+                  gutterBottom
+                  className="tw-w-full"
+                  wordLimit={250}
+                />
 
-              {formData.activeStep === 3 && (
-                <>
-                  <TextAreaField
-                    field={nameof<FormDataState>((o) => o.skillsInterest)}
-                    label={t('home:application-form.expression-of-interest-questions.skills-interest')}
-                    value={formData.skillsInterest}
-                    onChange={onFieldChange}
-                    required
-                    gutterBottom
-                    className="tw-w-full"
-                    helperText="250 words max."
-                  />
+                <TextAreaField field={nameof<FormDataState>((o) => o.programInterest)} label={t('home:application-form.field.program-interest')} value={formData.programInterest} onChange={onFieldChange} className="tw-w-full" wordLimit={250} />
+              </>
+            </WizardStep>
+            <WizardStep header={t('home:application-form.step.consent')}>
+              <>
+                <SelectField
+                  field={nameof<FormDataState>((o) => o.internetQualityId)}
+                  label={t('home:application-form.field.internet-quality')}
+                  value={formData.internetQualityId}
+                  onChange={onFieldChange}
+                  options={internetQualityOptions}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
+                />
 
-                  <TextAreaField
-                    field={nameof<FormDataState>((o) => o.communityInterest)}
-                    label={t('home:application-form.expression-of-interest-questions.community-interest')}
-                    value={formData.communityInterest}
-                    onChange={onFieldChange}
-                    required
-                    gutterBottom
-                    className="tw-w-full"
-                    helperText="250 words max."
-                  />
+                <RadiosField
+                  field={nameof<FormDataState>((o) => o.hasDedicatedDevice)}
+                  label={t('home:application-form.field.has-dedicated-device')}
+                  value={formData.hasDedicatedDevice?.toString()}
+                  onChange={onFieldChange}
+                  options={yesNoOptions}
+                  required
+                  gutterBottom
+                  inline
+                />
 
-                  <TextAreaField
-                    field={nameof<FormDataState>((o) => o.programInterest)}
-                    label={t('home:application-form.expression-of-interest-questions.program-interest')}
-                    value={formData.programInterest}
-                    onChange={onFieldChange}
-                    className="tw-w-full"
-                    helperText="250 words max."
-                  />
-                </>
-              )}
+                <SelectField
+                  field={nameof<FormDataState>((o) => o.hearAboutCPP)}
+                  label={t('home:application-form.field.hear-about-cpp')}
+                  value={formData.hearAboutCPP}
+                  onChange={onFieldChange}
+                  options={hearAboutCPPOptions}
+                  required
+                  className="tw-w-full sm:tw-w-6/12"
+                  gutterBottom
+                />
 
-              {formData.activeStep === steps.length && (
-                <>
-                  <SelectField
-                    field={nameof<FormDataState>((o) => o.internetQualityId)}
-                    label={t('home:application-form.expression-of-interest-questions.internet-quality')}
-                    value={formData.internetQualityId}
-                    onChange={onFieldChange}
-                    options={internetQualityOptions}
-                    required
-                    gutterBottom
-                    className="tw-w-full sm:tw-w-6/12"
-                  />
-
-                  <RadiosField
-                    field={nameof<FormDataState>((o) => o.hasDedicatedDevice)}
-                    label={t('home:application-form.expression-of-interest-questions.has-dedicated-device')}
-                    value={formData.hasDedicatedDevice?.toString()}
-                    onChange={onFieldChange}
-                    options={yesNoOptions}
-                    required
-                    gutterBottom
-                    inline
-                  />
-
-                  <SelectField
-                    field={nameof<FormDataState>((o) => o.hearAboutCPP)}
-                    label={t('home:application-form.expression-of-interest-questions.hear-about-cpp')}
-                    value={formData.hearAboutCPP}
-                    onChange={onFieldChange}
-                    options={hearAboutCPPOptions}
-                    required
-                    className="tw-w-full sm:tw-w-6/12"
-                    gutterBottom
-                  />
-
-                  <CheckboxeField field={nameof<FormDataState>((o) => o.isInformationConsented)} label={t('home:application-form.is-information-consented')} checked={formData.isInformationConsented} onChange={onCheckboxFieldChange} />
-                </>
-              )}
-            </div>
-            <div className="tw-flex tw-justify-between tw-border-t-2 tw-py-5 tw-px-6">
-              <div className="tw-w-1/2">
-                {formData.activeStep > 1 && (
-                  <Button onClick={handleBack} color={TailwindColor.white}>
-                    Previous
-                  </Button>
-                )}
-              </div>
-              <div className="tw-w-1/2 tw-text-right">
-                {formData.activeStep === steps.length ? (
-                  <Button onClick={handleSubmit} disabled={!formData.isInformationConsented}>
-                    {t('home:application-form.submit')}
-                  </Button>
-                ) : (
-                  <Button onClick={handleNext}>Next</Button>
-                )}
-              </div>
-            </div>
-          </ContentPaper>
+                <CheckboxeField field={nameof<FormDataState>((o) => o.isInformationConsented)} label={t('home:application-form.field.is-information-consented')} checked={formData.isInformationConsented} onChange={onCheckboxFieldChange} />
+              </>
+            </WizardStep>
+          </Wizard>
         </>
       )}
     </MainLayout>

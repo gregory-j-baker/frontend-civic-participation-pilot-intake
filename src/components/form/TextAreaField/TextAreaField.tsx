@@ -6,6 +6,7 @@
  */
 
 import useTranslation from 'next-translate/useTranslation';
+import { useCallback, useMemo } from 'react';
 import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 
 export interface TextAreaFieldOnChangeEvent {
@@ -21,22 +22,34 @@ export interface TextAreaFieldProps {
   helperText?: string;
   label: string;
   labelClassName?: string;
+  maxLength?: number;
   onChange: TextAreaFieldOnChangeEvent;
   placeholder?: string;
   required?: boolean;
   rows?: number;
   value?: string | null;
+  wordLimit?: number;
 }
 
-const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, placeholder, required, rows, value }: TextAreaFieldProps): JSX.Element => {
+const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, rows, value, wordLimit }: TextAreaFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-text-area-field-${field}`;
 
+  const getWordCount = useCallback((val?: string | null): number => {
+    const reg = new RegExp(/\S+/g);
+    return val?.match(reg)?.length ?? 0;
+  }, []);
+
+  const wordCount = useMemo(() => getWordCount(value), [getWordCount, value]);
+
   const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
     const target = event.target as HTMLInputElement;
     const val = target.value;
-    onChange({ field, value: val.length > 0 ? val : null });
+
+    if (!wordLimit || getWordCount(val) <= wordLimit) {
+      onChange({ field, value: val.length > 0 ? val : null });
+    }
   };
 
   const contentRows = (value ?? '').split('\n').length;
@@ -48,7 +61,8 @@ const TextAreaField = ({ className, disabled, error, field, gutterBottom, helper
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
-      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} className={className} rows={Math.max(contentRows, rows ?? 5)} />
+      {wordLimit && <HelpBlock className="tw-italic tw-text-sm">{t('common:textarea.word-limit', { count: wordCount, limit: wordLimit })}</HelpBlock>}
+      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} maxLength={maxLength} className={className} rows={Math.max(contentRows, rows ?? 5)} />
     </FormGroup>
   );
 };
