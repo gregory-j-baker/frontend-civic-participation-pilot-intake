@@ -58,13 +58,14 @@ export const getNextElementSibling = (elem: Element, selector?: string | null): 
   return null;
 };
 
-export const getYears = ({ startYear }: { startYear?: number }): number[] => {
+export const getYears = ({ startYear, endYear }: { startYear?: number; endYear?: number }): number[] => {
   const currentYear = new Date().getFullYear();
+
   const years = [];
 
   let year = startYear || currentYear - 50;
 
-  while (year <= currentYear) {
+  while (year <= (endYear ?? currentYear)) {
     years.push(year++);
   }
 

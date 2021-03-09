@@ -37,10 +37,10 @@ interface FormDataState {
   [key: string]: boolean | string | number | null | undefined;
   birthYear?: number;
   communityInterest?: string;
-  educationLevelId?: string;
+  educationLevelId?: string | null;
   email?: string;
   firstName?: string;
-  genderId?: string;
+  genderId?: string | null;
   hasDedicatedDevice?: boolean;
   hearAboutCPP?: string;
   indigenousTypeId?: string;
@@ -62,6 +62,7 @@ interface FormDataState {
 }
 
 const PERSISTING_STORAGE_FORM_DATA_KEY = 'CPP_APPLICATION_FORM_DATA_STATE';
+const NO_ANSWER_VALUE = '--prefer-not-answer';
 
 const Home: NextPage = () => {
   const { lang, t } = useTranslation();
@@ -88,35 +89,17 @@ const Home: NextPage = () => {
 
   const onFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent & SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      // yes/no
-      if ([nameof<FormDataState>((o) => o.isCanadianCitizen), nameof<FormDataState>((o) => o.hasDedicatedDevice)].includes(field)) {
-        return { ...prev, [field as keyof FormDataState]: value?.toLowerCase() === 'true' ?? undefined };
+      let newValue = undefined;
+
+      if (value) {
+        if (value.toLowerCase() === 'true') newValue = true;
+        else if (value.toLowerCase() === 'false') newValue = false;
+        else if (value.toLowerCase() === NO_ANSWER_VALUE.toLowerCase()) newValue = null;
+        else if (!isNaN(Number(value))) newValue = Number(value);
+        else newValue = value;
       }
 
-      // yes/no/none
-      if ([nameof<FormDataState>((o) => o.isDisabled), nameof<FormDataState>((o) => o.isMinority), nameof<FormDataState>((o) => o.isLgbtq), nameof<FormDataState>((o) => o.isRural), nameof<FormDataState>((o) => o.isNewcomer)].includes(field)) {
-        if (value) {
-          if (value === 'true') {
-            return { ...prev, [field as keyof FormDataState]: true };
-          }
-
-          if (value === 'false') {
-            return { ...prev, [field as keyof FormDataState]: false };
-          }
-
-          return { ...prev, [field as keyof FormDataState]: null };
-        }
-
-        return { ...prev, [field as keyof FormDataState]: undefined };
-      }
-
-      // number
-      if ([nameof<FormDataState>((o) => o.birthYear)].includes(field)) {
-        return { ...prev, [field as keyof FormDataState]: value ? Number(value) : undefined };
-      }
-
-      // string
-      return { ...prev, [field as keyof FormDataState]: value ?? undefined };
+      return { ...prev, [field as keyof FormDataState]: newValue };
     });
   };
 
@@ -139,7 +122,7 @@ const Home: NextPage = () => {
   };
 
   // year of birth select options
-  const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({}).map((year) => ({ value: year.toString(), text: `${year}` })), []);
+  const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({ startYear: 1990, endYear: 2003 }).map((year) => ({ value: year.toString(), text: `${year}` })), []);
 
   // prefered language select options
   const preferedLanguageOptions = useMemo<RadiosFieldOption[]>(() => {
@@ -156,25 +139,25 @@ const Home: NextPage = () => {
   // gender select options
   const genderOptions = useMemo<SelectFieldOption[]>(() => {
     if (isGendersLoading || gendersError) return [];
-    return genders?._embedded.genders.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [];
-  }, [lang, isGendersLoading, gendersError, genders]);
+    return [...(genders?._embedded.genders.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
+  }, [t, lang, isGendersLoading, gendersError, genders]);
 
   // education level select options
   const educationLevelOptions = useMemo<SelectFieldOption[]>(() => {
     if (isEducationLevelsLoading || educationLevelsError) return [];
-    return educationLevels?._embedded.educationLevels.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [];
-  }, [lang, isEducationLevelsLoading, educationLevelsError, educationLevels]);
+    return [...(educationLevels?._embedded.educationLevels.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
+  }, [t, lang, isEducationLevelsLoading, educationLevelsError, educationLevels]);
 
   // indigenous types select options
   const indigenousTypeOptions = useMemo<RadiosFieldOption[]>(() => {
     if (isIndigenousTypesLoading || indigenousTypesError) return [];
-    return [...(indigenousTypes?._embedded.indigenousTypes.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: 'NONE', text: t('common:no') }];
+    return [...(indigenousTypes?._embedded.indigenousTypes.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:no') }];
   }, [t, lang, isIndigenousTypesLoading, indigenousTypesError, indigenousTypes]);
 
   // internet quality select options
   const internetQualityOptions = useMemo<SelectFieldOption[]>(() => {
     if (isInternetQualitiesLoading || internetQualitiesError) return [];
-    return [...(internetQualities?._embedded.internetQualities.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: 'NONE', text: t('common:no') }];
+    return [...(internetQualities?._embedded.internetQualities.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:no') }];
   }, [t, lang, isInternetQualitiesLoading, internetQualitiesError, internetQualities]);
 
   // access dedicated device select options
@@ -199,7 +182,7 @@ const Home: NextPage = () => {
     () => [
       { value: true.toString(), text: t('common:yes') },
       { value: false.toString(), text: t('common:no') },
-      { value: 'none', text: t('common:prefer-not-answer') },
+      { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') },
     ],
     [t]
   );
@@ -264,7 +247,7 @@ const Home: NextPage = () => {
                 <SelectField
                   field={nameof<FormDataState>((o) => o.genderId)}
                   label={t('home:application-form.field.gender')}
-                  value={formData.genderId}
+                  value={formData.genderId === null ? NO_ANSWER_VALUE : formData.genderId?.toString()}
                   onChange={onFieldChange}
                   options={genderOptions}
                   required
@@ -276,7 +259,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.educationLevelId)}
                   label={t('home:application-form.field.education-level.label')}
                   helperText={t('home:application-form.field.education-level.helper-text')}
-                  value={formData.educationLevelId}
+                  value={formData.educationLevelId === null ? NO_ANSWER_VALUE : formData.educationLevelId?.toString()}
                   onChange={onFieldChange}
                   options={educationLevelOptions}
                   required
@@ -289,7 +272,7 @@ const Home: NextPage = () => {
                 <RadiosField
                   field={nameof<FormDataState>((o) => o.isDisabled)}
                   label={t('home:application-form.field.is-disabled')}
-                  value={formData.isDisabled === null ? 'none' : formData.isDisabled?.toString()}
+                  value={formData.isDisabled === null ? NO_ANSWER_VALUE : formData.isDisabled?.toString()}
                   onChange={onFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
@@ -300,7 +283,7 @@ const Home: NextPage = () => {
                 <RadiosField
                   field={nameof<FormDataState>((o) => o.isMinority)}
                   label={t('home:application-form.field.is-minority')}
-                  value={formData.isMinority === null ? 'none' : formData.isMinority?.toString()}
+                  value={formData.isMinority === null ? NO_ANSWER_VALUE : formData.isMinority?.toString()}
                   onChange={onFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
@@ -322,7 +305,7 @@ const Home: NextPage = () => {
                 <RadiosField
                   field={nameof<FormDataState>((o) => o.isLgbtq)}
                   label={t('home:application-form.field.is-lgbtq')}
-                  value={formData.isLgbtq === null ? 'none' : formData.isLgbtq?.toString()}
+                  value={formData.isLgbtq === null ? NO_ANSWER_VALUE : formData.isLgbtq?.toString()}
                   onChange={onFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
@@ -333,7 +316,7 @@ const Home: NextPage = () => {
                 <RadiosField
                   field={nameof<FormDataState>((o) => o.isRural)}
                   label={t('home:application-form.field.is-rural')}
-                  value={formData.isRural === null ? 'none' : formData.isRural?.toString()}
+                  value={formData.isRural === null ? NO_ANSWER_VALUE : formData.isRural?.toString()}
                   onChange={onFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
@@ -344,7 +327,7 @@ const Home: NextPage = () => {
                 <RadiosField
                   field={nameof<FormDataState>((o) => o.isNewcomer)}
                   label={t('home:application-form.field.is-newcomer')}
-                  value={formData.isNewcomer === null ? 'none' : formData.isNewcomer?.toString()}
+                  value={formData.isNewcomer === null ? NO_ANSWER_VALUE : formData.isNewcomer?.toString()}
                   onChange={onFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required

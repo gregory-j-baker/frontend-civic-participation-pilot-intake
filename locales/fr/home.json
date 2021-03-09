@@ -8,7 +8,7 @@
     "step": {
       "personal-information": "Renseignements personnels",
       "identity": "Veuillez sélectionner la description avec laquelle vous identifiez.",
-      "expression-of-interest": "Expression des questions d'intérêt",
+      "expression-of-interest-questions": "Expression des questions d'intérêt",
       "consent": "Consentement"
     },
     "field": {
