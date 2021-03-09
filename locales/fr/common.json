@@ -34,5 +34,12 @@
   "loading": {
     "header": "Chargement en cours...",
     "description": "Cela peut prendre quelques secondes, s'il vous plaît ne fermez pas cette page."
+  },
+  "wizard": {
+    "next": "Suivant",
+    "previous": "Précédent",
+    "step": "Étape",
+    "x-of-y": "\u00A0: {{active}} de {{length}}",
+    "submit": "Soumettre"
   }
 }

@@ -34,5 +34,12 @@
   "loading": {
     "header": "Loading...",
     "description": "This may take a few seconds, please don't close this page."
+  },
+  "wizard": {
+    "next": "Next",
+    "previous": "Previous",
+    "step": "Step",
+    "x-of-y": ": {{active}} of {{length}}",
+    "submit": "Submit"
   }
 }
