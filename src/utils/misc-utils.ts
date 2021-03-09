@@ -6,7 +6,6 @@
  */
 
 import preval from 'preval.macro';
-import { ElementType } from 'react';
 
 export const getApplicationVersion = (): string => preval`
   module.exports = require("../../package.json").version;
@@ -70,4 +69,13 @@ export const getYears = ({ startYear, endYear }: { startYear?: number; endYear?:
   }
 
   return years;
+};
+
+/**
+ * Gets keyboard-focusable elements within a specified element
+ * @see https://zellwk.com/blog/keyboard-focusable-elements/
+ */
+export const getKeyboardFocusableElements = (element?: Element): Element[] => {
+  const el = element ?? document;
+  return [...el.querySelectorAll('a, button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])')].filter((el) => !el.hasAttribute('disabled'));
 };
