@@ -8,7 +8,7 @@
 import type { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 import { QueryClient } from 'react-query';
 import { dehydrate } from 'react-query/hydration';
 import type { CheckboxeFieldOnChangeEvent } from '../components/form/CheckboxeField';
@@ -34,6 +34,10 @@ import useProvinces, { provincesStaticProps } from '../hooks/api/useProvinces';
 import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
 import Error from './_error';
+
+export interface GetDescriptionFunc {
+  (obj: { descriptionFr: string; descriptionEn: string }): string;
+}
 
 interface FormDataState {
   [key: string]: boolean | string | number | null | undefined;
@@ -125,44 +129,51 @@ const Home: NextPage = () => {
     event.preventDefault();
   };
 
+  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
+
   // year of birth select options
   const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({ startYear: 1990, endYear: 2003 }).map((year) => ({ value: year.toString(), text: `${year}` })), []);
 
   // prefered language select options
   const preferedLanguageOptions = useMemo<RadiosFieldOption[]>(() => {
     if (isLanguagesLoading || languagesError) return [];
-    return languages?._embedded.languages.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [];
-  }, [lang, isLanguagesLoading, languagesError, languages]);
+    return languages?._embedded.languages.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isLanguagesLoading, languagesError, languages, getDescription]);
 
   // province select options
   const provinceOptions = useMemo<SelectFieldOption[]>(() => {
     if (isProvincesLoading || provincesError) return [];
-    return provinces?._embedded.provinces.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? [];
-  }, [lang, isProvincesLoading, provincesError, provinces]);
+
+    const options = provinces?._embedded.provinces.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+
+    options.sort((a, b) => a.text.localeCompare(b.text));
+
+    return options;
+  }, [isProvincesLoading, provincesError, provinces, getDescription]);
 
   // gender select options
   const genderOptions = useMemo<SelectFieldOption[]>(() => {
     if (isGendersLoading || gendersError) return [];
-    return [...(genders?._embedded.genders.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
-  }, [t, lang, isGendersLoading, gendersError, genders]);
+    return [...(genders?._embedded.genders.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
+  }, [t, isGendersLoading, gendersError, genders, getDescription]);
 
   // education level select options
   const educationLevelOptions = useMemo<SelectFieldOption[]>(() => {
     if (isEducationLevelsLoading || educationLevelsError) return [];
-    return [...(educationLevels?._embedded.educationLevels.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
-  }, [t, lang, isEducationLevelsLoading, educationLevelsError, educationLevels]);
+    return [...(educationLevels?._embedded.educationLevels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
+  }, [t, isEducationLevelsLoading, educationLevelsError, educationLevels, getDescription]);
 
   // indigenous types select options
   const indigenousTypeOptions = useMemo<SelectFieldOption[]>(() => {
     if (isIndigenousTypesLoading || indigenousTypesError) return [];
-    return [...(indigenousTypes?._embedded.indigenousTypes.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
-  }, [t, lang, isIndigenousTypesLoading, indigenousTypesError, indigenousTypes]);
+    return [...(indigenousTypes?._embedded.indigenousTypes.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
+  }, [t, isIndigenousTypesLoading, indigenousTypesError, indigenousTypes, getDescription]);
 
   // internet quality select options
   const internetQualityOptions = useMemo<SelectFieldOption[]>(() => {
     if (isInternetQualitiesLoading || internetQualitiesError) return [];
-    return [...(internetQualities?._embedded.internetQualities.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:no') }];
-  }, [t, lang, isInternetQualitiesLoading, internetQualitiesError, internetQualities]);
+    return [...(internetQualities?._embedded.internetQualities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:no') }];
+  }, [t, isInternetQualitiesLoading, internetQualitiesError, internetQualities, getDescription]);
 
   // access dedicated device select options
   const hearAboutCPPOptions = useMemo<SelectFieldOption[]>(
