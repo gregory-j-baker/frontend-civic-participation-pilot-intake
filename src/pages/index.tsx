@@ -149,9 +149,9 @@ const Home: NextPage = () => {
   }, [t, lang, isEducationLevelsLoading, educationLevelsError, educationLevels]);
 
   // indigenous types select options
-  const indigenousTypeOptions = useMemo<RadiosFieldOption[]>(() => {
+  const indigenousTypeOptions = useMemo<SelectFieldOption[]>(() => {
     if (isIndigenousTypesLoading || indigenousTypesError) return [];
-    return [...(indigenousTypes?._embedded.indigenousTypes.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:no') }];
+    return [...(indigenousTypes?._embedded.indigenousTypes.map(({ id, descriptionFr, descriptionEn }) => ({ value: id, text: lang === 'fr' ? descriptionFr : descriptionEn })) ?? []), { value: NO_ANSWER_VALUE, text: t('common:prefer-not-answer') }];
   }, [t, lang, isIndigenousTypesLoading, indigenousTypesError, indigenousTypes]);
 
   // internet quality select options
@@ -291,15 +291,14 @@ const Home: NextPage = () => {
                   inline
                 />
 
-                <RadiosField
+                <SelectField
                   field={nameof<FormDataState>((o) => o.indigenousTypeId)}
                   label={t('home:application-form.field.indigenous-type')}
-                  value={formData.indigenousTypeId}
+                  value={formData.indigenousTypeId === null ? NO_ANSWER_VALUE : formData.indigenousTypeId?.toString()}
                   onChange={onFieldChange}
                   options={indigenousTypeOptions}
                   required
                   gutterBottom
-                  inline
                 />
 
                 <RadiosField
