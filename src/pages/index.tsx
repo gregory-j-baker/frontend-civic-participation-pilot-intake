@@ -95,7 +95,7 @@ const Home: NextPage = () => {
     window.sessionStorage.setItem(PERSISTING_STORAGE_FORM_DATA_KEY, JSON.stringify(formData));
   }, [formData]);
 
-  const onFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent & SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
+  const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
       let newValue = undefined;
 
@@ -111,7 +111,11 @@ const Home: NextPage = () => {
     });
   };
 
-  const onCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
+  const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
+    setFormDataState((prev) => ({ ...prev, [field as keyof FormDataState]: value ?? undefined }));
+  };
+
+  const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
     setFormDataState((prev) => ({ ...prev, [field as keyof FormDataState]: checked }));
   };
 
@@ -221,22 +225,54 @@ const Home: NextPage = () => {
           <Wizard stepText={t('home:application-form.wizard-step')} submitText={t('home:application-form.submit')} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick} onSubmitClick={handleWizardOnSubmitClick}>
             <WizardStep header={t('home:application-form.step.personal-information')}>
               <>
-                <TextField field={nameof<FormDataState>((o) => o.firstName)} label={t('home:application-form.field.first-name')} value={formData.firstName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
-                <TextField field={nameof<FormDataState>((o) => o.lastName)} label={t('home:application-form.field.last-name')} value={formData.lastName} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12" />
-                <TextField field={nameof<FormDataState>((o) => o.email)} label={t('home:application-form.field.email-address')} value={formData.email} onChange={onFieldChange} required gutterBottom className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12" />
+                <TextField
+                  field={nameof<FormDataState>((o) => o.firstName)}
+                  label={t('home:application-form.field.first-name')}
+                  value={formData.firstName}
+                  onChange={handleOnTextFieldChange}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+                />
+
+                <TextField
+                  field={nameof<FormDataState>((o) => o.lastName)}
+                  label={t('home:application-form.field.last-name')}
+                  value={formData.lastName}
+                  onChange={handleOnTextFieldChange}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+                />
+
+                <TextField
+                  field={nameof<FormDataState>((o) => o.email)}
+                  label={t('home:application-form.field.email-address')}
+                  value={formData.email}
+                  onChange={handleOnTextFieldChange}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+                />
 
                 <SelectField
                   field={nameof<FormDataState>((o) => o.birthYear)}
                   label={t('home:application-form.field.birth-year.label')}
                   helperText={t('home:application-form.field.birth-year.helper-text')}
                   value={formData.birthYear?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={yearOfBirthOptions}
                   required
                   gutterBottom
                 />
 
-                <CheckboxeField field={nameof<FormDataState>((o) => o.isProvinceMajorCertified)} label={t('home:application-form.field.is-province-major-certified')} checked={formData.isProvinceMajorCertified} onChange={onCheckboxFieldChange} required />
+                <CheckboxeField
+                  field={nameof<FormDataState>((o) => o.isProvinceMajorCertified)}
+                  label={t('home:application-form.field.is-province-major-certified')}
+                  checked={formData.isProvinceMajorCertified}
+                  onChange={handleOnCheckboxFieldChange}
+                  required
+                />
                 <div className="tw-mb-8 tw-pl-10">
                   <a href="http://example.com" target="_blank" rel="noreferrer">
                     {t('home:application-form.field.is-province-major-certified-link')}
@@ -247,7 +283,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.languageId)}
                   label={t('home:application-form.field.language')}
                   value={formData.languageId}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={preferedLanguageOptions}
                   required
                   gutterBottom
@@ -258,7 +294,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.isCanadianCitizen)}
                   label={t('home:application-form.field.is-canadien-citizen.label')}
                   value={formData.isCanadianCitizen?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
                   helperText={t('home:application-form.field.is-canadien-citizen.helper-text')}
                   required
@@ -270,7 +306,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.provinceId)}
                   label={t('home:application-form.field.province')}
                   value={formData.provinceId}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={provinceOptions}
                   required
                   gutterBottom
@@ -281,7 +317,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.genderId)}
                   label={t('home:application-form.field.gender')}
                   value={formData.genderId === null ? NO_ANSWER_VALUE : formData.genderId?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={genderOptions}
                   required
                   gutterBottom
@@ -293,7 +329,7 @@ const Home: NextPage = () => {
                   label={t('home:application-form.field.education-level.label')}
                   helperText={t('home:application-form.field.education-level.helper-text')}
                   value={formData.educationLevelId === null ? NO_ANSWER_VALUE : formData.educationLevelId?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={educationLevelOptions}
                   required
                   className="tw-w-full"
@@ -306,7 +342,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.isDisabled)}
                   label={t('home:application-form.field.is-disabled')}
                   value={formData.isDisabled === null ? NO_ANSWER_VALUE : formData.isDisabled?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   gutterBottom
@@ -317,7 +353,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.isMinority)}
                   label={t('home:application-form.field.is-minority')}
                   value={formData.isMinority === null ? NO_ANSWER_VALUE : formData.isMinority?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   gutterBottom
@@ -328,7 +364,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.indigenousTypeId)}
                   label={t('home:application-form.field.indigenous-type')}
                   value={formData.indigenousTypeId === null ? NO_ANSWER_VALUE : formData.indigenousTypeId?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={indigenousTypeOptions}
                   required
                   gutterBottom
@@ -339,7 +375,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.isLgbtq)}
                   label={t('home:application-form.field.is-lgbtq')}
                   value={formData.isLgbtq === null ? NO_ANSWER_VALUE : formData.isLgbtq?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   gutterBottom
@@ -350,7 +386,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.isRural)}
                   label={t('home:application-form.field.is-rural')}
                   value={formData.isRural === null ? NO_ANSWER_VALUE : formData.isRural?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   gutterBottom
@@ -361,7 +397,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.isNewcomer)}
                   label={t('home:application-form.field.is-newcomer')}
                   value={formData.isNewcomer === null ? NO_ANSWER_VALUE : formData.isNewcomer?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   required
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -374,7 +410,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.skillsInterest)}
                   label={t('home:application-form.field.skills-interest')}
                   value={formData.skillsInterest}
-                  onChange={onFieldChange}
+                  onChange={handleOnTextFieldChange}
                   required
                   gutterBottom
                   className="tw-w-full"
@@ -385,14 +421,14 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.communityInterest)}
                   label={t('home:application-form.field.community-interest')}
                   value={formData.communityInterest}
-                  onChange={onFieldChange}
+                  onChange={handleOnTextFieldChange}
                   required
                   gutterBottom
                   className="tw-w-full"
                   wordLimit={250}
                 />
 
-                <TextAreaField field={nameof<FormDataState>((o) => o.programInterest)} label={t('home:application-form.field.program-interest')} value={formData.programInterest} onChange={onFieldChange} className="tw-w-full" wordLimit={250} />
+                <TextAreaField field={nameof<FormDataState>((o) => o.programInterest)} label={t('home:application-form.field.program-interest')} value={formData.programInterest} onChange={handleOnOptionsFieldChange} className="tw-w-full" wordLimit={250} />
               </>
             </WizardStep>
             <WizardStep header={t('home:application-form.step.consent')}>
@@ -401,7 +437,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.internetQualityId)}
                   label={t('home:application-form.field.internet-quality')}
                   value={formData.internetQualityId}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={internetQualityOptions}
                   required
                   gutterBottom
@@ -412,7 +448,7 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.hasDedicatedDevice)}
                   label={t('home:application-form.field.has-dedicated-device')}
                   value={formData.hasDedicatedDevice?.toString()}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
                   required
                   gutterBottom
@@ -423,14 +459,14 @@ const Home: NextPage = () => {
                   field={nameof<FormDataState>((o) => o.hearAboutCPP)}
                   label={t('home:application-form.field.hear-about-cpp')}
                   value={formData.hearAboutCPP}
-                  onChange={onFieldChange}
+                  onChange={handleOnOptionsFieldChange}
                   options={hearAboutCPPOptions}
                   required
                   className="tw-w-full sm:tw-w-6/12"
                   gutterBottom
                 />
 
-                <CheckboxeField field={nameof<FormDataState>((o) => o.isInformationConsented)} label={t('home:application-form.field.is-information-consented')} checked={formData.isInformationConsented} onChange={onCheckboxFieldChange} />
+                <CheckboxeField field={nameof<FormDataState>((o) => o.isInformationConsented)} label={t('home:application-form.field.is-information-consented')} checked={formData.isInformationConsented} onChange={handleOnCheckboxFieldChange} />
               </>
             </WizardStep>
           </Wizard>
