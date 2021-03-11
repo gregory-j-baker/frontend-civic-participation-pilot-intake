@@ -22,9 +22,7 @@ const MainLayout = ({ children, showBreadcrumb }: MainLayoutProps): JSX.Element 
     <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" className="container tw-py-6 md:tw-py-8">
       {children}
     </main>
-    <div className="tw-mt-auto">
-      <GlobalFooter />
-    </div>
+    <GlobalFooter />
   </div>
 );
 
