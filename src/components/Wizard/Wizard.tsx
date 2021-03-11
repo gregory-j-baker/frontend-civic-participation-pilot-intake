@@ -11,7 +11,7 @@ import { TailwindColor } from '../../common/types';
 import { Button, ButtonOnClickEvent } from '../Button';
 import ContentPaper from '../ContentPaper/ContentPaper';
 import { WizardStepProps } from '../WizardStep';
-import { getKeyboardFocusableElements } from '../../utils/misc-utils';
+import { getKeyboardFocusableElements, sleep } from '../../utils/misc-utils';
 
 export interface WizardOnNextClickEvent {
   (event: MouseEvent<HTMLButtonElement>): boolean;
@@ -49,28 +49,20 @@ const Wizard = ({ initialActiveStep, children, disabled, nextText, onNextClick, 
   const { header, step } = useMemo<{ header?: string; step?: ReactNode }>(() => (steps[activeStep - 1] ? { header: steps[activeStep - 1].props.header, step: steps[activeStep - 1].props.children } : {}), [activeStep, steps]);
 
   const goToWizardTop = (): void => {
-    const containerElement = document.getElementById(WIZARD_CONTAINER_ID);
-    if (containerElement) {
-      containerElement.scrollIntoView({ behavior: 'smooth' });
-
-      // give time to render before focusing on next first focusable element
-      setTimeout(() => {
-        (getKeyboardFocusableElements(containerElement).find(Boolean) as HTMLElement)?.focus();
-      }, 200);
-    }
+    window.scrollTo({ top: 0 });
   };
 
   const handleOnNextClick: ButtonOnClickEvent = (event) => {
     if (activeStep < steps.length && (!onNextClick || onNextClick(event))) {
-      setActiveStep((prev) => ++prev);
       goToWizardTop();
+      setActiveStep((prev) => ++prev);
     }
   };
 
   const handleOnPreviousClick: ButtonOnClickEvent = (event) => {
     if (activeStep > 1 && (!onPreviousClick || onPreviousClick(event))) {
-      setActiveStep((prev) => --prev);
       goToWizardTop();
+      setActiveStep((prev) => --prev);
     }
   };
 
