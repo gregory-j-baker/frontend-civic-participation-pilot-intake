@@ -11,6 +11,7 @@ import { apiConfig } from '../../../config';
 interface ApplicationData {
   birthYear?: number;
   communityInterest?: string;
+  discoveryChannelId?: string;
   educationLevelId?: string;
   email?: string;
   firstName?: string;

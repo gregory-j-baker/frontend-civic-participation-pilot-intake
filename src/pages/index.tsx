@@ -25,6 +25,7 @@ import { PageLoadingSpinner } from '../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent, WizardOnSubmitClickEvent } from '../components/Wizard';
 import { WizardStep } from '../components/WizardStep';
 import { theme } from '../config';
+import useDiscoveryChannels, { discoveryChannelsStaticProps } from '../hooks/api/useDiscoveryChannels';
 import useEducationLevels, { educationLevelStaticProps } from '../hooks/api/useEducationLevels';
 import useGenders, { genderStaticProps } from '../hooks/api/useGenders';
 import useIndigenousTypes, { indigenousTypeStaticProps } from '../hooks/api/useIndigenousTypes';
@@ -76,6 +77,7 @@ const Home: NextPage = () => {
   const { lang, t } = useTranslation();
   const { isLoading: isSubmitting, error: submitError, data: submitData, mutate: submitApplication } = useSubmitApplication();
 
+  const { data: discoveryChannels, isLoading: isDiscoveryChannelsLoading, error: discoveryChannelsError } = useDiscoveryChannels();
   const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
   const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
   const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes();
@@ -135,6 +137,7 @@ const Home: NextPage = () => {
     submitApplication({
       birthYear: formData.birthYear,
       communityInterest: formData.communityInterest,
+      discoveryChannelId: formData.hearAboutCPP,
       educationLevelId: formData.educationLevelId ?? undefined,
       email: formData.email,
       firstName: formData.firstName,
@@ -204,14 +207,10 @@ const Home: NextPage = () => {
   }, [t, isInternetQualitiesLoading, internetQualitiesError, internetQualities, getDescription]);
 
   // access dedicated device select options
-  const hearAboutCPPOptions = useMemo<SelectFieldOption[]>(
-    () => [
-      { value: 'word-of-mouth', text: 'Word of mouth' },
-      { value: 'search-engine', text: 'Search engine' },
-      { value: 'other', text: 'Other' },
-    ],
-    []
-  );
+  const discoveryChannelOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isDiscoveryChannelsLoading || discoveryChannelsError) return [];
+    return discoveryChannels?._embedded.discoveryChannels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isDiscoveryChannelsLoading, discoveryChannelsError, discoveryChannels, getDescription]);
 
   const yesNoOptions = useMemo<RadiosFieldOption[]>(
     () => [
@@ -484,7 +483,7 @@ const Home: NextPage = () => {
                   label={t('home:application-form.field.hear-about-cpp')}
                   value={formData.hearAboutCPP}
                   onChange={handleOnOptionsFieldChange}
-                  options={hearAboutCPPOptions}
+                  options={discoveryChannelOptions}
                   required
                   className="tw-w-full sm:tw-w-6/12"
                   gutterBottom
@@ -503,6 +502,7 @@ const Home: NextPage = () => {
 export const getStaticProps: GetStaticProps = async () => {
   const queryClient = new QueryClient();
 
+  await queryClient.prefetchQuery('discovery-channels', () => discoveryChannelsStaticProps);
   await queryClient.prefetchQuery('education-levels', () => educationLevelStaticProps);
   await queryClient.prefetchQuery('genders', () => genderStaticProps);
   await queryClient.prefetchQuery('indigenous-types', () => indigenousTypeStaticProps);

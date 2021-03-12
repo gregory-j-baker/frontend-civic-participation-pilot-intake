@@ -1,0 +1,30 @@
+{
+  "_embedded": {
+    "discoveryChannels": [
+      {
+        "id": "f512382c-1dac-489e-84c4-83c7b6aa7f6c",
+        "code": "SOCIAL",
+        "descriptionEn": "Social media",
+        "descriptionFr": "Social media"
+      },
+      {
+        "id": "77057e6f-6267-4459-8599-8b0796724d8f",
+        "code": "WORD_OF_MOUTH",
+        "descriptionEn": "Word of mouth",
+        "descriptionFr": "Word of mouth"
+      },
+      {
+        "id": "f3ec1853-550c-4acf-a3da-7534cd6c1ae1",
+        "code": "EMAIL",
+        "descriptionEn": "Email/newsletter",
+        "descriptionFr": "Email/newsletter"
+      },
+      {
+        "id": "5aeaf40e-4375-4257-af9b-3b4a59ea758b",
+        "code": "OTHER",
+        "descriptionEn": "Other",
+        "descriptionFr": "Other"
+      }
+    ]
+  }
+}
