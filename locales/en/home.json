@@ -1,15 +1,12 @@
 {
-  "page": {
-    "header": "Step 5. Apply"
-  },
   "application-form": {
     "header": "Application form",
     "wizard-step": "Section",
     "step": {
-      "personal-information": "Personal information",
-      "identity": "Please select the description with which you identify.",
-      "expression-of-interest-questions": "Expression of interest questions",
-      "consent": "Consent"
+      "personal-information": "Please provide your personal information",
+      "identity": "Please select the descriptions with which you identify",
+      "expression-of-interest-questions": "Please provide your expression of interest",
+      "consent": "Please provide your access information and consent"
     },
     "field": {
       "birth-year": {

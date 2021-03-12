@@ -1,15 +1,12 @@
 {
-  "page": {
-    "header": "Étape 5. Appliquer"
-  },
   "application-form": {
     "header": "Formulaire de demande",
     "wizard-step": "Section",
     "step": {
-      "personal-information": "Renseignements personnels",
-      "identity": "Veuillez sélectionner la description avec laquelle vous identifiez.",
-      "expression-of-interest-questions": "Expression des questions d'intérêt",
-      "consent": "Consentement"
+      "personal-information": "Veuillez fournir vos informations personnelles",
+      "identity": "Veuillez sélectionner les descriptions avec lesquelles vous identifiez",
+      "expression-of-interest-questions": "Veuillez fournir votre expression d'intérêt",
+      "consent": "Veuillez fournir vos informations et votre consentement d'accès"
     },
     "field": {
       "birth-year": {
