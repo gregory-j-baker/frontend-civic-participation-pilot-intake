@@ -31,6 +31,7 @@ import useIndigenousTypes, { indigenousTypeStaticProps } from '../hooks/api/useI
 import useInternetQualities, { internetQualitiesStaticProps } from '../hooks/api/useInternetQualities';
 import useLanguages, { languagesStaticProps } from '../hooks/api/useLanguages';
 import useProvinces, { provincesStaticProps } from '../hooks/api/useProvinces';
+import useSubmitApplication from '../hooks/api/useSubmitApplication';
 import useCurrentBreakpoint from '../hooks/useCurrentBreakpoint';
 import { getYears } from '../utils/misc-utils';
 import Error from './_error';
@@ -71,9 +72,9 @@ const PERSISTING_STORAGE_FORM_DATA_KEY = 'CPP_APPLICATION_FORM_DATA_STATE';
 const NO_ANSWER_VALUE = '--prefer-not-answer';
 
 const Home: NextPage = () => {
-  const { lang, t } = useTranslation();
-
   const currentBreakpoint = useCurrentBreakpoint();
+  const { lang, t } = useTranslation();
+  const { isLoading: isSubmitting, error: submitError, data: submitData, mutate: submitApplication } = useSubmitApplication();
 
   const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
   const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
@@ -131,6 +132,29 @@ const Home: NextPage = () => {
 
   const handleWizardOnSubmitClick: WizardOnSubmitClickEvent = (event) => {
     event.preventDefault();
+    submitApplication({
+      birthYear: formData.birthYear,
+      communityInterest: formData.communityInterest,
+      educationLevelId: formData.educationLevelId ?? undefined,
+      email: formData.email,
+      firstName: formData.firstName,
+      genderId: formData.genderId ?? undefined,
+      hasDedicatedDevice: formData.hasDedicatedDevice,
+      indigenousTypeId: formData.indigenousTypeId,
+      internetQualityId: formData.internetQualityId,
+      isCanadianCitizen: formData.isCanadianCitizen,
+      isDisabled: formData.isDisabled ?? undefined,
+      isLgbtq: formData.isLgbtq ?? undefined,
+      isMinority: formData.isMinority ?? undefined,
+      isNewcomer: formData.isNewcomer ?? undefined,
+      isRural: formData.isRural ?? undefined,
+      languageId: formData.languageId,
+      lastName: formData.lastName,
+      miscInterest: formData.miscInterest,
+      programInterest: formData.programInterest,
+      provinceId: formData.provinceId,
+      skillsInterest: formData.skillsInterest ?? undefined,
+    });
   };
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
