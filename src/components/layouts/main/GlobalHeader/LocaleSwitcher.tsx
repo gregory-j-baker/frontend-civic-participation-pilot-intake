@@ -24,7 +24,7 @@ const LocaleSwitcher = (): JSX.Element => {
           <div className="col-md-12">
             <ul className="list-inline mrgn-bttm-0">
               <li>
-                <Link href={pathname} locale={localeToSwitch}>
+                <Link href={pathname} locale={localeToSwitch} replace>
                   <a lang={localeToSwitch}>
                     <span className="hidden-xs">{localeNameToSwitch}</span>
                     <abbr title={localeNameToSwitch} className="visible-xs h3 mrgn-tp-sm mrgn-bttm-0 text-uppercase">
