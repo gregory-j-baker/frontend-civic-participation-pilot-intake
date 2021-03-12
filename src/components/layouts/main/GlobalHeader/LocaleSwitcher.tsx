@@ -10,7 +10,7 @@ import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
 
 const LocaleSwitcher = (): JSX.Element => {
-  const { pathname } = useRouter();
+  const { pathname, query } = useRouter();
   const { t, lang } = useTranslation();
 
   const localeToSwitch: string = lang === 'en' ? 'fr' : 'en';
@@ -24,7 +24,7 @@ const LocaleSwitcher = (): JSX.Element => {
           <div className="col-md-12">
             <ul className="list-inline mrgn-bttm-0">
               <li>
-                <Link href={pathname} locale={localeToSwitch} replace>
+                <Link href={{ pathname, query }} locale={localeToSwitch} replace>
                   <a lang={localeToSwitch}>
                     <span className="hidden-xs">{localeNameToSwitch}</span>
                     <abbr title={localeNameToSwitch} className="visible-xs h3 mrgn-tp-sm mrgn-bttm-0 text-uppercase">

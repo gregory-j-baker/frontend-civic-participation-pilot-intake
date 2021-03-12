@@ -12,19 +12,19 @@ interface ApplicationData {
   birthYear?: number;
   communityInterest?: string;
   discoveryChannelId?: string;
-  educationLevelId?: string;
+  educationLevelId?: string | null;
   email?: string;
   firstName?: string;
-  genderId?: string;
+  genderId?: string | null;
   hasDedicatedDevice?: boolean;
   indigenousTypeId?: string;
   internetQualityId?: string;
   isCanadianCitizen?: boolean;
-  isDisabled?: boolean;
-  isLgbtq?: boolean;
-  isMinority?: boolean;
-  isNewcomer?: boolean;
-  isRural?: boolean;
+  isDisabled?: boolean | null;
+  isLgbtq?: boolean | null;
+  isMinority?: boolean | null;
+  isNewcomer?: boolean | null;
+  isRural?: boolean | null;
   languageId?: string;
   lastName?: string;
   miscInterest?: string;
@@ -36,15 +36,15 @@ interface ApplicationData {
 export const uri = `${apiConfig.baseUri}/applications`;
 
 const useSubmitApplication = (): UseMutationResult<Response, unknown, ApplicationData> => {
-  return useMutation((applicationData: ApplicationData) =>
-    fetch(uri, {
+  return useMutation((applicationData: ApplicationData) => {
+    return fetch(uri, {
       body: JSON.stringify(applicationData),
       headers: {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-    })
-  );
+    });
+  });
 };
 
 export default useSubmitApplication;

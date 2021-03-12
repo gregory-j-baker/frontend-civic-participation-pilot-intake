@@ -5,70 +5,69 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { MouseEvent, ReactNode, useMemo, useState } from 'react';
+import { MouseEvent, useMemo } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { TailwindColor } from '../../common/types';
 import { Button, ButtonOnClickEvent } from '../Button';
 import ContentPaper from '../ContentPaper/ContentPaper';
 import { WizardStepProps } from '../WizardStep';
-import { getKeyboardFocusableElements, sleep } from '../../utils/misc-utils';
 
 export interface WizardOnNextClickEvent {
-  (event: MouseEvent<HTMLButtonElement>): boolean;
+  (event: MouseEvent<HTMLButtonElement>, activeStepId: string, nextStepId: string): void;
 }
 
 export interface WizardOnPreviousClickEvent {
-  (event: MouseEvent<HTMLButtonElement>): boolean;
+  (event: MouseEvent<HTMLButtonElement>, activeStepId: string, nextStepId: string): void;
 }
 export interface WizardOnSubmitClickEvent {
-  (event: MouseEvent<HTMLButtonElement>): void;
+  (event: MouseEvent<HTMLButtonElement>, activeStepId: string): void;
 }
 
 export interface WizardProps {
-  initialActiveStep?: number;
+  activeStepId: string;
   children: React.ReactElement<WizardStepProps>[];
   disabled?: boolean;
+  nextDisabled?: boolean;
   nextText?: string;
   onNextClick?: WizardOnNextClickEvent;
   onPreviousClick?: WizardOnPreviousClickEvent;
   onSubmitClick?: WizardOnSubmitClickEvent;
+  previousDisabled?: boolean;
   previousText?: string;
   stepText?: string;
+  submitDisabled?: boolean;
   submitText?: string;
 }
 
 const WIZARD_CONTAINER_ID = 'wizard-container';
 
-const Wizard = ({ initialActiveStep, children, disabled, nextText, onNextClick, onPreviousClick, onSubmitClick, previousText, stepText, submitText }: WizardProps): JSX.Element => {
+const Wizard = ({ activeStepId, children, disabled, nextDisabled, nextText, onNextClick, onPreviousClick, onSubmitClick, previousDisabled, previousText, stepText, submitDisabled, submitText }: WizardProps): JSX.Element => {
   const { t } = useTranslation();
 
   const steps = useMemo(() => children as React.ReactElement<WizardStepProps>[], [children]);
 
-  const [activeStep, setActiveStep] = useState<number>(initialActiveStep ? (steps[initialActiveStep] ? initialActiveStep : 1) : 1);
+  const activeStepIndex = useMemo<number>(() => {
+    const index = steps.findIndex((el) => el.props.id.toLowerCase() === activeStepId.toLowerCase());
+    return index === -1 ? index : index + 1;
+  }, [activeStepId, steps]);
 
-  const { header, step } = useMemo<{ header?: string; step?: ReactNode }>(() => (steps[activeStep - 1] ? { header: steps[activeStep - 1].props.header, step: steps[activeStep - 1].props.children } : {}), [activeStep, steps]);
+  const activeStep = useMemo<WizardStepProps>(() => (steps[activeStepIndex - 1] ? steps[activeStepIndex - 1].props : { id: 'NOT_FOUND', header: 'NOT_FOUND' }), [activeStepIndex, steps]);
 
-  const goToWizardTop = (): void => {
-    window.scrollTo({ top: 0 });
-  };
-
-  const handleOnNextClick: ButtonOnClickEvent = (event) => {
-    if (activeStep < steps.length && (!onNextClick || onNextClick(event))) {
-      goToWizardTop();
-      setActiveStep((prev) => ++prev);
+  const handleOnPreviousClick: ButtonOnClickEvent = (event) => {
+    if (activeStepIndex > 1) {
+      onPreviousClick?.(event, activeStep.id, steps[activeStepIndex - 2].props.id);
     }
   };
 
-  const handleOnPreviousClick: ButtonOnClickEvent = (event) => {
-    if (activeStep > 1 && (!onPreviousClick || onPreviousClick(event))) {
-      goToWizardTop();
-      setActiveStep((prev) => --prev);
+  const handleOnNextClick: ButtonOnClickEvent = (event) => {
+    if (activeStepIndex < steps.length) {
+      onNextClick?.(event, activeStep.id, steps[activeStepIndex].props.id);
     }
   };
 
   const handleOnSubmitClick: ButtonOnClickEvent = (event) => {
-    if (activeStep === steps.length && onSubmitClick) {
-      onSubmitClick(event);
+    if (activeStepIndex === steps.length) {
+      onSubmitClick?.(event, activeStep.id);
     }
   };
 
@@ -77,28 +76,28 @@ const Wizard = ({ initialActiveStep, children, disabled, nextText, onNextClick, 
       <div id={WIZARD_CONTAINER_ID}>
         <div className="tw-border-b-2 tw-mx-6 tw-py-4">
           <h5 className="tw-uppercase tw-tracking-wide tw-text-sm tw-font-bold tw-text-gray-500 tw-leading-tight tw-m-0 tw-mb-2">{`${stepText ? stepText : t('common:wizard.step')}${t('common:wizard.x-of-y', {
-            active: activeStep,
+            active: activeStepIndex,
             length: steps.length,
           })}`}</h5>
-          <h6 className="tw-text-xl tw-font-bold tw-leading-tight tw-m-0">{header}</h6>
+          <h6 className="tw-text-xl tw-font-bold tw-leading-tight tw-m-0">{activeStep.header}</h6>
         </div>
-        <div className="tw-my-8 tw-mx-6">{step}</div>
+        <div className="tw-my-8 tw-mx-6">{activeStep.children}</div>
         <div className="tw-flex tw-justify-between tw-flex-col sm:tw-flex-row-reverse tw-border-t-2 tw-py-5 tw-px-6 tw-bg-gray-50">
           <div className="tw-w-full sm:tw-w-4/12 md:tw-w-3/12 tw-text-right">
-            {activeStep < steps.length && (
-              <Button onClick={handleOnNextClick} disabled={disabled} className="tw-w-full tw-whitespace-nowrap">
+            {activeStepIndex < steps.length && (
+              <Button onClick={handleOnNextClick} disabled={nextDisabled || disabled} className="tw-w-full tw-whitespace-nowrap">
                 {nextText ? nextText : t('common:wizard.next')}
               </Button>
             )}
-            {activeStep === steps.length && (
-              <Button onClick={handleOnSubmitClick} disabled={disabled} className="tw-w-full  tw-whitespace-nowrap">
+            {activeStepIndex === steps.length && (
+              <Button onClick={handleOnSubmitClick} disabled={submitDisabled || disabled} className="tw-w-full  tw-whitespace-nowrap">
                 {submitText ? submitText : t('common:wizard.submit')}
               </Button>
             )}
           </div>
-          {activeStep > 1 && (
+          {activeStepIndex > 1 && (
             <div className="tw-w-full sm:tw-w-4/12 md:tw-w-3/12 tw-mt-4 sm:tw-mt-0">
-              <Button onClick={handleOnPreviousClick} color={TailwindColor.white} disabled={disabled} className="tw-w-full tw-whitespace-nowrap">
+              <Button onClick={handleOnPreviousClick} color={TailwindColor.white} disabled={previousDisabled || disabled} className="tw-w-full tw-whitespace-nowrap">
                 {previousText ? previousText : t('common:wizard.previous')}
               </Button>
             </div>

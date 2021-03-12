@@ -8,6 +8,7 @@
 export interface WizardStepProps {
   children?: React.ReactNode;
   header: string;
+  id: string;
 }
 
 const WizardStep = ({ children }: WizardStepProps): JSX.Element => <>{children}</>;

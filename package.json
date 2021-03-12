@@ -13,6 +13,7 @@
     "@microsoft/applicationinsights-web": "^2.5.11",
     "@types/ts-nameof": "^4.2.1",
     "babel-plugin-ts-nameof": "^4.2.1",
+    "lodash": "^4.17.21",
     "next": "^10.0.8",
     "next-auth": "^3.11.2",
     "next-seo": "^4.20.0",
@@ -23,6 +24,9 @@
     "react-query": "^3.12.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "@types/lodash": "^4.14.168",
     "@types/next-auth": "^3.7.0",
     "@types/node": "^14.14.33",
     "@types/preval.macro": "^3.0.0",
@@ -32,6 +36,7 @@
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
     "autoprefixer": "^10.2.5",
+    "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-macros": "^3.0.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.21.0",
@@ -52,7 +57,8 @@
     ],
     "plugins": [
       "babel-plugin-macros",
-      "babel-plugin-ts-nameof"
+      "babel-plugin-ts-nameof",
+      "lodash"
     ]
   },
   "eslintConfig": {

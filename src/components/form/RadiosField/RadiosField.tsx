@@ -21,6 +21,7 @@ export interface RadiosFieldOption {
 
 export interface RadiosFieldProps {
   className?: string;
+  disabled?: boolean;
   error?: boolean;
   field: string;
   gutterBottom?: boolean;
@@ -35,7 +36,7 @@ export interface RadiosFieldProps {
   value?: string | null;
 }
 
-const RadiosField = ({ className, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
+const RadiosField = ({ className, disabled, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const groupName = `form-radios-field-${field}`;
 
@@ -55,7 +56,7 @@ const RadiosField = ({ className, error, field, gutterBottom, helperText, inline
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       <div>
         {options.map((option) => (
-          <Radio key={option.value} name={groupName} value={option.value} onChange={handleOnChange} checked={option.value === selectedValue} disabled={option.disabled} className={`${inline ? 'tw-mr-4' : ''} ${className}`} inline={inline}>
+          <Radio key={option.value} name={groupName} value={option.value} onChange={handleOnChange} checked={option.value === selectedValue} disabled={option.disabled || disabled} className={`${inline ? 'tw-mr-4' : ''} ${className}`} inline={inline}>
             {option.text}
           </Radio>
         ))}

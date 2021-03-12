@@ -7,4 +7,14 @@
 
 const nextTranslate = require('next-translate');
 
-module.exports = nextTranslate();
+module.exports = nextTranslate({
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/apply',
+        permanent: false,
+      },
+    ];
+  },
+});
