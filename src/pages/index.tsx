@@ -235,265 +235,254 @@ const Home: NextPage = () => {
 
   return (
     <MainLayout showBreadcrumb={false}>
-      <NextSeo title={t('home:page.header')} />
+      <NextSeo title={t('home:application-form.header')} />
       <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
         {t('common:app.title')}
       </h1>
-      <h2 className="tw-border-b-2 tw-pb-4 tw-m-0 tw-mb-8 tw-text-2xl">{t('home:page.header')}</h2>
+      <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('home:application-form.header')}</h2>
       {isEducationLevelsLoading || isGendersLoading || isIndigenousTypesLoading || isInternetQualitiesLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
-        <>
-          <h3 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('home:application-form.header')}</h3>
-          <Wizard stepText={t('home:application-form.wizard-step')} submitText={t('home:application-form.submit')} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick} onSubmitClick={handleWizardOnSubmitClick}>
-            <WizardStep header={t('home:application-form.step.personal-information')}>
-              <>
-                <TextField
-                  field={nameof<FormDataState>((o) => o.firstName)}
-                  label={t('home:application-form.field.first-name')}
-                  value={formData.firstName}
-                  onChange={handleOnTextFieldChange}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-                />
+        <Wizard stepText={t('home:application-form.wizard-step')} submitText={t('home:application-form.submit')} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick} onSubmitClick={handleWizardOnSubmitClick}>
+          <WizardStep header={t('home:application-form.step.personal-information')}>
+            <>
+              <TextField
+                field={nameof<FormDataState>((o) => o.firstName)}
+                label={t('home:application-form.field.first-name')}
+                value={formData.firstName}
+                onChange={handleOnTextFieldChange}
+                required
+                gutterBottom
+                className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+              />
 
-                <TextField
-                  field={nameof<FormDataState>((o) => o.lastName)}
-                  label={t('home:application-form.field.last-name')}
-                  value={formData.lastName}
-                  onChange={handleOnTextFieldChange}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-                />
+              <TextField
+                field={nameof<FormDataState>((o) => o.lastName)}
+                label={t('home:application-form.field.last-name')}
+                value={formData.lastName}
+                onChange={handleOnTextFieldChange}
+                required
+                gutterBottom
+                className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+              />
 
-                <TextField
-                  field={nameof<FormDataState>((o) => o.email)}
-                  label={t('home:application-form.field.email-address')}
-                  value={formData.email}
-                  onChange={handleOnTextFieldChange}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-                />
+              <TextField field={nameof<FormDataState>((o) => o.email)} label={t('home:application-form.field.email-address')} value={formData.email} onChange={handleOnTextFieldChange} required gutterBottom className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12" />
 
-                <SelectField
-                  field={nameof<FormDataState>((o) => o.birthYear)}
-                  label={t('home:application-form.field.birth-year.label')}
-                  helperText={t('home:application-form.field.birth-year.helper-text')}
-                  value={formData.birthYear?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yearOfBirthOptions}
-                  required
-                  gutterBottom
-                />
+              <SelectField
+                field={nameof<FormDataState>((o) => o.birthYear)}
+                label={t('home:application-form.field.birth-year.label')}
+                helperText={t('home:application-form.field.birth-year.helper-text')}
+                value={formData.birthYear?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={yearOfBirthOptions}
+                required
+                gutterBottom
+              />
 
-                <CheckboxeField
-                  field={nameof<FormDataState>((o) => o.isProvinceMajorCertified)}
-                  label={t('home:application-form.field.is-province-major-certified')}
-                  checked={formData.isProvinceMajorCertified}
-                  onChange={handleOnCheckboxFieldChange}
-                  required
-                />
-                <div className="tw-mb-8 tw-pl-10">
-                  <a href="http://example.com" target="_blank" rel="noreferrer">
-                    {t('home:application-form.field.is-province-major-certified-link')}
-                  </a>
-                </div>
+              <CheckboxeField
+                field={nameof<FormDataState>((o) => o.isProvinceMajorCertified)}
+                label={t('home:application-form.field.is-province-major-certified')}
+                checked={formData.isProvinceMajorCertified}
+                onChange={handleOnCheckboxFieldChange}
+                required
+              />
+              <div className="tw-mb-8 tw-pl-10">
+                <a href="http://example.com" target="_blank" rel="noreferrer">
+                  {t('home:application-form.field.is-province-major-certified-link')}
+                </a>
+              </div>
 
-                <RadiosField
-                  field={nameof<FormDataState>((o) => o.languageId)}
-                  label={t('home:application-form.field.language')}
-                  value={formData.languageId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={preferedLanguageOptions}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+              <RadiosField
+                field={nameof<FormDataState>((o) => o.languageId)}
+                label={t('home:application-form.field.language')}
+                value={formData.languageId}
+                onChange={handleOnOptionsFieldChange}
+                options={preferedLanguageOptions}
+                required
+                gutterBottom
+                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+              />
 
-                <RadiosField
-                  field={nameof<FormDataState>((o) => o.isCanadianCitizen)}
-                  label={t('home:application-form.field.is-canadien-citizen.label')}
-                  value={formData.isCanadianCitizen?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoOptions}
-                  helperText={t('home:application-form.field.is-canadien-citizen.helper-text')}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+              <RadiosField
+                field={nameof<FormDataState>((o) => o.isCanadianCitizen)}
+                label={t('home:application-form.field.is-canadien-citizen.label')}
+                value={formData.isCanadianCitizen?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={yesNoOptions}
+                helperText={t('home:application-form.field.is-canadien-citizen.helper-text')}
+                required
+                gutterBottom
+                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+              />
 
-                <SelectField
-                  field={nameof<FormDataState>((o) => o.provinceId)}
-                  label={t('home:application-form.field.province')}
-                  value={formData.provinceId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={provinceOptions}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
+              <SelectField
+                field={nameof<FormDataState>((o) => o.provinceId)}
+                label={t('home:application-form.field.province')}
+                value={formData.provinceId}
+                onChange={handleOnOptionsFieldChange}
+                options={provinceOptions}
+                required
+                gutterBottom
+                className="tw-w-full sm:tw-w-6/12"
+              />
 
-                <SelectField
-                  field={nameof<FormDataState>((o) => o.genderId)}
-                  label={t('home:application-form.field.gender')}
-                  value={formData.genderId === null ? NO_ANSWER_VALUE : formData.genderId?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={genderOptions}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
+              <SelectField
+                field={nameof<FormDataState>((o) => o.genderId)}
+                label={t('home:application-form.field.gender')}
+                value={formData.genderId === null ? NO_ANSWER_VALUE : formData.genderId?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={genderOptions}
+                required
+                gutterBottom
+                className="tw-w-full sm:tw-w-6/12"
+              />
 
-                <SelectField
-                  field={nameof<FormDataState>((o) => o.educationLevelId)}
-                  label={t('home:application-form.field.education-level.label')}
-                  helperText={t('home:application-form.field.education-level.helper-text')}
-                  value={formData.educationLevelId === null ? NO_ANSWER_VALUE : formData.educationLevelId?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={educationLevelOptions}
-                  required
-                  className="tw-w-full"
-                />
-              </>
-            </WizardStep>
-            <WizardStep header={t('home:application-form.step.identity')}>
-              <>
-                <RadiosField
-                  field={nameof<FormDataState>((o) => o.isDisabled)}
-                  label={t('home:application-form.field.is-disabled')}
-                  value={formData.isDisabled === null ? NO_ANSWER_VALUE : formData.isDisabled?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+              <SelectField
+                field={nameof<FormDataState>((o) => o.educationLevelId)}
+                label={t('home:application-form.field.education-level.label')}
+                helperText={t('home:application-form.field.education-level.helper-text')}
+                value={formData.educationLevelId === null ? NO_ANSWER_VALUE : formData.educationLevelId?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={educationLevelOptions}
+                required
+                className="tw-w-full"
+              />
+            </>
+          </WizardStep>
+          <WizardStep header={t('home:application-form.step.identity')}>
+            <>
+              <RadiosField
+                field={nameof<FormDataState>((o) => o.isDisabled)}
+                label={t('home:application-form.field.is-disabled')}
+                value={formData.isDisabled === null ? NO_ANSWER_VALUE : formData.isDisabled?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={yesNoNoPreferNotAnswerOptions}
+                required
+                gutterBottom
+                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+              />
 
-                <RadiosField
-                  field={nameof<FormDataState>((o) => o.isMinority)}
-                  label={t('home:application-form.field.is-minority')}
-                  value={formData.isMinority === null ? NO_ANSWER_VALUE : formData.isMinority?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+              <RadiosField
+                field={nameof<FormDataState>((o) => o.isMinority)}
+                label={t('home:application-form.field.is-minority')}
+                value={formData.isMinority === null ? NO_ANSWER_VALUE : formData.isMinority?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={yesNoNoPreferNotAnswerOptions}
+                required
+                gutterBottom
+                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+              />
 
-                <SelectField
-                  field={nameof<FormDataState>((o) => o.indigenousTypeId)}
-                  label={t('home:application-form.field.indigenous-type')}
-                  value={formData.indigenousTypeId === null ? NO_ANSWER_VALUE : formData.indigenousTypeId?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={indigenousTypeOptions}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
+              <SelectField
+                field={nameof<FormDataState>((o) => o.indigenousTypeId)}
+                label={t('home:application-form.field.indigenous-type')}
+                value={formData.indigenousTypeId === null ? NO_ANSWER_VALUE : formData.indigenousTypeId?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={indigenousTypeOptions}
+                required
+                gutterBottom
+                className="tw-w-full sm:tw-w-6/12"
+              />
 
-                <RadiosField
-                  field={nameof<FormDataState>((o) => o.isLgbtq)}
-                  label={t('home:application-form.field.is-lgbtq')}
-                  value={formData.isLgbtq === null ? NO_ANSWER_VALUE : formData.isLgbtq?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+              <RadiosField
+                field={nameof<FormDataState>((o) => o.isLgbtq)}
+                label={t('home:application-form.field.is-lgbtq')}
+                value={formData.isLgbtq === null ? NO_ANSWER_VALUE : formData.isLgbtq?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={yesNoNoPreferNotAnswerOptions}
+                required
+                gutterBottom
+                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+              />
 
-                <RadiosField
-                  field={nameof<FormDataState>((o) => o.isRural)}
-                  label={t('home:application-form.field.is-rural')}
-                  value={formData.isRural === null ? NO_ANSWER_VALUE : formData.isRural?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+              <RadiosField
+                field={nameof<FormDataState>((o) => o.isRural)}
+                label={t('home:application-form.field.is-rural')}
+                value={formData.isRural === null ? NO_ANSWER_VALUE : formData.isRural?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={yesNoNoPreferNotAnswerOptions}
+                required
+                gutterBottom
+                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+              />
 
-                <RadiosField
-                  field={nameof<FormDataState>((o) => o.isNewcomer)}
-                  label={t('home:application-form.field.is-newcomer')}
-                  value={formData.isNewcomer === null ? NO_ANSWER_VALUE : formData.isNewcomer?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  required
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
-              </>
-            </WizardStep>
-            <WizardStep header={t('home:application-form.step.expression-of-interest-questions')}>
-              <>
-                <TextAreaField
-                  field={nameof<FormDataState>((o) => o.skillsInterest)}
-                  label={t('home:application-form.field.skills-interest')}
-                  value={formData.skillsInterest}
-                  onChange={handleOnTextFieldChange}
-                  required
-                  gutterBottom
-                  className="tw-w-full"
-                  wordLimit={250}
-                />
+              <RadiosField
+                field={nameof<FormDataState>((o) => o.isNewcomer)}
+                label={t('home:application-form.field.is-newcomer')}
+                value={formData.isNewcomer === null ? NO_ANSWER_VALUE : formData.isNewcomer?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={yesNoNoPreferNotAnswerOptions}
+                required
+                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+              />
+            </>
+          </WizardStep>
+          <WizardStep header={t('home:application-form.step.expression-of-interest-questions')}>
+            <>
+              <TextAreaField
+                field={nameof<FormDataState>((o) => o.skillsInterest)}
+                label={t('home:application-form.field.skills-interest')}
+                value={formData.skillsInterest}
+                onChange={handleOnTextFieldChange}
+                required
+                gutterBottom
+                className="tw-w-full"
+                wordLimit={250}
+              />
 
-                <TextAreaField
-                  field={nameof<FormDataState>((o) => o.communityInterest)}
-                  label={t('home:application-form.field.community-interest')}
-                  value={formData.communityInterest}
-                  onChange={handleOnTextFieldChange}
-                  required
-                  gutterBottom
-                  className="tw-w-full"
-                  wordLimit={250}
-                />
+              <TextAreaField
+                field={nameof<FormDataState>((o) => o.communityInterest)}
+                label={t('home:application-form.field.community-interest')}
+                value={formData.communityInterest}
+                onChange={handleOnTextFieldChange}
+                required
+                gutterBottom
+                className="tw-w-full"
+                wordLimit={250}
+              />
 
-                <TextAreaField field={nameof<FormDataState>((o) => o.programInterest)} label={t('home:application-form.field.program-interest')} value={formData.programInterest} onChange={handleOnOptionsFieldChange} className="tw-w-full" wordLimit={250} />
-              </>
-            </WizardStep>
-            <WizardStep header={t('home:application-form.step.consent')}>
-              <>
-                <SelectField
-                  field={nameof<FormDataState>((o) => o.internetQualityId)}
-                  label={t('home:application-form.field.internet-quality')}
-                  value={formData.internetQualityId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={internetQualityOptions}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
+              <TextAreaField field={nameof<FormDataState>((o) => o.programInterest)} label={t('home:application-form.field.program-interest')} value={formData.programInterest} onChange={handleOnOptionsFieldChange} className="tw-w-full" wordLimit={250} />
+            </>
+          </WizardStep>
+          <WizardStep header={t('home:application-form.step.consent')}>
+            <>
+              <SelectField
+                field={nameof<FormDataState>((o) => o.internetQualityId)}
+                label={t('home:application-form.field.internet-quality')}
+                value={formData.internetQualityId}
+                onChange={handleOnOptionsFieldChange}
+                options={internetQualityOptions}
+                required
+                gutterBottom
+                className="tw-w-full sm:tw-w-6/12"
+              />
 
-                <RadiosField
-                  field={nameof<FormDataState>((o) => o.hasDedicatedDevice)}
-                  label={t('home:application-form.field.has-dedicated-device')}
-                  value={formData.hasDedicatedDevice?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoOptions}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+              <RadiosField
+                field={nameof<FormDataState>((o) => o.hasDedicatedDevice)}
+                label={t('home:application-form.field.has-dedicated-device')}
+                value={formData.hasDedicatedDevice?.toString()}
+                onChange={handleOnOptionsFieldChange}
+                options={yesNoOptions}
+                required
+                gutterBottom
+                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+              />
 
-                <SelectField
-                  field={nameof<FormDataState>((o) => o.hearAboutCPP)}
-                  label={t('home:application-form.field.hear-about-cpp')}
-                  value={formData.hearAboutCPP}
-                  onChange={handleOnOptionsFieldChange}
-                  options={discoveryChannelOptions}
-                  required
-                  className="tw-w-full sm:tw-w-6/12"
-                  gutterBottom
-                />
+              <SelectField
+                field={nameof<FormDataState>((o) => o.hearAboutCPP)}
+                label={t('home:application-form.field.hear-about-cpp')}
+                value={formData.hearAboutCPP}
+                onChange={handleOnOptionsFieldChange}
+                options={discoveryChannelOptions}
+                required
+                className="tw-w-full sm:tw-w-6/12"
+                gutterBottom
+              />
 
-                <CheckboxeField field={nameof<FormDataState>((o) => o.isInformationConsented)} label={t('home:application-form.field.is-information-consented')} checked={formData.isInformationConsented} onChange={handleOnCheckboxFieldChange} />
-              </>
-            </WizardStep>
-          </Wizard>
-        </>
+              <CheckboxeField field={nameof<FormDataState>((o) => o.isInformationConsented)} label={t('home:application-form.field.is-information-consented')} checked={formData.isInformationConsented} onChange={handleOnCheckboxFieldChange} />
+            </>
+          </WizardStep>
+        </Wizard>
       )}
     </MainLayout>
   );
