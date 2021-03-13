@@ -5,6 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const nextTranslate = require('next-translate');
-
-module.exports = nextTranslate();
+export { default as Button } from './Alert';
+export * from './Alert';

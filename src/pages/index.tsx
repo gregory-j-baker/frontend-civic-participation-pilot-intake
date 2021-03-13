@@ -9,6 +9,13 @@ import { GetStaticProps } from 'next';
 
 const HomeIndex = (): JSX.Element => <></>;
 
-export const getStaticProps: GetStaticProps = async () => ({ props: {}, redirect: { destination: `/apply` } });
+export const getServerSideProps: GetStaticProps = async () => {
+  return {
+    redirect: {
+      destination: `/apply`,
+      permanent: false,
+    },
+  };
+};
 
 export default HomeIndex;

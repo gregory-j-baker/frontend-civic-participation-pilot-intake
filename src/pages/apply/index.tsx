@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { GetStaticProps } from 'next';
+import { GetServerSideProps } from 'next';
 import { ApplyState } from './[id]';
 import kebabCase from 'lodash/kebabCase';
 
@@ -13,10 +13,12 @@ const ApplyIndex = (): JSX.Element => {
   return <></>;
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
   return {
-    props: {},
-    redirect: { destination: `/apply/${kebabCase(nameof<ApplyState>((o) => o.personalInformation))}` },
+    redirect: {
+      destination: `/apply/${kebabCase(nameof<ApplyState>((o) => o.personalInformation))}`,
+      permanent: false,
+    },
   };
 };
 

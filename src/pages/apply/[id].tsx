@@ -40,6 +40,7 @@ import { getYears } from '../../utils/misc-utils';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../_error';
+import Alert, { AlertType } from '../../components/Alert/Alert';
 
 export interface GetDescriptionFunc {
   (obj: { descriptionFr: string; descriptionEn: string }): string;
@@ -257,11 +258,9 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
     [t]
   );
 
-  if (discoveryChannelsError || educationLevelsError || gendersError || indigenousTypesError || internetQualitiesError || internetQualitiesError || languagesError || provincesError || submitError) {
-    return <Error err={(discoveryChannelsError ?? educationLevelsError ?? gendersError ?? indigenousTypesError ?? internetQualitiesError ?? internetQualitiesError ?? languagesError ?? provincesError ?? submitError) as Error} />;
+  if (discoveryChannelsError || educationLevelsError || gendersError || indigenousTypesError || internetQualitiesError || internetQualitiesError || languagesError || provincesError) {
+    return <Error err={(discoveryChannelsError ?? educationLevelsError ?? gendersError ?? indigenousTypesError ?? internetQualitiesError ?? internetQualitiesError ?? languagesError ?? provincesError) as Error} />;
   }
-
-  console.log(Object.values(formData[idCamelCase as keyof ApplyState]));
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -273,290 +272,297 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
       {isDiscoveryChannelsLoading || isEducationLevelsLoading || isGendersLoading || isIndigenousTypesLoading || isInternetQualitiesLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
-        <Wizard
-          activeStepId={idCamelCase}
-          stepText={t('apply:application-form.wizard-step')}
-          submitText={t('apply:application-form.submit')}
-          onNextClick={handleWizardOnNextClick}
-          onPreviousClick={handleWizardOnPreviousClick}
-          onSubmitClick={handleWizardOnSubmitClick}
-          disabled={isSubmitting}>
-          <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} header={t('apply:application-form.step.personal-information')}>
-            <>
-              <TextField
-                field={nameof<PersonalInformationState>((o) => o.firstName)}
-                label={t('apply:application-form.field.first-name')}
-                value={formData.personalInformation.firstName}
-                onChange={handleOnTextFieldChange}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-              />
+        <>
+          {submitError && (
+            <Alert title="Validation Error" description="Please review fields in highlighted in red." type={AlertType.danger}>
+              <pre className="tw-hidden">{JSON.stringify(submitError)}</pre>
+            </Alert>
+          )}
+          <Wizard
+            activeStepId={idCamelCase}
+            stepText={t('apply:application-form.wizard-step')}
+            submitText={t('apply:application-form.submit')}
+            onNextClick={handleWizardOnNextClick}
+            onPreviousClick={handleWizardOnPreviousClick}
+            onSubmitClick={handleWizardOnSubmitClick}
+            disabled={isSubmitting}>
+            <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} header={t('apply:application-form.step.personal-information')}>
+              <>
+                <TextField
+                  field={nameof<PersonalInformationState>((o) => o.firstName)}
+                  label={t('apply:application-form.field.first-name')}
+                  value={formData.personalInformation.firstName}
+                  onChange={handleOnTextFieldChange}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+                />
 
-              <TextField
-                field={nameof<PersonalInformationState>((o) => o.lastName)}
-                label={t('apply:application-form.field.last-name')}
-                value={formData.personalInformation.lastName}
-                onChange={handleOnTextFieldChange}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-              />
+                <TextField
+                  field={nameof<PersonalInformationState>((o) => o.lastName)}
+                  label={t('apply:application-form.field.last-name')}
+                  value={formData.personalInformation.lastName}
+                  onChange={handleOnTextFieldChange}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+                />
 
-              <TextField
-                field={nameof<PersonalInformationState>((o) => o.email)}
-                label={t('apply:application-form.field.email-address')}
-                value={formData.personalInformation.email}
-                onChange={handleOnTextFieldChange}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-              />
+                <TextField
+                  field={nameof<PersonalInformationState>((o) => o.email)}
+                  label={t('apply:application-form.field.email-address')}
+                  value={formData.personalInformation.email}
+                  onChange={handleOnTextFieldChange}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+                />
 
-              <SelectField
-                field={nameof<PersonalInformationState>((o) => o.birthYear)}
-                label={t('apply:application-form.field.birth-year.label')}
-                helperText={t('apply:application-form.field.birth-year.helper-text')}
-                value={formData.personalInformation.birthYear?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={yearOfBirthOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-              />
+                <SelectField
+                  field={nameof<PersonalInformationState>((o) => o.birthYear)}
+                  label={t('apply:application-form.field.birth-year.label')}
+                  helperText={t('apply:application-form.field.birth-year.helper-text')}
+                  value={formData.personalInformation.birthYear?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={yearOfBirthOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                />
 
-              <CheckboxeField
-                field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
-                label={t('apply:application-form.field.is-province-major-certified')}
-                checked={formData.personalInformation.isProvinceMajorCertified}
-                onChange={handleOnCheckboxFieldChange}
-                disabled={isSubmitting}
-                required
-              />
-              <div className="tw-mb-8 tw-pl-10">
-                <a href="http://example.com" target="_blank" rel="noreferrer">
-                  {t('apply:application-form.field.is-province-major-certified-link')}
-                </a>
-              </div>
+                <CheckboxeField
+                  field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
+                  label={t('apply:application-form.field.is-province-major-certified')}
+                  checked={formData.personalInformation.isProvinceMajorCertified}
+                  onChange={handleOnCheckboxFieldChange}
+                  disabled={isSubmitting}
+                  required
+                />
+                <div className="tw-mb-8 tw-pl-10">
+                  <a href="http://example.com" target="_blank" rel="noreferrer">
+                    {t('apply:application-form.field.is-province-major-certified-link')}
+                  </a>
+                </div>
 
-              <RadiosField
-                field={nameof<PersonalInformationState>((o) => o.languageId)}
-                label={t('apply:application-form.field.language')}
-                value={formData.personalInformation.languageId}
-                onChange={handleOnOptionsFieldChange}
-                options={preferedLanguageOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-              />
+                <RadiosField
+                  field={nameof<PersonalInformationState>((o) => o.languageId)}
+                  label={t('apply:application-form.field.language')}
+                  value={formData.personalInformation.languageId}
+                  onChange={handleOnOptionsFieldChange}
+                  options={preferedLanguageOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
 
-              <RadiosField
-                field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
-                label={t('apply:application-form.field.is-canadien-citizen.label')}
-                value={formData.personalInformation.isCanadianCitizen?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={yesNoOptions}
-                helperText={t('apply:application-form.field.is-canadien-citizen.helper-text')}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-              />
+                <RadiosField
+                  field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
+                  label={t('apply:application-form.field.is-canadien-citizen.label')}
+                  value={formData.personalInformation.isCanadianCitizen?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={yesNoOptions}
+                  helperText={t('apply:application-form.field.is-canadien-citizen.helper-text')}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
 
-              <SelectField
-                field={nameof<PersonalInformationState>((o) => o.provinceId)}
-                label={t('apply:application-form.field.province')}
-                value={formData.personalInformation.provinceId}
-                onChange={handleOnOptionsFieldChange}
-                options={provinceOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full sm:tw-w-6/12"
-              />
+                <SelectField
+                  field={nameof<PersonalInformationState>((o) => o.provinceId)}
+                  label={t('apply:application-form.field.province')}
+                  value={formData.personalInformation.provinceId}
+                  onChange={handleOnOptionsFieldChange}
+                  options={provinceOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
+                />
 
-              <SelectField
-                field={nameof<PersonalInformationState>((o) => o.genderId)}
-                label={t('apply:application-form.field.gender')}
-                value={formData.personalInformation.genderId === null ? NO_ANSWER_VALUE : formData.personalInformation.genderId?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={genderOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full sm:tw-w-6/12"
-              />
+                <SelectField
+                  field={nameof<PersonalInformationState>((o) => o.genderId)}
+                  label={t('apply:application-form.field.gender')}
+                  value={formData.personalInformation.genderId === null ? NO_ANSWER_VALUE : formData.personalInformation.genderId?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={genderOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
+                />
 
-              <SelectField
-                field={nameof<PersonalInformationState>((o) => o.educationLevelId)}
-                label={t('apply:application-form.field.education-level.label')}
-                helperText={t('apply:application-form.field.education-level.helper-text')}
-                value={formData.personalInformation.educationLevelId === null ? NO_ANSWER_VALUE : formData.personalInformation.educationLevelId?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={educationLevelOptions}
-                disabled={isSubmitting}
-                required
-                className="tw-w-full"
-              />
-            </>
-          </WizardStep>
-          <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} header={t('apply:application-form.step.identity')}>
-            <>
-              <RadiosField
-                field={nameof<IdentityInformationState>((o) => o.isDisabled)}
-                label={t('apply:application-form.field.is-disabled')}
-                value={formData.identityInformation.isDisabled === null ? NO_ANSWER_VALUE : formData.identityInformation.isDisabled?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={yesNoNoPreferNotAnswerOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-              />
+                <SelectField
+                  field={nameof<PersonalInformationState>((o) => o.educationLevelId)}
+                  label={t('apply:application-form.field.education-level.label')}
+                  helperText={t('apply:application-form.field.education-level.helper-text')}
+                  value={formData.personalInformation.educationLevelId === null ? NO_ANSWER_VALUE : formData.personalInformation.educationLevelId?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={educationLevelOptions}
+                  disabled={isSubmitting}
+                  required
+                  className="tw-w-full"
+                />
+              </>
+            </WizardStep>
+            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} header={t('apply:application-form.step.identity')}>
+              <>
+                <RadiosField
+                  field={nameof<IdentityInformationState>((o) => o.isDisabled)}
+                  label={t('apply:application-form.field.is-disabled')}
+                  value={formData.identityInformation.isDisabled === null ? NO_ANSWER_VALUE : formData.identityInformation.isDisabled?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
 
-              <RadiosField
-                field={nameof<IdentityInformationState>((o) => o.isMinority)}
-                label={t('apply:application-form.field.is-minority')}
-                value={formData.identityInformation.isMinority === null ? NO_ANSWER_VALUE : formData.identityInformation.isMinority?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={yesNoNoPreferNotAnswerOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-              />
+                <RadiosField
+                  field={nameof<IdentityInformationState>((o) => o.isMinority)}
+                  label={t('apply:application-form.field.is-minority')}
+                  value={formData.identityInformation.isMinority === null ? NO_ANSWER_VALUE : formData.identityInformation.isMinority?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
 
-              <SelectField
-                field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
-                label={t('apply:application-form.field.indigenous-type')}
-                value={formData.identityInformation.indigenousTypeId === null ? NO_ANSWER_VALUE : formData.identityInformation.indigenousTypeId?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={indigenousTypeOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full sm:tw-w-6/12"
-              />
+                <SelectField
+                  field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
+                  label={t('apply:application-form.field.indigenous-type')}
+                  value={formData.identityInformation.indigenousTypeId === null ? NO_ANSWER_VALUE : formData.identityInformation.indigenousTypeId?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={indigenousTypeOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
+                />
 
-              <RadiosField
-                field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
-                label={t('apply:application-form.field.is-lgbtq')}
-                value={formData.identityInformation.isLgbtq === null ? NO_ANSWER_VALUE : formData.identityInformation.isLgbtq?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={yesNoNoPreferNotAnswerOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-              />
+                <RadiosField
+                  field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
+                  label={t('apply:application-form.field.is-lgbtq')}
+                  value={formData.identityInformation.isLgbtq === null ? NO_ANSWER_VALUE : formData.identityInformation.isLgbtq?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
 
-              <RadiosField
-                field={nameof<IdentityInformationState>((o) => o.isRural)}
-                label={t('apply:application-form.field.is-rural')}
-                value={formData.identityInformation.isRural === null ? NO_ANSWER_VALUE : formData.identityInformation.isRural?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={yesNoNoPreferNotAnswerOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-              />
+                <RadiosField
+                  field={nameof<IdentityInformationState>((o) => o.isRural)}
+                  label={t('apply:application-form.field.is-rural')}
+                  value={formData.identityInformation.isRural === null ? NO_ANSWER_VALUE : formData.identityInformation.isRural?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
 
-              <RadiosField
-                field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
-                label={t('apply:application-form.field.is-newcomer')}
-                value={formData.identityInformation.isNewcomer === null ? NO_ANSWER_VALUE : formData.identityInformation.isNewcomer?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={yesNoNoPreferNotAnswerOptions}
-                disabled={isSubmitting}
-                required
-                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-              />
-            </>
-          </WizardStep>
-          <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest-questions')}>
-            <>
-              <TextAreaField
-                field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
-                label={t('apply:application-form.field.skills-interest')}
-                value={formData.expressionOfInterest.skillsInterest}
-                onChange={handleOnTextFieldChange}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full"
-                wordLimit={250}
-              />
+                <RadiosField
+                  field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
+                  label={t('apply:application-form.field.is-newcomer')}
+                  value={formData.identityInformation.isNewcomer === null ? NO_ANSWER_VALUE : formData.identityInformation.isNewcomer?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={yesNoNoPreferNotAnswerOptions}
+                  disabled={isSubmitting}
+                  required
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
+              </>
+            </WizardStep>
+            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest-questions')}>
+              <>
+                <TextAreaField
+                  field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
+                  label={t('apply:application-form.field.skills-interest')}
+                  value={formData.expressionOfInterest.skillsInterest}
+                  onChange={handleOnTextFieldChange}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full"
+                  wordLimit={250}
+                />
 
-              <TextAreaField
-                field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
-                label={t('apply:application-form.field.community-interest')}
-                value={formData.expressionOfInterest.communityInterest}
-                onChange={handleOnTextFieldChange}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full"
-                wordLimit={250}
-              />
+                <TextAreaField
+                  field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
+                  label={t('apply:application-form.field.community-interest')}
+                  value={formData.expressionOfInterest.communityInterest}
+                  onChange={handleOnTextFieldChange}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full"
+                  wordLimit={250}
+                />
 
-              <TextAreaField
-                field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
-                label={t('apply:application-form.field.program-interest')}
-                value={formData.expressionOfInterest.programInterest}
-                onChange={handleOnOptionsFieldChange}
-                disabled={isSubmitting}
-                className="tw-w-full"
-                wordLimit={250}
-              />
-            </>
-          </WizardStep>
-          <WizardStep id={nameof<ApplyState>((o) => o.consent)} header={t('apply:application-form.step.consent')}>
-            <>
-              <SelectField
-                field={nameof<ConsentState>((o) => o.internetQualityId)}
-                label={t('apply:application-form.field.internet-quality')}
-                value={formData.consent.internetQualityId}
-                onChange={handleOnOptionsFieldChange}
-                options={internetQualityOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                className="tw-w-full sm:tw-w-6/12"
-              />
+                <TextAreaField
+                  field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
+                  label={t('apply:application-form.field.program-interest')}
+                  value={formData.expressionOfInterest.programInterest}
+                  onChange={handleOnOptionsFieldChange}
+                  disabled={isSubmitting}
+                  className="tw-w-full"
+                  wordLimit={250}
+                />
+              </>
+            </WizardStep>
+            <WizardStep id={nameof<ApplyState>((o) => o.consent)} header={t('apply:application-form.step.consent')}>
+              <>
+                <SelectField
+                  field={nameof<ConsentState>((o) => o.internetQualityId)}
+                  label={t('apply:application-form.field.internet-quality')}
+                  value={formData.consent.internetQualityId}
+                  onChange={handleOnOptionsFieldChange}
+                  options={internetQualityOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
+                />
 
-              <RadiosField
-                field={nameof<ConsentState>((o) => o.hasDedicatedDevice)}
-                label={t('apply:application-form.field.has-dedicated-device')}
-                value={formData.consent.hasDedicatedDevice?.toString()}
-                onChange={handleOnOptionsFieldChange}
-                options={yesNoOptions}
-                disabled={isSubmitting}
-                required
-                gutterBottom
-                inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-              />
+                <RadiosField
+                  field={nameof<ConsentState>((o) => o.hasDedicatedDevice)}
+                  label={t('apply:application-form.field.has-dedicated-device')}
+                  value={formData.consent.hasDedicatedDevice?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={yesNoOptions}
+                  disabled={isSubmitting}
+                  required
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
 
-              <SelectField
-                field={nameof<ConsentState>((o) => o.discoveryChannelId)}
-                label={t('apply:application-form.field.discovery-channel')}
-                value={formData.consent.discoveryChannelId}
-                onChange={handleOnOptionsFieldChange}
-                options={discoveryChannelOptions}
-                disabled={isSubmitting}
-                required
-                className="tw-w-full sm:tw-w-6/12"
-                gutterBottom
-              />
+                <SelectField
+                  field={nameof<ConsentState>((o) => o.discoveryChannelId)}
+                  label={t('apply:application-form.field.discovery-channel')}
+                  value={formData.consent.discoveryChannelId}
+                  onChange={handleOnOptionsFieldChange}
+                  options={discoveryChannelOptions}
+                  disabled={isSubmitting}
+                  required
+                  className="tw-w-full sm:tw-w-6/12"
+                  gutterBottom
+                />
 
-              <CheckboxeField field={nameof<ConsentState>((o) => o.isInformationConsented)} label={t('apply:application-form.field.is-information-consented')} checked={formData.consent.isInformationConsented} onChange={handleOnCheckboxFieldChange} />
-            </>
-          </WizardStep>
-        </Wizard>
+                <CheckboxeField field={nameof<ConsentState>((o) => o.isInformationConsented)} label={t('apply:application-form.field.is-information-consented')} checked={formData.consent.isInformationConsented} onChange={handleOnCheckboxFieldChange} />
+              </>
+            </WizardStep>
+          </Wizard>
+        </>
       )}
     </MainLayout>
   );
