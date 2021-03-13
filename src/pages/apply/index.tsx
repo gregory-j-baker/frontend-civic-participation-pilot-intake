@@ -6,7 +6,7 @@
  */
 
 import { GetServerSideProps } from 'next';
-import { ApplyState } from './[id]';
+import { ApplyState } from './types';
 import kebabCase from 'lodash/kebabCase';
 
 const ApplyIndex = (): JSX.Element => {
