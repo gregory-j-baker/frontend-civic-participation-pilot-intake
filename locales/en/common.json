@@ -26,6 +26,11 @@
       "without-status-code": "An error occurred on server"
     }
   },
+  "error-number": "Error {{number}}: ",
+  "error-form-cannot-be-submitted": {
+    "one": "The form could not be submitted because {{count}} error was found.",
+    "other": "The form could not be submitted because {{count}} errors were found."
+  },
   "field-required": "(required)",
   "please-select": "Please select",
   "yes": "Yes",

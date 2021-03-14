@@ -26,6 +26,11 @@
       "without-status-code": "Une erreur s'est produite sur le serveur"
     }
   },
+  "error-number": "Erreur {{number}}\u00A0: ",
+  "error-form-cannot-be-submitted": {
+    "one": "Le formulaire n'a pas pu être soumis car {{count}} erreur a été trouvée.",
+    "other": "Le formulaire n'a pas pu être soumis car {{count}} erreurs ont été trouvées."
+  },
   "field-required": "(obligatoire)",
   "please-select": "Veuillez sélectionner",
   "yes": "Oui",

@@ -51,9 +51,9 @@ export const identityInformationSchema = yup.object().shape({
 });
 
 export const expressionOfInterestSchema = yup.object().shape({
+  skillsInterest: yup.string().required(),
   communityInterest: yup.string().required(),
   programInterest: yup.string(),
-  skillsInterest: yup.string().required(),
 });
 
 export const consentSchema = yup.object().shape({

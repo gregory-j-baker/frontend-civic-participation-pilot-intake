@@ -270,6 +270,15 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
     [t]
   );
 
+  const getFielValidationError = (field: string): string | undefined => {
+    if (!fieldValidationErrors || fieldValidationErrors.length == 0) return undefined;
+
+    const index = fieldValidationErrors.findIndex((key) => key.split('.')[0] === kebabCase(field));
+    if (index === -1) return undefined;
+
+    return t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.${id.toLowerCase()}.field.${fieldValidationErrors[index]}`);
+  };
+
   if (discoveryChannelsError || educationLevelsError || gendersError || indigenousTypesError || internetQualitiesError || internetQualitiesError || languagesError || provincesError) {
     return <Error err={(discoveryChannelsError ?? educationLevelsError ?? gendersError ?? indigenousTypesError ?? internetQualitiesError ?? internetQualitiesError ?? languagesError ?? provincesError) as Error} />;
   }
@@ -291,17 +300,15 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
             </Alert>
           )}
 
-          {fieldValidationErrors && (
-            <Alert title="Validation Error" description="Please review fields in highlighted in red." type={AlertType.danger}>
+          {fieldValidationErrors && fieldValidationErrors.length > 0 && (
+            <Alert title={t('common:error-form-cannot-be-submitted', { count: fieldValidationErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc tw-list-inside">
-                {fieldValidationErrors.map((err) => {
-                  const [field] = err.split('.');
+                {fieldValidationErrors.map((key) => {
+                  const [field] = key.split('.');
 
                   return (
-                    <li key={err} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>
-                        {camelCase(field)} =&gt; {err}
-                      </a>
+                    <li key={key} className="tw-my-2">
+                      <a href={`#form-field-${camelCase(field)}`}>{getFielValidationError(field)}</a>
                     </li>
                   );
                 })}
@@ -325,7 +332,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.personalInformation.firstName}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.firstName))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.firstName))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
@@ -337,7 +344,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.personalInformation.lastName}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.lastName))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.lastName))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
@@ -345,11 +352,11 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.email)}
-                  label={t('apply:application-form.step.personal-information.field.email-address.label')}
+                  label={t('apply:application-form.step.personal-information.field.email.label')}
                   value={formData.personalInformation.email}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.email))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.email))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
@@ -363,7 +370,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yearOfBirthOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.birthYear))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.birthYear))}
                   required
                   gutterBottom
                 />
@@ -374,7 +381,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   checked={formData.personalInformation.isProvinceMajorCertified}
                   onChange={handleOnCheckboxFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))}
                   required
                 />
                 <div className="tw-mb-8 tw-pl-10">
@@ -385,12 +392,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<PersonalInformationState>((o) => o.languageId)}
-                  label={t('apply:application-form.step.personal-information.field.language.label')}
+                  label={t('apply:application-form.step.personal-information.field.language-id.label')}
                   value={formData.personalInformation.languageId}
                   onChange={handleOnOptionsFieldChange}
                   options={preferedLanguageOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.languageId))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.languageId))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -398,13 +405,13 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
-                  label={t('apply:application-form.step.personal-information.field.is-canadien-citizen.label')}
+                  label={t('apply:application-form.step.personal-information.field.is-canadian-citizen.label')}
                   value={formData.personalInformation.isCanadianCitizen?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
-                  helperText={t('apply:application-form.step.personal-information.field.is-canadien-citizen.helper-text')}
+                  helperText={t('apply:application-form.step.personal-information.field.is-canadian-citizen.helper-text')}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -412,12 +419,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.provinceId)}
-                  label={t('apply:application-form.step.personal-information.field.province.label')}
+                  label={t('apply:application-form.step.personal-information.field.province-id.label')}
                   value={formData.personalInformation.provinceId}
                   onChange={handleOnOptionsFieldChange}
                   options={provinceOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.provinceId))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.provinceId))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -425,12 +432,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.genderId)}
-                  label={t('apply:application-form.step.personal-information.field.gender.label')}
+                  label={t('apply:application-form.step.personal-information.field.gender-id.label')}
                   value={formData.personalInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.genderId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={genderOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.genderId))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.genderId))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -438,27 +445,27 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.educationLevelId)}
-                  label={t('apply:application-form.step.personal-information.field.education-level.label')}
-                  helperText={t('apply:application-form.step.personal-information.field.education-level.helper-text')}
+                  label={t('apply:application-form.step.personal-information.field.education-level-id.label')}
+                  helperText={t('apply:application-form.step.personal-information.field.education-level-id.helper-text')}
                   value={formData.personalInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.educationLevelId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={educationLevelOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.educationLevelId))))}
+                  error={getFielValidationError(nameof<PersonalInformationState>((o) => o.educationLevelId))}
                   required
                   className="tw-w-full"
                 />
               </>
             </WizardStep>
-            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} header={t('apply:application-form.step.identity.header')}>
+            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} header={t('apply:application-form.step.identity-information.header')}>
               <>
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isDisabled)}
-                  label={t('apply:application-form.step.identity.field.is-disabled.label')}
+                  label={t('apply:application-form.step.identity-information.field.is-disabled.label')}
                   value={formData.identityInformation.isDisabled === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isDisabled?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isDisabled))))}
+                  error={getFielValidationError(nameof<IdentityInformationState>((o) => o.isDisabled))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -466,12 +473,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isMinority)}
-                  label={t('apply:application-form.step.identity.field.is-minority.label')}
+                  label={t('apply:application-form.step.identity-information.field.is-minority.label')}
                   value={formData.identityInformation.isMinority === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isMinority?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isMinority))))}
+                  error={getFielValidationError(nameof<IdentityInformationState>((o) => o.isMinority))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -479,12 +486,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
-                  label={t('apply:application-form.step.identity.field.indigenous-type.label')}
+                  label={t('apply:application-form.step.identity-information.field.indigenous-type-id.label')}
                   value={formData.identityInformation.indigenousTypeId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.indigenousTypeId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={indigenousTypeOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.indigenousTypeId))))}
+                  error={getFielValidationError(nameof<IdentityInformationState>((o) => o.indigenousTypeId))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -492,12 +499,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
-                  label={t('apply:application-form.step.identity.field.is-lgbtq.label')}
+                  label={t('apply:application-form.step.identity-information.field.is-lgbtq.label')}
                   value={formData.identityInformation.isLgbtq === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isLgbtq?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isLgbtq))))}
+                  error={getFielValidationError(nameof<IdentityInformationState>((o) => o.isLgbtq))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -505,12 +512,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isRural)}
-                  label={t('apply:application-form.step.identity.field.is-rural.label')}
+                  label={t('apply:application-form.step.identity-information.field.is-rural.label')}
                   value={formData.identityInformation.isRural === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isRural?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isRural))))}
+                  error={getFielValidationError(nameof<IdentityInformationState>((o) => o.isRural))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -518,26 +525,26 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
-                  label={t('apply:application-form.step.identity.field.is-newcomer.label')}
+                  label={t('apply:application-form.step.identity-information.field.is-newcomer.label')}
                   value={formData.identityInformation.isNewcomer === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isNewcomer?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isNewcomer))))}
+                  error={getFielValidationError(nameof<IdentityInformationState>((o) => o.isNewcomer))}
                   required
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
               </>
             </WizardStep>
-            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest-questions.header')}>
+            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest.header')}>
               <>
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
-                  label={t('apply:application-form.step.expression-of-interest-questions.field.skills-interest.label')}
+                  label={t('apply:application-form.step.expression-of-interest.field.skills-interest.label')}
                   value={formData.expressionOfInterest.skillsInterest}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))))}
+                  error={getFielValidationError(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))}
                   required
                   gutterBottom
                   className="tw-w-full"
@@ -546,11 +553,11 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
-                  label={t('apply:application-form.step.expression-of-interest-questions.field.community-interest.label')}
+                  label={t('apply:application-form.step.expression-of-interest.field.community-interest.label')}
                   value={formData.expressionOfInterest.communityInterest}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.communityInterest))))}
+                  error={getFielValidationError(nameof<ExpressionOfInterestState>((o) => o.communityInterest))}
                   required
                   gutterBottom
                   className="tw-w-full"
@@ -559,11 +566,11 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
-                  label={t('apply:application-form.step.expression-of-interest-questions.field.program-interest.label')}
+                  label={t('apply:application-form.step.expression-of-interest.field.program-interest.label')}
                   value={formData.expressionOfInterest.programInterest}
                   onChange={handleOnOptionsFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.programInterest))))}
+                  error={getFielValidationError(nameof<ExpressionOfInterestState>((o) => o.programInterest))}
                   className="tw-w-full"
                   wordLimit={250}
                 />
@@ -573,12 +580,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
               <>
                 <SelectField
                   field={nameof<ConsentState>((o) => o.internetQualityId)}
-                  label={t('apply:application-form.step.consent.field.internet-quality.label')}
+                  label={t('apply:application-form.step.consent.field.internet-quality-id.label')}
                   value={formData.consent.internetQualityId}
                   onChange={handleOnOptionsFieldChange}
                   options={internetQualityOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.internetQualityId))))}
+                  error={getFielValidationError(nameof<ConsentState>((o) => o.internetQualityId))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -591,7 +598,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.hasDedicatedDevice))))}
+                  error={getFielValidationError(nameof<ConsentState>((o) => o.hasDedicatedDevice))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -599,12 +606,12 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<ConsentState>((o) => o.discoveryChannelId)}
-                  label={t('apply:application-form.step.consent.field.discovery-channel.label')}
+                  label={t('apply:application-form.step.consent.field.discovery-channel-id.label')}
                   value={formData.consent.discoveryChannelId}
                   onChange={handleOnOptionsFieldChange}
                   options={discoveryChannelOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.discoveryChannelId))))}
+                  error={getFielValidationError(nameof<ConsentState>((o) => o.discoveryChannelId))}
                   required
                   className="tw-w-full sm:tw-w-6/12"
                   gutterBottom
@@ -616,7 +623,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   checked={formData.consent.isInformationConsented}
                   onChange={handleOnCheckboxFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.isInformationConsented))))}
+                  error={getFielValidationError(nameof<ConsentState>((o) => o.isInformationConsented))}
                 />
               </>
             </WizardStep>
