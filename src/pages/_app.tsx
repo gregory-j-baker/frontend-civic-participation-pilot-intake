@@ -10,6 +10,7 @@ import { DefaultSeo, NextSeo } from 'next-seo';
 import { AppProps } from 'next/app';
 import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { Hydrate } from 'react-query/hydration';
 import { AppInsightsPageViewTracking } from '../components/AppInsightsPageViewTracking';
 import { nextSeoConfigEN, nextSeoConfigFR } from '../config';
 
@@ -27,10 +28,12 @@ const MyApp = (props: AppProps): JSX.Element => {
   return (
     <AuthProvider session={pageProps.session}>
       <QueryClientProvider client={queryClient}>
-        <DefaultSeo {...defaultSeo} />
-        <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
-        <Component {...pageProps} />
-        <AppInsightsPageViewTracking />
+        <Hydrate state={pageProps.dehydratedState}>
+          <DefaultSeo {...defaultSeo} />
+          <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
+          <Component {...pageProps} />
+          <AppInsightsPageViewTracking />
+        </Hydrate>
       </QueryClientProvider>
     </AuthProvider>
   );

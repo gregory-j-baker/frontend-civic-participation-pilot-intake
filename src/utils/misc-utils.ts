@@ -79,12 +79,3 @@ export const getKeyboardFocusableElements = (element?: Element): Element[] => {
   const el = element ?? document;
   return [...el.querySelectorAll('a, button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])')].filter((el) => !el.hasAttribute('disabled'));
 };
-
-/**
- * @see https://github.com/hswolff/votey-uppy/blob/b89be8c7d3ce1ee45f0b0e476a550d64807dc4b8/lib/api-hooks.ts#L16
- */
-export const fetchWrapper = async (input: RequestInfo, init?: RequestInit): Promise<Response> => {
-  const res = await fetch(input, init);
-  if (res.status >= 300) throw res;
-  return res.json();
-};

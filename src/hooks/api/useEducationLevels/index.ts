@@ -8,4 +8,5 @@
 import educationLevelStaticProps from './static-props-data.json';
 
 export { default } from './useEducationLevels';
+export * from './useEducationLevels';
 export { educationLevelStaticProps };

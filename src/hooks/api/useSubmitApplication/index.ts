@@ -6,4 +6,4 @@
  */
 
 export { default } from './useSubmitApplication';
-export type { ApplicationData } from './useSubmitApplication';
+export * from './useSubmitApplication';

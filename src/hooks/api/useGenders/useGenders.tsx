@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { UseQueryResult } from 'react-query';
+import type { QueryKey, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import type { HateoasCollection, HateoasLink } from '../../../common/types';
 import { apiConfig } from '../../../config';
 import { beforeNow } from '../../../utils/date-utils';
+import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 export interface Gender {
   id: string;
@@ -41,12 +42,14 @@ export interface UseGendersOptions {
   sort?: boolean;
 }
 
-export const uri = `${apiConfig.baseUri}/genders`;
+export const gendersUri = `${apiConfig.baseUri}/genders`;
 
-export const fetchGenders = (): Promise<GenderResponse> => fetch(uri).then((res) => res.json());
+export const gendersQueryKey: QueryKey = 'genders';
+
+export const fetchGenders = (): Promise<GenderResponse> => fetchWrapper<GenderResponse>(gendersUri);
 
 const useGenders = ({ enabled = true, onlyActive = true, sort = true }: UseGendersOptions = {}): UseQueryResult<GenderResponse, unknown> => {
-  return useQuery('genders', fetchGenders, {
+  return useQuery(gendersQueryKey, fetchGenders, {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

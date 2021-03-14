@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { UseQueryResult } from 'react-query';
+import type { QueryKey, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import type { HateoasCollection, HateoasLink } from '../../../common/types';
 import { apiConfig } from '../../../config';
 import { beforeNow } from '../../../utils/date-utils';
+import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 export interface EducationLevel {
   id: string;
@@ -41,12 +42,14 @@ export interface UseEducationLevelsOptions {
   sort?: boolean;
 }
 
-export const uri = `${apiConfig.baseUri}/education-levels`;
+export const educationLevelsUri = `${apiConfig.baseUri}/education-levels`;
 
-export const fetchEducationLevels = (): Promise<EducationLevelResponse> => fetch(uri).then((res) => res.json());
+export const educationLevelsQueryKey: QueryKey = 'education-levels';
+
+export const fetchEducationLevels = (): Promise<EducationLevelResponse> => fetchWrapper<EducationLevelResponse>(educationLevelsUri);
 
 const useEducationLevels = ({ enabled = true, onlyActive = true, sort = true }: UseEducationLevelsOptions = {}): UseQueryResult<EducationLevelResponse, unknown> => {
-  return useQuery('education-levels', fetchEducationLevels, {
+  return useQuery(educationLevelsQueryKey, fetchEducationLevels, {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

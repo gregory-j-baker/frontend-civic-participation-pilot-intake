@@ -7,7 +7,7 @@
 
 import { useMutation, UseMutationResult } from 'react-query';
 import { apiConfig } from '../../../config';
-import { fetchWrapper } from '../../../utils/misc-utils';
+import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 interface ApplicationData {
   birthYear?: number;
@@ -37,15 +37,15 @@ interface ApplicationData {
 export const uri = `${apiConfig.baseUri}/applications`;
 
 const useSubmitApplication = (): UseMutationResult<Response, unknown, ApplicationData> => {
-  return useMutation((applicationData: ApplicationData) => {
-    return fetchWrapper(uri, {
+  return useMutation((applicationData: ApplicationData) =>
+    fetchWrapper<any>(uri, {
       body: JSON.stringify(applicationData),
       headers: {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-    });
-  });
+    })
+  );
 };
 
 export default useSubmitApplication;

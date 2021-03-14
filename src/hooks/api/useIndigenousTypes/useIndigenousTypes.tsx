@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { UseQueryResult } from 'react-query';
+import type { QueryKey, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import type { HateoasCollection, HateoasLink } from '../../../common/types';
 import { apiConfig } from '../../../config';
 import { beforeNow } from '../../../utils/date-utils';
+import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 export interface IndigenousType {
   id: string;
@@ -41,12 +42,14 @@ export interface UseIndigenousTypesOptions {
   sort?: boolean;
 }
 
-export const uri = `${apiConfig.baseUri}/indigenous-types`;
+export const indigenousTypesUri = `${apiConfig.baseUri}/indigenous-types`;
 
-export const fetchIndigenousTypes = (): Promise<IndigenousTypeResponse> => fetch(uri).then((res) => res.json());
+export const indigenousTypesQueryKey: QueryKey = 'indigenous-types';
+
+export const fetchIndigenousTypes = (): Promise<IndigenousTypeResponse> => fetchWrapper<IndigenousTypeResponse>(indigenousTypesUri);
 
 const useIndigenousTypes = ({ enabled = true, onlyActive = true, sort = true }: UseIndigenousTypesOptions = {}): UseQueryResult<IndigenousTypeResponse, unknown> => {
-  return useQuery('indigenous-types', fetchIndigenousTypes, {
+  return useQuery(indigenousTypesQueryKey, fetchIndigenousTypes, {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

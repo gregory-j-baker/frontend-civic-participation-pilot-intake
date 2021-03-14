@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { UseQueryResult } from 'react-query';
+import type { QueryKey, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import type { HateoasCollection, HateoasLink } from '../../../common/types';
 import { apiConfig } from '../../../config';
 import { beforeNow } from '../../../utils/date-utils';
+import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 export interface Language {
   id: string;
@@ -41,12 +42,14 @@ export interface UseLanguagesOptions {
   sort?: boolean;
 }
 
-export const uri = `${apiConfig.baseUri}/languages`;
+export const languagesUri = `${apiConfig.baseUri}/languages`;
 
-export const fetchLanguages = (): Promise<LanguageResponse> => fetch(uri).then((res) => res.json());
+export const languagesQueryKey: QueryKey = 'languages';
+
+export const fetchLanguages = (): Promise<LanguageResponse> => fetchWrapper<LanguageResponse>(languagesUri);
 
 const useLanguages = ({ enabled = true, onlyActive = true, sort = true }: UseLanguagesOptions = {}): UseQueryResult<LanguageResponse, unknown> => {
-  return useQuery('languages', fetchLanguages, {
+  return useQuery(languagesQueryKey, fetchLanguages, {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

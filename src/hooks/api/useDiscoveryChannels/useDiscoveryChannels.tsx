@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { UseQueryResult } from 'react-query';
+import type { QueryKey, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import type { HateoasCollection, HateoasLink } from '../../../common/types';
 import { apiConfig } from '../../../config';
 import { beforeNow } from '../../../utils/date-utils';
+import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 export interface DiscoveryChannel {
   id: string;
@@ -41,12 +42,14 @@ export interface UseDiscoveryChannelsOptions {
   sort?: boolean;
 }
 
-export const uri = `${apiConfig.baseUri}/discovery-channels`;
+export const discoveryChannelsUri = `${apiConfig.baseUri}/discovery-channels`;
 
-export const fetchDiscoveryChannels = (): Promise<DiscoveryChannelResponse> => fetch(uri).then((res) => res.json());
+export const discoveryChannelsQueryKey: QueryKey = 'discovery-channels';
+
+export const fetchDiscoveryChannels = (): Promise<DiscoveryChannelResponse> => fetchWrapper<DiscoveryChannelResponse>(discoveryChannelsUri);
 
 const useDiscoveryChannels = ({ enabled = true, onlyActive = true, sort = true }: UseDiscoveryChannelsOptions = {}): UseQueryResult<DiscoveryChannelResponse, unknown> => {
-  return useQuery('discovery-channels', fetchDiscoveryChannels, {
+  return useQuery(discoveryChannelsQueryKey, fetchDiscoveryChannels, {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

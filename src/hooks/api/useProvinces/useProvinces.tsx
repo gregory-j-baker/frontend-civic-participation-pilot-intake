@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { UseQueryResult } from 'react-query';
+import type { QueryKey, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import type { HateoasCollection, HateoasLink } from '../../../common/types';
 import { apiConfig } from '../../../config';
 import { beforeNow } from '../../../utils/date-utils';
+import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 export interface Province {
   id: string;
@@ -41,12 +42,14 @@ export interface UseProvincesOptions {
   sort?: boolean;
 }
 
-export const uri = `${apiConfig.baseUri}/provinces`;
+export const provincesUri = `${apiConfig.baseUri}/provinces`;
 
-export const fetchProvinces = (): Promise<ProvinceResponse> => fetch(uri).then((res) => res.json());
+export const provincesQueryKey: QueryKey = 'provinces';
+
+export const fetchProvinces = (): Promise<ProvinceResponse> => fetchWrapper<ProvinceResponse>(provincesUri);
 
 const useProvinces = ({ enabled = true, onlyActive = true, sort = true }: UseProvincesOptions = {}): UseQueryResult<ProvinceResponse, unknown> => {
-  return useQuery('provinces', fetchProvinces, {
+  return useQuery(provincesQueryKey, fetchProvinces, {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

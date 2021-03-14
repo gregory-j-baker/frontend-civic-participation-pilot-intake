@@ -8,4 +8,5 @@
 import indigenousTypeStaticProps from './static-props-data.json';
 
 export { default } from './useIndigenousTypes';
+export * from './useIndigenousTypes';
 export { indigenousTypeStaticProps };

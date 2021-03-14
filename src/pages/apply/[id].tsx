@@ -27,13 +27,13 @@ import { PageLoadingSpinner } from '../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent, WizardOnSubmitClickEvent } from '../../components/Wizard';
 import { WizardStep } from '../../components/WizardStep';
 import { theme } from '../../config';
-import useDiscoveryChannels, { discoveryChannelsStaticProps } from '../../hooks/api/useDiscoveryChannels';
-import useEducationLevels, { educationLevelStaticProps } from '../../hooks/api/useEducationLevels';
-import useGenders, { genderStaticProps } from '../../hooks/api/useGenders';
-import useIndigenousTypes, { indigenousTypeStaticProps } from '../../hooks/api/useIndigenousTypes';
-import useInternetQualities, { internetQualitiesStaticProps } from '../../hooks/api/useInternetQualities';
-import useLanguages, { languagesStaticProps } from '../../hooks/api/useLanguages';
-import useProvinces, { provincesStaticProps } from '../../hooks/api/useProvinces';
+import useDiscoveryChannels, { discoveryChannelsStaticProps, discoveryChannelsQueryKey } from '../../hooks/api/useDiscoveryChannels';
+import useEducationLevels, { educationLevelStaticProps, educationLevelsQueryKey } from '../../hooks/api/useEducationLevels';
+import useGenders, { genderStaticProps, gendersQueryKey } from '../../hooks/api/useGenders';
+import useIndigenousTypes, { indigenousTypeStaticProps, indigenousTypesQueryKey } from '../../hooks/api/useIndigenousTypes';
+import useInternetQualities, { internetQualitiesStaticProps, internetQualitiesQueryKey } from '../../hooks/api/useInternetQualities';
+import useLanguages, { languagesStaticProps, languagesQueryKey } from '../../hooks/api/useLanguages';
+import useProvinces, { provincesStaticProps, provincesQueryKey } from '../../hooks/api/useProvinces';
 import useSubmitApplication from '../../hooks/api/useSubmitApplication';
 import useCurrentBreakpoint from '../../hooks/useCurrentBreakpoint';
 import { getYears } from '../../utils/misc-utils';
@@ -644,13 +644,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery('discovery-channels', () => discoveryChannelsStaticProps);
-  await queryClient.prefetchQuery('education-levels', () => educationLevelStaticProps);
-  await queryClient.prefetchQuery('genders', () => genderStaticProps);
-  await queryClient.prefetchQuery('indigenous-types', () => indigenousTypeStaticProps);
-  await queryClient.prefetchQuery('internet-qualities', () => internetQualitiesStaticProps);
-  await queryClient.prefetchQuery('languages', () => languagesStaticProps);
-  await queryClient.prefetchQuery('provinces', () => provincesStaticProps);
+  await queryClient.prefetchQuery(discoveryChannelsQueryKey, () => discoveryChannelsStaticProps);
+  await queryClient.prefetchQuery(educationLevelsQueryKey, () => educationLevelStaticProps);
+  await queryClient.prefetchQuery(gendersQueryKey, () => genderStaticProps);
+  await queryClient.prefetchQuery(indigenousTypesQueryKey, () => indigenousTypeStaticProps);
+  await queryClient.prefetchQuery(internetQualitiesQueryKey, () => internetQualitiesStaticProps);
+  await queryClient.prefetchQuery(languagesQueryKey, () => languagesStaticProps);
+  await queryClient.prefetchQuery(provincesQueryKey, () => provincesStaticProps);
 
   return {
     props: {

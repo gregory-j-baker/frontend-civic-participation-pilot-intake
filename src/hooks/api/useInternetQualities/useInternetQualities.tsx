@@ -5,11 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { UseQueryResult } from 'react-query';
+import type { QueryKey, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import type { HateoasCollection, HateoasLink } from '../../../common/types';
 import { apiConfig } from '../../../config';
 import { beforeNow } from '../../../utils/date-utils';
+import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 export interface InternetQuality {
   id: string;
@@ -41,12 +42,14 @@ export interface UseInternetQualitiesOptions {
   sort?: boolean;
 }
 
-export const uri = `${apiConfig.baseUri}/internet-qualities`;
+export const internetQualitiesUri = `${apiConfig.baseUri}/internet-qualities`;
 
-export const fetchInternetQualities = (): Promise<InternetQualityResponse> => fetch(uri).then((res) => res.json());
+export const internetQualitiesQueryKey: QueryKey = 'internet-qualities';
+
+export const fetchInternetQualities = (): Promise<InternetQualityResponse> => fetchWrapper<InternetQualityResponse>(internetQualitiesUri);
 
 const useInternetQualities = ({ enabled = true, onlyActive = true, sort = true }: UseInternetQualitiesOptions = {}): UseQueryResult<InternetQualityResponse, unknown> => {
-  return useQuery('internet-qualities', fetchInternetQualities, {
+  return useQuery(internetQualitiesQueryKey, fetchInternetQualities, {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

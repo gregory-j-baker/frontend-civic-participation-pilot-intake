@@ -5,8 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import provincesStaticProps from './static-props-data.json';
-
-export { default } from './useProvinces';
-export * from './useProvinces';
-export { provincesStaticProps };
+export { default as HttpClientResponseError } from './HttpClientResponseError';
+export * from './HttpClientResponseError';
