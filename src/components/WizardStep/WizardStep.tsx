@@ -7,7 +7,7 @@
 
 export interface WizardStepProps {
   children?: React.ReactNode;
-  header: string;
+  header?: string;
   id: string;
 }
 

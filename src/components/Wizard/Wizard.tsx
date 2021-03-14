@@ -79,7 +79,7 @@ const Wizard = ({ activeStepId, children, disabled, nextDisabled, nextText, onNe
             active: activeStepIndex,
             length: steps.length,
           })}`}</h5>
-          <h6 className="tw-text-xl tw-font-bold tw-leading-tight tw-m-0">{activeStep.header}</h6>
+          {activeStep.header && <h6 className="tw-text-xl tw-font-bold tw-leading-tight tw-m-0">{activeStep.header}</h6>}
         </header>
         <div className="tw-my-8 tw-mx-6">{activeStep.children}</div>
         <div className="tw-flex tw-justify-between tw-flex-col sm:tw-flex-row-reverse tw-border-t-2 tw-py-5 tw-px-6 tw-bg-gray-50">

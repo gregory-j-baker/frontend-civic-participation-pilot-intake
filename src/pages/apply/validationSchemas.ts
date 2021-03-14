@@ -9,17 +9,23 @@ import { kebabCase } from 'lodash';
 import * as yup from 'yup';
 import { BooleanLocale, MixedLocale, StringLocale } from 'yup/lib/locale';
 
+const formatPath = (path: string): string =>
+  path
+    .split('.')
+    .map((s) => kebabCase(s))
+    .join('.');
+
 const mixedLocale: MixedLocale = {
-  required: ({ path }) => `${kebabCase(path)}.required`,
-  defined: ({ path }) => `${kebabCase(path)}.required`,
+  required: ({ path }) => `${formatPath(path)}.required`,
+  defined: ({ path }) => `${formatPath(path)}.required`,
 };
 
 const stringLocale: StringLocale = {
-  email: ({ path }) => `${kebabCase(path)}.email-invalid`,
+  email: ({ path }) => `${formatPath(path)}.email-invalid`,
 };
 
 const booleanLocale: BooleanLocale = {
-  isValue: ({ path, value }) => `${kebabCase(path)}.must-be-${value.toLowerCase()}`,
+  isValue: ({ path, value }) => `${formatPath(path)}.must-be-${value.toLowerCase()}`,
 };
 
 yup.setLocale({

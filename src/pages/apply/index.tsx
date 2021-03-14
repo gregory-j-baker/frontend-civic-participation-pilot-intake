@@ -6,8 +6,6 @@
  */
 
 import { GetServerSideProps } from 'next';
-import { ApplyState } from './types';
-import kebabCase from 'lodash/kebabCase';
 
 const ApplyIndex = (): JSX.Element => {
   return <></>;
@@ -16,7 +14,7 @@ const ApplyIndex = (): JSX.Element => {
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
-      destination: `/apply/${kebabCase(nameof<ApplyState>((o) => o.personalInformation))}`,
+      destination: '/apply/personal-information',
       permanent: false,
     },
   };
