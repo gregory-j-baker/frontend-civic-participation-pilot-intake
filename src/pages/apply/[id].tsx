@@ -159,7 +159,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
       } catch (err) {
         if (err instanceof ValidationError) {
           setfieldValidationErrors(err.errors);
-          window.scroll({ top: 0, behavior: 'smooth' });
+          router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
         } else {
           throw err;
         }
@@ -188,7 +188,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
       } catch (err) {
         if (err instanceof ValidationError) {
           setfieldValidationErrors(err.errors);
-          window.scroll({ top: 0, behavior: 'smooth' });
+          router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
         } else {
           throw err;
         }
@@ -274,8 +274,6 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
     return <Error err={(discoveryChannelsError ?? educationLevelsError ?? gendersError ?? indigenousTypesError ?? internetQualitiesError ?? internetQualitiesError ?? languagesError ?? provincesError) as Error} />;
   }
 
-  console.log(kebabCase(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)));
-
   return (
     <MainLayout showBreadcrumb={false}>
       <NextSeo title={t('apply:application-form.header')} />
@@ -319,11 +317,11 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
             onPreviousClick={handleWizardOnPreviousClick}
             onSubmitClick={handleWizardOnSubmitClick}
             disabled={isSubmitting}>
-            <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} header={t('apply:application-form.step.personal-information')}>
+            <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} header={t('apply:application-form.step.personal-information.header')}>
               <>
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.firstName)}
-                  label={t('apply:application-form.field.first-name')}
+                  label={t('apply:application-form.step.personal-information.field.first-name.label')}
                   value={formData.personalInformation.firstName}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
@@ -335,7 +333,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.lastName)}
-                  label={t('apply:application-form.field.last-name')}
+                  label={t('apply:application-form.step.personal-information.field.last-name.label')}
                   value={formData.personalInformation.lastName}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
@@ -347,7 +345,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.email)}
-                  label={t('apply:application-form.field.email-address')}
+                  label={t('apply:application-form.step.personal-information.field.email-address.label')}
                   value={formData.personalInformation.email}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
@@ -359,8 +357,8 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.birthYear)}
-                  label={t('apply:application-form.field.birth-year.label')}
-                  helperText={t('apply:application-form.field.birth-year.helper-text')}
+                  label={t('apply:application-form.step.personal-information.field.birth-year.label')}
+                  helperText={t('apply:application-form.step.personal-information.field.birth-year.helper-text')}
                   value={formData.personalInformation.birthYear?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yearOfBirthOptions}
@@ -372,7 +370,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <CheckboxeField
                   field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
-                  label={t('apply:application-form.field.is-province-major-certified')}
+                  label={t('apply:application-form.step.personal-information.field.is-province-major-certified.label')}
                   checked={formData.personalInformation.isProvinceMajorCertified}
                   onChange={handleOnCheckboxFieldChange}
                   disabled={isSubmitting}
@@ -381,13 +379,13 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                 />
                 <div className="tw-mb-8 tw-pl-10">
                   <a href="http://example.com" target="_blank" rel="noreferrer">
-                    {t('apply:application-form.field.is-province-major-certified-link')}
+                    {t('apply:application-form.step.personal-information.field.is-province-major-certified.link')}
                   </a>
                 </div>
 
                 <RadiosField
                   field={nameof<PersonalInformationState>((o) => o.languageId)}
-                  label={t('apply:application-form.field.language')}
+                  label={t('apply:application-form.step.personal-information.field.language.label')}
                   value={formData.personalInformation.languageId}
                   onChange={handleOnOptionsFieldChange}
                   options={preferedLanguageOptions}
@@ -400,11 +398,11 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
-                  label={t('apply:application-form.field.is-canadien-citizen.label')}
+                  label={t('apply:application-form.step.personal-information.field.is-canadien-citizen.label')}
                   value={formData.personalInformation.isCanadianCitizen?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
-                  helperText={t('apply:application-form.field.is-canadien-citizen.helper-text')}
+                  helperText={t('apply:application-form.step.personal-information.field.is-canadien-citizen.helper-text')}
                   disabled={isSubmitting}
                   error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))))}
                   required
@@ -414,7 +412,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.provinceId)}
-                  label={t('apply:application-form.field.province')}
+                  label={t('apply:application-form.step.personal-information.field.province.label')}
                   value={formData.personalInformation.provinceId}
                   onChange={handleOnOptionsFieldChange}
                   options={provinceOptions}
@@ -427,7 +425,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.genderId)}
-                  label={t('apply:application-form.field.gender')}
+                  label={t('apply:application-form.step.personal-information.field.gender.label')}
                   value={formData.personalInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.genderId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={genderOptions}
@@ -440,8 +438,8 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.educationLevelId)}
-                  label={t('apply:application-form.field.education-level.label')}
-                  helperText={t('apply:application-form.field.education-level.helper-text')}
+                  label={t('apply:application-form.step.personal-information.field.education-level.label')}
+                  helperText={t('apply:application-form.step.personal-information.field.education-level.helper-text')}
                   value={formData.personalInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.educationLevelId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={educationLevelOptions}
@@ -452,11 +450,11 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                 />
               </>
             </WizardStep>
-            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} header={t('apply:application-form.step.identity')}>
+            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} header={t('apply:application-form.step.identity.header')}>
               <>
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isDisabled)}
-                  label={t('apply:application-form.field.is-disabled')}
+                  label={t('apply:application-form.step.identity.field.is-disabled.label')}
                   value={formData.identityInformation.isDisabled === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isDisabled?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -468,7 +466,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isMinority)}
-                  label={t('apply:application-form.field.is-minority')}
+                  label={t('apply:application-form.step.identity.field.is-minority.label')}
                   value={formData.identityInformation.isMinority === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isMinority?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -481,7 +479,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
-                  label={t('apply:application-form.field.indigenous-type')}
+                  label={t('apply:application-form.step.identity.field.indigenous-type.label')}
                   value={formData.identityInformation.indigenousTypeId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.indigenousTypeId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={indigenousTypeOptions}
@@ -494,7 +492,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
-                  label={t('apply:application-form.field.is-lgbtq')}
+                  label={t('apply:application-form.step.identity.field.is-lgbtq.label')}
                   value={formData.identityInformation.isLgbtq === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isLgbtq?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -507,7 +505,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isRural)}
-                  label={t('apply:application-form.field.is-rural')}
+                  label={t('apply:application-form.step.identity.field.is-rural.label')}
                   value={formData.identityInformation.isRural === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isRural?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -520,7 +518,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
-                  label={t('apply:application-form.field.is-newcomer')}
+                  label={t('apply:application-form.step.identity.field.is-newcomer.label')}
                   value={formData.identityInformation.isNewcomer === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isNewcomer?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -531,11 +529,11 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                 />
               </>
             </WizardStep>
-            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest-questions')}>
+            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest-questions.header')}>
               <>
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
-                  label={t('apply:application-form.field.skills-interest')}
+                  label={t('apply:application-form.step.expression-of-interest-questions.field.skills-interest.label')}
                   value={formData.expressionOfInterest.skillsInterest}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
@@ -548,7 +546,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
-                  label={t('apply:application-form.field.community-interest')}
+                  label={t('apply:application-form.step.expression-of-interest-questions.field.community-interest.label')}
                   value={formData.expressionOfInterest.communityInterest}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
@@ -561,7 +559,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
-                  label={t('apply:application-form.field.program-interest')}
+                  label={t('apply:application-form.step.expression-of-interest-questions.field.program-interest.label')}
                   value={formData.expressionOfInterest.programInterest}
                   onChange={handleOnOptionsFieldChange}
                   disabled={isSubmitting}
@@ -571,11 +569,11 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                 />
               </>
             </WizardStep>
-            <WizardStep id={nameof<ApplyState>((o) => o.consent)} header={t('apply:application-form.step.consent')}>
+            <WizardStep id={nameof<ApplyState>((o) => o.consent)} header={t('apply:application-form.step.consent.header')}>
               <>
                 <SelectField
                   field={nameof<ConsentState>((o) => o.internetQualityId)}
-                  label={t('apply:application-form.field.internet-quality')}
+                  label={t('apply:application-form.step.consent.field.internet-quality.label')}
                   value={formData.consent.internetQualityId}
                   onChange={handleOnOptionsFieldChange}
                   options={internetQualityOptions}
@@ -588,7 +586,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <RadiosField
                   field={nameof<ConsentState>((o) => o.hasDedicatedDevice)}
-                  label={t('apply:application-form.field.has-dedicated-device')}
+                  label={t('apply:application-form.step.consent.field.has-dedicated-device.label')}
                   value={formData.consent.hasDedicatedDevice?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
@@ -601,7 +599,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <SelectField
                   field={nameof<ConsentState>((o) => o.discoveryChannelId)}
-                  label={t('apply:application-form.field.discovery-channel')}
+                  label={t('apply:application-form.step.consent.field.discovery-channel.label')}
                   value={formData.consent.discoveryChannelId}
                   onChange={handleOnOptionsFieldChange}
                   options={discoveryChannelOptions}
@@ -614,7 +612,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
                 <CheckboxeField
                   field={nameof<ConsentState>((o) => o.isInformationConsented)}
-                  label={t('apply:application-form.field.is-information-consented')}
+                  label={t('apply:application-form.step.consent.field.is-information-consented.label')}
                   checked={formData.consent.isInformationConsented}
                   onChange={handleOnCheckboxFieldChange}
                   disabled={isSubmitting}

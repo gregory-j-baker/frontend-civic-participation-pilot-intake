@@ -3,45 +3,99 @@
     "header": "Application form",
     "wizard-step": "Section",
     "step": {
-      "personal-information": "Please provide your personal information",
-      "identity": "Please select the descriptions with which you identify",
-      "expression-of-interest-questions": "Please provide your expression of interest",
-      "consent": "Please provide your access information and consent"
-    },
-    "field": {
-      "birth-year": {
-        "label": "What year were you born?",
-        "helper-text": "Please note that to be eligible you must be between 18-30 years of age and of the age of majority in your province or territory of residence."
+      "personal-information": {
+        "header": "Please provide your personal information",
+        "field": {
+          "birth-year": {
+            "label": "What year were you born?",
+            "helper-text": "Please note that to be eligible you must be between 18-30 years of age and of the age of majority in your province or territory of residence."
+          },
+          "education-level": {
+            "label": "What is your highest level of formal education completed, or enrolled in currently?",
+            "helper-text": "Please note that there is no education requirement for this program."
+          },
+          "email-address": {
+            "label": "Email address"
+          },
+          "first-name": {
+            "label": "First name"
+          },
+          "gender": {
+            "label": "To which gender identity do you most identify?"
+          },
+          "is-canadien-citizen": {
+            "label": "Are you a Canadian citizen, permanent resident, or protected person?",
+            "helper-text": "A protected person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or that Act."
+          },
+          "is-province-major-certified": {
+            "label": "I certify that I am over the age of majority in my province",
+            "link": "Find the age of majority in your province"
+          },
+          "language": {
+            "label": "In which official language would you prefer to be contacted?"
+          },
+          "last-name": {
+            "label": "Last name"
+          },
+          "province": {
+            "label": "Which province or territory is your principle residence?"
+          }
+        }
       },
-      "community-interest": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
-      "education-level": {
-        "label": "What is your highest level of formal education completed, or enrolled in currently?",
-        "helper-text": "Please note that there is no education requirement for this program."
+      "identity": {
+        "header": "Please select the descriptions with which you identify",
+        "field": {
+          "indigenous-type": {
+            "label": "I am a member of an Indigenous community"
+          },
+          "is-disabled": {
+            "label": "I am a person living with a disability"
+          },
+          "is-lgbtq": {
+            "label": "I am a member of the LGBTQ2 community"
+          },
+          "is-minority": {
+            "label": "I am a member of a visible minority community"
+          },
+          "is-newcomer": {
+            "label": "I am recent newcomer to Canada, within the last 5 years"
+          },
+          "is-rural": {
+            "label": "I live in a rural or remote area"
+          }
+        }
       },
-      "email-address": "Email address",
-      "first-name": "First name",
-      "gender": "To which gender identity do you most identify?",
-      "has-dedicated-device": "Do you have access to a dedicated device on which to work?",
-      "discovery-channel": "How did you hear about the Civic Participation Pilot?",
-      "indigenous-type": "I am a member of an Indigenous community",
-      "internet-quality": "Do you have access to reliable internet?",
-      "is-canadien-citizen": {
-        "label": "Are you a Canadian citizen, permanent resident, or protected person?",
-        "helper-text": "A protected person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or that Act."
+      "expression-of-interest-questions": {
+        "header": "Please provide your expression of interest",
+        "field": {
+          "community-interest": {
+            "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?"
+          },
+          "program-interest": {
+            "label": "The Civic Participation Pilot is aiming to ensure inclusivity of youth from diverse identities, demographics, learning styles and abilities and educational backgrounds - is there anything you feel would facilitate your participation in this pilot?"
+          },
+          "skills-interest": {
+            "label": "Tell us about yourself, describe your strenghts, passions and what motivates your. What skills and knowledge do you hope to gain from this experience?"
+          }
+        }
       },
-      "is-disabled": "I am a person living with a disability",
-      "is-information-consented": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
-      "is-lgbtq": "I am a member of the LGBTQ2 community",
-      "is-minority": "I am a member of a visible minority community",
-      "is-newcomer": "I am recent newcomer to Canada, within the last 5 years",
-      "is-province-major-certified": "I certify that I am over the age of majority in my province",
-      "is-province-major-certified-link": "Find the age of majority in your province",
-      "is-rural": "I live in a rural or remote area",
-      "language": "In which official language would you prefer to be contacted?",
-      "last-name": "Last name",
-      "program-interest": "The Civic Participation Pilot is aiming to ensure inclusivity of youth from diverse identities, demographics, learning styles and abilities and educational backgrounds - is there anything you feel would facilitate your participation in this pilot?",
-      "province": "Which province or territory is your principle residence?",
-      "skills-interest": "Tell us about yourself, describe your strenghts, passions and what motivates your. What skills and knowledge do you hope to gain from this experience?"
+      "consent": {
+        "header": "Please provide your access information and consent",
+        "field": {
+          "has-dedicated-device": {
+            "label": "Do you have access to a dedicated device on which to work?"
+          },
+          "discovery-channel": {
+            "label": "How did you hear about the Civic Participation Pilot?"
+          },
+          "internet-quality": {
+            "label": "Do you have access to reliable internet?"
+          },
+          "is-information-consented": {
+            "label": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada"
+          }
+        }
+      }
     },
     "submit": "Submit application"
   }
