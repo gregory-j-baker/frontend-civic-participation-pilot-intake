@@ -1106,10 +1106,10 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
   integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
 
-"@types/next-auth@^3.7.0":
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/@types/next-auth/-/next-auth-3.7.0.tgz#662af22450a2a08c676be3673fd21f33d7a1618f"
-  integrity sha512-jOJ4KlT4Ntfe8Xg2WT0yw880Z2Vv+B0OntCAMiV6mSRWLq5Oj5X42PIkn0x8RtXYBkhjQpPa5TCDhJqXZwH0Ww==
+"@types/next-auth@^3.7.1":
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/@types/next-auth/-/next-auth-3.7.1.tgz#9f3d7d79e2dd06fc0ddbce2ab732ee8ec12b6be9"
+  integrity sha512-HV3i87HLwt/nO6wSy6ainAYyzBxeEITOwaq8TZevaFG2Ix7eleAgL0ae7gAEa4SW4Ms+2rxv7eIZtk/CIpMapg==
   dependencies:
     "@types/node" "*"
     "@types/react" "*"
@@ -1121,10 +1121,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.30.tgz#7d5162eec085ba34f8cb9011e9ba12119f76f961"
   integrity sha512-gUWhy8s45fQp4PqqKecsnOkdW0kt1IaKjgOIR3HPokkzTmQj9ji2wWFID5THu1MKrtO+d4s2lVrlEhXUsPXSvg==
 
-"@types/node@^14.14.33":
-  version "14.14.33"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.33.tgz#9e4f8c64345522e4e8ce77b334a8aaa64e2b6c78"
-  integrity sha512-oJqcTrgPUF29oUP8AsUqbXGJNuPutsetaa9kTQAQce5Lx5dTYWV02ScBiT/k1BX/Z7pKeqedmvp39Wu4zR7N7g==
+"@types/node@^14.14.34":
+  version "14.14.34"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.34.tgz#07935194fc049069a1c56c0c274265abeddf88da"
+  integrity sha512-dBPaxocOK6UVyvhbnpFIj2W+S+1cBTkHQbFQfeeJhoKFbzYcVUGHvddeWPSucKATb3F0+pgDq0i6ghEaZjsugA==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -2528,10 +2528,10 @@ eslint-visitor-keys@^2.0.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.0.0.tgz#21fdc8fbcd9c795cc0321f0563702095751511a8"
   integrity sha512-QudtT6av5WXels9WjIM7qz1XD1cWGvX4gGXvp/zBn9nXG02D0utdU3Em2m/QjTnrsk6bBjmCygl3rmj118msQQ==
 
-eslint@^7.21.0:
-  version "7.21.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.21.0.tgz#4ecd5b8c5b44f5dedc9b8a110b01bbfeb15d1c83"
-  integrity sha512-W2aJbXpMNofUp0ztQaF40fveSsJBjlSCSWpy//gzfTvwC+USs/nceBrKmlJOiM8r1bLwP2EuYkCqArn/6QTIgg==
+eslint@^7.22.0:
+  version "7.22.0"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.22.0.tgz#07ecc61052fec63661a2cab6bd507127c07adc6f"
+  integrity sha512-3VawOtjSJUQiiqac8MQc+w457iGLfuNGLFn8JmF051tTKbh5/x/0vlcEj8OgDCaw7Ysa2Jn8paGshV7x2abKXg==
   dependencies:
     "@babel/code-frame" "7.12.11"
     "@eslint/eslintrc" "^0.4.0"
@@ -2550,7 +2550,7 @@ eslint@^7.21.0:
     file-entry-cache "^6.0.1"
     functional-red-black-tree "^1.0.1"
     glob-parent "^5.0.0"
-    globals "^12.1.0"
+    globals "^13.6.0"
     ignore "^4.0.6"
     import-fresh "^3.0.0"
     imurmurhash "^0.1.4"
@@ -2558,7 +2558,7 @@ eslint@^7.21.0:
     js-yaml "^3.13.1"
     json-stable-stringify-without-jsonify "^1.0.1"
     levn "^0.4.1"
-    lodash "^4.17.20"
+    lodash "^4.17.21"
     minimatch "^3.0.4"
     natural-compare "^1.4.0"
     optionator "^0.9.1"
@@ -2898,6 +2898,13 @@ globals@^12.1.0:
   integrity sha512-BWICuzzDvDoH54NHKCseDanAhE3CeDorgDL5MT6LMXXj2WCnd9UC2szdk4AWLfjdgNBCXLUanXYcpBBKOSWGwg==
   dependencies:
     type-fest "^0.8.1"
+
+globals@^13.6.0:
+  version "13.6.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-13.6.0.tgz#d77138e53738567bb96a3916ff6f6b487af20ef7"
+  integrity sha512-YFKCX0SiPg7l5oKYCJ2zZGxcXprVXHcSnVuvzrT3oSENQonVLqM5pf9fN5dLGZGyCjhw8TN8Btwe/jKnZ0pjvQ==
+  dependencies:
+    type-fest "^0.20.2"
 
 globby@^11.0.1:
   version "11.0.2"
@@ -4313,10 +4320,10 @@ postcss@^8.1.6, postcss@^8.2.1:
     nanoid "^3.1.20"
     source-map "^0.6.1"
 
-postcss@^8.2.7:
-  version "8.2.7"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.7.tgz#48ed8d88b4de10afa0dfd1c3f840aa57b55c4d47"
-  integrity sha512-DsVLH3xJzut+VT+rYr0mtvOtpTjSyqDwPf5EZWXcb0uAKfitGpTY9Ec+afi2+TgdN8rWS9Cs88UDYehKo/RvOw==
+postcss@^8.2.8:
+  version "8.2.8"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.2.8.tgz#0b90f9382efda424c4f0f69a2ead6f6830d08ece"
+  integrity sha512-1F0Xb2T21xET7oQV9eKuctbM9S7BC0fetoHCc4H13z0PT6haiRLP4T0ZY4XWh7iLP0usgqykT6p9B2RtOf4FPw==
   dependencies:
     colorette "^1.2.2"
     nanoid "^3.1.20"
@@ -5344,6 +5351,11 @@ type-check@^0.4.0, type-check@~0.4.0:
   integrity sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==
   dependencies:
     prelude-ls "^1.2.1"
+
+type-fest@^0.20.2:
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.20.2.tgz#1bf207f4b28f91583666cb5fbd327887301cd5f4"
+  integrity sha512-Ne+eE4r0/iWnpAxD852z3A+N0Bt5RN//NjJwRd2VFHEmrywxf5vsZlh4R6lixl6B+wz/8d+maTSAkN1FIkI3LQ==
 
 type-fest@^0.7.1:
   version "0.7.1"

@@ -7,6 +7,7 @@
 
 import useTranslation from 'next-translate/useTranslation';
 import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { FieldErrorMessage } from '../FieldErrorMessage';
 
 export interface TextFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
@@ -15,7 +16,7 @@ export interface TextFieldOnChangeEvent {
 export interface TextFieldProps {
   className?: string;
   disabled?: boolean;
-  error?: boolean;
+  error?: string;
   field: string;
   gutterBottom?: boolean;
   helperText?: string;
@@ -31,7 +32,7 @@ export interface TextFieldProps {
 const TextField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, value }: TextFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
-  const fieldId = `form-text-field-${field}`;
+  const fieldId = `form-field-${field}`;
 
   const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
     const target = event.target as HTMLTextAreaElement;
@@ -40,12 +41,13 @@ const TextField = ({ className, disabled, error, field, gutterBottom, helperText
   };
 
   return (
-    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+    <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      {error && <FieldErrorMessage message={error} />}
       <FormControl type="text" id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />
     </FormGroup>
   );

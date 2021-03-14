@@ -8,6 +8,7 @@
 import React from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { Checkbox, ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
+import { FieldErrorMessage } from '../FieldErrorMessage';
 
 export interface CheckboxesFieldOnChangeEvent {
   (event: { field: string; value: string | null; checked: boolean }): void;
@@ -21,7 +22,7 @@ export interface CheckboxesFieldOption {
 
 export interface CheckboxesFieldProps {
   className?: string;
-  error?: boolean;
+  error?: string;
   field: string;
   gutterBottom?: boolean;
   helperText?: string;
@@ -46,15 +47,16 @@ const CheckboxesField = ({ className, error, field, gutterBottom, helperText, in
   const checkedValues = options?.map((el) => el.value).filter((value) => (values ?? []).includes(value)) ?? [];
 
   return (
-    <FormGroup validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+    <FormGroup className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      {error && <FieldErrorMessage message={error} />}
       <div>
         {options.map((option) => (
-          <Checkbox key={option.value} value={option.value} onChange={handleOnChange} checked={checkedValues.includes(option.value)} disabled={option.disabled} className={`${inline ? 'tw-mr-4' : ''} ${className}`} inline={inline}>
+          <Checkbox key={option.value} value={option.value} onChange={handleOnChange} checked={checkedValues.includes(option.value)} disabled={option.disabled} className={`${inline ? 'tw-mr-4' : ''} ${className ?? ''}`} inline={inline}>
             {option.text}
           </Checkbox>
         ))}

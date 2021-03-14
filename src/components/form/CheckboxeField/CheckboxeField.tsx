@@ -8,6 +8,7 @@
 import React from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { Checkbox, ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
+import { FieldErrorMessage } from '../FieldErrorMessage';
 
 export interface CheckboxeFieldOnChangeEvent {
   (event: { field: string; checked: boolean }): void;
@@ -17,7 +18,7 @@ export interface CheckboxeFieldProps {
   className?: string;
   checked?: boolean;
   disabled?: boolean;
-  error?: boolean;
+  error?: string;
   field: string;
   gutterBottom?: boolean;
   helperText?: string;
@@ -31,7 +32,7 @@ export interface CheckboxeFieldProps {
 const CheckboxeField = ({ className, checked, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, required }: CheckboxeFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
-  const fieldId = `form-checkboxe-field-${field}`;
+  const fieldId = `form-field-${field}`;
 
   const handleOnChange: React.FormEventHandler<Checkbox> = (event) => {
     const target = event.target as HTMLInputElement;
@@ -39,7 +40,7 @@ const CheckboxeField = ({ className, checked, disabled, error, field, gutterBott
   };
 
   return (
-    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+    <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
       <Checkbox id={fieldId} onChange={handleOnChange} checked={checked ?? false} disabled={disabled} className={className} style={{ fontSize: 'inherit' }}>
         <ControlLabel className={required ? 'required' : undefined}>
           <span className={`field-name ${labelClassName} tw-mr-2`}>{label}</span>
@@ -47,6 +48,7 @@ const CheckboxeField = ({ className, checked, disabled, error, field, gutterBott
         </ControlLabel>
       </Checkbox>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      {error && <FieldErrorMessage message={error} />}
     </FormGroup>
   );
 };

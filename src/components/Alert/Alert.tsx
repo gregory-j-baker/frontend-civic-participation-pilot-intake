@@ -32,32 +32,32 @@ const getColorClasses: getColorClassesFunc = (alertType) => {
   switch (alertType) {
     case AlertType.danger:
       return {
-        rootColorClasses: 'tw-bg-red-100 tw-border-red-500 tw-text-red-900',
-        iconColorClasses: 'tw-text-red-500',
+        rootColorClasses: 'tw-bg-red-50 tw-border-red-600',
+        iconColorClasses: 'tw-text-red-600',
       };
 
     case AlertType.info:
       return {
-        rootColorClasses: 'tw-bg-blue-100 tw-border-blue-500 tw-text-blue-900',
-        iconColorClasses: 'tw-text-blue-500',
+        rootColorClasses: 'tw-bg-blue-50 tw-border-blue-600',
+        iconColorClasses: 'tw-text-blue-600',
       };
 
     case AlertType.success:
       return {
-        rootColorClasses: 'tw-bg-green-100 tw-border-green-500 tw-text-green-900',
-        iconColorClasses: 'tw-text-green-500',
+        rootColorClasses: 'tw-bg-green-50 tw-border-green-600',
+        iconColorClasses: 'tw-text-green-600',
       };
 
     case AlertType.warning:
       return {
-        rootColorClasses: 'tw-bg-yellow-100 tw-border-yellow-500 tw-text-yellow-900',
-        iconColorClasses: 'tw-text-yellow-500',
+        rootColorClasses: 'tw-bg-yellow-50 tw-border-yellow-600',
+        iconColorClasses: 'tw-text-yellow-600',
       };
   }
 
   return {
-    rootColorClasses: 'tw-bg-gray-100 tw-border-gray-500 tw-text-gray-900',
-    iconColorClasses: 'tw-text-gray-500',
+    rootColorClasses: 'tw-bg-gray-50 tw-border-gray-600',
+    iconColorClasses: 'tw-text-gray-600',
   };
 };
 
@@ -65,18 +65,21 @@ const Alert = ({ children, description, title, type }: AlertProps): JSX.Element 
   const colorClasses = useMemo(() => getColorClasses(type ?? AlertType.default), [type]);
 
   return (
-    <div className={`${colorClasses.rootColorClasses} tw-border-t-4 tw-rounded-b tw-px-4 tw-py-3 tw-shadow-md tw-mb-8`} role="alert">
-      <div className="tw-flex">
-        <div className="tw-py-1">
-          <svg className={`${colorClasses.iconColorClasses} tw-fill-current tw-h-6 w-6 tw-mr-4`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-            <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+    <div className={`${colorClasses.rootColorClasses} tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow-md tw-mb-8`} role="alert">
+      <div className="tw-flex-col">
+        <div className="tw-flex tw-items-center">
+          <svg className={`${colorClasses.iconColorClasses} tw-fill-current tw-h-10 tw-w-10 tw-mr-4`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
+          {title && <div className="tw-text-xl tw-font-bold tw-m-0 flex-1">{title}</div>}
         </div>
-        <div>
-          {title && <p className="tw-font-bold">{title}</p>}
-          {description && <p>{description}</p>}
-          {children && <div>{children}</div>}
-        </div>
+
+        {(description || children) && (
+          <div className="tw-ml-14 tw-mt-4">
+            {description && <p className={`tw-m-0 ${children ? 'tw-mb-6' : ''}`}>{description}</p>}
+            {children && <div>{children}</div>}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -92,12 +92,12 @@ const getColorClasses: getColorClassesFunc = (color) => {
 const Button = ({ className, color, disabled, children, onClick, outline }: ButtonProps): JSX.Element => {
   const colorClasses = useMemo(() => getColorClasses(color ?? TailwindColor.green), [color]);
 
-  const defaultClasses = `${colorClasses.defaultColorClasses} tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded-md tw-shadow-sm`;
+  const defaultClasses = `${colorClasses.defaultColorClasses} tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded tw-shadow-sm`;
   const outlineClasses = `tw-bg-transparent ${colorClasses.outlineClasses} tw-font-semibold tw-py-2 tw-px-4 tw-border hover:tw-border-transparent tw-rounded`;
   const disabledClasses = `tw-opacity-50 tw-cursor-not-allowed`;
 
   return (
-    <button type="button" disabled={disabled} onClick={onClick} className={` ${outline ? outlineClasses : defaultClasses} ${disabled ? disabledClasses : null} ${className}`}>
+    <button type="button" disabled={disabled} onClick={onClick} className={` ${outline ? outlineClasses : defaultClasses} ${disabled ? disabledClasses : ''} ${className ?? ''}`}>
       {children}
     </button>
   );

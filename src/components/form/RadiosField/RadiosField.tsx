@@ -8,6 +8,7 @@
 import React from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { ControlLabel, FormGroup, HelpBlock, Radio } from 'react-bootstrap';
+import { FieldErrorMessage } from '../FieldErrorMessage';
 
 export interface RadiosFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
@@ -22,7 +23,7 @@ export interface RadiosFieldOption {
 export interface RadiosFieldProps {
   className?: string;
   disabled?: boolean;
-  error?: boolean;
+  error?: string;
   field: string;
   gutterBottom?: boolean;
   helperText?: string;
@@ -38,26 +39,27 @@ export interface RadiosFieldProps {
 
 const RadiosField = ({ className, disabled, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
   const { t } = useTranslation();
-  const groupName = `form-radios-field-${field}`;
+  const groupName = `form-field-${field}`;
 
   const handleOnChange: React.FormEventHandler<Radio> = (event) => {
     const target = event.target as HTMLInputElement;
     onChange({ field, value: target.value });
   };
 
-  const selectedValue = options?.find((option) => option.value === value)?.value ?? '';
+  const selectedValue = options.find((option) => option.value === value)?.value ?? '';
 
   return (
-    <FormGroup validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+    <FormGroup className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      {error && <FieldErrorMessage message={error} />}
       <div>
-        {options.map((option) => (
-          <Radio key={option.value} name={groupName} value={option.value} onChange={handleOnChange} checked={option.value === selectedValue} disabled={option.disabled || disabled} className={`${inline ? 'tw-mr-4' : ''} ${className}`} inline={inline}>
-            {option.text}
+        {options.map((el) => (
+          <Radio key={el.value} name={groupName} value={el.value} onChange={handleOnChange} checked={el.value === selectedValue} disabled={el.disabled || disabled} className={`${inline ? 'tw-mr-4' : ''} ${className ?? ''}`} inline={inline}>
+            {el.text}
           </Radio>
         ))}
       </div>

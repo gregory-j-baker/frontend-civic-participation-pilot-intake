@@ -7,6 +7,7 @@
 
 import useTranslation from 'next-translate/useTranslation';
 import { ControlLabel, FormControl, FormGroup, HelpBlock } from 'react-bootstrap';
+import { FieldErrorMessage } from '../FieldErrorMessage';
 
 export interface SelectFieldOnChangeEvent {
   (event: { field: string; value: string | null }): void;
@@ -20,7 +21,7 @@ export interface SelectFieldOption {
 export interface SelectFieldProps {
   className?: string;
   disabled?: boolean;
-  error?: boolean;
+  error?: string;
   field: string;
   gutterBottom?: boolean;
   helperText?: string;
@@ -34,7 +35,7 @@ export interface SelectFieldProps {
 
 const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, options, required, value }: SelectFieldProps): JSX.Element => {
   const { t } = useTranslation();
-  const fieldId = `form-select-field-${field}`;
+  const fieldId = `form-field-${field}`;
 
   const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
     const target = event.target as HTMLSelectElement;
@@ -42,22 +43,23 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
     onChange({ field, value: val.length > 0 ? val : null });
   };
 
-  const selectedValue = options?.find((option) => option.value === value)?.value ?? '';
+  const selectedValue = options.find((el) => el.value === value)?.value ?? '';
 
   return (
-    <FormGroup controlId={fieldId} validationState={error ? 'error' : null} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${labelClassName} ${required ? 'required' : null}`}>
+    <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+      <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      {error && <FieldErrorMessage message={error} />}
       <FormControl componentClass="select" id={fieldId} value={selectedValue} onChange={handleOnChange} disabled={disabled} className={className}>
         <option value="" disabled hidden>
           {t('common:please-select')}
         </option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.text}
+        {options.map((el) => (
+          <option key={el.value} value={el.value}>
+            {el.text}
           </option>
         ))}
       </FormControl>

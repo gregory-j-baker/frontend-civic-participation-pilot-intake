@@ -13,7 +13,7 @@ export interface ContentPaperProps {
 }
 
 const ContentPaper = ({ className, children, disablePadding, gutterBottom }: ContentPaperProps): JSX.Element => {
-  return <div className={`tw-rounded tw-overflow-hidden tw-shadow-md ${!disablePadding ? 'tw-py-4 tw-px-6' : null} tw-border ${gutterBottom ?? false ? 'tw-mb-8' : null} ${className}`}>{children}</div>;
+  return <div className={`tw-rounded tw-overflow-hidden tw-shadow-md ${!disablePadding ? 'tw-py-4 tw-px-6' : ''} tw-border ${gutterBottom ?? false ? 'tw-mb-8' : ''} ${className ?? ''}`}>{children}</div>;
 };
 
 export default ContentPaper;

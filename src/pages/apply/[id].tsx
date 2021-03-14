@@ -295,9 +295,19 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
 
           {fieldValidationErrors && (
             <Alert title="Validation Error" description="Please review fields in highlighted in red." type={AlertType.danger}>
-              {fieldValidationErrors.map((err) => (
-                <p key={err}>{err}</p>
-              ))}
+              <ul className="tw-list-disc tw-list-inside">
+                {fieldValidationErrors.map((err) => {
+                  const [field] = err.split('.');
+
+                  return (
+                    <li key={err} className="tw-my-2">
+                      <a href={`#form-field-${camelCase(field)}`}>
+                        {camelCase(field)} =&gt; {err}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
             </Alert>
           )}
 
@@ -317,7 +327,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.personalInformation.firstName}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.firstName))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.firstName))))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
@@ -329,7 +339,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.personalInformation.lastName}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.lastName))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.lastName))))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
@@ -341,7 +351,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.personalInformation.email}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.email))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.email))))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
@@ -355,7 +365,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yearOfBirthOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.birthYear))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.birthYear))))}
                   required
                   gutterBottom
                 />
@@ -366,7 +376,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   checked={formData.personalInformation.isProvinceMajorCertified}
                   onChange={handleOnCheckboxFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))))}
                   required
                 />
                 <div className="tw-mb-8 tw-pl-10">
@@ -382,7 +392,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={preferedLanguageOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.languageId))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.languageId))))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -396,7 +406,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   options={yesNoOptions}
                   helperText={t('apply:application-form.field.is-canadien-citizen.helper-text')}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -409,7 +419,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={provinceOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.provinceId))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.provinceId))))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -422,7 +432,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={genderOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.genderId))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.genderId))))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -436,7 +446,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={educationLevelOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.educationLevelId))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<PersonalInformationState>((o) => o.educationLevelId))))}
                   required
                   className="tw-w-full"
                 />
@@ -450,7 +460,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.identityInformation.isDisabled === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isDisabled?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isDisabled))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isDisabled))))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -463,7 +473,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isMinority))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isMinority))))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -476,7 +486,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={indigenousTypeOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.indigenousTypeId))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.indigenousTypeId))))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -489,7 +499,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isLgbtq))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isLgbtq))))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -502,7 +512,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isRural))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isRural))))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -515,7 +525,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isNewcomer))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<IdentityInformationState>((o) => o.isNewcomer))))}
                   required
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
                 />
@@ -529,7 +539,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.expressionOfInterest.skillsInterest}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))))}
                   required
                   gutterBottom
                   className="tw-w-full"
@@ -542,7 +552,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.expressionOfInterest.communityInterest}
                   onChange={handleOnTextFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.communityInterest))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.communityInterest))))}
                   required
                   gutterBottom
                   className="tw-w-full"
@@ -555,7 +565,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   value={formData.expressionOfInterest.programInterest}
                   onChange={handleOnOptionsFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.programInterest))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ExpressionOfInterestState>((o) => o.programInterest))))}
                   className="tw-w-full"
                   wordLimit={250}
                 />
@@ -570,7 +580,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={internetQualityOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.internetQualityId))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.internetQualityId))))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -583,7 +593,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.hasDedicatedDevice))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.hasDedicatedDevice))))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -596,7 +606,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={discoveryChannelOptions}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.discoveryChannelId))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.discoveryChannelId))))}
                   required
                   className="tw-w-full sm:tw-w-6/12"
                   gutterBottom
@@ -608,7 +618,7 @@ const ApplySection = ({ id }: ApplySectionProps): JSX.Element => {
                   checked={formData.consent.isInformationConsented}
                   onChange={handleOnCheckboxFieldChange}
                   disabled={isSubmitting}
-                  error={fieldValidationErrors?.some((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.isInformationConsented))))}
+                  error={fieldValidationErrors?.find((err) => err.startsWith(kebabCase(nameof<ConsentState>((o) => o.isInformationConsented))))}
                 />
               </>
             </WizardStep>
