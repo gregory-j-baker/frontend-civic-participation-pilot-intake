@@ -71,7 +71,7 @@ const Consent = (): JSX.Element => {
   };
 
   const getSchemaError = (field: string): string | undefined => {
-    if (!schemaErrors || schemaErrors.length === 0) return undefined;
+    if (!schemaErrors || schemaErrors.length == 0) return undefined;
 
     const index = schemaErrors.findIndex((key) => key.split('.')[0] === kebabCase(field));
     if (index === -1) return undefined;

@@ -31,9 +31,10 @@ import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
 import { ApplyState, ConsentState, GetDescriptionFunc, Constants } from '../types';
-import { consentSchema, formSchema } from '../validationSchemas';
+import { formSchema } from '../validationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
+import Link from 'next/link';
 
 const ApplySection = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -45,7 +46,6 @@ const ApplySection = (): JSX.Element => {
   const { data: discoveryChannels, isLoading: isDiscoveryChannelsLoading, error: discoveryChannelsError } = useDiscoveryChannels();
   const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities();
 
-  const [schemaErrors, setSchemaErrors] = useState<string[] | null>();
   const [formSchemaErrors, setFormSchemaErrors] = useState<string[] | null>();
 
   const [formData, setFormDataState] = useState<ApplyState>(() => {
@@ -94,31 +94,20 @@ const ApplySection = (): JSX.Element => {
   const handleWizardOnSubmitClick: WizardOnSubmitClickEvent = async (event, activeStepId) => {
     event.preventDefault();
 
-    // validate active step schema
+    // validate form schema
     try {
-      await consentSchema.validate(formData.consent, { abortEarly: false });
+      await formSchema.validate(formData, { abortEarly: false });
 
-      // validate form schema
-      try {
-        await formSchema.validate(formData, { abortEarly: false });
-
-        // submit appplication
-        submitApplication({
-          ...formData.personalInformation,
-          ...formData.identityInformation,
-          ...formData.expressionOfInterest,
-          ...formData.consent,
-        });
-      } catch (err) {
-        if (!(err instanceof ValidationError)) throw err;
-        setSchemaErrors(null);
-        setFormSchemaErrors(err.errors);
-        router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
-      }
+      // submit appplication
+      submitApplication({
+        ...formData.personalInformation,
+        ...formData.identityInformation,
+        ...formData.expressionOfInterest,
+        ...formData.consent,
+      });
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
-      setFormSchemaErrors(null);
-      setSchemaErrors(err.errors);
+      setFormSchemaErrors(err.errors);
       router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
     }
   };
@@ -145,13 +134,14 @@ const ApplySection = (): JSX.Element => {
     [t]
   );
 
-  const getSchemaError = (field: string): string | undefined => {
-    if (!schemaErrors || schemaErrors.length === 0) return undefined;
+  const getConsentSchemaError = (field: string): string | undefined => {
+    if (!formSchemaErrors || formSchemaErrors.length === 0) return undefined;
 
-    const index = schemaErrors.findIndex((key) => key.split('.')[0] === kebabCase(field));
+    const index = formSchemaErrors.findIndex((key) => key.split('.')[0] === 'consent' && key.split('.')[1] === kebabCase(field));
     if (index === -1) return undefined;
 
-    return t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.consent.field.${schemaErrors[index]}`);
+    const [, ...errosKeys] = formSchemaErrors[index].split('.');
+    return t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.consent.field.${errosKeys.join('.')}`);
   };
 
   if (discoveryChannelsError || internetQualitiesError || internetQualitiesError || submitError) {
@@ -169,22 +159,6 @@ const ApplySection = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          {schemaErrors && schemaErrors.length > 0 && (
-            <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
-              <ul className="tw-list-disc tw-list-inside">
-                {schemaErrors.map((key) => {
-                  const [field] = key.split('.');
-
-                  return (
-                    <li key={key} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(field)}</a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </Alert>
-          )}
-
           {formSchemaErrors && formSchemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: formSchemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc tw-list-inside">
@@ -192,7 +166,9 @@ const ApplySection = (): JSX.Element => {
                   const [section, field, msgkey] = key.split('.');
                   return (
                     <li key={key} className="tw-my-2">
-                      {t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.${section}.field.${field}.${msgkey}`.replace('.undefined', ''))}
+                      <Link href={`/apply/${section}` + (section === 'consent' ? `#form-field-${camelCase(field)}` : '')} shallow>
+                        <a>{t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.${section}.field.${field}.${msgkey}`.replace('.undefined', ''))}</a>
+                      </Link>
                     </li>
                   );
                 })}
@@ -219,7 +195,7 @@ const ApplySection = (): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={internetQualityOptions}
                   disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.internetQualityId))}
+                  error={getConsentSchemaError(nameof<ConsentState>((o) => o.internetQualityId))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
@@ -232,7 +208,7 @@ const ApplySection = (): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
                   disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.hasDedicatedDevice))}
+                  error={getConsentSchemaError(nameof<ConsentState>((o) => o.hasDedicatedDevice))}
                   required
                   gutterBottom
                   inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -245,7 +221,7 @@ const ApplySection = (): JSX.Element => {
                   onChange={handleOnOptionsFieldChange}
                   options={discoveryChannelOptions}
                   disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.discoveryChannelId))}
+                  error={getConsentSchemaError(nameof<ConsentState>((o) => o.discoveryChannelId))}
                   required
                   className="tw-w-full sm:tw-w-6/12"
                   gutterBottom
@@ -257,7 +233,7 @@ const ApplySection = (): JSX.Element => {
                   checked={formData.consent.isInformationConsented}
                   onChange={handleOnCheckboxFieldChange}
                   disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
+                  error={getConsentSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
                 />
               </>
             </WizardStep>
