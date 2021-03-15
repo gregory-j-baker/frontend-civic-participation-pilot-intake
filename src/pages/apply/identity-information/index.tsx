@@ -27,7 +27,7 @@ import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
 import { ApplyState, GetDescriptionFunc, IdentityInformationState, Constants } from '../types';
-import { identityInformationSchema } from '../validationSchemas';
+import { identityInformationSchema, personalInformationSchema } from '../validationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 
@@ -48,6 +48,23 @@ const IdentityInformation = (): JSX.Element => {
     const storageData = window.sessionStorage.getItem(Constants.FormDataStorageKey);
     return { ...defaultState, ...(storageData ? JSON.parse(storageData) : {}) };
   });
+
+  const [previousStepsValidationCompleted, setPreviousStepsValidationCompleted] = useState<boolean>(false);
+
+  const validatePreviousSteps = useCallback(
+    async (formData: ApplyState): Promise<void> => {
+      if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
+        router.replace('/apply/personal-information');
+      } else {
+        setPreviousStepsValidationCompleted(true);
+      }
+    },
+    [router]
+  );
+
+  useEffect(() => {
+    if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
+  }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
   useEffect(() => {
     window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
@@ -121,15 +138,17 @@ const IdentityInformation = (): JSX.Element => {
 
   return (
     <MainLayout showBreadcrumb={false}>
-      <NextSeo title={t('apply:application-form.header')} />
-      <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
-        {t('common:app.title')}
-      </h1>
-      <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
-      {isIndigenousTypesLoading ? (
+      {!previousStepsValidationCompleted || isIndigenousTypesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
+          <NextSeo title={t('apply:application-form.header')} />
+
+          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+            {t('common:app.title')}
+          </h1>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
+
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc tw-list-inside">

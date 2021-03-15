@@ -31,7 +31,7 @@ import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
 import { ApplyState, ConsentState, GetDescriptionFunc, Constants } from '../types';
-import { formSchema } from '../validationSchemas';
+import { expressionOfInterestSchema, formSchema, identityInformationSchema, personalInformationSchema } from '../validationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import Link from 'next/link';
@@ -56,6 +56,27 @@ const ApplySection = (): JSX.Element => {
     const storageData = window.sessionStorage.getItem(Constants.FormDataStorageKey);
     return { ...defaultState, ...(storageData ? JSON.parse(storageData) : {}) };
   });
+
+  const [previousStepsValidationCompleted, setPreviousStepsValidationCompleted] = useState<boolean>(false);
+
+  const validatePreviousSteps = useCallback(
+    async (formData: ApplyState): Promise<void> => {
+      if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
+        router.replace('/apply/personal-information');
+      } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
+        router.replace('/apply/identity-information');
+      } else if ((await expressionOfInterestSchema.isValid(formData.expressionOfInterest)) === false) {
+        router.replace('/apply/expression-of-interest');
+      } else {
+        setPreviousStepsValidationCompleted(true);
+      }
+    },
+    [router]
+  );
+
+  useEffect(() => {
+    if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
+  }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
   useEffect(() => {
     window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
@@ -150,15 +171,17 @@ const ApplySection = (): JSX.Element => {
 
   return (
     <MainLayout showBreadcrumb={false}>
-      <NextSeo title={t('apply:application-form.header')} />
-      <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
-        {t('common:app.title')}
-      </h1>
-      <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
-      {isDiscoveryChannelsLoading || isInternetQualitiesLoading ? (
+      {!previousStepsValidationCompleted || isDiscoveryChannelsLoading || isInternetQualitiesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
+          <NextSeo title={t('apply:application-form.header')} />
+
+          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+            {t('common:app.title')}
+          </h1>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
+
           {formSchemaErrors && formSchemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: formSchemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc tw-list-inside">

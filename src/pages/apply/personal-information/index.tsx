@@ -145,12 +145,12 @@ const PersonalInformation = (): JSX.Element => {
     ],
     [t]
   );
-  console.log(schemaErrors);
 
   const getSchemaError = (field: string): string | undefined => {
     if (!schemaErrors || schemaErrors.length === 0) return undefined;
 
     const index = schemaErrors.findIndex((key) => key.split('.')[0] === kebabCase(field));
+
     if (index === -1) return undefined;
 
     return t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.personal-information.field.${schemaErrors[index]}`);
@@ -162,15 +162,17 @@ const PersonalInformation = (): JSX.Element => {
 
   return (
     <MainLayout showBreadcrumb={false}>
-      <NextSeo title={t('apply:application-form.header')} />
-      <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
-        {t('common:app.title')}
-      </h1>
-      <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
       {isEducationLevelsLoading || isGendersLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
+          <NextSeo title={t('apply:application-form.header')} />
+
+          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+            {t('common:app.title')}
+          </h1>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
+
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc tw-list-inside">

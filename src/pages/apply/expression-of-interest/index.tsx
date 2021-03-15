@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
@@ -19,8 +19,9 @@ import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
 import { ApplyState, ExpressionOfInterestState, Constants } from '../types';
-import { expressionOfInterestSchema } from '../validationSchemas';
+import { expressionOfInterestSchema, identityInformationSchema, personalInformationSchema } from '../validationSchemas';
 import { ValidationError } from 'yup';
+import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 
 const Consent = (): JSX.Element => {
   const { t } = useTranslation();
@@ -36,6 +37,25 @@ const Consent = (): JSX.Element => {
     const storageData = window.sessionStorage.getItem(Constants.FormDataStorageKey);
     return { ...defaultState, ...(storageData ? JSON.parse(storageData) : {}) };
   });
+
+  const [previousStepsValidationCompleted, setPreviousStepsValidationCompleted] = useState<boolean>(false);
+
+  const validatePreviousSteps = useCallback(
+    async (formData: ApplyState): Promise<void> => {
+      if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
+        router.replace('/apply/personal-information');
+      } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
+        router.replace('/apply/identity-information');
+      } else {
+        setPreviousStepsValidationCompleted(true);
+      }
+    },
+    [router]
+  );
+
+  useEffect(() => {
+    if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
+  }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
   useEffect(() => {
     window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
@@ -81,75 +101,82 @@ const Consent = (): JSX.Element => {
 
   return (
     <MainLayout showBreadcrumb={false}>
-      <NextSeo title={t('apply:application-form.header')} />
-      <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
-        {t('common:app.title')}
-      </h1>
-      <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
+      {!previousStepsValidationCompleted ? (
+        <PageLoadingSpinner />
+      ) : (
+        <>
+          <NextSeo title={t('apply:application-form.header')} />
 
-      {schemaErrors && schemaErrors.length > 0 && (
-        <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
-          <ul className="tw-list-disc tw-list-inside">
-            {schemaErrors.map((key) => {
-              const [field] = key.split('.');
+          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+            {t('common:app.title')}
+          </h1>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
 
-              return (
-                <li key={key} className="tw-my-2">
-                  <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(field)}</a>
-                </li>
-              );
-            })}
-          </ul>
-        </Alert>
+          {schemaErrors && schemaErrors.length > 0 && (
+            <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+              <ul className="tw-list-disc tw-list-inside">
+                {schemaErrors.map((key) => {
+                  const [field] = key.split('.');
+
+                  return (
+                    <li key={key} className="tw-my-2">
+                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(field)}</a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Alert>
+          )}
+
+          <Wizard
+            activeStepId={nameof<ApplyState>((o) => o.expressionOfInterest)}
+            stepText={t('apply:application-form.wizard-step')}
+            submitText={t('apply:application-form.submit')}
+            onNextClick={handleWizardOnNextClick}
+            onPreviousClick={handleWizardOnPreviousClick}>
+            <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} />
+            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} />
+            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest.header')}>
+              <>
+                <TextAreaField
+                  field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
+                  label={t('apply:application-form.step.expression-of-interest.field.skills-interest.label')}
+                  value={formData.expressionOfInterest.skillsInterest}
+                  onChange={handleOnTextFieldChange}
+                  error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))}
+                  required
+                  gutterBottom
+                  className="tw-w-full"
+                  wordLimit={250}
+                />
+
+                <TextAreaField
+                  field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
+                  label={t('apply:application-form.step.expression-of-interest.field.community-interest.label')}
+                  value={formData.expressionOfInterest.communityInterest}
+                  onChange={handleOnTextFieldChange}
+                  error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.communityInterest))}
+                  required
+                  gutterBottom
+                  className="tw-w-full"
+                  wordLimit={250}
+                />
+
+                <TextAreaField
+                  field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
+                  label={t('apply:application-form.step.expression-of-interest.field.program-interest.label')}
+                  value={formData.expressionOfInterest.programInterest}
+                  onChange={handleOnTextFieldChange}
+                  error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.programInterest))}
+                  className="tw-w-full"
+                  wordLimit={250}
+                />
+              </>
+            </WizardStep>
+            <WizardStep id={nameof<ApplyState>((o) => o.consent)} />
+          </Wizard>
+        </>
       )}
-
-      <Wizard
-        activeStepId={nameof<ApplyState>((o) => o.expressionOfInterest)}
-        stepText={t('apply:application-form.wizard-step')}
-        submitText={t('apply:application-form.submit')}
-        onNextClick={handleWizardOnNextClick}
-        onPreviousClick={handleWizardOnPreviousClick}>
-        <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} />
-        <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} />
-        <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest.header')}>
-          <>
-            <TextAreaField
-              field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
-              label={t('apply:application-form.step.expression-of-interest.field.skills-interest.label')}
-              value={formData.expressionOfInterest.skillsInterest}
-              onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))}
-              required
-              gutterBottom
-              className="tw-w-full"
-              wordLimit={250}
-            />
-
-            <TextAreaField
-              field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
-              label={t('apply:application-form.step.expression-of-interest.field.community-interest.label')}
-              value={formData.expressionOfInterest.communityInterest}
-              onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.communityInterest))}
-              required
-              gutterBottom
-              className="tw-w-full"
-              wordLimit={250}
-            />
-
-            <TextAreaField
-              field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
-              label={t('apply:application-form.step.expression-of-interest.field.program-interest.label')}
-              value={formData.expressionOfInterest.programInterest}
-              onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.programInterest))}
-              className="tw-w-full"
-              wordLimit={250}
-            />
-          </>
-        </WizardStep>
-        <WizardStep id={nameof<ApplyState>((o) => o.consent)} />
-      </Wizard>
     </MainLayout>
   );
 };
