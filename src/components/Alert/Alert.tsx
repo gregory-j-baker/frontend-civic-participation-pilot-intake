@@ -67,11 +67,13 @@ const Alert = ({ children, description, title, type }: AlertProps): JSX.Element 
   return (
     <section className={`${colorClasses.rootColorClasses} tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow-md tw-mb-8`} role="alert" tabIndex={-1}>
       <div className="tw-flex-col">
-        <div className="tw-flex tw-items-center">
-          <svg className={`${colorClasses.iconColorClasses} tw-fill-current tw-h-10 tw-w-10 tw-mr-4`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-          </svg>
-          {title && <h2 className="tw-text-2xl tw-font-bold tw-m-0 tw-flex-grow">{title}</h2>}
+        <div className="tw-flex md:tw-items-center">
+          <div className={`tw-h-10 tw-w-10 tw-mr-4 tw-flex-shrink-0`}>
+            <svg className={`${colorClasses.iconColorClasses} tw-fill-current tw-w-full`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+          </div>
+          {title && <h2 className="tw-text-2xl tw-font-bold tw-m-0">{title}</h2>}
         </div>
 
         {(description || children) && (
