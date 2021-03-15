@@ -7,13 +7,8 @@
 
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
+import { ErrorPageLinks } from '../components/ErrorPageLinks';
 import { MainLayout } from '../components/layouts/main/MainLayout';
-
-interface ListItemProps {
-  children: React.ReactNode;
-}
-
-const ListItem = ({ children }: ListItemProps): JSX.Element => <li className="tw-my-1">{children}</li>;
 
 const Custom404 = (): JSX.Element => {
   const { t, lang } = useTranslation();
@@ -36,31 +31,7 @@ const Custom404 = (): JSX.Element => {
 
         <p className="tw-m-0 tw-my-4">{t('common:custom-404.description')}</p>
 
-        {lang === 'fr' ? (
-          <ul className="tw-list-disc tw-list-inside">
-            <ListItem>
-              Retournez à la <a href="https://www.canada.ca/fr.html">page d’accueil</a>;
-            </ListItem>
-            <ListItem>
-              Consultez le <a href="https://www.canada.ca/fr/plan.html">plan du site</a>;
-            </ListItem>
-            <ListItem>
-              <a href="https://www.canada.ca/fr/contact.html">Communiquez avec nous</a> pour obtenir de l’aide.
-            </ListItem>
-          </ul>
-        ) : (
-          <ul>
-            <ListItem>
-              Return to the <a href="https://www.canada.ca/en.html">home page</a>;
-            </ListItem>
-            <ListItem>
-              Consult the <a href="https://www.canada.ca/en/sitemap.html">site map</a>; or
-            </ListItem>
-            <ListItem>
-              <a href="https://www.canada.ca/en/contact.html">Contact us</a> and we&apos;ll help you out.
-            </ListItem>
-          </ul>
-        )}
+        <ErrorPageLinks lang={lang} />
       </div>
     </MainLayout>
   );

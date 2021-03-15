@@ -46,7 +46,7 @@ const GlobalFooter = (): JSX.Element => {
                 </a>
               </div>
               <div className="col-xs-6 col-md-2 text-right">
-                <img src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg" alt={t('layouts:main.footer.icon-alt')} />
+                <img className="tw-inline-block" src="https://www.canada.ca/etc/designs/canada/wet-boew/assets/wmms-blk.svg" alt={t('layouts:main.footer.icon-alt')} />
               </div>
             </div>
           </div>

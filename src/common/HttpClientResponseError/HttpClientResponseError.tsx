@@ -25,8 +25,8 @@ export default class HttpClientResponseError extends Error {
   responseJson: any | undefined;
   responseText: string | undefined;
 
-  constructor(response: Response, message: string | undefined, responseJson: ResponseJson | any | undefined, responseText: string | undefined) {
-    super(message ?? 'Network response was not ok');
+  constructor(response: Response, message: string, responseJson: ResponseJson | any | undefined, responseText: string | undefined) {
+    super(message);
 
     this.responseHeaders = response.headers;
     this.responseStatus = response.status;
