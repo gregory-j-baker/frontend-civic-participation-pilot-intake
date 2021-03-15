@@ -39,6 +39,7 @@ import { ApplyState, GetDescriptionFunc, PersonalInformationState, Constants } f
 import { personalInformationSchema } from '../validationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
+import { YupCustomMessage } from '../../../common/yup-custom';
 
 const PersonalInformation = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -50,7 +51,7 @@ const PersonalInformation = (): JSX.Element => {
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces();
 
-  const [schemaErrors, setSchemaErrors] = useState<string[] | null>();
+  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
   const [formData, setFormDataState] = useState<ApplyState>(() => {
     const defaultState: ApplyState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
@@ -104,7 +105,7 @@ const PersonalInformation = (): JSX.Element => {
       router.push(`/apply/${kebabCase(nextStepId)}`);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
-      setSchemaErrors(err.errors);
+      setSchemaErrors(err.inner);
       router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
     }
   };
@@ -146,19 +147,33 @@ const PersonalInformation = (): JSX.Element => {
     [t]
   );
 
-  const getSchemaError = (field: string): string | undefined => {
+  if (schemaErrors) console.log(schemaErrors);
+
+  const getSchemaError = (path: string): string | undefined => {
     if (!schemaErrors || schemaErrors.length === 0) return undefined;
 
-    const index = schemaErrors.findIndex((key) => key.split('.')[0] === kebabCase(field));
+    const index = schemaErrors.findIndex((err) => err.path === path);
 
     if (index === -1) return undefined;
 
-    return t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.personal-information.field.${schemaErrors[index]}`);
+    const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
+
+    return (
+      t('common:error-number', { number: index + 1 }) +
+      t(
+        `apply:application-form.step.personal-information.${schemaErrors[index]?.path
+          ?.split('.')
+          .map((el) => kebabCase(el))
+          .join('.')}.${key}`
+      )
+    );
   };
 
   if (educationLevelsError || gendersError || languagesError || provincesError) {
     return <Error err={(educationLevelsError ?? gendersError ?? languagesError ?? provincesError) as HttpClientResponseError} />;
   }
+
+  if (schemaErrors) console.log(schemaErrors);
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -176,14 +191,14 @@ const PersonalInformation = (): JSX.Element => {
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc">
-                {schemaErrors.map((key) => {
-                  const [field] = key.split('.');
+                {schemaErrors.map(({ path }) => {
+                  const [field] = path?.split('.') ?? [];
 
-                  return (
-                    <li key={key} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(field)}</a>
+                  return path ? (
+                    <li key={path} className="tw-my-2">
+                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
                     </li>
-                  );
+                  ) : undefined;
                 })}
               </ul>
             </Alert>
@@ -194,7 +209,7 @@ const PersonalInformation = (): JSX.Element => {
               <>
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.firstName)}
-                  label={t('apply:application-form.step.personal-information.field.first-name.label')}
+                  label={t('apply:application-form.step.personal-information.first-name.label')}
                   value={formData.personalInformation.firstName}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.firstName))}
@@ -205,7 +220,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.lastName)}
-                  label={t('apply:application-form.step.personal-information.field.last-name.label')}
+                  label={t('apply:application-form.step.personal-information.last-name.label')}
                   value={formData.personalInformation.lastName}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.lastName))}
@@ -216,7 +231,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.email)}
-                  label={t('apply:application-form.step.personal-information.field.email.label')}
+                  label={t('apply:application-form.step.personal-information.email.label')}
                   value={formData.personalInformation.email}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.email))}
@@ -225,10 +240,20 @@ const PersonalInformation = (): JSX.Element => {
                   className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
                 />
 
+                <TextField
+                  field={nameof<PersonalInformationState>((o) => o.phoneNumber)}
+                  label={t('apply:application-form.step.personal-information.phone-number.label')}
+                  value={formData.personalInformation.phoneNumber}
+                  onChange={handleOnTextFieldChange}
+                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.phoneNumber))}
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+                />
+
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.birthYear)}
-                  label={t('apply:application-form.step.personal-information.field.birth-year.label')}
-                  helperText={t('apply:application-form.step.personal-information.field.birth-year.helper-text')}
+                  label={t('apply:application-form.step.personal-information.birth-year.label')}
+                  helperText={t('apply:application-form.step.personal-information.birth-year.helper-text')}
                   value={formData.personalInformation.birthYear?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yearOfBirthOptions}
@@ -239,7 +264,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <CheckboxeField
                   field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
-                  label={t('apply:application-form.step.personal-information.field.is-province-major-certified.label')}
+                  label={t('apply:application-form.step.personal-information.is-province-major-certified.label')}
                   checked={formData.personalInformation.isProvinceMajorCertified}
                   onChange={handleOnCheckboxFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))}
@@ -247,13 +272,13 @@ const PersonalInformation = (): JSX.Element => {
                 />
                 <div className="tw-mb-8 tw-pl-10">
                   <a href="http://example.com" target="_blank" rel="noreferrer">
-                    {t('apply:application-form.step.personal-information.field.is-province-major-certified.link')}
+                    {t('apply:application-form.step.personal-information.is-province-major-certified.link')}
                   </a>
                 </div>
 
                 <RadiosField
                   field={nameof<PersonalInformationState>((o) => o.languageId)}
-                  label={t('apply:application-form.step.personal-information.field.language-id.label')}
+                  label={t('apply:application-form.step.personal-information.language-id.label')}
                   value={formData.personalInformation.languageId}
                   onChange={handleOnOptionsFieldChange}
                   options={preferedLanguageOptions}
@@ -265,11 +290,11 @@ const PersonalInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
-                  label={t('apply:application-form.step.personal-information.field.is-canadian-citizen.label')}
+                  label={t('apply:application-form.step.personal-information.is-canadian-citizen.label')}
                   value={formData.personalInformation.isCanadianCitizen?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
-                  helperText={t('apply:application-form.step.personal-information.field.is-canadian-citizen.helper-text')}
+                  helperText={t('apply:application-form.step.personal-information.is-canadian-citizen.helper-text')}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))}
                   required
                   gutterBottom
@@ -278,7 +303,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.provinceId)}
-                  label={t('apply:application-form.step.personal-information.field.province-id.label')}
+                  label={t('apply:application-form.step.personal-information.province-id.label')}
                   value={formData.personalInformation.provinceId}
                   onChange={handleOnOptionsFieldChange}
                   options={provinceOptions}
@@ -290,7 +315,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.genderId)}
-                  label={t('apply:application-form.step.personal-information.field.gender-id.label')}
+                  label={t('apply:application-form.step.personal-information.gender-id.label')}
                   value={formData.personalInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.genderId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={genderOptions}
@@ -302,8 +327,8 @@ const PersonalInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.educationLevelId)}
-                  label={t('apply:application-form.step.personal-information.field.education-level-id.label')}
-                  helperText={t('apply:application-form.step.personal-information.field.education-level-id.helper-text')}
+                  label={t('apply:application-form.step.personal-information.education-level-id.label')}
+                  helperText={t('apply:application-form.step.personal-information.education-level-id.helper-text')}
                   value={formData.personalInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.educationLevelId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={educationLevelOptions}

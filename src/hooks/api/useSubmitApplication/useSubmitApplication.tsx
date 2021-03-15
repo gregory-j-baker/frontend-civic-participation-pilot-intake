@@ -29,6 +29,7 @@ interface ApplicationData {
   languageId?: string;
   lastName?: string;
   miscInterest?: string;
+  phoneNumber?: string;
   programInterest?: string;
   provinceId?: string;
   skillsInterest?: string;

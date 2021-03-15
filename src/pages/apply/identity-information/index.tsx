@@ -30,6 +30,7 @@ import { ApplyState, GetDescriptionFunc, IdentityInformationState, Constants } f
 import { identityInformationSchema, personalInformationSchema } from '../validationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
+import { YupCustomMessage } from '../../../common/yup-custom';
 
 const IdentityInformation = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -38,7 +39,7 @@ const IdentityInformation = (): JSX.Element => {
 
   const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes();
 
-  const [schemaErrors, setSchemaErrors] = useState<string[] | null>();
+  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
   const [formData, setFormDataState] = useState<ApplyState>(() => {
     const defaultState: ApplyState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
@@ -101,7 +102,7 @@ const IdentityInformation = (): JSX.Element => {
       router.push(`/apply/${kebabCase(nextStepId)}`);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
-      setSchemaErrors(err.errors);
+      setSchemaErrors(err.inner);
       router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
     }
   };
@@ -123,13 +124,24 @@ const IdentityInformation = (): JSX.Element => {
     [t]
   );
 
-  const getSchemaError = (field: string): string | undefined => {
+  const getSchemaError = (path: string): string | undefined => {
     if (!schemaErrors || schemaErrors.length === 0) return undefined;
 
-    const index = schemaErrors.findIndex((key) => key.split('.')[0] === kebabCase(field));
+    const index = schemaErrors.findIndex((err) => err.path === path);
+
     if (index === -1) return undefined;
 
-    return t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.identity-information.field.${schemaErrors[index]}`);
+    const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
+
+    return (
+      t('common:error-number', { number: index + 1 }) +
+      t(
+        `apply:application-form.step.identity-information.${schemaErrors[index]?.path
+          ?.split('.')
+          .map((el) => kebabCase(el))
+          .join('.')}.${key}`
+      )
+    );
   };
 
   if (indigenousTypesError) {
@@ -152,14 +164,14 @@ const IdentityInformation = (): JSX.Element => {
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc">
-                {schemaErrors.map((key) => {
-                  const [field] = key.split('.');
+                {schemaErrors.map(({ path }) => {
+                  const [field] = path?.split('.') ?? [];
 
-                  return (
-                    <li key={key} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(field)}</a>
+                  return path ? (
+                    <li key={path} className="tw-my-2">
+                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
                     </li>
-                  );
+                  ) : undefined;
                 })}
               </ul>
             </Alert>
@@ -176,7 +188,7 @@ const IdentityInformation = (): JSX.Element => {
               <>
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isDisabled)}
-                  label={t('apply:application-form.step.identity-information.field.is-disabled.label')}
+                  label={t('apply:application-form.step.identity-information.is-disabled.label')}
                   value={formData.identityInformation.isDisabled === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isDisabled?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -188,7 +200,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isMinority)}
-                  label={t('apply:application-form.step.identity-information.field.is-minority.label')}
+                  label={t('apply:application-form.step.identity-information.is-minority.label')}
                   value={formData.identityInformation.isMinority === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isMinority?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -200,7 +212,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
-                  label={t('apply:application-form.step.identity-information.field.indigenous-type-id.label')}
+                  label={t('apply:application-form.step.identity-information.indigenous-type-id.label')}
                   value={formData.identityInformation.indigenousTypeId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.indigenousTypeId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={indigenousTypeOptions}
@@ -212,7 +224,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
-                  label={t('apply:application-form.step.identity-information.field.is-lgbtq.label')}
+                  label={t('apply:application-form.step.identity-information.is-lgbtq.label')}
                   value={formData.identityInformation.isLgbtq === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isLgbtq?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -224,7 +236,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isRural)}
-                  label={t('apply:application-form.step.identity-information.field.is-rural.label')}
+                  label={t('apply:application-form.step.identity-information.is-rural.label')}
                   value={formData.identityInformation.isRural === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isRural?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -236,7 +248,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
-                  label={t('apply:application-form.step.identity-information.field.is-newcomer.label')}
+                  label={t('apply:application-form.step.identity-information.is-newcomer.label')}
                   value={formData.identityInformation.isNewcomer === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isNewcomer?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}

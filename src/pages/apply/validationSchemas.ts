@@ -5,71 +5,46 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { kebabCase } from 'lodash';
-import * as yup from 'yup';
-import { BooleanLocale, MixedLocale, StringLocale } from 'yup/lib/locale';
+import * as Yup from 'yup';
+import '../../common/yup-custom';
 
-const formatPath = (path: string): string =>
-  path
-    .split('.')
-    .map((s) => kebabCase(s))
-    .join('.');
-
-const mixedLocale: MixedLocale = {
-  required: ({ path }) => `${formatPath(path)}.required`,
-  defined: ({ path }) => `${formatPath(path)}.required`,
-};
-
-const stringLocale: StringLocale = {
-  email: ({ path }) => `${formatPath(path)}.email-invalid`,
-};
-
-const booleanLocale: BooleanLocale = {
-  isValue: ({ path, value }) => `${formatPath(path)}.must-be-${value.toLowerCase()}`,
-};
-
-yup.setLocale({
-  mixed: mixedLocale,
-  string: stringLocale,
-  boolean: booleanLocale,
+export const personalInformationSchema = Yup.object().shape({
+  firstName: Yup.string().required(),
+  lastName: Yup.string().required(),
+  email: Yup.string().email().required(),
+  phoneNumber: Yup.string().phone(),
+  birthYear: Yup.number().required().positive().integer(),
+  isProvinceMajorCertified: Yup.boolean().required().isTrue(),
+  languageId: Yup.string().required(),
+  isCanadianCitizen: Yup.boolean().required(),
+  provinceId: Yup.string().required(),
+  genderId: Yup.string().nullable().defined(),
+  educationLevelId: Yup.string().nullable().defined(),
 });
 
-export const personalInformationSchema = yup.object().shape({
-  firstName: yup.string().required(),
-  lastName: yup.string().required(),
-  email: yup.string().email().required(),
-  birthYear: yup.number().required().positive().integer(),
-  isProvinceMajorCertified: yup.boolean().required().isTrue(),
-  languageId: yup.string().required(),
-  isCanadianCitizen: yup.boolean().required(),
-  provinceId: yup.string().required(),
-  genderId: yup.string().nullable().defined(),
-  educationLevelId: yup.string().nullable().defined(),
+export const identityInformationSchema = Yup.object().shape({
+  isDisabled: Yup.boolean().nullable().defined(),
+  isMinority: Yup.boolean().nullable().defined(),
+  indigenousTypeId: Yup.string().nullable().defined(),
+  isLgbtq: Yup.boolean().nullable().defined(),
+  isRural: Yup.boolean().nullable().defined(),
+  isNewcomer: Yup.boolean().nullable().defined(),
 });
 
-export const identityInformationSchema = yup.object().shape({
-  isDisabled: yup.string().nullable().defined(),
-  isMinority: yup.string().nullable().defined(),
-  indigenousTypeId: yup.string().nullable().defined(),
-  isLgbtq: yup.string().nullable().defined(),
-  isRural: yup.string().nullable().defined(),
-  isNewcomer: yup.string().nullable().defined(),
+export const expressionOfInterestSchema = Yup.object().shape({
+  skillsInterest: Yup.string().required(),
+  communityInterest: Yup.string().required(),
+  programInterest: Yup.string(),
 });
 
-export const expressionOfInterestSchema = yup.object().shape({
-  skillsInterest: yup.string().required(),
-  communityInterest: yup.string().required(),
-  programInterest: yup.string(),
+export const consentSchema = Yup.object().shape({
+  internetQualityId: Yup.string().required(),
+  hasDedicatedDevice: Yup.boolean().required(),
+  discoveryChannelId: Yup.string().required(),
+  isInformationConsented: Yup.boolean().required().isTrue(),
 });
 
-export const consentSchema = yup.object().shape({
-  internetQualityId: yup.string().required(),
-  hasDedicatedDevice: yup.boolean().required(),
-  discoveryChannelId: yup.string().required(),
-  isInformationConsented: yup.boolean().required().isTrue(),
-});
-
-export const formSchema = yup.object().shape({
+export const formSchema = Yup.object().shape({
   personalInformation: personalInformationSchema.required(),
   identityInformation: identityInformationSchema.required(),
   expressionOfInterest: expressionOfInterestSchema.required(),

@@ -5,5 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default as Button } from './Alert';
+export { default as Alert } from './Alert';
 export * from './Alert';

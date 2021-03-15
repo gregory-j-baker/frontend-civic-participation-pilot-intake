@@ -25,6 +25,7 @@ export interface PersonalInformationState {
   isProvinceMajorCertified?: boolean;
   languageId?: string;
   lastName?: string;
+  phoneNumber?: string;
   provinceId?: string;
 }
 

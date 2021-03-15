@@ -22,12 +22,13 @@ import { ApplyState, ExpressionOfInterestState, Constants } from '../types';
 import { expressionOfInterestSchema, identityInformationSchema, personalInformationSchema } from '../validationSchemas';
 import { ValidationError } from 'yup';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
+import { YupCustomMessage } from '../../../common/yup-custom';
 
 const Consent = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [schemaErrors, setSchemaErrors] = useState<string[] | null>();
+  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
   const [formData, setFormDataState] = useState<ApplyState>(() => {
     const defaultState: ApplyState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
@@ -81,22 +82,30 @@ const Consent = (): JSX.Element => {
       await expressionOfInterestSchema.validate(formData.expressionOfInterest, { abortEarly: false });
       router.push(`/apply/${kebabCase(nextStepId)}`);
     } catch (err) {
-      if (err instanceof ValidationError) {
-        setSchemaErrors(err.errors);
-        router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
-      } else {
-        throw err;
-      }
+      if (!(err instanceof ValidationError)) throw err;
+      setSchemaErrors(err.inner);
+      router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
     }
   };
 
-  const getSchemaError = (field: string): string | undefined => {
-    if (!schemaErrors || schemaErrors.length == 0) return undefined;
+  const getSchemaError = (path: string): string | undefined => {
+    if (!schemaErrors || schemaErrors.length === 0) return undefined;
 
-    const index = schemaErrors.findIndex((key) => key.split('.')[0] === kebabCase(field));
+    const index = schemaErrors.findIndex((err) => err.path === path);
+
     if (index === -1) return undefined;
 
-    return t('common:error-number', { number: index + 1 }) + t(`apply:application-form.step.expression-of-interest.field.${schemaErrors[index]}`);
+    const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
+
+    return (
+      t('common:error-number', { number: index + 1 }) +
+      t(
+        `apply:application-form.step.expression-of-interest.${schemaErrors[index]?.path
+          ?.split('.')
+          .map((el) => kebabCase(el))
+          .join('.')}.${key}`
+      )
+    );
   };
 
   return (
@@ -115,14 +124,14 @@ const Consent = (): JSX.Element => {
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc">
-                {schemaErrors.map((key) => {
-                  const [field] = key.split('.');
+                {schemaErrors.map(({ path }) => {
+                  const [field] = path?.split('.') ?? [];
 
-                  return (
-                    <li key={key} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(field)}</a>
+                  return path ? (
+                    <li key={path} className="tw-my-2">
+                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
                     </li>
-                  );
+                  ) : undefined;
                 })}
               </ul>
             </Alert>
@@ -140,7 +149,7 @@ const Consent = (): JSX.Element => {
               <>
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
-                  label={t('apply:application-form.step.expression-of-interest.field.skills-interest.label')}
+                  label={t('apply:application-form.step.expression-of-interest.skills-interest.label')}
                   value={formData.expressionOfInterest.skillsInterest}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))}
@@ -152,7 +161,7 @@ const Consent = (): JSX.Element => {
 
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
-                  label={t('apply:application-form.step.expression-of-interest.field.community-interest.label')}
+                  label={t('apply:application-form.step.expression-of-interest.community-interest.label')}
                   value={formData.expressionOfInterest.communityInterest}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.communityInterest))}
@@ -164,7 +173,7 @@ const Consent = (): JSX.Element => {
 
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
-                  label={t('apply:application-form.step.expression-of-interest.field.program-interest.label')}
+                  label={t('apply:application-form.step.expression-of-interest.program-interest.label')}
                   value={formData.expressionOfInterest.programInterest}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.programInterest))}
