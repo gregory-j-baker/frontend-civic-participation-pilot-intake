@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { MainLayout } from '../components/layouts/main/MainLayout';
 
@@ -18,6 +19,8 @@ const Custom404 = (): JSX.Element => {
   const { t, lang } = useTranslation();
   return (
     <MainLayout showBreadcrumb={false}>
+      <NextSeo title={t('common:custom-404.page-title')} />
+
       <div className="tw-my-8">
         <div className="tw-flex">
           <div className="tw-w-24 tw-flex-shrink-0">
