@@ -142,7 +142,7 @@ const IdentityInformation = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={t('apply:application-form.header')} />
+          <NextSeo title={`${t('apply:application-form.step.identity-information.header')} - ${t('apply:application-form.header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -151,7 +151,7 @@ const IdentityInformation = (): JSX.Element => {
 
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
-              <ul className="tw-list-disc tw-list-inside">
+              <ul className="tw-list-disc">
                 {schemaErrors.map((key) => {
                   const [field] = key.split('.');
 

@@ -16,10 +16,10 @@ interface MainLayoutProps extends FunctionComponent {
 }
 
 const MainLayout = ({ children, showBreadcrumb }: MainLayoutProps): JSX.Element => (
-  <div className="tw-flex tw-flex-col tw-min-h-screen">
+  <div className="tw-flex tw-flex-col tw-h-screen">
     <ResponsiveHandler />
     <GlobalHeader showBreadcrumb={showBreadcrumb} />
-    <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" className="container tw-py-6 md:tw-py-8">
+    <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" className="container tw-mb-auto tw-py-6 md:tw-py-8">
       {children}
     </main>
     <GlobalFooter />

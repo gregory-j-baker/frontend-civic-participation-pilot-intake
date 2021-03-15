@@ -175,7 +175,7 @@ const ApplySection = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={t('apply:application-form.header')} />
+          <NextSeo title={`${t('apply:application-form.step.consent.header')} - ${t('apply:application-form.header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -184,7 +184,7 @@ const ApplySection = (): JSX.Element => {
 
           {formSchemaErrors && formSchemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: formSchemaErrors.length })} type={AlertType.danger}>
-              <ul className="tw-list-disc tw-list-inside">
+              <ul className="tw-list-disc">
                 {formSchemaErrors.map((key, index) => {
                   const [section, field, msgkey] = key.split('.');
                   return (
