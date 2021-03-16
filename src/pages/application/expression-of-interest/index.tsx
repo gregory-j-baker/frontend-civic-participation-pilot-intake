@@ -18,11 +18,12 @@ import { WizardStep } from '../../../components/WizardStep';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
-import { ApplyState, ExpressionOfInterestState, Constants } from '../types';
-import { expressionOfInterestSchema, identityInformationSchema, personalInformationSchema } from '../validationSchemas';
+import { ApplicationState, ExpressionOfInterestState, Constants } from '../types';
+import { expressionOfInterestSchema, identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
-import { YupCustomMessage } from '../../../common/yup-custom';
+import { YupCustomMessage } from '../../../yup/yup-custom';
+import { GetStaticProps } from 'next';
 
 const Consent = (): JSX.Element => {
   const { t } = useTranslation();
@@ -30,8 +31,8 @@ const Consent = (): JSX.Element => {
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
-  const [formData, setFormDataState] = useState<ApplyState>(() => {
-    const defaultState: ApplyState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+  const [formData, setFormDataState] = useState<ApplicationState>(() => {
+    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -42,11 +43,11 @@ const Consent = (): JSX.Element => {
   const [previousStepsValidationCompleted, setPreviousStepsValidationCompleted] = useState<boolean>(false);
 
   const validatePreviousSteps = useCallback(
-    async (formData: ApplyState): Promise<void> => {
+    async (formData: ApplicationState): Promise<void> => {
       if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
-        router.replace('/apply/personal-information');
+        router.replace('/application/personal-information');
       } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
-        router.replace('/apply/identity-information');
+        router.replace('/application/identity-information');
       } else {
         setPreviousStepsValidationCompleted(true);
       }
@@ -72,7 +73,7 @@ const Consent = (): JSX.Element => {
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event, activeStepId, nextStepId) => {
     event.preventDefault();
 
-    router.push(`/apply/${kebabCase(nextStepId)}`);
+    router.push(`/application/${kebabCase(nextStepId)}`);
   };
 
   const handleWizardOnNextClick: WizardOnNextClickEvent = async (event, activeStepId, nextStepId) => {
@@ -80,11 +81,11 @@ const Consent = (): JSX.Element => {
 
     try {
       await expressionOfInterestSchema.validate(formData.expressionOfInterest, { abortEarly: false });
-      router.push(`/apply/${kebabCase(nextStepId)}`);
+      router.push(`/application/${kebabCase(nextStepId)}`);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
+      router.push(`/application/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
     }
   };
 
@@ -100,7 +101,7 @@ const Consent = (): JSX.Element => {
     return (
       t('common:error-number', { number: index + 1 }) +
       t(
-        `apply:application-form.step.expression-of-interest.${schemaErrors[index]?.path
+        `application:step.expression-of-interest.${schemaErrors[index]?.path
           ?.split('.')
           .map((el) => kebabCase(el))
           .join('.')}.${key}`
@@ -114,12 +115,12 @@ const Consent = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('apply:application-form.step.expression-of-interest.header')} - ${t('apply:application-form.header')}`} />
+          <NextSeo title={`${t('application:step.expression-of-interest.header')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
           </h1>
-          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('application:header')}</h2>
 
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
@@ -137,19 +138,14 @@ const Consent = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard
-            activeStepId={nameof<ApplyState>((o) => o.expressionOfInterest)}
-            stepText={t('apply:application-form.wizard-step')}
-            submitText={t('apply:application-form.submit')}
-            onNextClick={handleWizardOnNextClick}
-            onPreviousClick={handleWizardOnPreviousClick}>
-            <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} header={t('apply:application-form.step.expression-of-interest.header')}>
+          <Wizard activeStepId={nameof<ApplicationState>((o) => o.expressionOfInterest)} stepText={t('application:wizard-step')} submitText={t('application:submit')} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
+            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} header={t('application:step.expression-of-interest.header')}>
               <>
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
-                  label={t('apply:application-form.step.expression-of-interest.skills-interest.label')}
+                  label={t('application:step.expression-of-interest.skills-interest.label')}
                   value={formData.expressionOfInterest.skillsInterest}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))}
@@ -161,7 +157,7 @@ const Consent = (): JSX.Element => {
 
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
-                  label={t('apply:application-form.step.expression-of-interest.community-interest.label')}
+                  label={t('application:step.expression-of-interest.community-interest.label')}
                   value={formData.expressionOfInterest.communityInterest}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.communityInterest))}
@@ -173,7 +169,7 @@ const Consent = (): JSX.Element => {
 
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
-                  label={t('apply:application-form.step.expression-of-interest.program-interest.label')}
+                  label={t('application:step.expression-of-interest.program-interest.label')}
                   value={formData.expressionOfInterest.programInterest}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.programInterest))}
@@ -182,12 +178,18 @@ const Consent = (): JSX.Element => {
                 />
               </>
             </WizardStep>
-            <WizardStep id={nameof<ApplyState>((o) => o.consent)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.consent)} />
           </Wizard>
         </>
       )}
     </MainLayout>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
 };
 
 export default Consent;

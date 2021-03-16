@@ -6,12 +6,9 @@
  */
 
 import { useMemo, useState, useEffect, useCallback } from 'react';
-import type { GetStaticProps } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { QueryClient } from 'react-query';
-import { dehydrate } from 'react-query/hydration';
 import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../../../components/form/RadiosField';
 import type { SelectFieldOnChangeEvent, SelectFieldOption } from '../../../components/form/SelectField';
 import { SelectField } from '../../../components/form/SelectField';
@@ -20,17 +17,18 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../../../components/Wizard';
 import { WizardStep } from '../../../components/WizardStep';
 import { theme } from '../../../config';
-import useIndigenousTypes, { indigenousTypeStaticProps, indigenousTypesQueryKey } from '../../../hooks/api/useIndigenousTypes';
+import useIndigenousTypes from '../../../hooks/api/useIndigenousTypes';
 import useCurrentBreakpoint from '../../../hooks/useCurrentBreakpoint';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
-import { ApplyState, GetDescriptionFunc, IdentityInformationState, Constants } from '../types';
-import { identityInformationSchema, personalInformationSchema } from '../validationSchemas';
+import { ApplicationState, GetDescriptionFunc, IdentityInformationState, Constants } from '../types';
+import { identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { YupCustomMessage } from '../../../common/yup-custom';
+import { YupCustomMessage } from '../../../yup/yup-custom';
+import { GetStaticProps } from 'next';
 
 const IdentityInformation = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -41,8 +39,8 @@ const IdentityInformation = (): JSX.Element => {
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
-  const [formData, setFormDataState] = useState<ApplyState>(() => {
-    const defaultState: ApplyState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+  const [formData, setFormDataState] = useState<ApplicationState>(() => {
+    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -53,9 +51,9 @@ const IdentityInformation = (): JSX.Element => {
   const [previousStepsValidationCompleted, setPreviousStepsValidationCompleted] = useState<boolean>(false);
 
   const validatePreviousSteps = useCallback(
-    async (formData: ApplyState): Promise<void> => {
+    async (formData: ApplicationState): Promise<void> => {
       if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
-        router.replace('/apply/personal-information');
+        router.replace('/application/personal-information');
       } else {
         setPreviousStepsValidationCompleted(true);
       }
@@ -91,7 +89,7 @@ const IdentityInformation = (): JSX.Element => {
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event, activeStepId, nextStepId) => {
     event.preventDefault();
 
-    router.push(`/apply/${kebabCase(nextStepId)}`);
+    router.push(`/application/${kebabCase(nextStepId)}`);
   };
 
   const handleWizardOnNextClick: WizardOnNextClickEvent = async (event, activeStepId, nextStepId) => {
@@ -99,11 +97,11 @@ const IdentityInformation = (): JSX.Element => {
 
     try {
       await identityInformationSchema.validate(formData.identityInformation, { abortEarly: false });
-      router.push(`/apply/${kebabCase(nextStepId)}`);
+      router.push(`/application/${kebabCase(nextStepId)}`);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
+      router.push(`/application/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
     }
   };
 
@@ -136,7 +134,7 @@ const IdentityInformation = (): JSX.Element => {
     return (
       t('common:error-number', { number: index + 1 }) +
       t(
-        `apply:application-form.step.identity-information.${schemaErrors[index]?.path
+        `application:step.identity-information.${schemaErrors[index]?.path
           ?.split('.')
           .map((el) => kebabCase(el))
           .join('.')}.${key}`
@@ -154,12 +152,12 @@ const IdentityInformation = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('apply:application-form.step.identity-information.header')} - ${t('apply:application-form.header')}`} />
+          <NextSeo title={`${t('application:step.identity-information.header')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
           </h1>
-          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('application:header')}</h2>
 
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
@@ -177,18 +175,13 @@ const IdentityInformation = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard
-            activeStepId={nameof<ApplyState>((o) => o.identityInformation)}
-            stepText={t('apply:application-form.wizard-step')}
-            submitText={t('apply:application-form.submit')}
-            onNextClick={handleWizardOnNextClick}
-            onPreviousClick={handleWizardOnPreviousClick}>
-            <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} header={t('apply:application-form.step.identity-information.header')}>
+          <Wizard activeStepId={nameof<ApplicationState>((o) => o.identityInformation)} stepText={t('application:wizard-step')} submitText={t('application:submit')} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
+            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} header={t('application:step.identity-information.header')}>
               <>
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isDisabled)}
-                  label={t('apply:application-form.step.identity-information.is-disabled.label')}
+                  label={t('application:step.identity-information.is-disabled.label')}
                   value={formData.identityInformation.isDisabled === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isDisabled?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -200,7 +193,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isMinority)}
-                  label={t('apply:application-form.step.identity-information.is-minority.label')}
+                  label={t('application:step.identity-information.is-minority.label')}
                   value={formData.identityInformation.isMinority === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isMinority?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -212,7 +205,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
-                  label={t('apply:application-form.step.identity-information.indigenous-type-id.label')}
+                  label={t('application:step.identity-information.indigenous-type-id.label')}
                   value={formData.identityInformation.indigenousTypeId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.indigenousTypeId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={indigenousTypeOptions}
@@ -224,7 +217,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
-                  label={t('apply:application-form.step.identity-information.is-lgbtq.label')}
+                  label={t('application:step.identity-information.is-lgbtq.label')}
                   value={formData.identityInformation.isLgbtq === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isLgbtq?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -236,7 +229,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isRural)}
-                  label={t('apply:application-form.step.identity-information.is-rural.label')}
+                  label={t('application:step.identity-information.is-rural.label')}
                   value={formData.identityInformation.isRural === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isRural?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -248,7 +241,7 @@ const IdentityInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
-                  label={t('apply:application-form.step.identity-information.is-newcomer.label')}
+                  label={t('application:step.identity-information.is-newcomer.label')}
                   value={formData.identityInformation.isNewcomer === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isNewcomer?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoNoPreferNotAnswerOptions}
@@ -258,8 +251,8 @@ const IdentityInformation = (): JSX.Element => {
                 />
               </>
             </WizardStep>
-            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.consent)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.consent)} />
           </Wizard>
         </>
       )}
@@ -268,14 +261,8 @@ const IdentityInformation = (): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery(indigenousTypesQueryKey, () => indigenousTypeStaticProps);
-
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
+    props: {},
   };
 };
 

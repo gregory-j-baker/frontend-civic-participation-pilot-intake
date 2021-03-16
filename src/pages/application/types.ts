@@ -54,7 +54,7 @@ export interface ConsentState {
   isInformationConsented?: boolean;
 }
 
-export interface ApplyState {
+export interface ApplicationState {
   personalInformation: PersonalInformationState;
   identityInformation: IdentityInformationState;
   expressionOfInterest: ExpressionOfInterestState;

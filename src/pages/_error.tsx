@@ -92,7 +92,6 @@ const Error: NextPage<ErrorProps> = ({ statusCode, err, source }) => {
           </div>
         </div>
       </header>
-      {console.log(lang)}
       <main role="main" property="mainContentOfPage" className="container tw-mb-auto" typeof="WebPageElement">
         <div className="tw-my-16 tw-flex tw-flex-col tw-space-y-4 tw-space-x-0 sm:tw-flex-row sm:tw-space-y-0 sm:tw-space-x-4 ">
           <section className="tw-w-full sm:tw-w-6/12">

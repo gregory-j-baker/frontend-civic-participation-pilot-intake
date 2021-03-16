@@ -7,17 +7,17 @@
 
 import { GetServerSideProps } from 'next';
 
-const ApplyIndex = (): JSX.Element => {
+const ApplicationIndex = (): JSX.Element => {
   return <></>;
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
-      destination: '/apply/personal-information',
+      destination: '/application/personal-information',
       permanent: false,
     },
   };
 };
 
-export default ApplyIndex;
+export default ApplicationIndex;

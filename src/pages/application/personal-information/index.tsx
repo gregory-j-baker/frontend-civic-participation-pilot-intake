@@ -6,12 +6,9 @@
  */
 
 import { useMemo, useState, useEffect, useCallback } from 'react';
-import type { GetStaticProps } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { QueryClient } from 'react-query';
-import { dehydrate } from 'react-query/hydration';
 import type { CheckboxeFieldOnChangeEvent } from '../../../components/form/CheckboxeField';
 import { CheckboxeField } from '../../../components/form/CheckboxeField';
 import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../../../components/form/RadiosField';
@@ -25,21 +22,22 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent } from '../../../components/Wizard';
 import { WizardStep } from '../../../components/WizardStep';
 import { theme } from '../../../config';
-import useEducationLevels, { educationLevelStaticProps, educationLevelsQueryKey } from '../../../hooks/api/useEducationLevels';
-import useGenders, { genderStaticProps, gendersQueryKey } from '../../../hooks/api/useGenders';
-import useLanguages, { languagesStaticProps, languagesQueryKey } from '../../../hooks/api/useLanguages';
-import useProvinces, { provincesStaticProps, provincesQueryKey } from '../../../hooks/api/useProvinces';
+import useEducationLevels from '../../../hooks/api/useEducationLevels';
+import useGenders from '../../../hooks/api/useGenders';
+import useLanguages from '../../../hooks/api/useLanguages';
+import useProvinces from '../../../hooks/api/useProvinces';
 import useCurrentBreakpoint from '../../../hooks/useCurrentBreakpoint';
 import { getYears } from '../../../utils/misc-utils';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
-import { ApplyState, GetDescriptionFunc, PersonalInformationState, Constants } from '../types';
-import { personalInformationSchema } from '../validationSchemas';
+import { ApplicationState, GetDescriptionFunc, PersonalInformationState, Constants } from '../types';
+import { personalInformationSchema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { YupCustomMessage } from '../../../common/yup-custom';
+import { YupCustomMessage } from '../../../yup/yup-custom';
+import { GetStaticProps } from 'next';
 
 const PersonalInformation = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -53,8 +51,8 @@ const PersonalInformation = (): JSX.Element => {
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
-  const [formData, setFormDataState] = useState<ApplyState>(() => {
-    const defaultState: ApplyState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+  const [formData, setFormDataState] = useState<ApplicationState>(() => {
+    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -102,11 +100,11 @@ const PersonalInformation = (): JSX.Element => {
 
     try {
       await personalInformationSchema.validate(formData.personalInformation, { abortEarly: false });
-      router.push(`/apply/${kebabCase(nextStepId)}`);
+      router.push(`/application/${kebabCase(nextStepId)}`);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
+      router.push(`/application/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
     }
   };
 
@@ -147,8 +145,6 @@ const PersonalInformation = (): JSX.Element => {
     [t]
   );
 
-  if (schemaErrors) console.log(schemaErrors);
-
   const getSchemaError = (path: string): string | undefined => {
     if (!schemaErrors || schemaErrors.length === 0) return undefined;
 
@@ -161,7 +157,7 @@ const PersonalInformation = (): JSX.Element => {
     return (
       t('common:error-number', { number: index + 1 }) +
       t(
-        `apply:application-form.step.personal-information.${schemaErrors[index]?.path
+        `application:step.personal-information.${schemaErrors[index]?.path
           ?.split('.')
           .map((el) => kebabCase(el))
           .join('.')}.${key}`
@@ -173,20 +169,18 @@ const PersonalInformation = (): JSX.Element => {
     return <Error err={(educationLevelsError ?? gendersError ?? languagesError ?? provincesError) as HttpClientResponseError} />;
   }
 
-  if (schemaErrors) console.log(schemaErrors);
-
   return (
     <MainLayout showBreadcrumb={false}>
       {isEducationLevelsLoading || isGendersLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('apply:application-form.step.personal-information.header')} - ${t('apply:application-form.header')}`} />
+          <NextSeo title={`${t('application:step.personal-information.header')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
           </h1>
-          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('application:header')}</h2>
 
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
@@ -204,12 +198,12 @@ const PersonalInformation = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard activeStepId={nameof<ApplyState>((o) => o.personalInformation)} stepText={t('apply:application-form.wizard-step')} submitText={t('apply:application-form.submit')} onNextClick={handleWizardOnNextClick}>
-            <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} header={t('apply:application-form.step.personal-information.header')}>
+          <Wizard activeStepId={nameof<ApplicationState>((o) => o.personalInformation)} stepText={t('application:wizard-step')} submitText={t('application:submit')} onNextClick={handleWizardOnNextClick}>
+            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} header={t('application:step.personal-information.header')}>
               <>
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.firstName)}
-                  label={t('apply:application-form.step.personal-information.first-name.label')}
+                  label={t('application:step.personal-information.first-name.label')}
                   value={formData.personalInformation.firstName}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.firstName))}
@@ -220,7 +214,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.lastName)}
-                  label={t('apply:application-form.step.personal-information.last-name.label')}
+                  label={t('application:step.personal-information.last-name.label')}
                   value={formData.personalInformation.lastName}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.lastName))}
@@ -231,7 +225,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.email)}
-                  label={t('apply:application-form.step.personal-information.email.label')}
+                  label={t('application:step.personal-information.email.label')}
                   value={formData.personalInformation.email}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.email))}
@@ -242,7 +236,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.phoneNumber)}
-                  label={t('apply:application-form.step.personal-information.phone-number.label')}
+                  label={t('application:step.personal-information.phone-number.label')}
                   value={formData.personalInformation.phoneNumber}
                   onChange={handleOnTextFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.phoneNumber))}
@@ -252,8 +246,8 @@ const PersonalInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.birthYear)}
-                  label={t('apply:application-form.step.personal-information.birth-year.label')}
-                  helperText={t('apply:application-form.step.personal-information.birth-year.helper-text')}
+                  label={t('application:step.personal-information.birth-year.label')}
+                  helperText={t('application:step.personal-information.birth-year.helper-text')}
                   value={formData.personalInformation.birthYear?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yearOfBirthOptions}
@@ -264,7 +258,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <CheckboxeField
                   field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
-                  label={t('apply:application-form.step.personal-information.is-province-major-certified.label')}
+                  label={t('application:step.personal-information.is-province-major-certified.label')}
                   checked={formData.personalInformation.isProvinceMajorCertified}
                   onChange={handleOnCheckboxFieldChange}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))}
@@ -272,13 +266,13 @@ const PersonalInformation = (): JSX.Element => {
                 />
                 <div className="tw-mb-8 tw-pl-10">
                   <a href="http://example.com" target="_blank" rel="noreferrer">
-                    {t('apply:application-form.step.personal-information.is-province-major-certified.link')}
+                    {t('application:step.personal-information.is-province-major-certified.link')}
                   </a>
                 </div>
 
                 <RadiosField
                   field={nameof<PersonalInformationState>((o) => o.languageId)}
-                  label={t('apply:application-form.step.personal-information.language-id.label')}
+                  label={t('application:step.personal-information.language-id.label')}
                   value={formData.personalInformation.languageId}
                   onChange={handleOnOptionsFieldChange}
                   options={preferedLanguageOptions}
@@ -290,11 +284,11 @@ const PersonalInformation = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
-                  label={t('apply:application-form.step.personal-information.is-canadian-citizen.label')}
+                  label={t('application:step.personal-information.is-canadian-citizen.label')}
                   value={formData.personalInformation.isCanadianCitizen?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
-                  helperText={t('apply:application-form.step.personal-information.is-canadian-citizen.helper-text')}
+                  helperText={t('application:step.personal-information.is-canadian-citizen.helper-text')}
                   error={getSchemaError(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))}
                   required
                   gutterBottom
@@ -303,7 +297,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.provinceId)}
-                  label={t('apply:application-form.step.personal-information.province-id.label')}
+                  label={t('application:step.personal-information.province-id.label')}
                   value={formData.personalInformation.provinceId}
                   onChange={handleOnOptionsFieldChange}
                   options={provinceOptions}
@@ -315,7 +309,7 @@ const PersonalInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.genderId)}
-                  label={t('apply:application-form.step.personal-information.gender-id.label')}
+                  label={t('application:step.personal-information.gender-id.label')}
                   value={formData.personalInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.genderId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={genderOptions}
@@ -327,8 +321,8 @@ const PersonalInformation = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<PersonalInformationState>((o) => o.educationLevelId)}
-                  label={t('apply:application-form.step.personal-information.education-level-id.label')}
-                  helperText={t('apply:application-form.step.personal-information.education-level-id.helper-text')}
+                  label={t('application:step.personal-information.education-level-id.label')}
+                  helperText={t('application:step.personal-information.education-level-id.helper-text')}
                   value={formData.personalInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.educationLevelId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={educationLevelOptions}
@@ -338,9 +332,9 @@ const PersonalInformation = (): JSX.Element => {
                 />
               </>
             </WizardStep>
-            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.consent)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.consent)} />
           </Wizard>
         </>
       )}
@@ -349,17 +343,8 @@ const PersonalInformation = (): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery(educationLevelsQueryKey, () => educationLevelStaticProps);
-  await queryClient.prefetchQuery(gendersQueryKey, () => genderStaticProps);
-  await queryClient.prefetchQuery(languagesQueryKey, () => languagesStaticProps);
-  await queryClient.prefetchQuery(provincesQueryKey, () => provincesStaticProps);
-
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
+    props: {},
   };
 };
 

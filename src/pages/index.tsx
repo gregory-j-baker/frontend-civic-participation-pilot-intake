@@ -12,7 +12,7 @@ const HomeIndex = (): JSX.Element => <></>;
 export const getServerSideProps: GetStaticProps = async () => {
   return {
     redirect: {
-      destination: `/apply`,
+      destination: `/application`,
       permanent: false,
     },
   };

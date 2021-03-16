@@ -3,10 +3,10 @@
   "defaultLocale": "en",
   "pages": {
     "*": ["common", "layouts", "menu"],
-    "/apply/consent": ["apply"],
-    "/apply/expression-of-interest": ["apply"],
-    "/apply/identity-information": ["apply"],
-    "/apply/personal-information": ["apply"],
+    "/application/consent": ["application"],
+    "/application/expression-of-interest": ["application"],
+    "/application/identity-information": ["application"],
+    "/application/personal-information": ["application"],
     "/email-verification": ["email-verification"],
     "/email-verification/failed": ["email-verification"],
     "/email-verification/success": ["email-verification"]

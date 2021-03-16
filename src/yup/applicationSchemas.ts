@@ -6,7 +6,7 @@
  */
 
 import * as Yup from 'yup';
-import '../../common/yup-custom';
+import './yup-custom';
 
 export const personalInformationSchema = Yup.object().shape({
   firstName: Yup.string().required(),
@@ -44,7 +44,7 @@ export const consentSchema = Yup.object().shape({
   isInformationConsented: Yup.boolean().required().isTrue(),
 });
 
-export const formSchema = Yup.object().shape({
+export const applicationSchema = Yup.object().shape({
   personalInformation: personalInformationSchema.required(),
   identityInformation: identityInformationSchema.required(),
   expressionOfInterest: expressionOfInterestSchema.required(),

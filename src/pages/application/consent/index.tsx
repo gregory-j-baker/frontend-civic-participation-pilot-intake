@@ -6,12 +6,9 @@
  */
 
 import { useMemo, useState, useEffect, useCallback } from 'react';
-import type { GetStaticProps } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { QueryClient } from 'react-query';
-import { dehydrate } from 'react-query/hydration';
 import type { CheckboxeFieldOnChangeEvent } from '../../../components/form/CheckboxeField';
 import { CheckboxeField } from '../../../components/form/CheckboxeField';
 import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../../../components/form/RadiosField';
@@ -22,21 +19,22 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnPreviousClickEvent, WizardOnSubmitClickEvent } from '../../../components/Wizard';
 import { WizardStep } from '../../../components/WizardStep';
 import { theme } from '../../../config';
-import useDiscoveryChannels, { discoveryChannelsStaticProps, discoveryChannelsQueryKey } from '../../../hooks/api/useDiscoveryChannels';
-import useInternetQualities, { internetQualitiesStaticProps, internetQualitiesQueryKey } from '../../../hooks/api/useInternetQualities';
+import useDiscoveryChannels from '../../../hooks/api/useDiscoveryChannels';
+import useInternetQualities from '../../../hooks/api/useInternetQualities';
 import useSubmitApplication from '../../../hooks/api/useSubmitApplication';
 import useCurrentBreakpoint from '../../../hooks/useCurrentBreakpoint';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
-import { ApplyState, ConsentState, GetDescriptionFunc, Constants } from '../types';
-import { consentSchema, expressionOfInterestSchema, formSchema, identityInformationSchema, personalInformationSchema } from '../validationSchemas';
+import { ApplicationState, ConsentState, GetDescriptionFunc, Constants } from '../types';
+import { consentSchema, expressionOfInterestSchema, applicationSchema, identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { YupCustomMessage } from '../../../common/yup-custom';
+import { YupCustomMessage } from '../../../yup/yup-custom';
+import { GetStaticProps } from 'next';
 
-const ApplySection = (): JSX.Element => {
+const ApplicationSection = (): JSX.Element => {
   const { lang, t } = useTranslation();
   const router = useRouter();
   const currentBreakpoint = useCurrentBreakpoint();
@@ -48,8 +46,8 @@ const ApplySection = (): JSX.Element => {
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
-  const [formData, setFormDataState] = useState<ApplyState>(() => {
-    const defaultState: ApplyState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+  const [formData, setFormDataState] = useState<ApplicationState>(() => {
+    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -60,13 +58,13 @@ const ApplySection = (): JSX.Element => {
   const [previousStepsValidationCompleted, setPreviousStepsValidationCompleted] = useState<boolean>(false);
 
   const validatePreviousSteps = useCallback(
-    async (formData: ApplyState): Promise<void> => {
+    async (formData: ApplicationState): Promise<void> => {
       if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
-        router.replace('/apply/personal-information');
+        router.replace('/application/personal-information');
       } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
-        router.replace('/apply/identity-information');
+        router.replace('/application/identity-information');
       } else if ((await expressionOfInterestSchema.isValid(formData.expressionOfInterest)) === false) {
-        router.replace('/apply/expression-of-interest');
+        router.replace('/application/expression-of-interest');
       } else {
         setPreviousStepsValidationCompleted(true);
       }
@@ -109,7 +107,7 @@ const ApplySection = (): JSX.Element => {
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event, activeStepId, nextStepId) => {
     event.preventDefault();
 
-    router.push(`/apply/${kebabCase(nextStepId)}`);
+    router.push(`/application/${kebabCase(nextStepId)}`);
   };
 
   const handleWizardOnSubmitClick: WizardOnSubmitClickEvent = async (event, activeStepId) => {
@@ -119,7 +117,7 @@ const ApplySection = (): JSX.Element => {
     try {
       await consentSchema.validate(formData.consent, { abortEarly: false });
 
-      if (await formSchema.isValid(formData)) {
+      if (await applicationSchema.isValid(formData)) {
         // submit appplication
         submitApplication({
           ...formData.personalInformation,
@@ -131,7 +129,7 @@ const ApplySection = (): JSX.Element => {
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push(`/apply/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
+      router.push(`/application/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
     }
   };
 
@@ -169,7 +167,7 @@ const ApplySection = (): JSX.Element => {
     return (
       t('common:error-number', { number: index + 1 }) +
       t(
-        `apply:application-form.step.consent.${schemaErrors[index]?.path
+        `application:step.consent.${schemaErrors[index]?.path
           ?.split('.')
           .map((el) => kebabCase(el))
           .join('.')}.${key}`
@@ -178,7 +176,6 @@ const ApplySection = (): JSX.Element => {
   };
 
   if (discoveryChannelsError || internetQualitiesError || internetQualitiesError || submitError) {
-    if (submitError) console.log(submitError);
     return <Error err={(discoveryChannelsError ?? internetQualitiesError ?? internetQualitiesError ?? submitError) as HttpClientResponseError} />;
   }
 
@@ -188,12 +185,12 @@ const ApplySection = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('apply:application-form.step.consent.header')} - ${t('apply:application-form.header')}`} />
+          <NextSeo title={`${t('application:step.consent.header')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
           </h1>
-          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('apply:application-form.header')}</h2>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('application:header')}</h2>
 
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
@@ -212,20 +209,20 @@ const ApplySection = (): JSX.Element => {
           )}
 
           <Wizard
-            activeStepId={nameof<ApplyState>((o) => o.consent)}
-            stepText={t('apply:application-form.wizard-step')}
-            submitText={t('apply:application-form.submit')}
+            activeStepId={nameof<ApplicationState>((o) => o.consent)}
+            stepText={t('application:wizard-step')}
+            submitText={t('application:submit')}
             onPreviousClick={handleWizardOnPreviousClick}
             onSubmitClick={handleWizardOnSubmitClick}
             disabled={isSubmitting}>
-            <WizardStep id={nameof<ApplyState>((o) => o.personalInformation)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.identityInformation)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.expressionOfInterest)} />
-            <WizardStep id={nameof<ApplyState>((o) => o.consent)} header={t('apply:application-form.step.consent.header')}>
+            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} />
+            <WizardStep id={nameof<ApplicationState>((o) => o.consent)} header={t('application:step.consent.header')}>
               <>
                 <SelectField
                   field={nameof<ConsentState>((o) => o.internetQualityId)}
-                  label={t('apply:application-form.step.consent.internet-quality-id.label')}
+                  label={t('application:step.consent.internet-quality-id.label')}
                   value={formData.consent.internetQualityId}
                   onChange={handleOnOptionsFieldChange}
                   options={internetQualityOptions}
@@ -238,7 +235,7 @@ const ApplySection = (): JSX.Element => {
 
                 <RadiosField
                   field={nameof<ConsentState>((o) => o.hasDedicatedDevice)}
-                  label={t('apply:application-form.step.consent.has-dedicated-device.label')}
+                  label={t('application:step.consent.has-dedicated-device.label')}
                   value={formData.consent.hasDedicatedDevice?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={yesNoOptions}
@@ -251,7 +248,7 @@ const ApplySection = (): JSX.Element => {
 
                 <SelectField
                   field={nameof<ConsentState>((o) => o.discoveryChannelId)}
-                  label={t('apply:application-form.step.consent.discovery-channel-id.label')}
+                  label={t('application:step.consent.discovery-channel-id.label')}
                   value={formData.consent.discoveryChannelId}
                   onChange={handleOnOptionsFieldChange}
                   options={discoveryChannelOptions}
@@ -264,7 +261,7 @@ const ApplySection = (): JSX.Element => {
 
                 <CheckboxeField
                   field={nameof<ConsentState>((o) => o.isInformationConsented)}
-                  label={t('apply:application-form.step.consent.is-information-consented.label')}
+                  label={t('application:step.consent.is-information-consented.label')}
                   checked={formData.consent.isInformationConsented}
                   onChange={handleOnCheckboxFieldChange}
                   disabled={isSubmitting}
@@ -280,16 +277,9 @@ const ApplySection = (): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery(discoveryChannelsQueryKey, () => discoveryChannelsStaticProps);
-  await queryClient.prefetchQuery(internetQualitiesQueryKey, () => internetQualitiesStaticProps);
-
   return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
+    props: {},
   };
 };
 
-export default ApplySection;
+export default ApplicationSection;
