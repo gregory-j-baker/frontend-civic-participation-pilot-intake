@@ -25,7 +25,7 @@ export interface WizardOnSubmitClickEvent {
 
 export interface WizardProps {
   activeStepId: string;
-  children: ReadonlyArray<React.ReactElement<WizardStepProps>>;
+  children: React.ReactElement<WizardStepProps>;
   disabled?: boolean;
   nextDisabled?: boolean;
   nextText?: string;
