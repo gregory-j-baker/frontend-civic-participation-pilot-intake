@@ -1,6 +1,13 @@
 {
   "header": "Application form",
   "wizard-step": "Section",
+  "confirmation": {
+    "title": "Application confirmation",
+    "header": "Thank you for submitting your application",
+    "sub-header": "We have sent you an verification email",
+    "instruction": "Please click the link in that email to confirm your email address",
+    "submit": "Visit the CSC website"
+  },
   "step": {
     "personal-information": {
       "header": "Please provide your personal information",

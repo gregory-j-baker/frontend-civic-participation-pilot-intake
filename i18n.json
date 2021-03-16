@@ -3,6 +3,7 @@
   "defaultLocale": "en",
   "pages": {
     "*": ["common", "layouts", "menu"],
+    "/application/confirmation": ["application"],
     "/application/consent": ["application"],
     "/application/expression-of-interest": ["application"],
     "/application/identity-information": ["application"],

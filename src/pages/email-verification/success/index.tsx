@@ -9,11 +9,10 @@ import type { NextPage } from 'next';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
-import Trans from 'next-translate/Trans';
 import { Button, ButtonOnClickEvent } from '../../../components/Button';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 
-const EmailVerficationSuccess: NextPage = () => {
+const EmailVerficationSuccessPage: NextPage = () => {
   const { t } = useTranslation();
 
   const handleOnSubmit: ButtonOnClickEvent = (event) => {
@@ -42,4 +41,4 @@ const EmailVerficationSuccess: NextPage = () => {
   );
 };
 
-export default EmailVerficationSuccess;
+export default EmailVerficationSuccessPage;

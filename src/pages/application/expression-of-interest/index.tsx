@@ -25,7 +25,7 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 
-const Consent = (): JSX.Element => {
+const ApplicationConsentPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -192,4 +192,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default Consent;
+export default ApplicationConsentPage;

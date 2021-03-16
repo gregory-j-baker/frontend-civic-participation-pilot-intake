@@ -13,7 +13,7 @@ import Trans from 'next-translate/Trans';
 import { Button, ButtonOnClickEvent } from '../../../components/Button';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 
-const EmailVerficationFailed: NextPage = () => {
+const EmailVerficationFailedPage: NextPage = () => {
   const { t } = useTranslation();
 
   const handleOnSubmit: ButtonOnClickEvent = (event) => {
@@ -50,4 +50,4 @@ const EmailVerficationFailed: NextPage = () => {
   );
 };
 
-export default EmailVerficationFailed;
+export default EmailVerficationFailedPage;

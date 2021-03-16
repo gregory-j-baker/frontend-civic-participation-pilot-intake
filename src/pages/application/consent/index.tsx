@@ -34,7 +34,7 @@ import { HttpClientResponseError } from '../../../common/HttpClientResponseError
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 
-const ApplicationSection = (): JSX.Element => {
+const ApplicationExpressionOfInterestPage = (): JSX.Element => {
   const { lang, t } = useTranslation();
   const router = useRouter();
   const currentBreakpoint = useCurrentBreakpoint();
@@ -282,4 +282,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default ApplicationSection;
+export default ApplicationExpressionOfInterestPage;

@@ -7,7 +7,7 @@
 
 import { GetStaticProps } from 'next';
 
-const HomeIndex = (): JSX.Element => <></>;
+const HomePage = (): JSX.Element => <></>;
 
 export const getServerSideProps: GetStaticProps = async () => {
   return {
@@ -18,4 +18,4 @@ export const getServerSideProps: GetStaticProps = async () => {
   };
 };
 
-export default HomeIndex;
+export default HomePage;

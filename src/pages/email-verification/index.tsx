@@ -14,20 +14,20 @@ import { Button, ButtonOnClickEvent } from '../../components/Button';
 import { TextField, TextFieldOnChangeEvent } from '../../components/form/TextField';
 import { MainLayout } from '../../components/layouts/main/MainLayout';
 
-interface FormDataState {
+interface EmailVerficationPageState {
   [key: string]: string | number | undefined;
   verificationCode?: string;
   attempts: number;
 }
 
-const EmailVerfication: NextPage = () => {
+const EmailVerficationPage: NextPage = () => {
   const { t } = useTranslation();
 
-  const [formData, setFormDataState] = useState<FormDataState>({ attempts: 0 });
+  const [formData, setFormDataState] = useState<EmailVerficationPageState>({ attempts: 0 });
 
   const onFieldChange: TextFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      return { ...prev, [field as keyof FormDataState]: value ?? undefined };
+      return { ...prev, [field as keyof EmailVerficationPageState]: value ?? undefined };
     });
   };
 
@@ -51,7 +51,7 @@ const EmailVerfication: NextPage = () => {
 
           <div className="tw-my-16">
             <TextField
-              field={nameof<FormDataState>((o) => o.verificationCode)}
+              field={nameof<EmailVerficationPageState>((o) => o.verificationCode)}
               label={t('email-verification:form.verification-code')}
               helperText={t('email-verification:form.verification-code-attempts', { attempts: formData.attempts, maxAttempts: 5 })}
               value={formData.verificationCode}
@@ -78,4 +78,4 @@ const EmailVerfication: NextPage = () => {
   );
 };
 
-export default EmailVerfication;
+export default EmailVerficationPage;
