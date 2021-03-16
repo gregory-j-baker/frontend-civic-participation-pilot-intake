@@ -17,6 +17,8 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../../../components/Wizard';
 import { WizardStep } from '../../../components/WizardStep';
 import { theme } from '../../../config';
+import useEducationLevels from '../../../hooks/api/useEducationLevels';
+import useGenders from '../../../hooks/api/useGenders';
 import useIndigenousTypes from '../../../hooks/api/useIndigenousTypes';
 import useCurrentBreakpoint from '../../../hooks/useCurrentBreakpoint';
 import kebabCase from 'lodash/kebabCase';
@@ -35,6 +37,8 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
   const router = useRouter();
   const currentBreakpoint = useCurrentBreakpoint();
 
+  const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
+  const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
   const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes();
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
@@ -113,6 +117,18 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
     return [...(indigenousTypes?._embedded.indigenousTypes.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') }];
   }, [t, isIndigenousTypesLoading, indigenousTypesError, indigenousTypes, getDescription]);
 
+  // gender select options
+  const genderOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isGendersLoading || gendersError) return [];
+    return [...(genders?._embedded.genders.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') }];
+  }, [t, isGendersLoading, gendersError, genders, getDescription]);
+
+  // education level select options
+  const educationLevelOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isEducationLevelsLoading || educationLevelsError) return [];
+    return [...(educationLevels?._embedded.educationLevels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') }];
+  }, [t, isEducationLevelsLoading, educationLevelsError, educationLevels, getDescription]);
+
   const yesNoNoPreferNotAnswerOptions = useMemo<RadiosFieldOption[]>(
     () => [
       { value: true.toString(), text: t('common:yes') },
@@ -142,13 +158,13 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
     );
   };
 
-  if (indigenousTypesError) {
-    return <Error err={indigenousTypesError as HttpClientResponseError} />;
+  if (gendersError || educationLevelsError || indigenousTypesError) {
+    return <Error err={(gendersError ?? educationLevelsError ?? indigenousTypesError) as HttpClientResponseError} />;
   }
 
   return (
     <MainLayout showBreadcrumb={false}>
-      {!previousStepsValidationCompleted || isIndigenousTypesLoading ? (
+      {!previousStepsValidationCompleted || isGendersLoading || isEducationLevelsLoading || isIndigenousTypesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
@@ -179,6 +195,31 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
             <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} header={t('application:step.identity-information.header')}>
               <>
+                <SelectField
+                  field={nameof<IdentityInformationState>((o) => o.genderId)}
+                  label={t('application:step.identity-information.gender-id.label')}
+                  value={formData.personalInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.genderId?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={genderOptions}
+                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.genderId))}
+                  required
+                  gutterBottom
+                  className="tw-w-full sm:tw-w-6/12"
+                />
+
+                <SelectField
+                  field={nameof<IdentityInformationState>((o) => o.educationLevelId)}
+                  label={t('application:step.identity-information.education-level-id.label')}
+                  helperText={t('application:step.identity-information.education-level-id.helper-text')}
+                  value={formData.personalInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.educationLevelId?.toString()}
+                  onChange={handleOnOptionsFieldChange}
+                  options={educationLevelOptions}
+                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.educationLevelId))}
+                  required
+                  gutterBottom
+                  className="tw-w-full"
+                />
+
                 <RadiosField
                   field={nameof<IdentityInformationState>((o) => o.isDisabled)}
                   label={t('application:step.identity-information.is-disabled.label')}

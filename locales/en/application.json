@@ -10,16 +10,15 @@
   },
   "step": {
     "personal-information": {
-      "header": "Please provide your personal information",
+      "header": "Section 1",
       "birth-year": {
         "label": "What year were you born?",
         "helper-text": "Please note that to be eligible you must be between 18-30 years of age and of the age of majority in your province or territory of residence.",
         "required": "Birth year is required"
       },
-      "education-level-id": {
-        "label": "What is your highest level of formal education completed, or enrolled in currently?",
-        "helper-text": "Please note that there is no education requirement for this program.",
-        "required": "Education level is required"
+      "discovery-channel-id": {
+        "label": "How did you hear about the Civic Participation Pilot?",
+        "required": "How did you hear about the Civic Participation Pilot is required"
       },
       "email": {
         "email-invalid": "Email address is not in a valid format",
@@ -30,9 +29,13 @@
         "label": "First name",
         "required": "First name is required"
       },
-      "gender-id": {
-        "label": "To which gender identity do you most identify?",
-        "required": "Gender identity is required"
+      "has-dedicated-device": {
+        "label": "Do you have access to a dedicated device on which to work?",
+        "required": "Access to a dedicated device is required"
+      },
+      "internet-quality-id": {
+        "label": "Do you have access to reliable internet?",
+        "required": "Access to reliable internet is required"
       },
       "is-canadian-citizen": {
         "label": "Are you a Canadian citizen, permanent resident, or protected person?",
@@ -63,7 +66,16 @@
       }
     },
     "identity-information": {
-      "header": "Please select the descriptions with which you identify",
+      "header": "Section 2",
+      "education-level-id": {
+        "label": "What is your highest level of formal education completed, or enrolled in currently?",
+        "helper-text": "Please note that there is no education requirement for this program.",
+        "required": "Education level is required"
+      },
+      "gender-id": {
+        "label": "To which gender identity do you most identify?",
+        "required": "Gender identity is required"
+      },
       "indigenous-type-id": {
         "label": "I am a member of an Indigenous community",
         "required": "Member of an Indigenous community is required"
@@ -90,7 +102,7 @@
       }
     },
     "expression-of-interest": {
-      "header": "Please provide your expression of interest",
+      "header": "Section 3",
       "community-interest": {
         "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
         "required": "Community interest is required"
@@ -104,19 +116,7 @@
       }
     },
     "consent": {
-      "header": "Please provide your access information and consent",
-      "has-dedicated-device": {
-        "label": "Do you have access to a dedicated device on which to work?",
-        "required": "Access to a dedicated device is required"
-      },
-      "discovery-channel-id": {
-        "label": "How did you hear about the Civic Participation Pilot?",
-        "required": "How did you hear about the Civic Participation Pilot is required"
-      },
-      "internet-quality-id": {
-        "label": "Do you have access to reliable internet?",
-        "required": "Access to reliable internet is required"
-      },
+      "header": "Section 4",
       "is-information-consented": {
         "label": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
         "required": "You must consent to sharing my response with Employment and Social Development Canada",

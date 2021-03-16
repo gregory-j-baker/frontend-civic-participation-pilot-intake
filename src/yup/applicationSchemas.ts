@@ -8,6 +8,10 @@
 import * as Yup from 'yup';
 import './yup-custom';
 
+/**
+ * IMPORTANT: Props order is based on screen order
+ */
+
 export const personalInformationSchema = Yup.object().shape({
   firstName: Yup.string().required(),
   lastName: Yup.string().required(),
@@ -18,11 +22,14 @@ export const personalInformationSchema = Yup.object().shape({
   languageId: Yup.string().required(),
   isCanadianCitizen: Yup.boolean().required(),
   provinceId: Yup.string().required(),
-  genderId: Yup.string().nullable().defined(),
-  educationLevelId: Yup.string().nullable().defined(),
+  internetQualityId: Yup.string().required(),
+  hasDedicatedDevice: Yup.boolean().required(),
+  discoveryChannelId: Yup.string().required(),
 });
 
 export const identityInformationSchema = Yup.object().shape({
+  genderId: Yup.string().nullable().defined(),
+  educationLevelId: Yup.string().nullable().defined(),
   isDisabled: Yup.boolean().nullable().defined(),
   isMinority: Yup.boolean().nullable().defined(),
   indigenousTypeId: Yup.string().nullable().defined(),
@@ -38,9 +45,6 @@ export const expressionOfInterestSchema = Yup.object().shape({
 });
 
 export const consentSchema = Yup.object().shape({
-  internetQualityId: Yup.string().required(),
-  hasDedicatedDevice: Yup.boolean().required(),
-  discoveryChannelId: Yup.string().required(),
   isInformationConsented: Yup.boolean().required().isTrue(),
 });
 

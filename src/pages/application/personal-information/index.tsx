@@ -22,8 +22,8 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent } from '../../../components/Wizard';
 import { WizardStep } from '../../../components/WizardStep';
 import { theme } from '../../../config';
-import useEducationLevels from '../../../hooks/api/useEducationLevels';
-import useGenders from '../../../hooks/api/useGenders';
+import useDiscoveryChannels from '../../../hooks/api/useDiscoveryChannels';
+import useInternetQualities from '../../../hooks/api/useInternetQualities';
 import useLanguages from '../../../hooks/api/useLanguages';
 import useProvinces from '../../../hooks/api/useProvinces';
 import useCurrentBreakpoint from '../../../hooks/useCurrentBreakpoint';
@@ -44,8 +44,8 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
   const router = useRouter();
   const currentBreakpoint = useCurrentBreakpoint();
 
-  const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
-  const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
+  const { data: discoveryChannels, isLoading: isDiscoveryChannelsLoading, error: discoveryChannelsError } = useDiscoveryChannels();
+  const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities();
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces();
 
@@ -125,17 +125,17 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
     return (provinces?._embedded.provinces.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []).sort((a, b) => a.text.localeCompare(b.text));
   }, [isProvincesLoading, provincesError, provinces, getDescription]);
 
-  // gender select options
-  const genderOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isGendersLoading || gendersError) return [];
-    return [...(genders?._embedded.genders.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') }];
-  }, [t, isGendersLoading, gendersError, genders, getDescription]);
+  // internet quality select options
+  const internetQualityOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isInternetQualitiesLoading || internetQualitiesError) return [];
+    return internetQualities?._embedded.internetQualities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isInternetQualitiesLoading, internetQualitiesError, internetQualities, getDescription]);
 
-  // education level select options
-  const educationLevelOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isEducationLevelsLoading || educationLevelsError) return [];
-    return [...(educationLevels?._embedded.educationLevels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') }];
-  }, [t, isEducationLevelsLoading, educationLevelsError, educationLevels, getDescription]);
+  // discovery channel select options
+  const discoveryChannelOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isDiscoveryChannelsLoading || discoveryChannelsError) return [];
+    return discoveryChannels?._embedded.discoveryChannels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isDiscoveryChannelsLoading, discoveryChannelsError, discoveryChannels, getDescription]);
 
   const yesNoOptions = useMemo<RadiosFieldOption[]>(
     () => [
@@ -165,13 +165,13 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
     );
   };
 
-  if (educationLevelsError || gendersError || languagesError || provincesError) {
-    return <Error err={(educationLevelsError ?? gendersError ?? languagesError ?? provincesError) as HttpClientResponseError} />;
+  if (discoveryChannelsError || internetQualitiesError || languagesError || provincesError) {
+    return <Error err={(discoveryChannelsError ?? internetQualitiesError ?? languagesError ?? provincesError) as HttpClientResponseError} />;
   }
 
   return (
     <MainLayout showBreadcrumb={false}>
-      {isEducationLevelsLoading || isGendersLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
+      {isDiscoveryChannelsLoading || isInternetQualitiesLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
@@ -308,27 +308,38 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
                 />
 
                 <SelectField
-                  field={nameof<PersonalInformationState>((o) => o.genderId)}
-                  label={t('application:step.personal-information.gender-id.label')}
-                  value={formData.personalInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.genderId?.toString()}
+                  field={nameof<PersonalInformationState>((o) => o.internetQualityId)}
+                  label={t('application:step.personal-information.internet-quality-id.label')}
+                  value={formData.personalInformation.internetQualityId}
                   onChange={handleOnOptionsFieldChange}
-                  options={genderOptions}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.genderId))}
+                  options={internetQualityOptions}
+                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.internetQualityId))}
                   required
                   gutterBottom
                   className="tw-w-full sm:tw-w-6/12"
                 />
 
-                <SelectField
-                  field={nameof<PersonalInformationState>((o) => o.educationLevelId)}
-                  label={t('application:step.personal-information.education-level-id.label')}
-                  helperText={t('application:step.personal-information.education-level-id.helper-text')}
-                  value={formData.personalInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.educationLevelId?.toString()}
+                <RadiosField
+                  field={nameof<PersonalInformationState>((o) => o.hasDedicatedDevice)}
+                  label={t('application:step.personal-information.has-dedicated-device.label')}
+                  value={formData.personalInformation.hasDedicatedDevice?.toString()}
                   onChange={handleOnOptionsFieldChange}
-                  options={educationLevelOptions}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.educationLevelId))}
+                  options={yesNoOptions}
+                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.hasDedicatedDevice))}
                   required
-                  className="tw-w-full"
+                  gutterBottom
+                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+                />
+
+                <SelectField
+                  field={nameof<PersonalInformationState>((o) => o.discoveryChannelId)}
+                  label={t('application:step.personal-information.discovery-channel-id.label')}
+                  value={formData.personalInformation.discoveryChannelId}
+                  onChange={handleOnOptionsFieldChange}
+                  options={discoveryChannelOptions}
+                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.discoveryChannelId))}
+                  required
+                  className="tw-w-full sm:tw-w-6/12"
                 />
               </>
             </WizardStep>

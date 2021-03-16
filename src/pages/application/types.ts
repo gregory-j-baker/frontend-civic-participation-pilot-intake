@@ -17,10 +17,11 @@ export interface GetDescriptionFunc {
 export interface PersonalInformationState {
   [key: string]: boolean | string | number | null | undefined;
   birthYear?: number;
-  educationLevelId?: string | null;
+  discoveryChannelId?: string;
   email?: string;
   firstName?: string;
-  genderId?: string | null;
+  hasDedicatedDevice?: boolean;
+  internetQualityId?: string;
   isCanadianCitizen?: boolean;
   isProvinceMajorCertified?: boolean;
   languageId?: string;
@@ -31,6 +32,8 @@ export interface PersonalInformationState {
 
 export interface IdentityInformationState {
   [key: string]: boolean | string | number | null | undefined;
+  educationLevelId?: string | null;
+  genderId?: string | null;
   indigenousTypeId?: string;
   isDisabled?: boolean | null;
   isLgbtq?: boolean | null;
@@ -48,15 +51,12 @@ export interface ExpressionOfInterestState {
 
 export interface ConsentState {
   [key: string]: boolean | string | number | null | undefined;
-  discoveryChannelId?: string;
-  hasDedicatedDevice?: boolean;
-  internetQualityId?: string;
   isInformationConsented?: boolean;
 }
 
 export interface ApplicationState {
-  personalInformation: PersonalInformationState;
+  consent: ConsentState;
   identityInformation: IdentityInformationState;
   expressionOfInterest: ExpressionOfInterestState;
-  consent: ConsentState;
+  personalInformation: PersonalInformationState;
 }
