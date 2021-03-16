@@ -195,6 +195,8 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
             <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} header={t('application:step.identity-information.header')}>
               <>
+                <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step.identity-information.information-note')}</p>
+
                 <SelectField
                   field={nameof<IdentityInformationState>((o) => o.genderId)}
                   label={t('application:step.identity-information.gender-id.label')}

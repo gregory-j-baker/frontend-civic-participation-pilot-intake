@@ -67,6 +67,7 @@
     },
     "identity-information": {
       "header": "Section 2",
+      "information-note": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answer that you feel is most applicable to you. You may choose to select ‘Prefer not to answer’ for any question in this section.",
       "education-level-id": {
         "label": "What is your highest level of formal education completed, or enrolled in currently?",
         "helper-text": "Please note that there is no education requirement for this program.",
