@@ -14,8 +14,40 @@ export interface GetDescriptionFunc {
   (obj: { descriptionFr: string; descriptionEn: string }): string;
 }
 
+export interface ConsentState {
+  isInformationConsented?: boolean;
+}
+
+export interface ConsentStateIndexType extends ConsentState {
+  [key: string]: boolean | undefined;
+}
+
+export interface ExpressionOfInterestState {
+  communityInterest?: string;
+  programInterest?: string;
+  skillsInterest?: string;
+}
+
+export interface ExpressionOfInterestStateIndexType extends ExpressionOfInterestState {
+  [key: string]: string | undefined;
+}
+
+export interface IdentityInformationState {
+  educationLevelId?: string | null;
+  genderId?: string | null;
+  indigenousTypeId?: string | null;
+  isDisabled?: boolean | null;
+  isLgbtq?: boolean | null;
+  isMinority?: boolean | null;
+  isNewcomer?: boolean | null;
+  isRural?: boolean | null;
+}
+
+export interface IdentityInformationStateIndexType extends IdentityInformationState {
+  [key: string]: boolean | string | null | undefined;
+}
+
 export interface PersonalInformationState {
-  [key: string]: boolean | string | number | null | undefined;
   birthYear?: number;
   discoveryChannelId?: string;
   email?: string;
@@ -30,33 +62,13 @@ export interface PersonalInformationState {
   provinceId?: string;
 }
 
-export interface IdentityInformationState {
+export interface PersonalInformationStateIndexType extends PersonalInformationState {
   [key: string]: boolean | string | number | null | undefined;
-  educationLevelId?: string | null;
-  genderId?: string | null;
-  indigenousTypeId?: string | null;
-  isDisabled?: boolean | null;
-  isLgbtq?: boolean | null;
-  isMinority?: boolean | null;
-  isNewcomer?: boolean | null;
-  isRural?: boolean | null;
-}
-
-export interface ExpressionOfInterestState {
-  [key: string]: boolean | string | number | null | undefined;
-  communityInterest?: string;
-  programInterest?: string;
-  skillsInterest?: string;
-}
-
-export interface ConsentState {
-  [key: string]: boolean | string | number | null | undefined;
-  isInformationConsented?: boolean;
 }
 
 export interface ApplicationState {
-  consent: ConsentState;
-  identityInformation: IdentityInformationState;
-  expressionOfInterest: ExpressionOfInterestState;
-  personalInformation: PersonalInformationState;
+  consent: ConsentStateIndexType;
+  identityInformation: IdentityInformationStateIndexType;
+  expressionOfInterest: ExpressionOfInterestStateIndexType;
+  personalInformation: PersonalInformationStateIndexType;
 }

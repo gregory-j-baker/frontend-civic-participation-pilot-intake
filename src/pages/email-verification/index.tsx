@@ -15,19 +15,22 @@ import { TextField, TextFieldOnChangeEvent } from '../../components/form/TextFie
 import { MainLayout } from '../../components/layouts/main/MainLayout';
 
 interface EmailVerficationPageState {
-  [key: string]: string | number | undefined;
   verificationCode?: string;
   attempts: number;
+}
+
+interface EmailVerficationPageStateIndexType extends EmailVerficationPageState {
+  [key: string]: string | number | undefined;
 }
 
 const EmailVerficationPage: NextPage = () => {
   const { t } = useTranslation();
 
-  const [formData, setFormDataState] = useState<EmailVerficationPageState>({ attempts: 0 });
+  const [formData, setFormDataState] = useState<EmailVerficationPageStateIndexType>({ attempts: 0 });
 
   const onFieldChange: TextFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      return { ...prev, [field as keyof EmailVerficationPageState]: value ?? undefined };
+      return { ...prev, [field as keyof EmailVerficationPageStateIndexType]: value ?? undefined };
     });
   };
 

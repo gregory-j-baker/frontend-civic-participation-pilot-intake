@@ -15,7 +15,6 @@ import { SelectField } from '../../../components/form/SelectField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../../../components/Wizard';
-import { WizardStep } from '../../../components/WizardStep';
 import { theme } from '../../../config';
 import useEducationLevels from '../../../hooks/api/useEducationLevels';
 import useGenders from '../../../hooks/api/useGenders';
@@ -31,6 +30,7 @@ import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
+import { sleep } from '../../../utils/misc-utils';
 
 const ApplicationIdentityInformationPage = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -56,6 +56,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
 
   const validatePreviousSteps = useCallback(
     async (formData: ApplicationState): Promise<void> => {
+      await sleep(500);
       if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
         router.replace('/application/personal-information');
       } else {
@@ -75,13 +76,12 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
 
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      let newValue = undefined;
-
+      let newValue: boolean | string | null | undefined = undefined;
+      console.log({ field, value });
       if (value) {
         if (value.toLowerCase() === 'true') newValue = true;
         else if (value.toLowerCase() === 'false') newValue = false;
         else if (value.toLowerCase() === Constants.NoAnswerOptionValue.toLowerCase()) newValue = null;
-        else if (!isNaN(Number(value))) newValue = Number(value);
         else newValue = value;
       }
 
@@ -90,22 +90,22 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
     });
   };
 
-  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event, activeStepId, nextStepId) => {
+  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
 
-    router.push(`/application/${kebabCase(nextStepId)}`);
+    router.push('/application/personal-information');
   };
 
-  const handleWizardOnNextClick: WizardOnNextClickEvent = async (event, activeStepId, nextStepId) => {
+  const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
     event.preventDefault();
 
     try {
       await identityInformationSchema.validate(formData.identityInformation, { abortEarly: false });
-      router.push(`/application/${kebabCase(nextStepId)}`);
+      router.push('/application/expression-of-interest');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push(`/application/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
+      router.push('/application/identity-information#wb-cont', undefined, { shallow: true });
     }
   };
 
@@ -191,111 +191,104 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard activeStepId={nameof<ApplicationState>((o) => o.identityInformation)} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
-            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)}>
-              <>
-                <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step.identity-information.information-note')}</p>
+          <Wizard activeStep={2} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
+            <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step.identity-information.information-note')}</p>
 
-                <SelectField
-                  field={nameof<IdentityInformationState>((o) => o.genderId)}
-                  label={t('application:step.identity-information.gender-id.label')}
-                  value={formData.identityInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.genderId?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={genderOptions}
-                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.genderId))}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
+            <SelectField
+              field={nameof<IdentityInformationState>((o) => o.genderId)}
+              label={t('application:step.identity-information.gender-id.label')}
+              value={formData.identityInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.genderId?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={genderOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.genderId))}
+              required
+              gutterBottom
+              className="tw-w-full sm:tw-w-6/12"
+            />
 
-                <SelectField
-                  field={nameof<IdentityInformationState>((o) => o.educationLevelId)}
-                  label={t('application:step.identity-information.education-level-id.label')}
-                  helperText={t('application:step.identity-information.education-level-id.helper-text')}
-                  value={formData.identityInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.educationLevelId?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={educationLevelOptions}
-                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.educationLevelId))}
-                  required
-                  gutterBottom
-                  className="tw-w-full"
-                />
+            <SelectField
+              field={nameof<IdentityInformationState>((o) => o.educationLevelId)}
+              label={t('application:step.identity-information.education-level-id.label')}
+              helperText={t('application:step.identity-information.education-level-id.helper-text')}
+              value={formData.identityInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.educationLevelId?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={educationLevelOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.educationLevelId))}
+              required
+              gutterBottom
+              className="tw-w-full"
+            />
 
-                <RadiosField
-                  field={nameof<IdentityInformationState>((o) => o.isDisabled)}
-                  label={t('application:step.identity-information.is-disabled.label')}
-                  value={formData.identityInformation.isDisabled === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isDisabled?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.isDisabled))}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+            <RadiosField
+              field={nameof<IdentityInformationState>((o) => o.isDisabled)}
+              label={t('application:step.identity-information.is-disabled.label')}
+              value={formData.identityInformation.isDisabled === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isDisabled?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={yesNoNoPreferNotAnswerOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isDisabled))}
+              required
+              gutterBottom
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+            />
 
-                <RadiosField
-                  field={nameof<IdentityInformationState>((o) => o.isMinority)}
-                  label={t('application:step.identity-information.is-minority.label')}
-                  value={formData.identityInformation.isMinority === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isMinority?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.isMinority))}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+            <RadiosField
+              field={nameof<IdentityInformationState>((o) => o.isMinority)}
+              label={t('application:step.identity-information.is-minority.label')}
+              value={formData.identityInformation.isMinority === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isMinority?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={yesNoNoPreferNotAnswerOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isMinority))}
+              required
+              gutterBottom
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+            />
 
-                <SelectField
-                  field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
-                  label={t('application:step.identity-information.indigenous-type-id.label')}
-                  value={formData.identityInformation.indigenousTypeId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.indigenousTypeId?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={indigenousTypeOptions}
-                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.indigenousTypeId))}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
+            <SelectField
+              field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
+              label={t('application:step.identity-information.indigenous-type-id.label')}
+              value={formData.identityInformation.indigenousTypeId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.indigenousTypeId?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={indigenousTypeOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.indigenousTypeId))}
+              required
+              gutterBottom
+              className="tw-w-full sm:tw-w-6/12"
+            />
 
-                <RadiosField
-                  field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
-                  label={t('application:step.identity-information.is-lgbtq.label')}
-                  value={formData.identityInformation.isLgbtq === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isLgbtq?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.isLgbtq))}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+            <RadiosField
+              field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
+              label={t('application:step.identity-information.is-lgbtq.label')}
+              value={formData.identityInformation.isLgbtq === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isLgbtq?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={yesNoNoPreferNotAnswerOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isLgbtq))}
+              required
+              gutterBottom
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+            />
 
-                <RadiosField
-                  field={nameof<IdentityInformationState>((o) => o.isRural)}
-                  label={t('application:step.identity-information.is-rural.label')}
-                  value={formData.identityInformation.isRural === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isRural?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.isRural))}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+            <RadiosField
+              field={nameof<IdentityInformationState>((o) => o.isRural)}
+              label={t('application:step.identity-information.is-rural.label')}
+              value={formData.identityInformation.isRural === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isRural?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={yesNoNoPreferNotAnswerOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isRural))}
+              required
+              gutterBottom
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+            />
 
-                <RadiosField
-                  field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
-                  label={t('application:step.identity-information.is-newcomer.label')}
-                  value={formData.identityInformation.isNewcomer === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isNewcomer?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoNoPreferNotAnswerOptions}
-                  error={getSchemaError(nameof<IdentityInformationState>((o) => o.isNewcomer))}
-                  required
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
-              </>
-            </WizardStep>
-            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.consent)} />
+            <RadiosField
+              field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
+              label={t('application:step.identity-information.is-newcomer.label')}
+              value={formData.identityInformation.isNewcomer === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isNewcomer?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={yesNoNoPreferNotAnswerOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isNewcomer))}
+              required
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+            />
           </Wizard>
         </>
       )}

@@ -13,8 +13,7 @@ import type { CheckboxeFieldOnChangeEvent } from '../../../components/form/Check
 import { CheckboxeField } from '../../../components/form/CheckboxeField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
-import { Wizard, WizardOnPreviousClickEvent, WizardOnSubmitClickEvent } from '../../../components/Wizard';
-import { WizardStep } from '../../../components/WizardStep';
+import { Wizard, WizardOnPreviousClickEvent, WizardOnNextClickEvent } from '../../../components/Wizard';
 import useSubmitApplication, { ApplicationData } from '../../../hooks/api/useSubmitApplication';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
@@ -34,6 +33,7 @@ import useProvinces from '../../../hooks/api/useProvinces';
 import useEducationLevels from '../../../hooks/api/useEducationLevels';
 import useGenders from '../../../hooks/api/useGenders';
 import useIndigenousTypes from '../../../hooks/api/useIndigenousTypes';
+import { sleep } from '../../../utils/misc-utils';
 
 export interface FormReviewItem {
   key: string;
@@ -445,6 +445,7 @@ const ApplicationExpressionOfInterestPage = (): JSX.Element => {
 
   const validatePreviousSteps = useCallback(
     async (formData: ApplicationState): Promise<void> => {
+      await sleep(500);
       if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
         router.replace('/application/personal-information');
       } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
@@ -473,13 +474,12 @@ const ApplicationExpressionOfInterestPage = (): JSX.Element => {
     });
   };
 
-  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event, activeStepId, nextStepId) => {
+  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
-
-    router.push(`/application/${kebabCase(nextStepId)}`);
+    router.push('/application/expression-of-interest');
   };
 
-  const handleWizardOnSubmitClick: WizardOnSubmitClickEvent = async (event, activeStepId) => {
+  const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
     event.preventDefault();
 
     // validate consent schema
@@ -518,7 +518,7 @@ const ApplicationExpressionOfInterestPage = (): JSX.Element => {
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push(`/application/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
+      router.push('/application/consent#wb-cont', undefined, { shallow: true });
     }
   };
 
@@ -573,24 +573,16 @@ const ApplicationExpressionOfInterestPage = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard activeStepId={nameof<ApplicationState>((o) => o.consent)} submitText={t('application:submit')} onPreviousClick={handleWizardOnPreviousClick} onSubmitClick={handleWizardOnSubmitClick} disabled={isSubmitting}>
-            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.consent)} header={t('application:step.consent.header')}>
-              <>
-                <FormReview applicationState={formData} />
-
-                <CheckboxeField
-                  field={nameof<ConsentState>((o) => o.isInformationConsented)}
-                  label={t('application:step.consent.is-information-consented.label')}
-                  checked={formData.consent.isInformationConsented}
-                  onChange={handleOnCheckboxFieldChange}
-                  disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
-                />
-              </>
-            </WizardStep>
+          <Wizard activeStep={4} numberOfSteps={4} header={t('application:step.consent.header')} nextText={t('application:submit')} onPreviousClick={handleWizardOnPreviousClick} onNextClick={handleWizardOnNextClick} disabled={isSubmitting}>
+            <FormReview applicationState={formData} />
+            <CheckboxeField
+              field={nameof<ConsentState>((o) => o.isInformationConsented)}
+              label={t('application:step.consent.is-information-consented.label')}
+              checked={formData.consent.isInformationConsented}
+              onChange={handleOnCheckboxFieldChange}
+              disabled={isSubmitting}
+              error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
+            />
           </Wizard>
         </>
       )}

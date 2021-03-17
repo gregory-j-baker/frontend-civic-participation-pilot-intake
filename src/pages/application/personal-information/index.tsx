@@ -20,7 +20,6 @@ import { TextField } from '../../../components/form/TextField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent } from '../../../components/Wizard';
-import { WizardStep } from '../../../components/WizardStep';
 import { theme } from '../../../config';
 import useDiscoveryChannels from '../../../hooks/api/useDiscoveryChannels';
 import useInternetQualities from '../../../hooks/api/useInternetQualities';
@@ -66,7 +65,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      let newValue = undefined;
+      let newValue: boolean | string | number | null | undefined = undefined;
 
       if (value) {
         if (value.toLowerCase() === 'true') newValue = true;
@@ -95,23 +94,23 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
     });
   };
 
-  const handleWizardOnNextClick: WizardOnNextClickEvent = async (event, activeStepId, nextStepId) => {
+  const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
     event.preventDefault();
 
     try {
       await personalInformationSchema.validate(formData.personalInformation, { abortEarly: false });
-      router.push(`/application/${kebabCase(nextStepId)}`);
+      router.push('/application/identity-information');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push(`/application/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
+      router.push('/application/personal-information#wb-cont', undefined, { shallow: true });
     }
   };
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
   // year of birth select options
-  const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({ startYear: 1990, endYear: 2003 }).map((year) => ({ value: year.toString(), text: `${year}` })), []);
+  const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({ startYear: 1990, endYear: 2003 }).map((year) => ({ value: year.toString(), text: year.toString() })), []);
 
   // prefered language select options
   const preferedLanguageOptions = useMemo<RadiosFieldOption[]>(() => {
@@ -198,154 +197,147 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard activeStepId={nameof<ApplicationState>((o) => o.personalInformation)} onNextClick={handleWizardOnNextClick}>
-            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)}>
-              <>
-                <TextField
-                  field={nameof<PersonalInformationState>((o) => o.firstName)}
-                  label={t('application:step.personal-information.first-name.label')}
-                  value={formData.personalInformation.firstName}
-                  onChange={handleOnTextFieldChange}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.firstName))}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-                />
+          <Wizard activeStep={1} numberOfSteps={4} previousHidden onNextClick={handleWizardOnNextClick}>
+            <TextField
+              field={nameof<PersonalInformationState>((o) => o.firstName)}
+              label={t('application:step.personal-information.first-name.label')}
+              value={formData.personalInformation.firstName}
+              onChange={handleOnTextFieldChange}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.firstName))}
+              required
+              gutterBottom
+              className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+            />
 
-                <TextField
-                  field={nameof<PersonalInformationState>((o) => o.lastName)}
-                  label={t('application:step.personal-information.last-name.label')}
-                  value={formData.personalInformation.lastName}
-                  onChange={handleOnTextFieldChange}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.lastName))}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
-                />
+            <TextField
+              field={nameof<PersonalInformationState>((o) => o.lastName)}
+              label={t('application:step.personal-information.last-name.label')}
+              value={formData.personalInformation.lastName}
+              onChange={handleOnTextFieldChange}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.lastName))}
+              required
+              gutterBottom
+              className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
+            />
 
-                <TextField
-                  field={nameof<PersonalInformationState>((o) => o.email)}
-                  label={t('application:step.personal-information.email.label')}
-                  value={formData.personalInformation.email}
-                  onChange={handleOnTextFieldChange}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.email))}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-                />
+            <TextField
+              field={nameof<PersonalInformationState>((o) => o.email)}
+              label={t('application:step.personal-information.email.label')}
+              value={formData.personalInformation.email}
+              onChange={handleOnTextFieldChange}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.email))}
+              required
+              gutterBottom
+              className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+            />
 
-                <TextField
-                  field={nameof<PersonalInformationState>((o) => o.phoneNumber)}
-                  label={t('application:step.personal-information.phone-number.label')}
-                  value={formData.personalInformation.phoneNumber}
-                  onChange={handleOnTextFieldChange}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.phoneNumber))}
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-                />
+            <TextField
+              field={nameof<PersonalInformationState>((o) => o.phoneNumber)}
+              label={t('application:step.personal-information.phone-number.label')}
+              value={formData.personalInformation.phoneNumber}
+              onChange={handleOnTextFieldChange}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.phoneNumber))}
+              gutterBottom
+              className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+            />
 
-                <SelectField
-                  field={nameof<PersonalInformationState>((o) => o.birthYear)}
-                  label={t('application:step.personal-information.birth-year.label')}
-                  helperText={t('application:step.personal-information.birth-year.helper-text')}
-                  value={formData.personalInformation.birthYear?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yearOfBirthOptions}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.birthYear))}
-                  required
-                  gutterBottom
-                />
+            <SelectField
+              field={nameof<PersonalInformationState>((o) => o.birthYear)}
+              label={t('application:step.personal-information.birth-year.label')}
+              helperText={t('application:step.personal-information.birth-year.helper-text')}
+              value={formData.personalInformation.birthYear?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={yearOfBirthOptions}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.birthYear))}
+              required
+              gutterBottom
+            />
 
-                <CheckboxeField
-                  field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
-                  label={t('application:step.personal-information.is-province-major-certified.label')}
-                  checked={formData.personalInformation.isProvinceMajorCertified}
-                  onChange={handleOnCheckboxFieldChange}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))}
-                  required
-                />
-                <div className="tw-mb-8 tw-pl-10">
-                  <a href="http://example.com" target="_blank" rel="noreferrer">
-                    {t('application:step.personal-information.is-province-major-certified.link')}
-                  </a>
-                </div>
+            <CheckboxeField
+              field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
+              label={t('application:step.personal-information.is-province-major-certified.label')}
+              checked={formData.personalInformation.isProvinceMajorCertified}
+              onChange={handleOnCheckboxFieldChange}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))}
+              required
+            />
+            <div className="tw-mb-8 tw-pl-10">
+              <a href="http://example.com" target="_blank" rel="noreferrer">
+                {t('application:step.personal-information.is-province-major-certified.link')}
+              </a>
+            </div>
 
-                <RadiosField
-                  field={nameof<PersonalInformationState>((o) => o.languageId)}
-                  label={t('application:step.personal-information.language-id.label')}
-                  value={formData.personalInformation.languageId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={preferedLanguageOptions}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.languageId))}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+            <RadiosField
+              field={nameof<PersonalInformationState>((o) => o.languageId)}
+              label={t('application:step.personal-information.language-id.label')}
+              value={formData.personalInformation.languageId}
+              onChange={handleOnOptionsFieldChange}
+              options={preferedLanguageOptions}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.languageId))}
+              required
+              gutterBottom
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+            />
 
-                <RadiosField
-                  field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
-                  label={t('application:step.personal-information.is-canadian-citizen.label')}
-                  value={formData.personalInformation.isCanadianCitizen?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoOptions}
-                  helperText={t('application:step.personal-information.is-canadian-citizen.helper-text')}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+            <RadiosField
+              field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
+              label={t('application:step.personal-information.is-canadian-citizen.label')}
+              value={formData.personalInformation.isCanadianCitizen?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={yesNoOptions}
+              helperText={t('application:step.personal-information.is-canadian-citizen.helper-text')}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))}
+              required
+              gutterBottom
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+            />
 
-                <SelectField
-                  field={nameof<PersonalInformationState>((o) => o.provinceId)}
-                  label={t('application:step.personal-information.province-id.label')}
-                  value={formData.personalInformation.provinceId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={provinceOptions}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.provinceId))}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
+            <SelectField
+              field={nameof<PersonalInformationState>((o) => o.provinceId)}
+              label={t('application:step.personal-information.province-id.label')}
+              value={formData.personalInformation.provinceId}
+              onChange={handleOnOptionsFieldChange}
+              options={provinceOptions}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.provinceId))}
+              required
+              gutterBottom
+              className="tw-w-full sm:tw-w-6/12"
+            />
 
-                <SelectField
-                  field={nameof<PersonalInformationState>((o) => o.internetQualityId)}
-                  label={t('application:step.personal-information.internet-quality-id.label')}
-                  value={formData.personalInformation.internetQualityId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={internetQualityOptions}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.internetQualityId))}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
+            <SelectField
+              field={nameof<PersonalInformationState>((o) => o.internetQualityId)}
+              label={t('application:step.personal-information.internet-quality-id.label')}
+              value={formData.personalInformation.internetQualityId}
+              onChange={handleOnOptionsFieldChange}
+              options={internetQualityOptions}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.internetQualityId))}
+              required
+              gutterBottom
+              className="tw-w-full sm:tw-w-6/12"
+            />
 
-                <RadiosField
-                  field={nameof<PersonalInformationState>((o) => o.hasDedicatedDevice)}
-                  label={t('application:step.personal-information.has-dedicated-device.label')}
-                  value={formData.personalInformation.hasDedicatedDevice?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoOptions}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.hasDedicatedDevice))}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
+            <RadiosField
+              field={nameof<PersonalInformationState>((o) => o.hasDedicatedDevice)}
+              label={t('application:step.personal-information.has-dedicated-device.label')}
+              value={formData.personalInformation.hasDedicatedDevice?.toString()}
+              onChange={handleOnOptionsFieldChange}
+              options={yesNoOptions}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.hasDedicatedDevice))}
+              required
+              gutterBottom
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
+            />
 
-                <SelectField
-                  field={nameof<PersonalInformationState>((o) => o.discoveryChannelId)}
-                  label={t('application:step.personal-information.discovery-channel-id.label')}
-                  value={formData.personalInformation.discoveryChannelId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={discoveryChannelOptions}
-                  error={getSchemaError(nameof<PersonalInformationState>((o) => o.discoveryChannelId))}
-                  required
-                  className="tw-w-full sm:tw-w-6/12"
-                />
-              </>
-            </WizardStep>
-            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.consent)} />
+            <SelectField
+              field={nameof<PersonalInformationState>((o) => o.discoveryChannelId)}
+              label={t('application:step.personal-information.discovery-channel-id.label')}
+              value={formData.personalInformation.discoveryChannelId}
+              onChange={handleOnOptionsFieldChange}
+              options={discoveryChannelOptions}
+              error={getSchemaError(nameof<PersonalInformationState>((o) => o.discoveryChannelId))}
+              required
+              className="tw-w-full sm:tw-w-6/12"
+            />
           </Wizard>
         </>
       )}
