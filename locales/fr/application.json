@@ -1,6 +1,5 @@
 {
   "header": "Formulaire de demande",
-  "wizard-step": "Section",
   "confirmation": {
     "title": "Confirmation de la demande",
     "header": "Merci d'avoir soumis votre demande",
@@ -10,7 +9,7 @@
   },
   "step": {
     "personal-information": {
-      "header": "Section 1",
+      "title": "Étape 1",
       "birth-year": {
         "label": "En quelle année es-tu né?",
         "helper-text": "Veuillez noter que pour être éligible, vous devez avoir entre 18 et 30 ans et l'âge de la majorité dans votre province ou votre territoire de résidence.",
@@ -66,7 +65,7 @@
       }
     },
     "identity-information": {
-      "header": "Section 2",
+      "title": "Étape 2",
       "information-note": "Veuillez noter que les questions de cette section n'affecteront pas votre admissibilité au programme et ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir la réponse que vous jugez le plus applicable. Vous pouvez choisir de sélectionner «\u00A0Préfère ne pas répondre\u00A0» pour toute question dans cette section.",
       "education-level-id": {
         "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
@@ -103,7 +102,7 @@
       }
     },
     "expression-of-interest": {
-      "header": "Section 3",
+      "title": "Étape 3",
       "community-interest": {
         "label": "Si vous pouviez avoir un impact positif sur un problème de votre communauté, quel problème voudriez-vous aborder et pourquoi?",
         "required": "Intérêt communautaire est requis"
@@ -117,7 +116,8 @@
       }
     },
     "consent": {
-      "header": "Section 4",
+      "title": "Examiner et soumettre la demande",
+      "header": "Examiner et soumettre la demande",
       "is-information-consented": {
         "label": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
         "required": "Vous devez consentit à partager ma réponse avec l'emploi et le développement social Canada",

@@ -1,6 +1,5 @@
 {
   "header": "Application form",
-  "wizard-step": "Section",
   "confirmation": {
     "title": "Application confirmation",
     "header": "Thank you for submitting your application",
@@ -10,7 +9,7 @@
   },
   "step": {
     "personal-information": {
-      "header": "Section 1",
+      "title": "Step 1",
       "birth-year": {
         "label": "What year were you born?",
         "helper-text": "Please note that to be eligible you must be between 18-30 years of age and of the age of majority in your province or territory of residence.",
@@ -66,7 +65,7 @@
       }
     },
     "identity-information": {
-      "header": "Section 2",
+      "title": "Step 2",
       "information-note": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answer that you feel is most applicable to you. You may choose to select ‘Prefer not to answer’ for any question in this section.",
       "education-level-id": {
         "label": "What is your highest level of formal education completed, or enrolled in currently?",
@@ -103,7 +102,7 @@
       }
     },
     "expression-of-interest": {
-      "header": "Section 3",
+      "title": "Step 3",
       "community-interest": {
         "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
         "required": "Community interest is required"
@@ -117,7 +116,8 @@
       }
     },
     "consent": {
-      "header": "Section 4",
+      "title": "Review and submit the application",
+      "header": "Review and submit the application",
       "is-information-consented": {
         "label": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
         "required": "You must consent to sharing my response with Employment and Social Development Canada",

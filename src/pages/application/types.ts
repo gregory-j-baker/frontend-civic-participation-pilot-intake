@@ -34,7 +34,7 @@ export interface IdentityInformationState {
   [key: string]: boolean | string | number | null | undefined;
   educationLevelId?: string | null;
   genderId?: string | null;
-  indigenousTypeId?: string;
+  indigenousTypeId?: string | null;
   isDisabled?: boolean | null;
   isLgbtq?: boolean | null;
   isMinority?: boolean | null;

@@ -35,8 +35,8 @@
     "word-limit": "{{count}} out of {{limit}} words maximum"
   },
   "wizard": {
-    "next": "Next",
-    "previous": "Previous",
+    "next": "Next step",
+    "previous": "Previous step",
     "step": "Step",
     "x-of-y": ": {{active}} of {{length}}",
     "submit": "Submit"

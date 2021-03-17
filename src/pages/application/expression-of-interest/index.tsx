@@ -115,7 +115,7 @@ const ApplicationConsentPage = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('application:step.expression-of-interest.header')} - ${t('application:header')}`} />
+          <NextSeo title={`${t('application:step.expression-of-interest.title')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -138,10 +138,10 @@ const ApplicationConsentPage = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard activeStepId={nameof<ApplicationState>((o) => o.expressionOfInterest)} stepText={t('application:wizard-step')} submitText={t('application:submit')} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
+          <Wizard activeStepId={nameof<ApplicationState>((o) => o.expressionOfInterest)} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
             <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
             <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} header={t('application:step.expression-of-interest.header')}>
+            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)}>
               <>
                 <TextAreaField
                   field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}

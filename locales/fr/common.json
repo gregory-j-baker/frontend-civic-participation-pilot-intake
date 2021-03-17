@@ -35,8 +35,8 @@
     "word-limit": "{{count}} mots sur {{limit}} maximum"
   },
   "wizard": {
-    "next": "Suivant",
-    "previous": "Précédent",
+    "next": "Étape suivante",
+    "previous": "Étape précédente",
     "step": "Étape",
     "x-of-y": "\u00A0: {{active}} de {{length}}",
     "submit": "Soumettre"

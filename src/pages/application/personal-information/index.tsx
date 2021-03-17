@@ -175,7 +175,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('application:step.personal-information.header')} - ${t('application:header')}`} />
+          <NextSeo title={`${t('application:step.personal-information.title')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -198,8 +198,8 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard activeStepId={nameof<ApplicationState>((o) => o.personalInformation)} stepText={t('application:wizard-step')} submitText={t('application:submit')} onNextClick={handleWizardOnNextClick}>
-            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} header={t('application:step.personal-information.header')}>
+          <Wizard activeStepId={nameof<ApplicationState>((o) => o.personalInformation)} onNextClick={handleWizardOnNextClick}>
+            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)}>
               <>
                 <TextField
                   field={nameof<PersonalInformationState>((o) => o.firstName)}

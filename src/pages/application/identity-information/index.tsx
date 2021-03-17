@@ -168,7 +168,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('application:step.identity-information.header')} - ${t('application:header')}`} />
+          <NextSeo title={`${t('application:step.identity-information.title')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -191,16 +191,16 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard activeStepId={nameof<ApplicationState>((o) => o.identityInformation)} stepText={t('application:wizard-step')} submitText={t('application:submit')} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
+          <Wizard activeStepId={nameof<ApplicationState>((o) => o.identityInformation)} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
             <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} header={t('application:step.identity-information.header')}>
+            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)}>
               <>
                 <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step.identity-information.information-note')}</p>
 
                 <SelectField
                   field={nameof<IdentityInformationState>((o) => o.genderId)}
                   label={t('application:step.identity-information.gender-id.label')}
-                  value={formData.personalInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.genderId?.toString()}
+                  value={formData.identityInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.genderId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={genderOptions}
                   error={getSchemaError(nameof<IdentityInformationState>((o) => o.genderId))}
@@ -213,7 +213,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
                   field={nameof<IdentityInformationState>((o) => o.educationLevelId)}
                   label={t('application:step.identity-information.education-level-id.label')}
                   helperText={t('application:step.identity-information.education-level-id.helper-text')}
-                  value={formData.personalInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.personalInformation.educationLevelId?.toString()}
+                  value={formData.identityInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.educationLevelId?.toString()}
                   onChange={handleOnOptionsFieldChange}
                   options={educationLevelOptions}
                   error={getSchemaError(nameof<IdentityInformationState>((o) => o.educationLevelId))}

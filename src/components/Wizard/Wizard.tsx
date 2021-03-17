@@ -75,11 +75,11 @@ const Wizard = ({ activeStepId, children, disabled, nextDisabled, nextText, onNe
     <div id={WIZARD_CONTAINER_ID}>
       <ContentPaper disablePadding>
         <header className="tw-border-b-2 tw-mx-6 tw-py-4">
-          <h5 className="tw-uppercase tw-tracking-wide tw-text-sm tw-font-bold tw-text-gray-500 tw-leading-tight tw-m-0 tw-mb-2">{`${stepText ? stepText : t('common:wizard.step')}${t('common:wizard.x-of-y', {
+          <h3 className="tw-text-base tw-uppercase tw-tracking-wide tw-leading-tight tw-m-0">{`${stepText ? stepText : t('common:wizard.step')}${t('common:wizard.x-of-y', {
             active: activeStepIndex,
             length: steps.length,
-          })}`}</h5>
-          {activeStep.header && <h6 className="tw-text-xl tw-font-bold tw-leading-tight tw-m-0">{activeStep.header}</h6>}
+          })}`}</h3>
+          {activeStep.header && <h6 className="tw-text-gray-500 tw-leading-tight tw-m-0 tw-mt-2">{activeStep.header}</h6>}
         </header>
         <div className="tw-my-8 tw-mx-6">{activeStep.children}</div>
         <div className="tw-flex tw-justify-between tw-flex-col sm:tw-flex-row-reverse tw-border-t-2 tw-py-5 tw-px-6 tw-bg-gray-50">
