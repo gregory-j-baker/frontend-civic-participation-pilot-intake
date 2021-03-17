@@ -35,6 +35,178 @@ import useGenders from '../../../hooks/api/useGenders';
 import useIndigenousTypes from '../../../hooks/api/useIndigenousTypes';
 import { sleep } from '../../../utils/misc-utils';
 
+const ConsentPage = (): JSX.Element => {
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  const { isLoading: isSubmitting, error: submitError, mutate: submitApplication } = useSubmitApplication();
+
+  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
+
+  const [formData, setFormDataState] = useState<ApplicationState>(() => {
+    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+
+    if (typeof window === 'undefined') return defaultState;
+
+    const storageData = window.sessionStorage.getItem(Constants.FormDataStorageKey);
+    return { ...defaultState, ...(storageData ? JSON.parse(storageData) : {}) };
+  });
+
+  const [previousStepsValidationCompleted, setPreviousStepsValidationCompleted] = useState<boolean>(false);
+
+  const validatePreviousSteps = useCallback(
+    async (formData: ApplicationState): Promise<void> => {
+      await sleep(500);
+      if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
+        router.replace('/application/personal-information');
+      } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
+        router.replace('/application/identity-information');
+      } else if ((await expressionOfInterestSchema.isValid(formData.expressionOfInterest)) === false) {
+        router.replace('/application/expression-of-interest');
+      } else {
+        setPreviousStepsValidationCompleted(true);
+      }
+    },
+    [router]
+  );
+
+  useEffect(() => {
+    if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
+  }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
+
+  useEffect(() => {
+    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
+  }, [formData]);
+
+  const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
+    setFormDataState((prev) => {
+      const newObj = { ...prev.consent, [field]: checked };
+      return { ...prev, consent: newObj };
+    });
+  };
+
+  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
+    event.preventDefault();
+    router.push('/application/expression-of-interest');
+  };
+
+  const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
+    event.preventDefault();
+
+    // validate consent schema
+    try {
+      await consentSchema.validate(formData.consent, { abortEarly: false });
+
+      if (await applicationSchema.isValid(formData)) {
+        // submit appplication
+        const applicationData: ApplicationData = {
+          birthYear: formData.personalInformation.birthYear as number,
+          communityInterest: formData.expressionOfInterest.communityInterest as string,
+          discoveryChannelId: formData.personalInformation.discoveryChannelId as string,
+          educationLevelId: formData.identityInformation.educationLevelId as string | null,
+          email: formData.personalInformation.email as string,
+          firstName: formData.personalInformation.firstName as string,
+          genderId: formData.identityInformation.genderId as string | null,
+          hasDedicatedDevice: formData.personalInformation.hasDedicatedDevice as boolean,
+          indigenousTypeId: formData.identityInformation.indigenousTypeId as string,
+          internetQualityId: formData.personalInformation.internetQualityId as string,
+          isCanadianCitizen: formData.personalInformation.isCanadianCitizen as boolean,
+          isDisabled: formData.identityInformation.isDisabled as boolean | null,
+          isLgbtq: formData.identityInformation.isLgbtq as boolean | null,
+          isMinority: formData.identityInformation.isMinority as boolean | null,
+          isNewcomer: formData.identityInformation.isNewcomer as boolean | null,
+          isRural: formData.identityInformation.isRural as boolean | null,
+          languageId: formData.personalInformation.languageId as string,
+          lastName: formData.personalInformation.languageId as string,
+          phoneNumber: formData.personalInformation.phoneNumber,
+          programInterest: formData.expressionOfInterest.programInterest,
+          provinceId: formData.personalInformation.provinceId as string,
+          skillsInterest: formData.expressionOfInterest.skillsInterest as string,
+        };
+
+        submitApplication(applicationData);
+      }
+    } catch (err) {
+      if (!(err instanceof ValidationError)) throw err;
+      setSchemaErrors(err.inner);
+      router.push('/application/consent#wb-cont', undefined, { shallow: true });
+    }
+  };
+
+  const getSchemaError = (path: string): string | undefined => {
+    if (!schemaErrors || schemaErrors.length === 0) return undefined;
+
+    const index = schemaErrors.findIndex((err) => err.path === path);
+
+    if (index === -1) return undefined;
+
+    const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
+
+    return (
+      t('common:error-number', { number: index + 1 }) +
+      t(
+        `application:step.consent.${schemaErrors[index]?.path
+          ?.split('.')
+          .map((el) => kebabCase(el))
+          .join('.')}.${key}`
+      )
+    );
+  };
+
+  if (submitError) return <Error err={submitError as HttpClientResponseError} />;
+
+  return (
+    <MainLayout showBreadcrumb={false}>
+      {!previousStepsValidationCompleted ? (
+        <PageLoadingSpinner />
+      ) : (
+        <>
+          <NextSeo title={`${t('application:step.consent.title')} - ${t('application:header')}`} />
+
+          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+            {t('common:app.title')}
+          </h1>
+          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('application:header')}</h2>
+
+          {schemaErrors && schemaErrors.length > 0 && (
+            <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+              <ul className="tw-list-disc">
+                {schemaErrors.map(({ path }) => {
+                  const [field] = path?.split('.') ?? [];
+
+                  return path ? (
+                    <li key={path} className="tw-my-2">
+                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                    </li>
+                  ) : undefined;
+                })}
+              </ul>
+            </Alert>
+          )}
+
+          <Wizard activeStep={4} numberOfSteps={4} header={t('application:step.consent.header')} nextText={t('application:submit')} onPreviousClick={handleWizardOnPreviousClick} onNextClick={handleWizardOnNextClick} disabled={isSubmitting}>
+            <FormReview applicationState={formData} />
+            <CheckboxeField
+              field={nameof<ConsentState>((o) => o.isInformationConsented)}
+              label={t('application:step.consent.is-information-consented.label')}
+              checked={formData.consent.isInformationConsented}
+              onChange={handleOnCheckboxFieldChange}
+              disabled={isSubmitting}
+              error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
+            />
+          </Wizard>
+        </>
+      )}
+    </MainLayout>
+  );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
+};
+
 export interface FormReviewItem {
   key: string;
   text: string;
@@ -424,176 +596,4 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
   );
 };
 
-const ApplicationExpressionOfInterestPage = (): JSX.Element => {
-  const { t } = useTranslation();
-  const router = useRouter();
-
-  const { isLoading: isSubmitting, error: submitError, mutate: submitApplication } = useSubmitApplication();
-
-  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
-
-  const [formData, setFormDataState] = useState<ApplicationState>(() => {
-    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
-
-    if (typeof window === 'undefined') return defaultState;
-
-    const storageData = window.sessionStorage.getItem(Constants.FormDataStorageKey);
-    return { ...defaultState, ...(storageData ? JSON.parse(storageData) : {}) };
-  });
-
-  const [previousStepsValidationCompleted, setPreviousStepsValidationCompleted] = useState<boolean>(false);
-
-  const validatePreviousSteps = useCallback(
-    async (formData: ApplicationState): Promise<void> => {
-      await sleep(500);
-      if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
-        router.replace('/application/personal-information');
-      } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
-        router.replace('/application/identity-information');
-      } else if ((await expressionOfInterestSchema.isValid(formData.expressionOfInterest)) === false) {
-        router.replace('/application/expression-of-interest');
-      } else {
-        setPreviousStepsValidationCompleted(true);
-      }
-    },
-    [router]
-  );
-
-  useEffect(() => {
-    if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
-  }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
-
-  useEffect(() => {
-    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
-  }, [formData]);
-
-  const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.consent, [field]: checked };
-      return { ...prev, consent: newObj };
-    });
-  };
-
-  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
-    event.preventDefault();
-    router.push('/application/expression-of-interest');
-  };
-
-  const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
-    event.preventDefault();
-
-    // validate consent schema
-    try {
-      await consentSchema.validate(formData.consent, { abortEarly: false });
-
-      if (await applicationSchema.isValid(formData)) {
-        // submit appplication
-        const applicationData: ApplicationData = {
-          birthYear: formData.personalInformation.birthYear as number,
-          communityInterest: formData.expressionOfInterest.communityInterest as string,
-          discoveryChannelId: formData.personalInformation.discoveryChannelId as string,
-          educationLevelId: formData.identityInformation.educationLevelId as string | null,
-          email: formData.personalInformation.email as string,
-          firstName: formData.personalInformation.firstName as string,
-          genderId: formData.identityInformation.genderId as string | null,
-          hasDedicatedDevice: formData.personalInformation.hasDedicatedDevice as boolean,
-          indigenousTypeId: formData.identityInformation.indigenousTypeId as string,
-          internetQualityId: formData.personalInformation.internetQualityId as string,
-          isCanadianCitizen: formData.personalInformation.isCanadianCitizen as boolean,
-          isDisabled: formData.identityInformation.isDisabled as boolean | null,
-          isLgbtq: formData.identityInformation.isLgbtq as boolean | null,
-          isMinority: formData.identityInformation.isMinority as boolean | null,
-          isNewcomer: formData.identityInformation.isNewcomer as boolean | null,
-          isRural: formData.identityInformation.isRural as boolean | null,
-          languageId: formData.personalInformation.languageId as string,
-          lastName: formData.personalInformation.languageId as string,
-          phoneNumber: formData.personalInformation.phoneNumber,
-          programInterest: formData.expressionOfInterest.programInterest,
-          provinceId: formData.personalInformation.provinceId as string,
-          skillsInterest: formData.expressionOfInterest.skillsInterest as string,
-        };
-
-        submitApplication(applicationData);
-      }
-    } catch (err) {
-      if (!(err instanceof ValidationError)) throw err;
-      setSchemaErrors(err.inner);
-      router.push('/application/consent#wb-cont', undefined, { shallow: true });
-    }
-  };
-
-  const getSchemaError = (path: string): string | undefined => {
-    if (!schemaErrors || schemaErrors.length === 0) return undefined;
-
-    const index = schemaErrors.findIndex((err) => err.path === path);
-
-    if (index === -1) return undefined;
-
-    const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
-
-    return (
-      t('common:error-number', { number: index + 1 }) +
-      t(
-        `application:step.consent.${schemaErrors[index]?.path
-          ?.split('.')
-          .map((el) => kebabCase(el))
-          .join('.')}.${key}`
-      )
-    );
-  };
-
-  if (submitError) return <Error err={submitError as HttpClientResponseError} />;
-
-  return (
-    <MainLayout showBreadcrumb={false}>
-      {!previousStepsValidationCompleted ? (
-        <PageLoadingSpinner />
-      ) : (
-        <>
-          <NextSeo title={`${t('application:step.consent.title')} - ${t('application:header')}`} />
-
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
-            {t('common:app.title')}
-          </h1>
-          <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('application:header')}</h2>
-
-          {schemaErrors && schemaErrors.length > 0 && (
-            <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
-              <ul className="tw-list-disc">
-                {schemaErrors.map(({ path }) => {
-                  const [field] = path?.split('.') ?? [];
-
-                  return path ? (
-                    <li key={path} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
-                    </li>
-                  ) : undefined;
-                })}
-              </ul>
-            </Alert>
-          )}
-
-          <Wizard activeStep={4} numberOfSteps={4} header={t('application:step.consent.header')} nextText={t('application:submit')} onPreviousClick={handleWizardOnPreviousClick} onNextClick={handleWizardOnNextClick} disabled={isSubmitting}>
-            <FormReview applicationState={formData} />
-            <CheckboxeField
-              field={nameof<ConsentState>((o) => o.isInformationConsented)}
-              label={t('application:step.consent.is-information-consented.label')}
-              checked={formData.consent.isInformationConsented}
-              onChange={handleOnCheckboxFieldChange}
-              disabled={isSubmitting}
-              error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
-            />
-          </Wizard>
-        </>
-      )}
-    </MainLayout>
-  );
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {},
-  };
-};
-
-export default ApplicationExpressionOfInterestPage;
+export default ConsentPage;

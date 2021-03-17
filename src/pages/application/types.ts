@@ -18,7 +18,7 @@ export interface ConsentState {
   isInformationConsented?: boolean;
 }
 
-export interface ConsentStateIndexType extends ConsentState {
+export interface IXConsentState extends ConsentState {
   [key: string]: boolean | undefined;
 }
 
@@ -28,7 +28,7 @@ export interface ExpressionOfInterestState {
   skillsInterest?: string;
 }
 
-export interface ExpressionOfInterestStateIndexType extends ExpressionOfInterestState {
+export interface IXExpressionOfInterestState extends ExpressionOfInterestState {
   [key: string]: string | undefined;
 }
 
@@ -43,7 +43,7 @@ export interface IdentityInformationState {
   isRural?: boolean | null;
 }
 
-export interface IdentityInformationStateIndexType extends IdentityInformationState {
+export interface IXIdentityInformationState extends IdentityInformationState {
   [key: string]: boolean | string | null | undefined;
 }
 
@@ -62,13 +62,13 @@ export interface PersonalInformationState {
   provinceId?: string;
 }
 
-export interface PersonalInformationStateIndexType extends PersonalInformationState {
+export interface IXPersonalInformationState extends PersonalInformationState {
   [key: string]: boolean | string | number | null | undefined;
 }
 
 export interface ApplicationState {
-  consent: ConsentStateIndexType;
-  identityInformation: IdentityInformationStateIndexType;
-  expressionOfInterest: ExpressionOfInterestStateIndexType;
-  personalInformation: PersonalInformationStateIndexType;
+  consent: IXConsentState;
+  identityInformation: IdentityInformationState;
+  expressionOfInterest: ExpressionOfInterestState;
+  personalInformation: PersonalInformationState;
 }

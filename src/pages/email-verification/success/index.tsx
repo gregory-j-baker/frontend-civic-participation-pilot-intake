@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
@@ -39,6 +39,12 @@ const EmailVerficationSuccessPage: NextPage = () => {
       </div>
     </MainLayout>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
 };
 
 export default EmailVerficationSuccessPage;

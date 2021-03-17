@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
@@ -19,18 +19,18 @@ interface EmailVerficationPageState {
   attempts: number;
 }
 
-interface EmailVerficationPageStateIndexType extends EmailVerficationPageState {
+interface IXEmailVerficationPageState extends EmailVerficationPageState {
   [key: string]: string | number | undefined;
 }
 
 const EmailVerficationPage: NextPage = () => {
   const { t } = useTranslation();
 
-  const [formData, setFormDataState] = useState<EmailVerficationPageStateIndexType>({ attempts: 0 });
+  const [formData, setFormDataState] = useState<IXEmailVerficationPageState>({ attempts: 0 });
 
   const onFieldChange: TextFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      return { ...prev, [field as keyof EmailVerficationPageStateIndexType]: value ?? undefined };
+      return { ...prev, [field as keyof IXEmailVerficationPageState]: value ?? undefined };
     });
   };
 
@@ -79,6 +79,12 @@ const EmailVerficationPage: NextPage = () => {
       </div>
     </MainLayout>
   );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
 };
 
 export default EmailVerficationPage;
