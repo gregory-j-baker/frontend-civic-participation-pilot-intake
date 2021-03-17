@@ -296,7 +296,6 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
 
       // birthYear
       if (applicationState.personalInformation.birthYear) {
-        console.log(applicationState.personalInformation.birthYear);
         items.push({
           key: nameof.full<ApplicationState>((o) => o.personalInformation.birthYear),
           text: t(

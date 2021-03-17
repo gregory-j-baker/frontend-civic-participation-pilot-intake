@@ -77,7 +77,6 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
       let newValue: boolean | string | null | undefined = undefined;
-      console.log({ field, value });
       if (value) {
         if (value.toLowerCase() === 'true') newValue = true;
         else if (value.toLowerCase() === 'false') newValue = false;
