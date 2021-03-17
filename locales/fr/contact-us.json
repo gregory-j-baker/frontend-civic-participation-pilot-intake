@@ -27,8 +27,8 @@
   "success": {
     "page": {
       "title": "Contactez-nous",
-      "header": "Thank you for getting in touch",
-      "sub-header": "We will be in contact soon!"
+      "header": "Merci de nous contacter",
+      "sub-header": "Nous serons en contact bientôt!"
     },
     "form": {
       "submit": "Visitez le site Web du CSC"
