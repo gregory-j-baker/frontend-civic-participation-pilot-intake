@@ -1,0 +1,37 @@
+{
+  "page": {
+    "title": "Contact us",
+    "header": "Civic participation pilot",
+    "sub-header": "Contact Us"
+  },
+  "form": {
+    "email": {
+      "label": "Email address",
+      "required": "Email address is required",
+      "email-invalid": "Email address is not in a valid format"
+    },
+    "message": {
+      "label": "Message",
+      "required": "Message is required"
+    },
+    "name": {
+      "label": "First name",
+      "required": "First name is required"
+    },
+    "phone-number": {
+      "label": "Phone number",
+      "phone-invalid": "Phone number is not in a valid format"
+    },
+    "submit": "Submit"
+  },
+  "success": {
+    "page": {
+      "title": "Thank you for contacting us",
+      "header": "Thank you for getting in touch",
+      "sub-header": "We will be in contact soon!"
+    },
+    "form": {
+      "submit": "Visit the CSC website"
+    }
+  }
+}

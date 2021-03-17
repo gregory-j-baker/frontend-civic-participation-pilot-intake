@@ -1,0 +1,37 @@
+{
+  "page": {
+    "title": "Contactez-nous",
+    "header": "Pilote de participation civique",
+    "sub-header": "Contactez-nous"
+  },
+  "form": {
+    "email": {
+      "label": "Adresse courriel",
+      "required": "Adresse courriel est requise",
+      "email-invalid": "Adresse courriel n'est pas dans un format valid"
+    },
+    "message": {
+      "label": "Message",
+      "required": "Message est requis"
+    },
+    "name": {
+      "label": "Prénom",
+      "required": "Prénom est requis"
+    },
+    "phone-number": {
+      "label": "Numéro de téléphone",
+      "phone-invalid": "Numéro de téléphone n'est pas dans un format valide"
+    },
+    "submit": "Soumettre"
+  },
+  "success": {
+    "page": {
+      "title": "Contactez-nous",
+      "header": "Thank you for getting in touch",
+      "sub-header": "We will be in contact soon!"
+    },
+    "form": {
+      "submit": "Visitez le site Web du CSC"
+    }
+  }
+}

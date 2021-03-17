@@ -7,6 +7,8 @@
     "/application/expression-of-interest": ["application"],
     "/application/identity-information": ["application"],
     "/application/personal-information": ["application"],
+    "/contact-us": ["contact-us"],
+    "/contact-us/success": ["contact-us"],
     "/email-verification": ["email-verification"],
     "/email-verification/failed": ["email-verification"],
     "/email-verification/success": ["email-verification"]
