@@ -5,15 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { GetStaticProps, NextPage } from 'next';
-import Image from 'next/image';
+import { GetStaticProps } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
-import Trans from 'next-translate/Trans';
+import Image from 'next/image';
 import { Button, ButtonOnClickEvent } from '../../../components/Button';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 
-const EmailVerficationFailedPage: NextPage = () => {
+const ApplicationConfirmationPage = (): JSX.Element => {
   const { t } = useTranslation();
 
   const handleOnSubmit: ButtonOnClickEvent = (event) => {
@@ -22,28 +21,19 @@ const EmailVerficationFailedPage: NextPage = () => {
 
   return (
     <MainLayout showBreadcrumb={false}>
-      <NextSeo title={t('email-verification:failed.page.title')} />
       <div className="tw-flex tw-space-x-10">
         <div className="tw-w-full md:tw-w-1/2">
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-16 tw-text-3xl">
-            {t('email-verification:failed.page.header')}
+          <NextSeo title={t('application:confirmation.title')} />
+          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-8 tw-text-3xl">
+            {t('application:confirmation.header')}
           </h1>
+          <h2 className="tw-m-0 tw-border-none tw-mb-16 tw-text-2xl">{t('application:confirmation.sub-header')}</h2>
+          <p className="tw-mb-16">{t('application:confirmation.sub-header')}</p>
 
-          <p className="tw-mb-8">
-            <Trans
-              i18nKey="email-verification:failed.page.description"
-              components={[
-                <a key="support_email" href={`mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL}`}>
-                  {process.env.NEXT_PUBLIC_SUPPORT_EMAIL}
-                </a>,
-              ]}
-            />
-          </p>
-
-          <Button onClick={handleOnSubmit}>{t('email-verification:failed.form.submit')}</Button>
+          <Button onClick={handleOnSubmit}>{t('application:confirmation.submit')}</Button>
         </div>
         <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">
-          <Image src="/img/undraw_cancel_u1it.svg" alt="" layout="fill" />
+          <Image src="/img/undraw_Mailbox_re_dvds.svg" alt="" layout="fill" />
         </div>
       </div>
     </MainLayout>
@@ -56,4 +46,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default EmailVerficationFailedPage;
+export default ApplicationConfirmationPage;

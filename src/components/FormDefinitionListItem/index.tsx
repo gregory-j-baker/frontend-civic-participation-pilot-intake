@@ -5,12 +5,5 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export interface WizardStepProps {
-  children?: React.ReactNode;
-  header?: string;
-  id: string;
-}
-
-const WizardStep = ({ children }: WizardStepProps): JSX.Element => <>{children}</>;
-
-export default WizardStep;
+export { default as FormDefinitionListItem } from './FormDefinitionListItem';
+export * from './FormDefinitionListItem';

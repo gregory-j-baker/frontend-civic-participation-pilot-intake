@@ -7,7 +7,7 @@
 
 import { GetServerSideProps } from 'next';
 
-const ApplicationIndex = (): JSX.Element => {
+const ApplicationPage = (): JSX.Element => {
   return <></>;
 };
 
@@ -20,4 +20,4 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-export default ApplicationIndex;
+export default ApplicationPage;

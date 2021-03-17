@@ -1,18 +1,23 @@
 {
   "header": "Formulaire de demande",
-  "wizard-step": "Section",
+  "confirmation": {
+    "title": "Confirmation de la demande",
+    "header": "Merci d'avoir soumis votre demande",
+    "sub-header": "Nous vous avons envoyé un courriel de vérification",
+    "instruction": "Veuillez cliquer sur le lien dans ce courriel pour confirmer votre adresse courriel",
+    "submit": "Visitez le site Web du CSC"
+  },
   "step": {
     "personal-information": {
-      "header": "Veuillez fournir vos informations personnelles",
+      "title": "Étape 1",
       "birth-year": {
         "label": "En quelle année es-tu né?",
         "helper-text": "Veuillez noter que pour être éligible, vous devez avoir entre 18 et 30 ans et l'âge de la majorité dans votre province ou votre territoire de résidence.",
         "required": "Année de naissance est requis"
       },
-      "education-level-id": {
-        "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
-        "helper-text": "Veuillez noter qu'il n'y a pas d'obligation d'éducation pour ce programme.",
-        "required": "Plus haut niveau d'éducation formelle est requis"
+      "discovery-channel-id": {
+        "label": "Comment avez-vous entendu parler du pilote de participation civique?",
+        "required": "Entendu parler du pilote de participation civique est requis"
       },
       "email": {
         "email-invalid": "Adresse courriel n'est pas dans un format valide",
@@ -23,9 +28,13 @@
         "label": "Prénom",
         "required": "Prénom est requis"
       },
-      "gender-id": {
-        "label": "À quelle identité de genre vous identifiez-vous le plus?",
-        "required": "Identité de genre vous identifiez-vous le plus est requis"
+      "has-dedicated-device": {
+        "label": "Avez-vous accès à un appareil dédié sur lequel travailler?",
+        "required": "Accès à un appareil dédié requis"
+      },
+      "internet-quality-id": {
+        "label": "Avez-vous accès à Internet fiable?",
+        "required": "Accès à Internet fiable est requis"
       },
       "is-canadian-citizen": {
         "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
@@ -56,7 +65,17 @@
       }
     },
     "identity-information": {
-      "header": "Veuillez sélectionner les descriptions avec lesquelles vous identifiez",
+      "title": "Étape 2",
+      "information-note": "Veuillez noter que les questions de cette section n'affecteront pas votre admissibilité au programme et ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir la réponse que vous jugez le plus applicable. Vous pouvez choisir de sélectionner «\u00A0Préfère ne pas répondre\u00A0» pour toute question dans cette section.",
+      "education-level-id": {
+        "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
+        "helper-text": "Veuillez noter qu'il n'y a pas d'obligation d'éducation pour ce programme.",
+        "required": "Plus haut niveau d'éducation formelle est requis"
+      },
+      "gender-id": {
+        "label": "À quelle identité de genre vous identifiez-vous le plus?",
+        "required": "Identité de genre vous identifiez-vous le plus est requis"
+      },
       "indigenous-type-id": {
         "label": "Je suis membre d'une communauté autochtone",
         "required": "Membre d'une communauté autochtone est requis"
@@ -83,7 +102,7 @@
       }
     },
     "expression-of-interest": {
-      "header": "Veuillez fournir votre expression d'intérêt",
+      "title": "Étape 3",
       "community-interest": {
         "label": "Si vous pouviez avoir un impact positif sur un problème de votre communauté, quel problème voudriez-vous aborder et pourquoi?",
         "required": "Intérêt communautaire est requis"
@@ -97,19 +116,8 @@
       }
     },
     "consent": {
-      "header": "Veuillez fournir vos informations et votre consentement d'accès",
-      "has-dedicated-device": {
-        "label": "Avez-vous accès à un appareil dédié sur lequel travailler?",
-        "required": "Accès à un appareil dédié requis"
-      },
-      "discovery-channel-id": {
-        "label": "Comment avez-vous entendu parler du pilote de participation civique?",
-        "required": "Entendu parler du pilote de participation civique est requis"
-      },
-      "internet-quality-id": {
-        "label": "Avez-vous accès à Internet fiable?",
-        "required": "Accès à Internet fiable est requis"
-      },
+      "title": "Examiner et soumettre la demande",
+      "header": "Examiner et soumettre la demande",
       "is-information-consented": {
         "label": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
         "required": "Vous devez consentit à partager ma réponse avec l'emploi et le développement social Canada",

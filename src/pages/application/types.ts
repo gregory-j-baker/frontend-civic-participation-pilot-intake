@@ -14,13 +14,46 @@ export interface GetDescriptionFunc {
   (obj: { descriptionFr: string; descriptionEn: string }): string;
 }
 
-export interface PersonalInformationState {
-  [key: string]: boolean | string | number | null | undefined;
-  birthYear?: number;
+export interface ConsentState {
+  isInformationConsented?: boolean;
+}
+
+export interface IXConsentState extends ConsentState {
+  [key: string]: boolean | undefined;
+}
+
+export interface ExpressionOfInterestState {
+  communityInterest?: string;
+  programInterest?: string;
+  skillsInterest?: string;
+}
+
+export interface IXExpressionOfInterestState extends ExpressionOfInterestState {
+  [key: string]: string | undefined;
+}
+
+export interface IdentityInformationState {
   educationLevelId?: string | null;
+  genderId?: string | null;
+  indigenousTypeId?: string | null;
+  isDisabled?: boolean | null;
+  isLgbtq?: boolean | null;
+  isMinority?: boolean | null;
+  isNewcomer?: boolean | null;
+  isRural?: boolean | null;
+}
+
+export interface IXIdentityInformationState extends IdentityInformationState {
+  [key: string]: boolean | string | null | undefined;
+}
+
+export interface PersonalInformationState {
+  birthYear?: number;
+  discoveryChannelId?: string;
   email?: string;
   firstName?: string;
-  genderId?: string | null;
+  hasDedicatedDevice?: boolean;
+  internetQualityId?: string;
   isCanadianCitizen?: boolean;
   isProvinceMajorCertified?: boolean;
   languageId?: string;
@@ -29,34 +62,13 @@ export interface PersonalInformationState {
   provinceId?: string;
 }
 
-export interface IdentityInformationState {
+export interface IXPersonalInformationState extends PersonalInformationState {
   [key: string]: boolean | string | number | null | undefined;
-  indigenousTypeId?: string;
-  isDisabled?: boolean | null;
-  isLgbtq?: boolean | null;
-  isMinority?: boolean | null;
-  isNewcomer?: boolean | null;
-  isRural?: boolean | null;
-}
-
-export interface ExpressionOfInterestState {
-  [key: string]: boolean | string | number | null | undefined;
-  communityInterest?: string;
-  programInterest?: string;
-  skillsInterest?: string;
-}
-
-export interface ConsentState {
-  [key: string]: boolean | string | number | null | undefined;
-  discoveryChannelId?: string;
-  hasDedicatedDevice?: boolean;
-  internetQualityId?: string;
-  isInformationConsented?: boolean;
 }
 
 export interface ApplicationState {
-  personalInformation: PersonalInformationState;
+  consent: IXConsentState;
   identityInformation: IdentityInformationState;
   expressionOfInterest: ExpressionOfInterestState;
-  consent: ConsentState;
+  personalInformation: PersonalInformationState;
 }

@@ -5,44 +5,41 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
 import type { CheckboxeFieldOnChangeEvent } from '../../../components/form/CheckboxeField';
 import { CheckboxeField } from '../../../components/form/CheckboxeField';
-import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../../../components/form/RadiosField';
-import type { SelectFieldOnChangeEvent, SelectFieldOption } from '../../../components/form/SelectField';
-import { SelectField } from '../../../components/form/SelectField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
-import { Wizard, WizardOnPreviousClickEvent, WizardOnSubmitClickEvent } from '../../../components/Wizard';
-import { WizardStep } from '../../../components/WizardStep';
-import { theme } from '../../../config';
-import useDiscoveryChannels from '../../../hooks/api/useDiscoveryChannels';
-import useInternetQualities from '../../../hooks/api/useInternetQualities';
-import useSubmitApplication from '../../../hooks/api/useSubmitApplication';
-import useCurrentBreakpoint from '../../../hooks/useCurrentBreakpoint';
+import { Wizard, WizardOnPreviousClickEvent, WizardOnNextClickEvent } from '../../../components/Wizard';
+import useSubmitApplication, { ApplicationData } from '../../../hooks/api/useSubmitApplication';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import Alert, { AlertType } from '../../../components/Alert/Alert';
-import { ApplicationState, ConsentState, GetDescriptionFunc, Constants } from '../types';
+import { ApplicationState, ConsentState, Constants, GetDescriptionFunc } from '../types';
 import { consentSchema, expressionOfInterestSchema, applicationSchema, identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
+import { FormDefinitionListItem } from '../../../components/FormDefinitionListItem';
+import useDiscoveryChannels from '../../../hooks/api/useDiscoveryChannels';
+import useInternetQualities from '../../../hooks/api/useInternetQualities';
+import useLanguages from '../../../hooks/api/useLanguages';
+import useProvinces from '../../../hooks/api/useProvinces';
+import useEducationLevels from '../../../hooks/api/useEducationLevels';
+import useGenders from '../../../hooks/api/useGenders';
+import useIndigenousTypes from '../../../hooks/api/useIndigenousTypes';
+import { sleep } from '../../../utils/misc-utils';
 
-const ApplicationSection = (): JSX.Element => {
-  const { lang, t } = useTranslation();
+const ConsentPage = (): JSX.Element => {
+  const { t } = useTranslation();
   const router = useRouter();
-  const currentBreakpoint = useCurrentBreakpoint();
 
   const { isLoading: isSubmitting, error: submitError, mutate: submitApplication } = useSubmitApplication();
-
-  const { data: discoveryChannels, isLoading: isDiscoveryChannelsLoading, error: discoveryChannelsError } = useDiscoveryChannels();
-  const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities();
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
@@ -59,6 +56,7 @@ const ApplicationSection = (): JSX.Element => {
 
   const validatePreviousSteps = useCallback(
     async (formData: ApplicationState): Promise<void> => {
+      await sleep(500);
       if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
         router.replace('/application/personal-information');
       } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
@@ -80,23 +78,6 @@ const ApplicationSection = (): JSX.Element => {
     window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
   }, [formData]);
 
-  const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
-    setFormDataState((prev) => {
-      let newValue = undefined;
-
-      if (value) {
-        if (value.toLowerCase() === 'true') newValue = true;
-        else if (value.toLowerCase() === 'false') newValue = false;
-        else if (value.toLowerCase() === Constants.NoAnswerOptionValue.toLowerCase()) newValue = null;
-        else if (!isNaN(Number(value))) newValue = Number(value);
-        else newValue = value;
-      }
-
-      const newObj = { ...prev.consent, [field]: newValue };
-      return { ...prev, consent: newObj };
-    });
-  };
-
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
     setFormDataState((prev) => {
       const newObj = { ...prev.consent, [field]: checked };
@@ -104,13 +85,12 @@ const ApplicationSection = (): JSX.Element => {
     });
   };
 
-  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event, activeStepId, nextStepId) => {
+  const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
-
-    router.push(`/application/${kebabCase(nextStepId)}`);
+    router.push('/application/expression-of-interest');
   };
 
-  const handleWizardOnSubmitClick: WizardOnSubmitClickEvent = async (event, activeStepId) => {
+  const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
     event.preventDefault();
 
     // validate consent schema
@@ -119,41 +99,39 @@ const ApplicationSection = (): JSX.Element => {
 
       if (await applicationSchema.isValid(formData)) {
         // submit appplication
-        submitApplication({
-          ...formData.personalInformation,
-          ...formData.identityInformation,
-          ...formData.expressionOfInterest,
-          ...formData.consent,
-        });
+        const applicationData: ApplicationData = {
+          birthYear: formData.personalInformation.birthYear as number,
+          communityInterest: formData.expressionOfInterest.communityInterest as string,
+          discoveryChannelId: formData.personalInformation.discoveryChannelId as string,
+          educationLevelId: formData.identityInformation.educationLevelId as string | null,
+          email: formData.personalInformation.email as string,
+          firstName: formData.personalInformation.firstName as string,
+          genderId: formData.identityInformation.genderId as string | null,
+          hasDedicatedDevice: formData.personalInformation.hasDedicatedDevice as boolean,
+          indigenousTypeId: formData.identityInformation.indigenousTypeId as string,
+          internetQualityId: formData.personalInformation.internetQualityId as string,
+          isCanadianCitizen: formData.personalInformation.isCanadianCitizen as boolean,
+          isDisabled: formData.identityInformation.isDisabled as boolean | null,
+          isLgbtq: formData.identityInformation.isLgbtq as boolean | null,
+          isMinority: formData.identityInformation.isMinority as boolean | null,
+          isNewcomer: formData.identityInformation.isNewcomer as boolean | null,
+          isRural: formData.identityInformation.isRural as boolean | null,
+          languageId: formData.personalInformation.languageId as string,
+          lastName: formData.personalInformation.languageId as string,
+          phoneNumber: formData.personalInformation.phoneNumber,
+          programInterest: formData.expressionOfInterest.programInterest,
+          provinceId: formData.personalInformation.provinceId as string,
+          skillsInterest: formData.expressionOfInterest.skillsInterest as string,
+        };
+
+        submitApplication(applicationData);
       }
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push(`/application/${kebabCase(activeStepId)}#wb-cont`, undefined, { shallow: true });
+      router.push('/application/consent#wb-cont', undefined, { shallow: true });
     }
   };
-
-  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
-
-  // internet quality select options
-  const internetQualityOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isInternetQualitiesLoading || internetQualitiesError) return [];
-    return internetQualities?._embedded.internetQualities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isInternetQualitiesLoading, internetQualitiesError, internetQualities, getDescription]);
-
-  // discovery channel select options
-  const discoveryChannelOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isDiscoveryChannelsLoading || discoveryChannelsError) return [];
-    return discoveryChannels?._embedded.discoveryChannels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isDiscoveryChannelsLoading, discoveryChannelsError, discoveryChannels, getDescription]);
-
-  const yesNoOptions = useMemo<RadiosFieldOption[]>(
-    () => [
-      { value: true.toString(), text: t('common:yes') },
-      { value: false.toString(), text: t('common:no') },
-    ],
-    [t]
-  );
 
   const getSchemaError = (path: string): string | undefined => {
     if (!schemaErrors || schemaErrors.length === 0) return undefined;
@@ -175,17 +153,15 @@ const ApplicationSection = (): JSX.Element => {
     );
   };
 
-  if (discoveryChannelsError || internetQualitiesError || internetQualitiesError || submitError) {
-    return <Error err={(discoveryChannelsError ?? internetQualitiesError ?? internetQualitiesError ?? submitError) as HttpClientResponseError} />;
-  }
+  if (submitError) return <Error err={submitError as HttpClientResponseError} />;
 
   return (
     <MainLayout showBreadcrumb={false}>
-      {!previousStepsValidationCompleted || isDiscoveryChannelsLoading || isInternetQualitiesLoading ? (
+      {!previousStepsValidationCompleted ? (
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('application:step.consent.header')} - ${t('application:header')}`} />
+          <NextSeo title={`${t('application:step.consent.title')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -208,67 +184,16 @@ const ApplicationSection = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard
-            activeStepId={nameof<ApplicationState>((o) => o.consent)}
-            stepText={t('application:wizard-step')}
-            submitText={t('application:submit')}
-            onPreviousClick={handleWizardOnPreviousClick}
-            onSubmitClick={handleWizardOnSubmitClick}
-            disabled={isSubmitting}>
-            <WizardStep id={nameof<ApplicationState>((o) => o.personalInformation)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.identityInformation)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.expressionOfInterest)} />
-            <WizardStep id={nameof<ApplicationState>((o) => o.consent)} header={t('application:step.consent.header')}>
-              <>
-                <SelectField
-                  field={nameof<ConsentState>((o) => o.internetQualityId)}
-                  label={t('application:step.consent.internet-quality-id.label')}
-                  value={formData.consent.internetQualityId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={internetQualityOptions}
-                  disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.internetQualityId))}
-                  required
-                  gutterBottom
-                  className="tw-w-full sm:tw-w-6/12"
-                />
-
-                <RadiosField
-                  field={nameof<ConsentState>((o) => o.hasDedicatedDevice)}
-                  label={t('application:step.consent.has-dedicated-device.label')}
-                  value={formData.consent.hasDedicatedDevice?.toString()}
-                  onChange={handleOnOptionsFieldChange}
-                  options={yesNoOptions}
-                  disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.hasDedicatedDevice))}
-                  required
-                  gutterBottom
-                  inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-                />
-
-                <SelectField
-                  field={nameof<ConsentState>((o) => o.discoveryChannelId)}
-                  label={t('application:step.consent.discovery-channel-id.label')}
-                  value={formData.consent.discoveryChannelId}
-                  onChange={handleOnOptionsFieldChange}
-                  options={discoveryChannelOptions}
-                  disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.discoveryChannelId))}
-                  required
-                  className="tw-w-full sm:tw-w-6/12"
-                  gutterBottom
-                />
-
-                <CheckboxeField
-                  field={nameof<ConsentState>((o) => o.isInformationConsented)}
-                  label={t('application:step.consent.is-information-consented.label')}
-                  checked={formData.consent.isInformationConsented}
-                  onChange={handleOnCheckboxFieldChange}
-                  disabled={isSubmitting}
-                  error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
-                />
-              </>
-            </WizardStep>
+          <Wizard activeStep={4} numberOfSteps={4} header={t('application:step.consent.header')} nextText={t('application:submit')} onPreviousClick={handleWizardOnPreviousClick} onNextClick={handleWizardOnNextClick} disabled={isSubmitting}>
+            <FormReview applicationState={formData} />
+            <CheckboxeField
+              field={nameof<ConsentState>((o) => o.isInformationConsented)}
+              label={t('application:step.consent.is-information-consented.label')}
+              checked={formData.consent.isInformationConsented}
+              onChange={handleOnCheckboxFieldChange}
+              disabled={isSubmitting}
+              error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
+            />
           </Wizard>
         </>
       )}
@@ -282,4 +207,392 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default ApplicationSection;
+export interface FormReviewItem {
+  key: string;
+  text: string;
+  value: string;
+}
+
+export interface FormReviewProps {
+  applicationState: ApplicationState;
+}
+
+export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element => {
+  const { t, lang } = useTranslation();
+
+  const { data: discoveryChannels } = useDiscoveryChannels();
+  const { data: educationLevels } = useEducationLevels();
+  const { data: genders } = useGenders();
+  const { data: indigenousTypes } = useIndigenousTypes();
+  const { data: internetQualities } = useInternetQualities();
+  const { data: languages } = useLanguages();
+  const { data: provinces } = useProvinces();
+
+  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
+
+  const formReviewItems: FormReviewItem[] = useMemo(() => {
+    const items: FormReviewItem[] = [];
+
+    if (Object.keys(applicationState.personalInformation).length !== 0) {
+      // firstName
+      if (applicationState.personalInformation.firstName) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.personalInformation.firstName),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.personalInformation.firstName)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.personalInformation.firstName,
+        });
+      }
+
+      // lastName
+      if (applicationState.personalInformation.lastName) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.personalInformation.lastName),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.personalInformation.lastName)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.personalInformation.lastName,
+        });
+      }
+
+      // email
+      if (applicationState.personalInformation.email) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.personalInformation.email),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.personalInformation.email)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.personalInformation.email,
+        });
+      }
+
+      // phone
+      if (applicationState.personalInformation.phoneNumber) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.personalInformation.phoneNumber),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.personalInformation.phoneNumber)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.personalInformation.phoneNumber,
+        });
+      }
+
+      // birthYear
+      if (applicationState.personalInformation.birthYear) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.personalInformation.birthYear),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.personalInformation.birthYear)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.personalInformation.birthYear.toString(),
+        });
+      }
+
+      // languageId
+      if (applicationState.personalInformation.languageId) {
+        const language = languages?._embedded.languages.find((o) => o.id === applicationState.personalInformation.languageId);
+        if (language) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.personalInformation.languageId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.personalInformation.languageId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(language),
+          });
+        }
+      }
+
+      // isCanadianCitizen
+      if (applicationState.personalInformation.isCanadianCitizen !== undefined) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.personalInformation.isCanadianCitizen),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.personalInformation.isCanadianCitizen)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.personalInformation.isCanadianCitizen ? t('common:yes') : t('common:no'),
+        });
+      }
+
+      // provindId
+      if (applicationState.personalInformation.provinceId) {
+        const province = provinces?._embedded.provinces.find((o) => o.id === applicationState.personalInformation.provinceId);
+        if (province) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.personalInformation.provinceId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.personalInformation.provinceId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(province),
+          });
+        }
+      }
+
+      // internetQualityId
+      if (applicationState.personalInformation.internetQualityId) {
+        const internetQuality = internetQualities?._embedded.internetQualities.find((o) => o.id === applicationState.personalInformation.internetQualityId);
+        if (internetQuality) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.personalInformation.internetQualityId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.personalInformation.internetQualityId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(internetQuality),
+          });
+        }
+      }
+
+      // hasDedicatedDevice
+      if (applicationState.personalInformation.hasDedicatedDevice !== undefined) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.personalInformation.hasDedicatedDevice),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.personalInformation.hasDedicatedDevice)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.personalInformation.hasDedicatedDevice ? t('common:yes') : t('common:no'),
+        });
+      }
+
+      // discoveryChannelId
+      if (applicationState.personalInformation.discoveryChannelId) {
+        const discoveryChannel = discoveryChannels?._embedded.discoveryChannels.find((o) => o.id === applicationState.personalInformation.discoveryChannelId);
+        if (discoveryChannel)
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.personalInformation.discoveryChannelId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.personalInformation.discoveryChannelId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(discoveryChannel),
+          });
+      }
+    }
+
+    if (Object.keys(applicationState.identityInformation).length !== 0) {
+      // genderId
+      if (applicationState.identityInformation.genderId !== undefined && genders) {
+        const gender = genders._embedded.genders.find((o) => (applicationState.identityInformation.genderId === null ? false : o.id === applicationState.identityInformation.indigenousTypeId));
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.identityInformation.genderId),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.identityInformation.genderId)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: gender ? getDescription(gender) : t('common:prefer-not-answer'),
+        });
+      }
+
+      // educationLevelId
+      if (applicationState.identityInformation.educationLevelId !== undefined && educationLevels) {
+        const educationLevel = educationLevels._embedded.educationLevels.find((o) => (applicationState.identityInformation.educationLevelId === null ? false : o.id === applicationState.identityInformation.educationLevelId));
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.identityInformation.educationLevelId),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.identityInformation.educationLevelId)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: educationLevel ? getDescription(educationLevel) : t('common:prefer-not-answer'),
+        });
+      }
+
+      // isDisabled
+      if (applicationState.identityInformation.isDisabled !== undefined) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.identityInformation.isDisabled),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.identityInformation.isDisabled)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.identityInformation.isDisabled === true ? t('common:yes') : applicationState.identityInformation.isDisabled === false ? t('common:no') : t('common:prefer-not-answer'),
+        });
+      }
+
+      // isMinority
+      if (applicationState.identityInformation.isMinority !== undefined) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.identityInformation.isMinority),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.identityInformation.isMinority)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.identityInformation.isMinority === true ? t('common:yes') : applicationState.identityInformation.isMinority === false ? t('common:no') : t('common:prefer-not-answer'),
+        });
+      }
+
+      // indigenousTypeId
+      if (applicationState.identityInformation.indigenousTypeId !== undefined && indigenousTypes) {
+        const indigenousType = indigenousTypes._embedded.indigenousTypes.find((o) => (applicationState.identityInformation.indigenousTypeId === null ? false : o.id === applicationState.identityInformation.indigenousTypeId));
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.identityInformation.indigenousTypeId),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.identityInformation.indigenousTypeId)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: indigenousType ? getDescription(indigenousType) : t('common:prefer-not-answer'),
+        });
+      }
+
+      // isLgbtq
+      if (applicationState.identityInformation.isLgbtq !== undefined) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.identityInformation.isLgbtq),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.identityInformation.isLgbtq)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.identityInformation.isLgbtq === true ? t('common:yes') : applicationState.identityInformation.isLgbtq === false ? t('common:no') : t('common:prefer-not-answer'),
+        });
+      }
+
+      // isRural
+      if (applicationState.identityInformation.isRural !== undefined) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.identityInformation.isRural),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.identityInformation.isRural)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.identityInformation.isRural === true ? t('common:yes') : applicationState.identityInformation.isRural === false ? t('common:no') : t('common:prefer-not-answer'),
+        });
+      }
+
+      // isNewcomer
+      if (applicationState.identityInformation.isNewcomer !== undefined) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.identityInformation.isNewcomer),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.identityInformation.isNewcomer)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.identityInformation.isNewcomer === true ? t('common:yes') : applicationState.identityInformation.isNewcomer === false ? t('common:no') : t('common:prefer-not-answer'),
+        });
+      }
+    }
+
+    if (Object.keys(applicationState.expressionOfInterest).length !== 0) {
+      // skillsInterest
+      if (applicationState.expressionOfInterest.skillsInterest) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.expressionOfInterest.skillsInterest),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.expressionOfInterest.skillsInterest)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.expressionOfInterest.skillsInterest,
+        });
+      }
+
+      // communityInterest
+      if (applicationState.expressionOfInterest.communityInterest) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.expressionOfInterest.communityInterest),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.expressionOfInterest.communityInterest)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.expressionOfInterest.communityInterest,
+        });
+      }
+
+      // programInterest
+      if (applicationState.expressionOfInterest.programInterest) {
+        items.push({
+          key: nameof.full<ApplicationState>((o) => o.expressionOfInterest.programInterest),
+          text: t(
+            `application:step.${nameof
+              .full<ApplicationState>((o) => o.expressionOfInterest.programInterest)
+              .split('.')
+              .map((s) => kebabCase(s))
+              .join('.')}.label`
+          ),
+          value: applicationState.expressionOfInterest.programInterest,
+        });
+      }
+    }
+
+    return items;
+  }, [applicationState, t, getDescription, discoveryChannels, educationLevels, genders, indigenousTypes, internetQualities, languages, provinces]);
+
+  return (
+    <dl className="tw-mb-10">
+      {formReviewItems.map(({ key, text, value }, index) => (
+        <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value} />
+      ))}
+    </dl>
+  );
+};
+
+export default ConsentPage;
