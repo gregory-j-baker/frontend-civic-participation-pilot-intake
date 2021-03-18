@@ -234,6 +234,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
             <TextField
               field={nameof<PersonalInformationState>((o) => o.phoneNumber)}
               label={t('application:step.personal-information.phone-number.label')}
+              helperText={t('application:step.personal-information.phone-number.helper-text')}
               value={formData.personalInformation.phoneNumber}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<PersonalInformationState>((o) => o.phoneNumber))}

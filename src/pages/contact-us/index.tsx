@@ -148,6 +148,7 @@ const ContactUs: NextPage = () => {
             <TextField
               field={nameof<FormDataState>((o) => o.phoneNumber)}
               label={t('contact-us:form.phone-number.label')}
+              helperText={t('contact-us:form.phone-number.helper-text')}
               value={formData?.phoneNumber}
               onChange={handleOnTextFieldChange}
               disabled={isSubmitting}

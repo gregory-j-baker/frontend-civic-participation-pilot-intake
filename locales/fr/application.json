@@ -57,7 +57,8 @@
       },
       "phone-number": {
         "label": "Numéro de téléphone",
-        "phone-invalid": "Numéro de téléphone n'est pas dans un format valide"
+        "helper-text": "Format acceptable: 506-555-5555",
+        "phone-invalid": "Numéro de téléphone n'est pas dans un format valide (ex. 506-555-5555)"
       },
       "province-id": {
         "label": "Quelle province ou territoire est votre résidence principale?",

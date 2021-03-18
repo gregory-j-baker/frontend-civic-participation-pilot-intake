@@ -57,7 +57,8 @@
       },
       "phone-number": {
         "label": "Phone number",
-        "phone-invalid": "Phone number is not in a valid format"
+        "helper-text": "Acceptable format: 506-555-5555",
+        "phone-invalid": "Phone number is not in a valid format (ex. 506-555-5555)"
       },
       "province-id": {
         "label": "Which province or territory is your principle residence?",
