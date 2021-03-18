@@ -42,8 +42,8 @@
         "required": "You must indicate if you are a citizen, resident, or protected person"
       },
       "is-province-major-certified": {
-        "label": "I certify that I am over the age of majority in my province",
-        "link": "Find the age of majority in your province",
+        "label": "I certify I am of the age of majority in my province or territory of residence",
+        "link": "Find the age of majority in your province or territory",
         "required": "You must certify you are over the age of majority",
         "must-be-true": "You must certify you are over the age of majority"
       },
@@ -61,13 +61,13 @@
         "phone-invalid": "You must enter a valid ten-digit phone number (ex. 506-555-5555)"
       },
       "province-id": {
-        "label": "Which province or territory is your principle residence?",
+        "label": "In which province or territory is your principle residence located?",
         "required": "You must select your province or territory of residence"
       }
     },
     "identity-information": {
       "title": "Step 2",
-      "information-note-1": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answer that you feel is most applicable to you. You may choose to select ‘Prefer not to answer’ for any question in this section.",
+      "information-note-1": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answers that you feel are most applicable to you. You may choose to select ‘Prefer not to answer’ for any question in this section.",
       "information-note-2": "Please select the demographic characteristics with which you identify.",
       "education-level-id": {
         "label": "What is your highest level of formal education completed, or enrolled in currently?",
@@ -75,7 +75,7 @@
         "required": "You must select a response for level of education"
       },
       "gender-id": {
-        "label": "To which gender identity do you most identify?",
+        "label": "With which gender identity do you most identify?",
         "required": "You must select a response for gender identity"
       },
       "indigenous-type-id": {

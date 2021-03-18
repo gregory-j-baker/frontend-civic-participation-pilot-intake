@@ -42,8 +42,8 @@
         "required": "Vous devez indiquer si vous êtes un citoyen, un résident ou une personne protégée"
       },
       "is-province-major-certified": {
-        "label": "Je certifie que j'ai l'âge de la majorité dans ma province",
-        "link": "Trouvez l'âge de la majorité dans votre province",
+        "label": "Je certifie que je suis de l'âge de la majorité dans ma province ou territoire de résidence",
+        "link": "Trouvez l'âge de la majorité dans votre province ou votre territoire",
         "required": "Vous devez certifier que vous avez plus d'âge de la majorité",
         "must-be-true": "Vous devez certifier que vous avez plus d'âge de la majorité"
       },
@@ -61,13 +61,13 @@
         "phone-invalid": "Vous devez entrer un numéro de téléphone à dix chiffres valide (ex. 506-555-5555)"
       },
       "province-id": {
-        "label": "Quelle province ou territoire est votre résidence principale?",
+        "label": "Dans quelle province ou territoire votre principale résidence est-elle située?",
         "required": "Vous devez sélectionner votre province ou votre territoire de résidence"
       }
     },
     "identity-information": {
       "title": "Étape 2",
-      "information-note": "Veuillez noter que les questions de cette section n'affecteront pas votre admissibilité au programme et ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir la réponse que vous jugez le plus applicable. Vous pouvez choisir de sélectionner «\u00A0Préfère ne pas répondre\u00A0» pour toute question dans cette section.",
+      "information-note-1": "Veuillez noter que les questions de cette section n'affecteront pas votre admissibilité au programme et ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir les réponses que vous jugez le plus applicable. Vous pouvez choisir de sélectionner «Préférer ne pas répondre» pour toute question dans cette section.",
       "information-note-2": "Veuillez sélectionner les caractéristiques démographiques avec lesquelles vous vous identifiez.",
       "education-level-id": {
         "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
@@ -75,7 +75,7 @@
         "required": "Vous devez sélectionner une réponse pour le niveau d'éducation"
       },
       "gender-id": {
-        "label": "À quelle identité de genre vous identifiez-vous le plus?",
+        "label": "Avec quelle identité de genre vous identifiez-vous le plus?",
         "required": "Vous devez sélectionner une réponse pour l'identité de genre"
       },
       "indigenous-type-id": {
