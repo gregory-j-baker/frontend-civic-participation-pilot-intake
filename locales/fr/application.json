@@ -38,7 +38,7 @@
       },
       "is-canadian-citizen": {
         "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
-        "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108(3), 109(3) ou 114(4) oucet acte.",
+        "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108(3), 109(3) ou 114(4) ou devrait être de cet acte.",
         "required": "Citoyen canadien, un résident permanent ou une personne protégée est requis"
       },
       "is-province-major-certified": {
@@ -48,7 +48,7 @@
         "must-be-true": "Vous devez certifier que vous avez l'âge de la majorité dans votre province"
       },
       "language-id": {
-        "label": "Dans quelle langue officielle préféreriez-vous être contacté?",
+        "label": "Dans quelle langue officielle préféreriez-vous être contacté et participer?",
         "required": "Langue officielle est requis"
       },
       "last-name": {
@@ -110,7 +110,7 @@
         "required": "Intérêt communautaire est requis"
       },
       "program-interest": {
-        "label": "Le pilote de participation civique vise à assurer l'inclusion des jeunes d'identités diverses, de données démographiques, de styles d'apprentissage et de capacités et de milieux éducatifs - y a-t-il quelque chose que vous ressentez faciliterait votre participation à ce pilote?"
+        "label": "Le pilote de participation civique accueille la jeunesse de divers horizons et des expériences vécues, par exemple des jeunes avec différents styles d'apprentissage, capacités et historiques d'enseignement - y a-t-il des hébergements ou des soutiens que vous souhaitez identifier cela pourrait faciliter votre participation?"
       },
       "skills-interest": {
         "label": "Parlez-nous de vous-même, décrivez vos forces, vos passions et vos motivations. Quelles compétences et connaissances espérez-vous gagner de cette expérience?",

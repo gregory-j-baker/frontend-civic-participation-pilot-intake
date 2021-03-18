@@ -38,7 +38,7 @@
       },
       "is-canadian-citizen": {
         "label": "Are you a Canadian citizen, permanent resident, or protected person?",
-        "helper-text": "A protected person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or that Act.",
+        "helper-text": "A protected person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or should be of that Act.",
         "required": "Canadian citizen, permanent resident, or protected person is required"
       },
       "is-province-major-certified": {
@@ -48,7 +48,7 @@
         "must-be-true": "You must certify that you are over the age of majority in my province"
       },
       "language-id": {
-        "label": "In which official language would you prefer to be contacted?",
+        "label": "In which official language would you prefer to be contacted and participate?",
         "required": "official language is required"
       },
       "last-name": {
@@ -110,7 +110,7 @@
         "required": "Community interest is required"
       },
       "program-interest": {
-        "label": "The Civic Participation Pilot is aiming to ensure inclusivity of youth from diverse identities, demographics, learning styles and abilities and educational backgrounds - is there anything you feel would facilitate your participation in this pilot?"
+        "label": "The Civic Participation Pilot welcomes youth from diverse backgrounds and lived experiences, for example youth with different learning styles, abilities and educational backgrounds – are there any accommodations or supports that you wish to identify that might facilitate your participation?"
       },
       "skills-interest": {
         "label": "Tell us about yourself, describe your strenghts, passions and what motivates you. What skills and knowledge do you hope to gain from this experience?",
