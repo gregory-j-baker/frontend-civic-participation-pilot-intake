@@ -39,7 +39,12 @@ const ConsentPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { mutate: submitApplication, error: submitApplicationError, isLoading: submitApplicationIsLoading, isSuccess: submitApplicationIsSuccess } = useSubmitApplication();
+  const { mutate: submitApplication, error: submitApplicationError, isLoading: submitApplicationIsLoading, isSuccess: submitApplicationIsSuccess } = useSubmitApplication({
+    onSuccess: () => {
+      window.sessionStorage.removeItem(Constants.FormDataStorageKey);
+      router.push('/application/confirmation');
+    },
+  });
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
@@ -77,13 +82,6 @@ const ConsentPage = (): JSX.Element => {
   useEffect(() => {
     window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
   }, [formData]);
-
-  useEffect(() => {
-    if (submitApplicationIsSuccess) {
-      window.sessionStorage.removeItem(Constants.FormDataStorageKey);
-      router.push('/application/confirmation');
-    }
-  }, [submitApplicationIsSuccess, router]);
 
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
     setFormDataState((prev) => {

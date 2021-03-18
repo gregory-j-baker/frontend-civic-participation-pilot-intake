@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useMutation, UseMutationResult } from 'react-query';
+import { useMutation, UseMutationOptions, UseMutationResult } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { apiConfig } from '../../../config';
 
@@ -36,32 +36,30 @@ interface ApplicationData {
 
 export const uri = `${apiConfig.baseUri}/applications`;
 
-const useSubmitApplication = (): UseMutationResult<void, HttpClientResponseError, ApplicationData> => {
-  return useMutation(
-    async (applicationData): Promise<void> => {
-      const response = await fetch(uri, {
-        body: JSON.stringify(applicationData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-      });
+const useSubmitApplication = (options?: UseMutationOptions<void, HttpClientResponseError, ApplicationData>): UseMutationResult<void, HttpClientResponseError, ApplicationData> => {
+  return useMutation(async (applicationData): Promise<void> => {
+    const response = await fetch(uri, {
+      body: JSON.stringify(applicationData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    });
 
-      if (!response.ok) {
-        const responseJson = await response
-          .clone()
-          .json()
-          .catch(() => undefined);
+    if (!response.ok) {
+      const responseJson = await response
+        .clone()
+        .json()
+        .catch(() => undefined);
 
-        const responseText = await response
-          .clone()
-          .text()
-          .catch(() => undefined);
+      const responseText = await response
+        .clone()
+        .text()
+        .catch(() => undefined);
 
-        throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
-      }
+      throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
     }
-  );
+  }, options);
 };
 
 export default useSubmitApplication;
