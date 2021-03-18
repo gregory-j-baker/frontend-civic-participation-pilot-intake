@@ -13,56 +13,56 @@
       "birth-year": {
         "label": "What year were you born?",
         "helper-text": "Please note that to be eligible you must be between 18-30 years of age and of the age of majority in your province or territory of residence.",
-        "required": "Birth year is required"
+        "required": "You must select the year you were born"
       },
       "discovery-channel-id": {
         "label": "How did you hear about the Civic Participation Pilot?",
-        "required": "How did you hear about the Civic Participation Pilot is required"
+        "required": "You must indicate how you heard about this pilot"
       },
       "email": {
-        "email-invalid": "Email address is not in a valid format",
+        "email-invalid": "You must enter a valid email address",
         "label": "Email address",
-        "required": "Email address is required"
+        "required": "You must enter an email address"
       },
       "first-name": {
         "label": "First name",
-        "required": "First name is required"
+        "required": "You must enter your first name"
       },
       "has-dedicated-device": {
         "label": "Do you have access to a dedicated device on which to work?",
-        "required": "Access to a dedicated device is required"
+        "required": "You must indicate if you have access to a dedicated device"
       },
       "internet-quality-id": {
         "label": "Do you have access to reliable internet?",
-        "required": "Access to reliable internet is required"
+        "required": "You must indicate if you have access to reliable internet"
       },
       "is-canadian-citizen": {
         "label": "Are you a Canadian citizen, permanent resident, or protected person?",
         "helper-text": "A protected person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or should be of that Act.",
-        "required": "Canadian citizen, permanent resident, or protected person is required"
+        "required": "You must indicate if you are a citizen, resident, or protected person"
       },
       "is-province-major-certified": {
         "label": "I certify that I am over the age of majority in my province",
         "link": "Find the age of majority in your province",
-        "required": "You must certify that you are over the age of majority in my province",
-        "must-be-true": "You must certify that you are over the age of majority in my province"
+        "required": "You must certify you are over the age of majority",
+        "must-be-true": "You must certify you are over the age of majority"
       },
       "language-id": {
         "label": "In which official language would you prefer to be contacted and participate?",
-        "required": "official language is required"
+        "required": "You must indicate your language preference"
       },
       "last-name": {
         "label": "Last name",
-        "required": "Last name is required"
+        "required": "You must enter your last name"
       },
       "phone-number": {
         "label": "Phone number",
         "helper-text": "Acceptable format: 506-555-5555",
-        "phone-invalid": "Phone number is not in a valid format (ex. 506-555-5555)"
+        "phone-invalid": "You must enter a valid ten-digit phone number (ex. 506-555-5555)"
       },
       "province-id": {
         "label": "Which province or territory is your principle residence?",
-        "required": "Province or territory is required"
+        "required": "You must select your province or territory of residence"
       }
     },
     "identity-information": {
@@ -72,49 +72,49 @@
       "education-level-id": {
         "label": "What is your highest level of formal education completed, or enrolled in currently?",
         "helper-text": "Please note that there is no education requirement for this program.",
-        "required": "Education level is required"
+        "required": "You must select a response for level of education"
       },
       "gender-id": {
         "label": "To which gender identity do you most identify?",
-        "required": "Gender identity is required"
+        "required": "You must select a response for gender identity"
       },
       "indigenous-type-id": {
         "label": "I am a member of an Indigenous community",
-        "required": "Member of an Indigenous community is required"
+        "required": "You must select a response for Indigenous community"
       },
       "is-disabled": {
         "label": "I am a person living with a disability",
-        "required": "Person living with a disability is required"
+        "required": "You must select a response for living with a disability"
       },
       "is-lgbtq": {
         "label": "I am a member of the LGBTQ2 community",
-        "required": "Member of the LGBTQ2 community is required"
+        "required": "You must select a response for LGBTQ2 community"
       },
       "is-minority": {
         "label": "I am a member of a visible minority community",
-        "required": "Member of a visible minority community is required"
+        "required": "You must select a response for visible minority"
       },
       "is-newcomer": {
         "label": "I am recent newcomer to Canada, within the last 5 years",
-        "required": "Newcomer to Canada is required"
+        "required": "You must select a response for newcomer to Canada"
       },
       "is-rural": {
         "label": "I live in a rural or remote area",
-        "required": "Live in a rural or remote area is required"
+        "required": "You must select a response for rural or remote area"
       }
     },
     "expression-of-interest": {
       "title": "Step 3",
       "community-interest": {
         "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
-        "required": "Community interest is required"
+        "required": "You must provide a response to question #2"
       },
       "program-interest": {
-        "label": "The Civic Participation Pilot welcomes youth from diverse backgrounds and lived experiences, for example youth with different learning styles, abilities and educational backgrounds – are there any accommodations or supports that you wish to identify that might facilitate your participation?"
+        "label": "The Civic Participation Pilot welcomes youth from diverse backgrounds and lived experiences, for example youth with different learning styles, abilities and educational backgrounds. Are there any accommodations or supports that you wish to identify that might facilitate your participation?"
       },
       "skills-interest": {
         "label": "Tell us about yourself, describe your strenghts, passions and what motivates you. What skills and knowledge do you hope to gain from this experience?",
-        "required": "Skill interest is required"
+        "required": "You must provide a response to question #1"
       }
     },
     "consent": {
@@ -122,8 +122,8 @@
       "header": "Review and submit the application",
       "is-information-consented": {
         "label": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
-        "required": "You must consent to sharing my response with Employment and Social Development Canada",
-        "must-be-true": "You must consent to sharing my response with Employment and Social Development Canada"
+        "required": "You must provide consent to share this information",
+        "must-be-true": "You must provide consent to share this information"
       }
     }
   },
