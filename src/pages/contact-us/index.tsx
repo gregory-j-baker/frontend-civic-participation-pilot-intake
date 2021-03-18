@@ -13,7 +13,7 @@ import { TextAreaField, TextAreaFieldOnChangeEvent } from '../../components/form
 import useTranslation from 'next-translate/useTranslation';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
-import Alert, { AlertType } from '../../components/Alert/Alert';
+import { Alert, AlertType } from '../../components/Alert';
 import { Button, ButtonOnClickEvent } from '../../components/Button';
 import { TextField, TextFieldOnChangeEvent } from '../../components/form/TextField';
 import { MainLayout } from '../../components/layouts/main/MainLayout';
@@ -21,14 +21,17 @@ import { contactUsSchema } from '../../yup/contactUsSchema';
 import { ValidationError } from 'yup';
 import { YupCustomMessage } from '../../yup/yup-custom';
 import { GetStaticProps } from 'next';
-import useSubmitContactUs from '../../hooks/api/useSubmitContactUs';
+import { ContactUsData, useSubmitContactUs } from '../../hooks/api/useSubmitContactUs';
 
 interface FormDataState {
-  [key: string]: string | undefined;
   email?: string;
   message?: string;
   name?: string;
   phoneNumber?: string;
+}
+
+interface IXFormDataState extends FormDataState {
+  [key: string]: string | undefined;
 }
 
 const ContactUs: NextPage = () => {
@@ -40,31 +43,32 @@ const ContactUs: NextPage = () => {
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
-  const [formData, setFormDataState] = useState<FormDataState>();
+  const [formData, setFormDataState] = useState<IXFormDataState>();
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      return { ...prev, [field as keyof FormDataState]: value ?? undefined };
+      return { ...prev, [field as keyof IXFormDataState]: value ?? undefined };
     });
   };
 
   const handleOnSubmit: ButtonOnClickEvent = async (event) => {
     event.preventDefault();
 
-    setFormDataState((prev) => ({ ...prev }));
-
     // validate
     try {
       await contactUsSchema.validate(formData, { abortEarly: false });
 
-      if (await contactUsSchema.validate(formData)) {
-        // submit contact form
-        submitContactUs({
-          ...formData,
-        });
+      // submit contact form
+      const contactUsData: ContactUsData = {
+        email: formData?.email as string,
+        message: formData?.message as string,
+        name: formData?.name as string,
+        phoneNumber: formData?.phoneNumber as string,
+      };
 
-        router.push(`/contact-us/success`, undefined, { shallow: true });
-      }
+      submitContactUs(contactUsData);
+
+      router.push(`/contact-us/success`);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
@@ -160,17 +164,14 @@ const ContactUs: NextPage = () => {
               disabled={isSubmitting}
               error={getSchemaError(nameof<FormDataState>((o) => o.message))}
               required
-              gutterBottom
               className="tw-w-full"
               wordLimit={250}
             />
           </div>
 
-          <div className="tw-flex tw-flex-wrap">
-            <Button onClick={handleOnSubmit} disabled={isSubmitting} className="tw-m-2">
-              {t('contact-us:form.submit')}
-            </Button>
-          </div>
+          <Button onClick={handleOnSubmit} disabled={isSubmitting}>
+            {t('contact-us:form.submit')}
+          </Button>
         </div>
       </div>
     </MainLayout>

@@ -9,10 +9,10 @@ import { useMutation, UseMutationResult } from 'react-query';
 import { apiConfig } from '../../../config';
 import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
-interface ContactUsData {
-  email?: string;
-  message?: string;
-  name?: string;
+export interface ContactUsData {
+  email: string;
+  message: string;
+  name: string;
   phoneNumber?: string;
 }
 
@@ -31,4 +31,3 @@ const useSubmitContactUs = (): UseMutationResult<Response, unknown, ContactUsDat
 };
 
 export default useSubmitContactUs;
-export type { ContactUsData };
