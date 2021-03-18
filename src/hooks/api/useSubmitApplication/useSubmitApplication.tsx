@@ -6,8 +6,8 @@
  */
 
 import { useMutation, UseMutationResult } from 'react-query';
+import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { apiConfig } from '../../../config';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 interface ApplicationData {
   birthYear: number;
@@ -36,15 +36,31 @@ interface ApplicationData {
 
 export const uri = `${apiConfig.baseUri}/applications`;
 
-const useSubmitApplication = (): UseMutationResult<Response, unknown, ApplicationData> => {
-  return useMutation((applicationData: ApplicationData) =>
-    fetchWrapper<any>(uri, {
-      body: JSON.stringify(applicationData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    })
+const useSubmitApplication = (): UseMutationResult<void, HttpClientResponseError, ApplicationData> => {
+  return useMutation(
+    async (applicationData): Promise<void> => {
+      const response = await fetch(uri, {
+        body: JSON.stringify(applicationData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        const responseJson = await response
+          .clone()
+          .json()
+          .catch(() => undefined);
+
+        const responseText = await response
+          .clone()
+          .text()
+          .catch(() => undefined);
+
+        throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
+      }
+    }
   );
 };
 

@@ -39,7 +39,7 @@ const ConsentPage = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { isLoading: isSubmitting, error: submitError, mutate: submitApplication } = useSubmitApplication();
+  const { mutate: submitApplication, error: submitApplicationError, isLoading: submitApplicationIsLoading, isSuccess: submitApplicationIsSuccess } = useSubmitApplication();
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
@@ -77,6 +77,13 @@ const ConsentPage = (): JSX.Element => {
   useEffect(() => {
     window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
   }, [formData]);
+
+  useEffect(() => {
+    if (submitApplicationIsSuccess) {
+      window.sessionStorage.removeItem(Constants.FormDataStorageKey);
+      router.push('/application/confirmation');
+    }
+  }, [submitApplicationIsSuccess, router]);
 
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
     setFormDataState((prev) => {
@@ -153,7 +160,7 @@ const ConsentPage = (): JSX.Element => {
     );
   };
 
-  if (submitError) return <Error err={submitError as HttpClientResponseError} />;
+  if (submitApplicationError) return <Error err={submitApplicationError as HttpClientResponseError} />;
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -184,14 +191,21 @@ const ConsentPage = (): JSX.Element => {
             </Alert>
           )}
 
-          <Wizard activeStep={4} numberOfSteps={4} header={t('application:step.consent.header')} nextText={t('application:submit')} onPreviousClick={handleWizardOnPreviousClick} onNextClick={handleWizardOnNextClick} disabled={isSubmitting}>
+          <Wizard
+            activeStep={4}
+            numberOfSteps={4}
+            header={t('application:step.consent.header')}
+            nextText={t('application:submit')}
+            onPreviousClick={handleWizardOnPreviousClick}
+            onNextClick={handleWizardOnNextClick}
+            disabled={submitApplicationIsLoading || submitApplicationIsSuccess}>
             <FormReview applicationState={formData} />
             <CheckboxeField
               field={nameof<ConsentState>((o) => o.isInformationConsented)}
               label={t('application:step.consent.is-information-consented.label')}
               checked={formData.consent.isInformationConsented}
               onChange={handleOnCheckboxFieldChange}
-              disabled={isSubmitting}
+              disabled={submitApplicationIsLoading || submitApplicationIsSuccess}
               error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
             />
           </Wizard>

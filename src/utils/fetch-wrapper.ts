@@ -17,8 +17,16 @@ export const fetchWrapper = async <T>(input: RequestInfo, init?: RequestInit): P
   const response = await fetch(input, init);
 
   if (!response.ok) {
-    const responseJson = await response.clone().json();
-    const responseText = await response.clone().text();
+    const responseJson = await response
+      .clone()
+      .json()
+      .catch(() => undefined);
+
+    const responseText = await response
+      .clone()
+      .text()
+      .catch(() => undefined);
+
     throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
   }
 
