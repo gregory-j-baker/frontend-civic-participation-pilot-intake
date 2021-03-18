@@ -7,7 +7,6 @@
 
 import { MouseEvent } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import { TailwindColor } from '../../common/types';
 import { Button, ButtonOnClickEvent } from '../Button';
 import ContentPaper from '../ContentPaper/ContentPaper';
 
@@ -70,7 +69,7 @@ const Wizard = ({ activeStep, children, disabled, header, nextDisabled, nextHidd
           </div>
           {!previousHidden && (
             <div className="tw-w-full sm:tw-w-4/12 md:tw-w-3/12 tw-mt-4 sm:tw-mt-0">
-              <Button onClick={handleOnPreviousClick} color={TailwindColor.white} disabled={previousDisabled || disabled} className="tw-w-full tw-whitespace-nowrap">
+              <Button onClick={handleOnPreviousClick} outline disabled={previousDisabled || disabled} className="tw-w-full tw-whitespace-nowrap">
                 {previousText ? previousText : t('common:wizard.previous')}
               </Button>
             </div>

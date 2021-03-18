@@ -68,6 +68,7 @@
     "identity-information": {
       "title": "Étape 2",
       "information-note": "Veuillez noter que les questions de cette section n'affecteront pas votre admissibilité au programme et ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir la réponse que vous jugez le plus applicable. Vous pouvez choisir de sélectionner «\u00A0Préfère ne pas répondre\u00A0» pour toute question dans cette section.",
+      "information-note-2": "Veuillez sélectionner les caractéristiques démographiques avec lesquelles vous vous identifiez.",
       "education-level-id": {
         "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
         "helper-text": "Veuillez noter qu'il n'y a pas d'obligation d'éducation pour ce programme.",
@@ -112,7 +113,7 @@
         "label": "Le pilote de participation civique vise à assurer l'inclusion des jeunes d'identités diverses, de données démographiques, de styles d'apprentissage et de capacités et de milieux éducatifs - y a-t-il quelque chose que vous ressentez faciliterait votre participation à ce pilote?"
       },
       "skills-interest": {
-        "label": "Parlez-nous de vous-même, décrivez vos forces, vos passions et vos motivations.Quelles compétences et connaissances espérez-vous gagner de cette expérience?",
+        "label": "Parlez-nous de vous-même, décrivez vos forces, vos passions et vos motivations. Quelles compétences et connaissances espérez-vous gagner de cette expérience?",
         "required": "Intérêt des compétences est requis"
       }
     },

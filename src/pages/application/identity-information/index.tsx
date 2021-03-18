@@ -191,7 +191,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
           )}
 
           <Wizard activeStep={2} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
-            <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step.identity-information.information-note')}</p>
+            <p className="tw-m-0 tw-mb-10 tw-font-bold">{t('application:step.identity-information.information-note-1')}</p>
 
             <SelectField
               field={nameof<IdentityInformationState>((o) => o.genderId)}
@@ -217,6 +217,8 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
               gutterBottom
               className="tw-w-full"
             />
+
+            <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step.identity-information.information-note-2')}</p>
 
             <RadiosField
               field={nameof<IdentityInformationState>((o) => o.isDisabled)}
