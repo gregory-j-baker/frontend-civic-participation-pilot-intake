@@ -10,15 +10,12 @@ import Image from 'next/image';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import Trans from 'next-translate/Trans';
-import { Button, ButtonOnClickEvent } from '../../../components/Button';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
+import { applicationConfig } from '../../../config';
+import { ButtonLink } from '../../../components/ButtonLink';
 
 const EmailVerficationFailedPage: NextPage = () => {
-  const { t } = useTranslation();
-
-  const handleOnSubmit: ButtonOnClickEvent = (event) => {
-    event.preventDefault();
-  };
+  const { t, lang } = useTranslation();
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -40,7 +37,7 @@ const EmailVerficationFailedPage: NextPage = () => {
             />
           </p>
 
-          <Button onClick={handleOnSubmit}>{t('email-verification:failed.form.submit')}</Button>
+          <ButtonLink href={lang === 'fr' ? applicationConfig.canadaServiceCorpsUrl.fr : applicationConfig.canadaServiceCorpsUrl.en}>{t('email-verification:failed.form.submit')}</ButtonLink>
         </div>
         <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">
           <Image src="/img/undraw_cancel_u1it.svg" alt="" layout="fill" />

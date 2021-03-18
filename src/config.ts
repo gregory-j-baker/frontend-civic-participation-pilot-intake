@@ -15,6 +15,10 @@ export const applicationConfig = {
   dateModified: getDateModified(),
   gitCommit: getGitCommit(),
   version: getApplicationVersion(),
+  canadaServiceCorpsUrl: {
+    en: process.env.NEXT_PUBLIC_CSC_URL_EN ?? 'https://www.canada.ca/en/services/youth/canada-service-corps.html',
+    fr: process.env.NEXT_PUBLIC_CSC_URL_FR ?? 'https://www.canada.ca/fr/services/jeunesse/service-jeunesse-canada.html',
+  },
 };
 
 /**

@@ -9,15 +9,12 @@ import { GetStaticProps } from 'next';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
-import { Button, ButtonOnClickEvent } from '../../../components/Button';
+import { ButtonLink } from '../../../components/ButtonLink';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
+import { applicationConfig } from '../../../config';
 
 const ApplicationConfirmationPage = (): JSX.Element => {
-  const { t } = useTranslation();
-
-  const handleOnSubmit: ButtonOnClickEvent = (event) => {
-    event.preventDefault();
-  };
+  const { t, lang } = useTranslation();
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -30,7 +27,7 @@ const ApplicationConfirmationPage = (): JSX.Element => {
           <h2 className="tw-m-0 tw-border-none tw-mb-16 tw-text-2xl">{t('application:confirmation.sub-header')}</h2>
           <p className="tw-mb-16">{t('application:confirmation.sub-header')}</p>
 
-          <Button onClick={handleOnSubmit}>{t('application:confirmation.submit')}</Button>
+          <ButtonLink href={lang === 'fr' ? applicationConfig.canadaServiceCorpsUrl.fr : applicationConfig.canadaServiceCorpsUrl.en}>{t('application:confirmation.submit')}</ButtonLink>
         </div>
         <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">
           <Image src="/img/undraw_Mailbox_re_dvds.svg" alt="" layout="fill" />
