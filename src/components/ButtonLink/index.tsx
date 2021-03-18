@@ -5,5 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default as ButtonLink } from './ButtonLink';
 export * from './ButtonLink';

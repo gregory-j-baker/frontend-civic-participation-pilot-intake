@@ -29,7 +29,7 @@ export interface CheckboxeFieldProps {
   required?: boolean;
 }
 
-const CheckboxeField = ({ className, checked, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, required }: CheckboxeFieldProps): JSX.Element => {
+export const CheckboxeField = ({ className, checked, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, required }: CheckboxeFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-field-${field}`;
@@ -56,5 +56,3 @@ const CheckboxeField = ({ className, checked, disabled, error, field, gutterBott
 CheckboxeField.defaultProps = {
   labelClassName: 'tw-font-bold',
 };
-
-export default CheckboxeField;

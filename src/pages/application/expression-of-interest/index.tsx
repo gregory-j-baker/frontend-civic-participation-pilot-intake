@@ -16,7 +16,7 @@ import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../../../components/Wizard';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
-import Alert, { AlertType } from '../../../components/Alert/Alert';
+import { Alert, AlertType } from '../../../components/Alert/Alert';
 import { ApplicationState, ExpressionOfInterestState, Constants } from '../types';
 import { expressionOfInterestSchema, identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';

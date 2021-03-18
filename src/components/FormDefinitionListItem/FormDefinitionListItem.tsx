@@ -11,11 +11,9 @@ export interface FormDefinitionListItemProps {
   term: string;
 }
 
-const FormDefinitionListItem = ({ definition, even, term }: FormDefinitionListItemProps): JSX.Element => (
+export const FormDefinitionListItem = ({ definition, even, term }: FormDefinitionListItemProps): JSX.Element => (
   <div className={`tw-p-4 md:tw-px-6 md:tw-grid md:tw-grid-cols-2 md:tw-gap-4 ${even ? 'tw-bg-gray-50' : ''}`}>
     <dt className="tw-m-0 tw-mb-2 md:tw-mb-0 tw-font-medium tw-text-gray-500">{term}</dt>
     <dd className="tw-m-0">{definition}</dd>
   </div>
 );
-
-export default FormDefinitionListItem;

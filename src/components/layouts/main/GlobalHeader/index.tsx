@@ -5,20 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default as Branding } from './Branding';
 export * from './GlobalHeader';
-
-export { default as Breadcrumb } from './Breadcrumb';
 export * from './Breadcrumb';
-
-export { default as GlobalHeader } from './GlobalHeader';
 export * from './GlobalHeader';
-
-export { default as LocaleSwitcher } from './LocaleSwitcher';
 export * from './LocaleSwitcher';
-
-export { default as Search } from './Search';
 export * from './Search';
-
-export { default as SkipToNav } from './SkipToNav';
 export * from './SkipToNav';

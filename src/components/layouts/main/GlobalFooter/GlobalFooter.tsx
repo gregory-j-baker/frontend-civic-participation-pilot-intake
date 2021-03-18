@@ -8,7 +8,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import React from 'react';
 
-const GlobalFooter = (): JSX.Element => {
+export const GlobalFooter = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (
@@ -55,5 +55,3 @@ const GlobalFooter = (): JSX.Element => {
     </div>
   );
 };
-
-export default GlobalFooter;

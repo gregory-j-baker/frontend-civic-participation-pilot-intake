@@ -17,7 +17,7 @@ export interface ResponseJson {
   validationErrors?: ValidationError[];
 }
 
-export default class HttpClientResponseError extends Error {
+export class HttpClientResponseError extends Error {
   name = 'HttpClientResponseError';
   responseHeaders: Headers;
   responseStatus: number;

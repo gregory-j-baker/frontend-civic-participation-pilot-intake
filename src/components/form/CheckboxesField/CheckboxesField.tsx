@@ -36,7 +36,7 @@ export interface CheckboxesFieldProps {
   values?: string[] | null;
 }
 
-const CheckboxesField = ({ className, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, values }: CheckboxesFieldProps): JSX.Element => {
+export const CheckboxesField = ({ className, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, values }: CheckboxesFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const handleOnChange: React.FormEventHandler<Checkbox> = (event) => {
@@ -64,5 +64,3 @@ const CheckboxesField = ({ className, error, field, gutterBottom, helperText, in
     </FormGroup>
   );
 };
-
-export default CheckboxesField;

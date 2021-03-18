@@ -7,7 +7,7 @@
 
 import useTranslation from 'next-translate/useTranslation';
 
-const Search = (): JSX.Element => {
+export const Search = (): JSX.Element => {
   const { t, lang } = useTranslation();
 
   return (
@@ -42,5 +42,3 @@ const Search = (): JSX.Element => {
     </section>
   );
 };
-
-export default Search;

@@ -7,7 +7,7 @@
 
 import useTranslation from 'next-translate/useTranslation';
 
-const Breadcrumb = (): JSX.Element => {
+export const Breadcrumb = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (
@@ -25,5 +25,3 @@ const Breadcrumb = (): JSX.Element => {
     </nav>
   );
 };
-
-export default Breadcrumb;

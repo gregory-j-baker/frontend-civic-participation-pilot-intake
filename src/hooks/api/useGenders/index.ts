@@ -7,6 +7,5 @@
 
 import genderStaticProps from './static-props-data.json';
 
-export { default } from './useGenders';
-export * from './useGenders';
 export { genderStaticProps };
+export * from './useGenders';

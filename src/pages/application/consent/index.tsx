@@ -14,11 +14,11 @@ import { CheckboxeField } from '../../../components/form/CheckboxeField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnPreviousClickEvent, WizardOnNextClickEvent } from '../../../components/Wizard';
-import useSubmitApplication, { ApplicationData } from '../../../hooks/api/useSubmitApplication';
+import { useSubmitApplication, ApplicationData } from '../../../hooks/api/useSubmitApplication';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
-import Alert, { AlertType } from '../../../components/Alert/Alert';
+import { Alert, AlertType } from '../../../components/Alert/Alert';
 import { ApplicationState, ConsentState, Constants, GetDescriptionFunc } from '../types';
 import { consentSchema, expressionOfInterestSchema, applicationSchema, identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
@@ -26,13 +26,13 @@ import { HttpClientResponseError } from '../../../common/HttpClientResponseError
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { FormDefinitionListItem } from '../../../components/FormDefinitionListItem';
-import useDiscoveryChannels from '../../../hooks/api/useDiscoveryChannels';
-import useInternetQualities from '../../../hooks/api/useInternetQualities';
-import useLanguages from '../../../hooks/api/useLanguages';
-import useProvinces from '../../../hooks/api/useProvinces';
-import useEducationLevels from '../../../hooks/api/useEducationLevels';
-import useGenders from '../../../hooks/api/useGenders';
-import useIndigenousTypes from '../../../hooks/api/useIndigenousTypes';
+import { useDiscoveryChannels } from '../../../hooks/api/useDiscoveryChannels';
+import { useInternetQualities } from '../../../hooks/api/useInternetQualities';
+import { useLanguages } from '../../../hooks/api/useLanguages';
+import { useProvinces } from '../../../hooks/api/useProvinces';
+import { useEducationLevels } from '../../../hooks/api/useEducationLevels';
+import { useGenders } from '../../../hooks/api/useGenders';
+import { useIndigenousTypes } from '../../../hooks/api/useIndigenousTypes';
 import { sleep } from '../../../utils/misc-utils';
 
 const ConsentPage = (): JSX.Element => {

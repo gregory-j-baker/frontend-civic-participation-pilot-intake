@@ -18,7 +18,7 @@ export interface ContactUsData {
 
 export const uri = `${apiConfig.baseUri}/contact-form`;
 
-const useSubmitContactUs = (): UseMutationResult<Response, unknown, ContactUsData> => {
+export const useSubmitContactUs = (): UseMutationResult<Response, unknown, ContactUsData> => {
   return useMutation((contactUsData: ContactUsData) =>
     fetchWrapper<any>(uri, {
       body: JSON.stringify(contactUsData),
@@ -29,5 +29,3 @@ const useSubmitContactUs = (): UseMutationResult<Response, unknown, ContactUsDat
     })
   );
 };
-
-export default useSubmitContactUs;

@@ -48,7 +48,7 @@ export const languagesQueryKey: QueryKey = 'languages';
 
 export const fetchLanguages = (): Promise<LanguageResponse> => fetchWrapper<LanguageResponse>(languagesUri);
 
-const useLanguages = ({ enabled = true, onlyActive = true, sort = true }: UseLanguagesOptions = {}): UseQueryResult<LanguageResponse, unknown> => {
+export const useLanguages = ({ enabled = true, onlyActive = true, sort = true }: UseLanguagesOptions = {}): UseQueryResult<LanguageResponse, unknown> => {
   return useQuery(languagesQueryKey, fetchLanguages, {
     enabled,
     cacheTime: Infinity,
@@ -68,5 +68,3 @@ const useLanguages = ({ enabled = true, onlyActive = true, sort = true }: UseLan
     },
   });
 };
-
-export default useLanguages;

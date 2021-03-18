@@ -48,7 +48,7 @@ export const discoveryChannelsQueryKey: QueryKey = 'discovery-channels';
 
 export const fetchDiscoveryChannels = (): Promise<DiscoveryChannelResponse> => fetchWrapper<DiscoveryChannelResponse>(discoveryChannelsUri);
 
-const useDiscoveryChannels = ({ enabled = true, onlyActive = true, sort = true }: UseDiscoveryChannelsOptions = {}): UseQueryResult<DiscoveryChannelResponse, unknown> => {
+export const useDiscoveryChannels = ({ enabled = true, onlyActive = true, sort = true }: UseDiscoveryChannelsOptions = {}): UseQueryResult<DiscoveryChannelResponse, unknown> => {
   return useQuery(discoveryChannelsQueryKey, fetchDiscoveryChannels, {
     enabled,
     cacheTime: Infinity,
@@ -68,5 +68,3 @@ const useDiscoveryChannels = ({ enabled = true, onlyActive = true, sort = true }
     },
   });
 };
-
-export default useDiscoveryChannels;

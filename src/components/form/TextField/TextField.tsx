@@ -29,7 +29,7 @@ export interface TextFieldProps {
   value?: string | null;
 }
 
-const TextField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, value }: TextFieldProps): JSX.Element => {
+export const TextField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, value }: TextFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-field-${field}`;
@@ -52,5 +52,3 @@ const TextField = ({ className, disabled, error, field, gutterBottom, helperText
     </FormGroup>
   );
 };
-
-export default TextField;

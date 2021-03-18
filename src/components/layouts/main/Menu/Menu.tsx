@@ -7,11 +7,11 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import useCurrentBreakpoint from '../../../../hooks/useCurrentBreakpoint';
+import { useCurrentBreakpoint } from '../../../../hooks/useCurrentBreakpoint';
 import { theme } from '../../../../config';
 import { getNextElementSibling, getPreviousElementSibling } from '../../../../utils/misc-utils';
 
-interface MenuData {
+export interface MenuData {
   id: string;
   text: string;
   href: string;
@@ -29,7 +29,7 @@ interface MenuData {
   ];
 }
 
-const Menu = (): JSX.Element => {
+export const Menu = (): JSX.Element => {
   const { t } = useTranslation();
   const currentBreakpoint = useCurrentBreakpoint();
 
@@ -254,5 +254,3 @@ const Menu = (): JSX.Element => {
     </nav>
   );
 };
-
-export default Menu;

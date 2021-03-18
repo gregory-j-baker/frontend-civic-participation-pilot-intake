@@ -9,13 +9,13 @@ export interface ListItemProps {
   children: React.ReactNode;
 }
 
-export interface ErroPageLinksProps {
+export interface ErrorPageLinksProps {
   lang: string;
 }
 
-const ListItem = ({ children }: ListItemProps): JSX.Element => <li className="tw-my-2">{children}</li>;
+export const ListItem = ({ children }: ListItemProps): JSX.Element => <li className="tw-my-2">{children}</li>;
 
-const ErroPageLinks = ({ lang }: ErroPageLinksProps): JSX.Element => {
+export const ErrorPageLinks = ({ lang }: ErrorPageLinksProps): JSX.Element => {
   if (lang === 'fr') {
     return (
       <ul className="tw-list-disc tw-list-inside">
@@ -46,5 +46,3 @@ const ErroPageLinks = ({ lang }: ErroPageLinksProps): JSX.Element => {
     </ul>
   );
 };
-
-export default ErroPageLinks;

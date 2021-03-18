@@ -7,6 +7,5 @@
 
 import discoveryChannelsStaticProps from './static-props-data.json';
 
-export { default } from './useDiscoveryChannels';
-export * from './useDiscoveryChannels';
 export { discoveryChannelsStaticProps };
+export * from './useDiscoveryChannels';

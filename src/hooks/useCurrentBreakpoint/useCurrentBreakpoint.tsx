@@ -7,9 +7,9 @@
 
 import { useState, useEffect } from 'react';
 import { theme } from '../../config';
-import useWindowSize from '../useWindowSize';
+import { useWindowSize } from '../useWindowSize';
 
-const useCurrentBreakpoint = (): number | undefined => {
+export const useCurrentBreakpoint = (): number | undefined => {
   const { xs, sm, md, lg } = theme.breakpoints;
   const { width } = useWindowSize();
   const [currentBreakpoint, setCurrentBreakpoint] = useState<number | undefined>(undefined);
@@ -24,5 +24,3 @@ const useCurrentBreakpoint = (): number | undefined => {
 
   return currentBreakpoint;
 };
-
-export default useCurrentBreakpoint;

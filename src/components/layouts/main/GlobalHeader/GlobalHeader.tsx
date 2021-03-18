@@ -5,18 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import Branding from './Branding';
-import Breadcrumb from './Breadcrumb';
-import LocaleSwitcher from './LocaleSwitcher';
+import { Branding } from './Branding';
+import { Breadcrumb } from './Breadcrumb';
+import { LocaleSwitcher } from './LocaleSwitcher';
 import { Menu } from '../Menu';
-import Search from './Search';
-import SkipToNav from './SkipToNav';
+import { Search } from './Search';
+import { SkipToNav } from './SkipToNav';
 
 interface GlobalHeaderProps {
   showBreadcrumb: boolean;
 }
 
-const GlobalHeader = ({ showBreadcrumb }: GlobalHeaderProps): JSX.Element => {
+export const GlobalHeader = ({ showBreadcrumb }: GlobalHeaderProps): JSX.Element => {
   return (
     <div className="global-header">
       <SkipToNav />
@@ -34,5 +34,3 @@ const GlobalHeader = ({ showBreadcrumb }: GlobalHeaderProps): JSX.Element => {
     </div>
   );
 };
-
-export default GlobalHeader;

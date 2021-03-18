@@ -48,7 +48,7 @@ export const provincesQueryKey: QueryKey = 'provinces';
 
 export const fetchProvinces = (): Promise<ProvinceResponse> => fetchWrapper<ProvinceResponse>(provincesUri);
 
-const useProvinces = ({ enabled = true, onlyActive = true, sort = true }: UseProvincesOptions = {}): UseQueryResult<ProvinceResponse, unknown> => {
+export const useProvinces = ({ enabled = true, onlyActive = true, sort = true }: UseProvincesOptions = {}): UseQueryResult<ProvinceResponse, unknown> => {
   return useQuery(provincesQueryKey, fetchProvinces, {
     enabled,
     cacheTime: Infinity,
@@ -68,5 +68,3 @@ const useProvinces = ({ enabled = true, onlyActive = true, sort = true }: UsePro
     },
   });
 };
-
-export default useProvinces;

@@ -15,7 +15,7 @@ interface MainLayoutProps extends FunctionComponent {
   showBreadcrumb: boolean;
 }
 
-const MainLayout = ({ children, showBreadcrumb }: MainLayoutProps): JSX.Element => (
+export const MainLayout = ({ children, showBreadcrumb }: MainLayoutProps): JSX.Element => (
   <div className="tw-flex tw-flex-col tw-h-screen">
     <ResponsiveHandler />
     <GlobalHeader showBreadcrumb={showBreadcrumb} />
@@ -29,5 +29,3 @@ const MainLayout = ({ children, showBreadcrumb }: MainLayoutProps): JSX.Element 
 MainLayout.defaultProps = {
   showBreadcrumb: true,
 };
-
-export default MainLayout;

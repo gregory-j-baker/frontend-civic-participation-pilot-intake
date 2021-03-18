@@ -7,6 +7,5 @@
 
 import provincesStaticProps from './static-props-data.json';
 
-export { default } from './useProvinces';
-export * from './useProvinces';
 export { provincesStaticProps };
+export * from './useProvinces';

@@ -48,7 +48,7 @@ export const educationLevelsQueryKey: QueryKey = 'education-levels';
 
 export const fetchEducationLevels = (): Promise<EducationLevelResponse> => fetchWrapper<EducationLevelResponse>(educationLevelsUri);
 
-const useEducationLevels = ({ enabled = true, onlyActive = true, sort = true }: UseEducationLevelsOptions = {}): UseQueryResult<EducationLevelResponse, unknown> => {
+export const useEducationLevels = ({ enabled = true, onlyActive = true, sort = true }: UseEducationLevelsOptions = {}): UseQueryResult<EducationLevelResponse, unknown> => {
   return useQuery(educationLevelsQueryKey, fetchEducationLevels, {
     enabled,
     cacheTime: Infinity,
@@ -68,5 +68,3 @@ const useEducationLevels = ({ enabled = true, onlyActive = true, sort = true }: 
     },
   });
 };
-
-export default useEducationLevels;

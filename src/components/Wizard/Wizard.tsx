@@ -8,7 +8,7 @@
 import { MouseEvent } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { Button, ButtonOnClickEvent } from '../Button';
-import ContentPaper from '../ContentPaper/ContentPaper';
+import { ContentPaper } from '../ContentPaper/ContentPaper';
 
 export interface WizardOnNextClickEvent {
   (event: MouseEvent<HTMLButtonElement>): void;
@@ -35,9 +35,9 @@ export interface WizardProps {
   stepText?: string;
 }
 
-const WIZARD_CONTAINER_ID = 'wizard-container';
+export const WIZARD_CONTAINER_ID = 'wizard-container';
 
-const Wizard = ({ activeStep, children, disabled, header, nextDisabled, nextHidden, nextText, numberOfSteps, onNextClick, onPreviousClick, previousDisabled, previousHidden, previousText, stepText }: WizardProps): JSX.Element => {
+export const Wizard = ({ activeStep, children, disabled, header, nextDisabled, nextHidden, nextText, numberOfSteps, onNextClick, onPreviousClick, previousDisabled, previousHidden, previousText, stepText }: WizardProps): JSX.Element => {
   const { t } = useTranslation();
 
   const handleOnNextClick: ButtonOnClickEvent = (event) => {
@@ -79,5 +79,3 @@ const Wizard = ({ activeStep, children, disabled, header, nextDisabled, nextHidd
     </div>
   );
 };
-
-export default Wizard;

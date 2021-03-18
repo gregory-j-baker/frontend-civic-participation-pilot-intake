@@ -32,7 +32,7 @@ export interface TextAreaFieldProps {
   wordLimit?: number;
 }
 
-const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, rows, value, wordLimit }: TextAreaFieldProps): JSX.Element => {
+export const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, rows, value, wordLimit }: TextAreaFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-field-${field}`;
@@ -68,5 +68,3 @@ const TextAreaField = ({ className, disabled, error, field, gutterBottom, helper
     </FormGroup>
   );
 };
-
-export default TextAreaField;

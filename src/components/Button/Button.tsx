@@ -90,7 +90,7 @@ const getColorClasses: getColorClassesFunc = (color) => {
   };
 };
 
-const Button = ({ className, color, disabled, children, onClick, outline }: ButtonProps): JSX.Element => {
+export const Button = ({ className, color, disabled, children, onClick, outline }: ButtonProps): JSX.Element => {
   const colorClasses = useMemo(() => getColorClasses(color ?? TailwindColor.green), [color]);
 
   const commonClasses = 'tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded';
@@ -105,5 +105,3 @@ const Button = ({ className, color, disabled, children, onClick, outline }: Butt
     </button>
   );
 };
-
-export default Button;

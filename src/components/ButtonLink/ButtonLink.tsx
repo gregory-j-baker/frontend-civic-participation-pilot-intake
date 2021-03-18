@@ -86,7 +86,7 @@ const getColorClasses: getColorClassesFunc = (color) => {
   };
 };
 
-const ButtonLink = (props: ButtonLinkProps): JSX.Element => {
+export const ButtonLink = (props: ButtonLinkProps): JSX.Element => {
   const colorClasses = useMemo(() => getColorClasses(props.color ?? TailwindColor.green), [props.color]);
 
   const commonClasses = 'tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded';
@@ -101,5 +101,3 @@ const ButtonLink = (props: ButtonLinkProps): JSX.Element => {
     </Link>
   );
 };
-
-export default ButtonLink;

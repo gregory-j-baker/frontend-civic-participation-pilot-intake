@@ -7,6 +7,5 @@
 
 import languagesStaticProps from './static-props-data.json';
 
-export { default } from './useLanguages';
-export * from './useLanguages';
 export { languagesStaticProps };
+export * from './useLanguages';

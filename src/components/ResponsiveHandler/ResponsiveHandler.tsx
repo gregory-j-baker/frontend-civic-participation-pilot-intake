@@ -7,9 +7,9 @@
 
 import { useEffect } from 'react';
 import { theme } from '../../config';
-import useCurrentBreakpoint from '../../hooks/useCurrentBreakpoint';
+import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
 
-const ResponsiveHandler = (): JSX.Element => {
+export const ResponsiveHandler = (): JSX.Element => {
   const { breakpoints } = theme;
   const currentBreakpoint = useCurrentBreakpoint();
 
@@ -32,5 +32,3 @@ const ResponsiveHandler = (): JSX.Element => {
 
   return <></>;
 };
-
-export default ResponsiveHandler;

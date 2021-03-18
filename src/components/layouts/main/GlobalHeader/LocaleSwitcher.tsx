@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import useTranslation from 'next-translate/useTranslation';
 
-const LocaleSwitcher = (): JSX.Element => {
+export const LocaleSwitcher = (): JSX.Element => {
   const { pathname, query } = useRouter();
   const { t, lang } = useTranslation();
 
@@ -40,5 +40,3 @@ const LocaleSwitcher = (): JSX.Element => {
     </>
   );
 };
-
-export default LocaleSwitcher;

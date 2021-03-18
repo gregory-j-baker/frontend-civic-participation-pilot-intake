@@ -9,7 +9,7 @@ import { useMutation, UseMutationOptions, UseMutationResult } from 'react-query'
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { apiConfig } from '../../../config';
 
-interface ApplicationData {
+export interface ApplicationData {
   birthYear: number;
   communityInterest: string;
   discoveryChannelId: string;
@@ -36,7 +36,7 @@ interface ApplicationData {
 
 export const uri = `${apiConfig.baseUri}/applications`;
 
-const useSubmitApplication = (options?: UseMutationOptions<void, HttpClientResponseError, ApplicationData>): UseMutationResult<void, HttpClientResponseError, ApplicationData> => {
+export const useSubmitApplication = (options?: UseMutationOptions<void, HttpClientResponseError, ApplicationData>): UseMutationResult<void, HttpClientResponseError, ApplicationData> => {
   return useMutation(async (applicationData): Promise<void> => {
     const response = await fetch(uri, {
       body: JSON.stringify(applicationData),
@@ -61,6 +61,3 @@ const useSubmitApplication = (options?: UseMutationOptions<void, HttpClientRespo
     }
   }, options);
 };
-
-export default useSubmitApplication;
-export type { ApplicationData };

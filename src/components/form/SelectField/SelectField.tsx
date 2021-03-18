@@ -33,7 +33,7 @@ export interface SelectFieldProps {
   value?: string | null;
 }
 
-const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, options, required, value }: SelectFieldProps): JSX.Element => {
+export const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, options, required, value }: SelectFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const fieldId = `form-field-${field}`;
 
@@ -66,5 +66,3 @@ const SelectField = ({ className, disabled, error, field, gutterBottom, helperTe
     </FormGroup>
   );
 };
-
-export default SelectField;

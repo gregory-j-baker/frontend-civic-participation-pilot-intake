@@ -9,7 +9,7 @@ import useTranslation from 'next-translate/useTranslation';
 
 import styles from './PageLoadingSpinner.module.css';
 
-const PageLoadingSpinner = (): JSX.Element => {
+export const PageLoadingSpinner = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (
@@ -20,5 +20,3 @@ const PageLoadingSpinner = (): JSX.Element => {
     </div>
   );
 };
-
-export default PageLoadingSpinner;

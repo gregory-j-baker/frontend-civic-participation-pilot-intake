@@ -7,7 +7,7 @@
 
 import useTranslation from 'next-translate/useTranslation';
 
-const SkipToNav = (): JSX.Element => {
+export const SkipToNav = (): JSX.Element => {
   const { t } = useTranslation();
 
   return (
@@ -27,5 +27,3 @@ const SkipToNav = (): JSX.Element => {
     </nav>
   );
 };
-
-export default SkipToNav;

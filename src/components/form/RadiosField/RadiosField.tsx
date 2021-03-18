@@ -37,7 +37,7 @@ export interface RadiosFieldProps {
   value?: string | null;
 }
 
-const RadiosField = ({ className, disabled, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
+export const RadiosField = ({ className, disabled, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const groupName = `form-field-${field}`;
 
@@ -66,5 +66,3 @@ const RadiosField = ({ className, disabled, error, field, gutterBottom, helperTe
     </FormGroup>
   );
 };
-
-export default RadiosField;

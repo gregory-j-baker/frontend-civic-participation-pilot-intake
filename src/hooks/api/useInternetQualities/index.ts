@@ -7,6 +7,5 @@
 
 import internetQualitiesStaticProps from './static-props-data.json';
 
-export { default } from './useInternetQualities';
-export * from './useInternetQualities';
 export { internetQualitiesStaticProps };
+export * from './useInternetQualities';

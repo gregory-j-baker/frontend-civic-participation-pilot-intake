@@ -48,7 +48,7 @@ export const internetQualitiesQueryKey: QueryKey = 'internet-qualities';
 
 export const fetchInternetQualities = (): Promise<InternetQualityResponse> => fetchWrapper<InternetQualityResponse>(internetQualitiesUri);
 
-const useInternetQualities = ({ enabled = true, onlyActive = true, sort = true }: UseInternetQualitiesOptions = {}): UseQueryResult<InternetQualityResponse, unknown> => {
+export const useInternetQualities = ({ enabled = true, onlyActive = true, sort = true }: UseInternetQualitiesOptions = {}): UseQueryResult<InternetQualityResponse, unknown> => {
   return useQuery(internetQualitiesQueryKey, fetchInternetQualities, {
     enabled,
     cacheTime: Infinity,
@@ -68,5 +68,3 @@ const useInternetQualities = ({ enabled = true, onlyActive = true, sort = true }
     },
   });
 };
-
-export default useInternetQualities;

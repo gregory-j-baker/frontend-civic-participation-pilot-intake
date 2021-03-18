@@ -7,7 +7,7 @@
 
 import useTranslation from 'next-translate/useTranslation';
 
-const Branding = (): JSX.Element => {
+export const Branding = (): JSX.Element => {
   const { t, lang } = useTranslation();
 
   return (
@@ -26,5 +26,3 @@ const Branding = (): JSX.Element => {
     </div>
   );
 };
-
-export default Branding;

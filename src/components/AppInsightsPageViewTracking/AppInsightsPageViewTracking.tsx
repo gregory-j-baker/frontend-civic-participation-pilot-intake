@@ -8,7 +8,7 @@
 import React, { useEffect } from 'react';
 import { ApplicationInsights as AppInsightsWeb } from '@microsoft/applicationinsights-web';
 
-const AppInsightsPageViewTracking = (): JSX.Element => {
+export const AppInsightsPageViewTracking = (): JSX.Element => {
   const instrumentationKey = process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY;
 
   useEffect(() => {
@@ -27,5 +27,3 @@ const AppInsightsPageViewTracking = (): JSX.Element => {
 
   return <></>;
 };
-
-export default AppInsightsPageViewTracking;

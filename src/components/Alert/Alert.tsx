@@ -62,7 +62,7 @@ const getColorClasses: getColorClassesFunc = (alertType) => {
   };
 };
 
-const Alert = ({ children, description, title, type }: AlertProps): JSX.Element => {
+export const Alert = ({ children, description, title, type }: AlertProps): JSX.Element => {
   const colorClasses = useMemo(() => getColorClasses(type ?? AlertType.default), [type]);
 
   return (
@@ -87,5 +87,3 @@ const Alert = ({ children, description, title, type }: AlertProps): JSX.Element 
     </section>
   );
 };
-
-export default Alert;

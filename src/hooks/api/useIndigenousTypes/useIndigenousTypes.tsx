@@ -48,7 +48,7 @@ export const indigenousTypesQueryKey: QueryKey = 'indigenous-types';
 
 export const fetchIndigenousTypes = (): Promise<IndigenousTypeResponse> => fetchWrapper<IndigenousTypeResponse>(indigenousTypesUri);
 
-const useIndigenousTypes = ({ enabled = true, onlyActive = true, sort = true }: UseIndigenousTypesOptions = {}): UseQueryResult<IndigenousTypeResponse, unknown> => {
+export const useIndigenousTypes = ({ enabled = true, onlyActive = true, sort = true }: UseIndigenousTypesOptions = {}): UseQueryResult<IndigenousTypeResponse, unknown> => {
   return useQuery(indigenousTypesQueryKey, fetchIndigenousTypes, {
     enabled,
     cacheTime: Infinity,
@@ -68,5 +68,3 @@ const useIndigenousTypes = ({ enabled = true, onlyActive = true, sort = true }: 
     },
   });
 };
-
-export default useIndigenousTypes;

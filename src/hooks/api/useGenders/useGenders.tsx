@@ -48,7 +48,7 @@ export const gendersQueryKey: QueryKey = 'genders';
 
 export const fetchGenders = (): Promise<GenderResponse> => fetchWrapper<GenderResponse>(gendersUri);
 
-const useGenders = ({ enabled = true, onlyActive = true, sort = true }: UseGendersOptions = {}): UseQueryResult<GenderResponse, unknown> => {
+export const useGenders = ({ enabled = true, onlyActive = true, sort = true }: UseGendersOptions = {}): UseQueryResult<GenderResponse, unknown> => {
   return useQuery(gendersQueryKey, fetchGenders, {
     enabled,
     cacheTime: Infinity,
@@ -68,5 +68,3 @@ const useGenders = ({ enabled = true, onlyActive = true, sort = true }: UseGende
     },
   });
 };
-
-export default useGenders;
