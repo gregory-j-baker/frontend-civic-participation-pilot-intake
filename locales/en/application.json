@@ -112,7 +112,7 @@
         "label": "The Civic Participation Pilot is aiming to ensure inclusivity of youth from diverse identities, demographics, learning styles and abilities and educational backgrounds - is there anything you feel would facilitate your participation in this pilot?"
       },
       "skills-interest": {
-        "label": "Tell us about yourself, describe your strenghts, passions and what motivates your. What skills and knowledge do you hope to gain from this experience?",
+        "label": "Tell us about yourself, describe your strenghts, passions and what motivates you. What skills and knowledge do you hope to gain from this experience?",
         "required": "Skill interest is required"
       }
     },
