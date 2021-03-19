@@ -21,10 +21,10 @@ import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent } from '../../../components/Wizard';
 import { theme } from '../../../config';
-import { useDiscoveryChannels } from '../../../hooks/api/useDiscoveryChannels';
-import { useInternetQualities } from '../../../hooks/api/useInternetQualities';
-import { useLanguages } from '../../../hooks/api/useLanguages';
-import { useProvinces } from '../../../hooks/api/useProvinces';
+import { useDiscoveryChannels } from '../../../hooks/api/code-lookups/useDiscoveryChannels';
+import { useInternetQualities } from '../../../hooks/api/code-lookups/useInternetQualities';
+import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
+import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
 import { useCurrentBreakpoint } from '../../../hooks/useCurrentBreakpoint';
 import { getYears } from '../../../utils/misc-utils';
 import kebabCase from 'lodash/kebabCase';
@@ -43,10 +43,10 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
   const router = useRouter();
   const currentBreakpoint = useCurrentBreakpoint();
 
-  const { data: discoveryChannels, isLoading: isDiscoveryChannelsLoading, error: discoveryChannelsError } = useDiscoveryChannels();
-  const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities();
-  const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
-  const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces();
+  const { data: discoveryChannels, isLoading: isDiscoveryChannelsLoading, error: discoveryChannelsError } = useDiscoveryChannels({ lang });
+  const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities({ lang });
+  const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
+  const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces({ lang });
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
@@ -121,7 +121,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
   // province select options
   const provinceOptions = useMemo<SelectFieldOption[]>(() => {
     if (isProvincesLoading || provincesError) return [];
-    return (provinces?._embedded.provinces.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []).sort((a, b) => a.text.localeCompare(b.text));
+    return provinces?._embedded.provinces.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
   }, [isProvincesLoading, provincesError, provinces, getDescription]);
 
   // internet quality select options

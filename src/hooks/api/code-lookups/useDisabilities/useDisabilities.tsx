@@ -7,10 +7,10 @@
 
 import type { QueryFunction, QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
-import { HateoasCollection } from '../../../common/types';
-import { beforeNow } from '../../../utils/date-utils';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
-import { disabilitiesQueryKey, disabilitiesUri, Disability } from '../Types';
+import type { HateoasCollection } from '../../../../common/types';
+import { beforeNow } from '../../../../utils/date-utils';
+import { fetchWrapper } from '../../../../utils/fetch-wrapper';
+import { disabilitiesQueryKey, disabilitiesUri, Disability } from '../types';
 
 export interface DisabilitiesResponse extends HateoasCollection {
   _embedded: {
@@ -24,12 +24,12 @@ export interface UseDisabilitiesOptions {
   onlyActive?: boolean;
 }
 
-export interface fetchDisabilitiesCtxPageParam {
+export interface FetchDisabilitiesOptions {
   lang?: string;
 }
 
-export const fetchDisabilities: QueryFunction<Promise<DisabilitiesResponse>> = ({ pageParam }: QueryFunctionContext) => {
-  const { lang } = pageParam as fetchDisabilitiesCtxPageParam;
+export const fetchDisabilities: QueryFunction<Promise<DisabilitiesResponse>> = ({ queryKey }: QueryFunctionContext) => {
+  const { lang } = queryKey[1] as FetchDisabilitiesOptions;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<Disability>((o) => o.uiDisplayOrderFr) : nameof<Disability>((o) => o.uiDisplayOrderEn)}`];
 
@@ -37,7 +37,7 @@ export const fetchDisabilities: QueryFunction<Promise<DisabilitiesResponse>> = (
 };
 
 export const useDisabilities = ({ enabled, lang, onlyActive }: UseDisabilitiesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<DisabilitiesResponse, unknown> => {
-  return useQuery([disabilitiesQueryKey, { lang }], fetchDisabilities, {
+  return useQuery([disabilitiesQueryKey, { lang } as FetchDisabilitiesOptions], fetchDisabilities, {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,
