@@ -66,7 +66,7 @@ export const Alert = ({ children, description, title, type }: AlertProps): JSX.E
   const colorClasses = useMemo(() => getColorClasses(type ?? AlertType.default), [type]);
 
   return (
-    <section className={`${colorClasses.rootColorClasses} tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow-md tw-mb-8`} role="alert" tabIndex={-1}>
+    <section className={`${colorClasses.rootColorClasses} tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow tw-mb-8`} role="alert" tabIndex={-1}>
       <div className="tw-flex-col">
         <div className="tw-flex md:tw-items-center">
           <div className={`tw-h-10 tw-w-10 tw-mr-4 tw-flex-shrink-0`}>
