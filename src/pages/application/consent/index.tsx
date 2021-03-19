@@ -26,13 +26,13 @@ import { HttpClientResponseError } from '../../../common/HttpClientResponseError
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { FormDefinitionListItem } from '../../../components/FormDefinitionListItem';
-import { useDiscoveryChannels } from '../../../hooks/api/useDiscoveryChannels';
-import { useInternetQualities } from '../../../hooks/api/useInternetQualities';
-import { useLanguages } from '../../../hooks/api/useLanguages';
-import { useProvinces } from '../../../hooks/api/useProvinces';
-import { useEducationLevels } from '../../../hooks/api/useEducationLevels';
-import { useGenders } from '../../../hooks/api/useGenders';
-import { useIndigenousTypes } from '../../../hooks/api/useIndigenousTypes';
+import { useDiscoveryChannels } from '../../../hooks/api/code-lookups/useDiscoveryChannels';
+import { useInternetQualities } from '../../../hooks/api/code-lookups/useInternetQualities';
+import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
+import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
+import { useEducationLevels } from '../../../hooks/api/code-lookups/useEducationLevels';
+import { useGenders } from '../../../hooks/api/code-lookups/useGenders';
+import { useIndigenousTypes } from '../../../hooks/api/code-lookups/useIndigenousTypes';
 import { sleep } from '../../../utils/misc-utils';
 import Link from 'next/link';
 
@@ -248,13 +248,13 @@ export interface FormReviewProps {
 export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element => {
   const { t, lang } = useTranslation();
 
-  const { data: discoveryChannels } = useDiscoveryChannels();
-  const { data: educationLevels } = useEducationLevels();
-  const { data: genders } = useGenders();
-  const { data: indigenousTypes } = useIndigenousTypes();
-  const { data: internetQualities } = useInternetQualities();
-  const { data: languages } = useLanguages();
-  const { data: provinces } = useProvinces();
+  const { data: discoveryChannels } = useDiscoveryChannels({ lang });
+  const { data: educationLevels } = useEducationLevels({ lang });
+  const { data: genders } = useGenders({ lang });
+  const { data: indigenousTypes } = useIndigenousTypes({ lang });
+  const { data: internetQualities } = useInternetQualities({ lang });
+  const { data: languages } = useLanguages({ lang });
+  const { data: provinces } = useProvinces({ lang });
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 

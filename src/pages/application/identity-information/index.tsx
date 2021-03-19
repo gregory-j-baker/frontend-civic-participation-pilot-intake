@@ -16,9 +16,9 @@ import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../../../components/Wizard';
 import { theme } from '../../../config';
-import { useEducationLevels } from '../../../hooks/api/useEducationLevels';
-import { useGenders } from '../../../hooks/api/useGenders';
-import { useIndigenousTypes } from '../../../hooks/api/useIndigenousTypes';
+import { useEducationLevels } from '../../../hooks/api/code-lookups/useEducationLevels';
+import { useGenders } from '../../../hooks/api/code-lookups/useGenders';
+import { useIndigenousTypes } from '../../../hooks/api/code-lookups/useIndigenousTypes';
 import { useCurrentBreakpoint } from '../../../hooks/useCurrentBreakpoint';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
@@ -37,9 +37,9 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
   const router = useRouter();
   const currentBreakpoint = useCurrentBreakpoint();
 
-  const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels();
-  const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders();
-  const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes();
+  const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels({ lang });
+  const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders({ lang });
+  const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes({ lang });
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
