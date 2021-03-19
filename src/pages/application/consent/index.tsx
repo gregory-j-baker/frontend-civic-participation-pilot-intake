@@ -34,6 +34,7 @@ import { useEducationLevels } from '../../../hooks/api/useEducationLevels';
 import { useGenders } from '../../../hooks/api/useGenders';
 import { useIndigenousTypes } from '../../../hooks/api/useIndigenousTypes';
 import { sleep } from '../../../utils/misc-utils';
+import Link from 'next/link';
 
 const ConsentPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -197,7 +198,22 @@ const ConsentPage = (): JSX.Element => {
             onPreviousClick={handleWizardOnPreviousClick}
             onNextClick={handleWizardOnNextClick}
             disabled={submitApplicationIsLoading || submitApplicationIsSuccess}>
-            <FormReview applicationState={formData} />
+            <div className="tw-mb-10">
+              <FormReview applicationState={formData} />
+            </div>
+            <div className="tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow-md tw-flex tw-space-x-3 tw-items-center tw-bg-blue-50 tw-border-blue-600 tw-mb-10 ">
+              <div className="tw-w-5 tw-h-5 tw-text-blue-600 tw-inline-block tw-flex-shrink-0">
+                <svg className="tw-fill-current tw-w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div>
+                {t('application:step.consent.privacy-notice-statement.label') + ' '}
+                <Link href="/privacy-notice-statement">
+                  <a>{t('application:step.consent.privacy-notice-statement.link')}</a>
+                </Link>
+              </div>
+            </div>
             <CheckboxeField
               field={nameof<ConsentState>((o) => o.isInformationConsented)}
               label={t('application:step.consent.is-information-consented.label')}
@@ -599,7 +615,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
   }, [applicationState, t, getDescription, discoveryChannels, educationLevels, genders, indigenousTypes, internetQualities, languages, provinces]);
 
   return (
-    <dl className="tw-mb-10">
+    <dl>
       {formReviewItems.map(({ key, text, value }, index) => (
         <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value} />
       ))}

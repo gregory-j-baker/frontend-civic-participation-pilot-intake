@@ -120,6 +120,10 @@
     "consent": {
       "title": "Examiner et soumettre la demande",
       "header": "Examiner et soumettre la demande",
+      "privacy-notice-statement": {
+        "label": "Inquiet pour la vie privée? Découvrez notre ",
+        "link": "déclaration d'avis de confidentialité"
+      },
       "is-information-consented": {
         "label": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
         "required": "Vous devez fournir le consentement à partager ces informations",

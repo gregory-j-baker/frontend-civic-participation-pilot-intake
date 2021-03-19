@@ -120,6 +120,10 @@
     "consent": {
       "title": "Review and submit the application",
       "header": "Review and submit the application",
+      "privacy-notice-statement": {
+        "label": "Worried about privacy? Check out our",
+        "link": "Privacy Notice Statement"
+      },
       "is-information-consented": {
         "label": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
         "required": "You must provide consent to share this information",
