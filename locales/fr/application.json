@@ -69,6 +69,10 @@
       "title": "Étape 2",
       "information-note-1": "Veuillez noter que les questions de cette section n'affecteront pas votre admissibilité au programme et ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir les réponses que vous jugez le plus applicable. Vous pouvez choisir de sélectionner «Préférer ne pas répondre» pour toute question dans cette section.",
       "information-note-2": "Veuillez sélectionner les caractéristiques démographiques avec lesquelles vous vous identifiez.",
+      "disability-id": {
+        "label": "Je suis une personne vivant avec un handicap",
+        "required": "Vous devez sélectionner une réponse à vivre avec un handicap"
+      },
       "education-level-id": {
         "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
         "helper-text": "Veuillez noter qu'il n'y a pas d'obligation d'éducation pour ce programme.",
@@ -82,25 +86,21 @@
         "label": "Je suis membre d'une communauté autochtone",
         "required": "Vous devez sélectionner une réponse pour la communauté autochtone"
       },
-      "is-disabled": {
-        "label": "Je suis une personne vivant avec un handicap",
-        "required": "Vous devez sélectionner une réponse à vivre avec un handicap"
-      },
-      "is-lgbtq": {
-        "label": "Je suis membre de la communauté LGBTQ2",
-        "required": "Vous devez sélectionner une réponse pour la communauté LGBTQ2"
-      },
-      "is-minority": {
+      "minority-id": {
         "label": "Je suis membre d'une communauté minoritaire visible",
         "required": "Vous devez sélectionner une réponse pour la minorité visible"
       },
-      "is-newcomer": {
+      "newcomer-id": {
         "label": "Je suis récemment nouveau venu au Canada, au cours des 5 dernières années",
         "required": "Vous devez sélectionner une réponse pour le nouveau venu au Canada"
       },
-      "is-rural": {
+      "rural-id": {
         "label": "Je vis dans une zone rurale ou éloignée",
         "required": "Vous devez sélectionner une réponse pour la zone rurale ou éloignée"
+      },
+      "sexual-orientation-id": {
+        "label": "Je suis membre de la communauté LGBTQ2",
+        "required": "Vous devez sélectionner une réponse pour la communauté LGBTQ2"
       }
     },
     "expression-of-interest": {

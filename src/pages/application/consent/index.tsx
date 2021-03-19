@@ -14,7 +14,7 @@ import { CheckboxeField } from '../../../components/form/CheckboxeField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnPreviousClickEvent, WizardOnNextClickEvent } from '../../../components/Wizard';
-import { useSubmitApplication, ApplicationData } from '../../../hooks/api/useSubmitApplication';
+import { useSubmitApplication } from '../../../hooks/api/applications/useSubmitApplication';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
@@ -35,6 +35,12 @@ import { useGenders } from '../../../hooks/api/code-lookups/useGenders';
 import { useIndigenousTypes } from '../../../hooks/api/code-lookups/useIndigenousTypes';
 import { sleep } from '../../../utils/misc-utils';
 import Link from 'next/link';
+import { ApplicationSubmitData } from '../../../hooks/api/applications/types';
+import { useDisabilities } from '../../../hooks/api/code-lookups/useDisabilities';
+import { useNewcomers } from '../../../hooks/api/code-lookups/useNewcomers';
+import { useSexualOrientations } from '../../../hooks/api/code-lookups/useSexualOrientations';
+import { useMinorities } from '../../../hooks/api/code-lookups/useMinorities';
+import { useRurals } from '../../../hooks/api/code-lookups/useRurals';
 
 const ConsentPage = (): JSX.Element => {
   const { t } = useTranslation();
@@ -105,28 +111,28 @@ const ConsentPage = (): JSX.Element => {
 
       if (await applicationSchema.isValid(formData)) {
         // submit appplication
-        const applicationData: ApplicationData = {
+        const applicationData: ApplicationSubmitData = {
           birthYear: formData.personalInformation.birthYear as number,
           communityInterest: formData.expressionOfInterest.communityInterest as string,
+          disabilityId: formData.identityInformation.disabilityId as string,
           discoveryChannelId: formData.personalInformation.discoveryChannelId as string,
-          educationLevelId: formData.identityInformation.educationLevelId as string | null,
+          educationLevelId: formData.identityInformation.educationLevelId as string,
           email: formData.personalInformation.email as string,
           firstName: formData.personalInformation.firstName as string,
-          genderId: formData.identityInformation.genderId as string | null,
+          genderId: formData.identityInformation.genderId as string,
           hasDedicatedDevice: formData.personalInformation.hasDedicatedDevice as boolean,
           indigenousTypeId: formData.identityInformation.indigenousTypeId as string,
           internetQualityId: formData.personalInformation.internetQualityId as string,
           isCanadianCitizen: formData.personalInformation.isCanadianCitizen as boolean,
-          isDisabled: formData.identityInformation.isDisabled as boolean | null,
-          isLgbtq: formData.identityInformation.isLgbtq as boolean | null,
-          isMinority: formData.identityInformation.isMinority as boolean | null,
-          isNewcomer: formData.identityInformation.isNewcomer as boolean | null,
-          isRural: formData.identityInformation.isRural as boolean | null,
           languageId: formData.personalInformation.languageId as string,
           lastName: formData.personalInformation.languageId as string,
+          minorityId: formData.identityInformation.minorityId as string,
+          newcomerId: formData.identityInformation.newcomerId as string,
           phoneNumber: formData.personalInformation.phoneNumber,
           programInterest: formData.expressionOfInterest.programInterest,
           provinceId: formData.personalInformation.provinceId as string,
+          ruralId: formData.identityInformation.ruralId as string,
+          sexualOrientationId: formData.identityInformation.sexualOrientationId as string,
           skillsInterest: formData.expressionOfInterest.skillsInterest as string,
         };
 
@@ -248,13 +254,18 @@ export interface FormReviewProps {
 export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element => {
   const { t, lang } = useTranslation();
 
+  const { data: disabilities } = useDisabilities({ lang });
   const { data: discoveryChannels } = useDiscoveryChannels({ lang });
   const { data: educationLevels } = useEducationLevels({ lang });
   const { data: genders } = useGenders({ lang });
   const { data: indigenousTypes } = useIndigenousTypes({ lang });
   const { data: internetQualities } = useInternetQualities({ lang });
   const { data: languages } = useLanguages({ lang });
+  const { data: minorities } = useMinorities({ lang });
+  const { data: newcomers } = useNewcomers({ lang });
   const { data: provinces } = useProvinces({ lang });
+  const { data: rurals } = useRurals({ lang });
+  const { data: sexualOrientations } = useSexualOrientations({ lang });
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
@@ -424,7 +435,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       // discoveryChannelId
       if (applicationState.personalInformation.discoveryChannelId) {
         const discoveryChannel = discoveryChannels?._embedded.discoveryChannels.find((o) => o.id === applicationState.personalInformation.discoveryChannelId);
-        if (discoveryChannel)
+        if (discoveryChannel) {
           items.push({
             key: nameof.full<ApplicationState>((o) => o.personalInformation.discoveryChannelId),
             text: t(
@@ -436,131 +447,160 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
             ),
             value: getDescription(discoveryChannel),
           });
+        }
       }
     }
 
     if (Object.keys(applicationState.identityInformation).length !== 0) {
       // genderId
-      if (applicationState.identityInformation.genderId !== undefined && genders) {
-        const gender = genders._embedded.genders.find((o) => (applicationState.identityInformation.genderId === null ? false : o.id === applicationState.identityInformation.indigenousTypeId));
-        items.push({
-          key: nameof.full<ApplicationState>((o) => o.identityInformation.genderId),
-          text: t(
-            `application:step.${nameof
-              .full<ApplicationState>((o) => o.identityInformation.genderId)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
-          value: gender ? getDescription(gender) : t('common:prefer-not-answer'),
-        });
+      if (applicationState.identityInformation.genderId) {
+        const gender = genders?._embedded.genders.find((o) => o.id === applicationState.identityInformation.genderId);
+        if (gender) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.identityInformation.genderId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.identityInformation.genderId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(gender),
+          });
+        }
       }
 
       // educationLevelId
-      if (applicationState.identityInformation.educationLevelId !== undefined && educationLevels) {
-        const educationLevel = educationLevels._embedded.educationLevels.find((o) => (applicationState.identityInformation.educationLevelId === null ? false : o.id === applicationState.identityInformation.educationLevelId));
-        items.push({
-          key: nameof.full<ApplicationState>((o) => o.identityInformation.educationLevelId),
-          text: t(
-            `application:step.${nameof
-              .full<ApplicationState>((o) => o.identityInformation.educationLevelId)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
-          value: educationLevel ? getDescription(educationLevel) : t('common:prefer-not-answer'),
-        });
+      if (applicationState.identityInformation.educationLevelId) {
+        const educationLevel = educationLevels?._embedded.educationLevels.find((o) => o.id === applicationState.identityInformation.educationLevelId);
+
+        if (educationLevel) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.identityInformation.educationLevelId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.identityInformation.educationLevelId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(educationLevel),
+          });
+        }
       }
 
-      // isDisabled
-      if (applicationState.identityInformation.isDisabled !== undefined) {
-        items.push({
-          key: nameof.full<ApplicationState>((o) => o.identityInformation.isDisabled),
-          text: t(
-            `application:step.${nameof
-              .full<ApplicationState>((o) => o.identityInformation.isDisabled)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
-          value: applicationState.identityInformation.isDisabled === true ? t('common:yes') : applicationState.identityInformation.isDisabled === false ? t('common:no') : t('common:prefer-not-answer'),
-        });
+      // disabilityId
+      if (applicationState.identityInformation.disabilityId) {
+        const disability = disabilities?._embedded.disabilities.find((o) => o.id === applicationState.identityInformation.disabilityId);
+
+        if (disability) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.identityInformation.disabilityId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.identityInformation.disabilityId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(disability),
+          });
+        }
       }
 
-      // isMinority
-      if (applicationState.identityInformation.isMinority !== undefined) {
-        items.push({
-          key: nameof.full<ApplicationState>((o) => o.identityInformation.isMinority),
-          text: t(
-            `application:step.${nameof
-              .full<ApplicationState>((o) => o.identityInformation.isMinority)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
-          value: applicationState.identityInformation.isMinority === true ? t('common:yes') : applicationState.identityInformation.isMinority === false ? t('common:no') : t('common:prefer-not-answer'),
-        });
+      // minorityId
+      if (applicationState.identityInformation.minorityId) {
+        const minority = minorities?._embedded.minorities.find((o) => o.id === applicationState.identityInformation.minorityId);
+
+        if (minority) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.identityInformation.minorityId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.identityInformation.minorityId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(minority),
+          });
+        }
       }
 
       // indigenousTypeId
-      if (applicationState.identityInformation.indigenousTypeId !== undefined && indigenousTypes) {
-        const indigenousType = indigenousTypes._embedded.indigenousTypes.find((o) => (applicationState.identityInformation.indigenousTypeId === null ? false : o.id === applicationState.identityInformation.indigenousTypeId));
-        items.push({
-          key: nameof.full<ApplicationState>((o) => o.identityInformation.indigenousTypeId),
-          text: t(
-            `application:step.${nameof
-              .full<ApplicationState>((o) => o.identityInformation.indigenousTypeId)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
-          value: indigenousType ? getDescription(indigenousType) : t('common:prefer-not-answer'),
-        });
+      if (applicationState.identityInformation.indigenousTypeId) {
+        const indigenousType = indigenousTypes?._embedded.indigenousTypes.find((o) => o.id === applicationState.identityInformation.indigenousTypeId);
+
+        if (indigenousType) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.identityInformation.indigenousTypeId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.identityInformation.indigenousTypeId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(indigenousType),
+          });
+        }
       }
 
-      // isLgbtq
-      if (applicationState.identityInformation.isLgbtq !== undefined) {
-        items.push({
-          key: nameof.full<ApplicationState>((o) => o.identityInformation.isLgbtq),
-          text: t(
-            `application:step.${nameof
-              .full<ApplicationState>((o) => o.identityInformation.isLgbtq)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
-          value: applicationState.identityInformation.isLgbtq === true ? t('common:yes') : applicationState.identityInformation.isLgbtq === false ? t('common:no') : t('common:prefer-not-answer'),
-        });
+      // sexualOrientationId
+      if (applicationState.identityInformation.sexualOrientationId) {
+        const sexualOrientation = sexualOrientations?._embedded.sexualOrientations.find((o) => o.id === applicationState.identityInformation.sexualOrientationId);
+
+        if (sexualOrientation) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.identityInformation.sexualOrientationId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.identityInformation.sexualOrientationId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(sexualOrientation),
+          });
+        }
       }
 
-      // isRural
-      if (applicationState.identityInformation.isRural !== undefined) {
-        items.push({
-          key: nameof.full<ApplicationState>((o) => o.identityInformation.isRural),
-          text: t(
-            `application:step.${nameof
-              .full<ApplicationState>((o) => o.identityInformation.isRural)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
-          value: applicationState.identityInformation.isRural === true ? t('common:yes') : applicationState.identityInformation.isRural === false ? t('common:no') : t('common:prefer-not-answer'),
-        });
+      // ruralId
+      if (applicationState.identityInformation.ruralId) {
+        const rural = rurals?._embedded.ruralEntities.find((o) => o.id === applicationState.identityInformation.ruralId);
+
+        if (rural) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.identityInformation.ruralId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.identityInformation.ruralId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(rural),
+          });
+        }
       }
 
-      // isNewcomer
-      if (applicationState.identityInformation.isNewcomer !== undefined) {
-        items.push({
-          key: nameof.full<ApplicationState>((o) => o.identityInformation.isNewcomer),
-          text: t(
-            `application:step.${nameof
-              .full<ApplicationState>((o) => o.identityInformation.isNewcomer)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
-          value: applicationState.identityInformation.isNewcomer === true ? t('common:yes') : applicationState.identityInformation.isNewcomer === false ? t('common:no') : t('common:prefer-not-answer'),
-        });
+      // newcomerId
+      if (applicationState.identityInformation.newcomerId) {
+        const newcomer = newcomers?._embedded.newcomers.find((o) => o.id === applicationState.identityInformation.newcomerId);
+
+        if (newcomer) {
+          items.push({
+            key: nameof.full<ApplicationState>((o) => o.identityInformation.newcomerId),
+            text: t(
+              `application:step.${nameof
+                .full<ApplicationState>((o) => o.identityInformation.newcomerId)
+                .split('.')
+                .map((s) => kebabCase(s))
+                .join('.')}.label`
+            ),
+            value: getDescription(newcomer),
+          });
+        }
       }
     }
 

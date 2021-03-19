@@ -70,7 +70,6 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
       if (value) {
         if (value.toLowerCase() === 'true') newValue = true;
         else if (value.toLowerCase() === 'false') newValue = false;
-        else if (value.toLowerCase() === Constants.NoAnswerOptionValue.toLowerCase()) newValue = null;
         else if (!isNaN(Number(value))) newValue = Number(value);
         else newValue = value;
       }

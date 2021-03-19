@@ -14,7 +14,7 @@ import { Rural, ruralsQueryKey, ruralsUri } from '../types';
 
 export interface RuralsResponse extends HateoasCollection {
   _embedded: {
-    rurals: Rural[];
+    ruralEntities: Rural[];
   };
 }
 
@@ -43,7 +43,7 @@ export const useRurals = ({ enabled, lang, onlyActive }: UseRuralsOptions = { en
     staleTime: Infinity,
     onSuccess: (data) => {
       if (onlyActive) {
-        data._embedded.rurals = data._embedded.rurals.filter((rural) => {
+        data._embedded.ruralEntities = data._embedded.ruralEntities.filter((rural) => {
           const active = rural.activationDate ? beforeNow(new Date(rural.activationDate)) : true;
           const expired = rural.expirationDate ? beforeNow(new Date(rural.expirationDate)) : false;
           return active && !expired;

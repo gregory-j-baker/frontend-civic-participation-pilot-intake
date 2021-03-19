@@ -69,6 +69,10 @@
       "title": "Step 2",
       "information-note-1": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answers that you feel are most applicable to you. You may choose to select ‘Prefer not to answer’ for any question in this section.",
       "information-note-2": "Please select the demographic characteristics with which you identify.",
+      "disability-id": {
+        "label": "I am a person living with a disability",
+        "required": "You must select a response for living with a disability"
+      },
       "education-level-id": {
         "label": "What is your highest level of formal education completed, or enrolled in currently?",
         "helper-text": "Please note that there is no education requirement for this program.",
@@ -82,25 +86,21 @@
         "label": "I am a member of an Indigenous community",
         "required": "You must select a response for Indigenous community"
       },
-      "is-disabled": {
-        "label": "I am a person living with a disability",
-        "required": "You must select a response for living with a disability"
-      },
-      "is-lgbtq": {
-        "label": "I am a member of the LGBTQ2 community",
-        "required": "You must select a response for LGBTQ2 community"
-      },
-      "is-minority": {
+      "minority-id": {
         "label": "I am a member of a visible minority community",
         "required": "You must select a response for visible minority"
       },
-      "is-newcomer": {
+      "newcomer-id": {
         "label": "I am recent newcomer to Canada, within the last 5 years",
         "required": "You must select a response for newcomer to Canada"
       },
-      "is-rural": {
+      "rural-id": {
         "label": "I live in a rural or remote area",
         "required": "You must select a response for rural or remote area"
+      },
+      "sexual-orientation-id": {
+        "label": "I am a member of the LGBTQ2 community",
+        "required": "You must select a response for LGBTQ2 community"
       }
     },
     "expression-of-interest": {

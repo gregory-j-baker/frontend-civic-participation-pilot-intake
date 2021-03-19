@@ -9,7 +9,7 @@ import { useMemo, useState, useEffect, useCallback } from 'react';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../../../components/form/RadiosField';
+import { RadiosField, RadiosFieldOnChangeEvent } from '../../../components/form/RadiosField';
 import type { SelectFieldOnChangeEvent, SelectFieldOption } from '../../../components/form/SelectField';
 import { SelectField } from '../../../components/form/SelectField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
@@ -31,15 +31,25 @@ import { HttpClientResponseError } from '../../../common/HttpClientResponseError
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { sleep } from '../../../utils/misc-utils';
+import { useDisabilities } from '../../../hooks/api/code-lookups/useDisabilities';
+import { useSexualOrientations } from '../../../hooks/api/code-lookups/useSexualOrientations';
+import { useRurals } from '../../../hooks/api/code-lookups/useRurals';
+import { useNewcomers } from '../../../hooks/api/code-lookups/useNewcomers';
+import { useMinorities } from '../../../hooks/api/code-lookups/useMinorities';
 
 const ApplicationIdentityInformationPage = (): JSX.Element => {
   const { lang, t } = useTranslation();
   const router = useRouter();
   const currentBreakpoint = useCurrentBreakpoint();
 
+  const { data: disabilities, isLoading: isDisabilitiesLoading, error: disabilitiesError } = useDisabilities({ lang });
   const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels({ lang });
   const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders({ lang });
   const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes({ lang });
+  const { data: minorities, isLoading: isMinoritiesLoading, error: minoritiesError } = useMinorities({ lang });
+  const { data: newcomers, isLoading: isNewcomersLoading, error: newcomersError } = useNewcomers({ lang });
+  const { data: rurals, isLoading: isRuralsLoading, error: ruralsError } = useRurals({ lang });
+  const { data: sexualOrientations, isLoading: isSexualOrientationsLoading, error: sexualOrientationsError } = useSexualOrientations({ lang });
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
@@ -77,10 +87,10 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
       let newValue: boolean | string | null | undefined = undefined;
+
       if (value) {
         if (value.toLowerCase() === 'true') newValue = true;
         else if (value.toLowerCase() === 'false') newValue = false;
-        else if (value.toLowerCase() === Constants.NoAnswerOptionValue.toLowerCase()) newValue = null;
         else newValue = value;
       }
 
@@ -110,32 +120,53 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
+  // disabilities select options
+  const disabilitiesOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isDisabilitiesLoading || disabilitiesError) return [];
+    return disabilities?._embedded.disabilities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isDisabilitiesLoading, disabilitiesError, disabilities, getDescription]);
+
   // indigenous types select options
   const indigenousTypeOptions = useMemo<SelectFieldOption[]>(() => {
     if (isIndigenousTypesLoading || indigenousTypesError) return [];
-    return [...(indigenousTypes?._embedded.indigenousTypes.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') }];
-  }, [t, isIndigenousTypesLoading, indigenousTypesError, indigenousTypes, getDescription]);
+    return indigenousTypes?._embedded.indigenousTypes.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isIndigenousTypesLoading, indigenousTypesError, indigenousTypes, getDescription]);
 
   // gender select options
   const genderOptions = useMemo<SelectFieldOption[]>(() => {
     if (isGendersLoading || gendersError) return [];
-    return [...(genders?._embedded.genders.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') }];
-  }, [t, isGendersLoading, gendersError, genders, getDescription]);
+    return genders?._embedded.genders.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isGendersLoading, gendersError, genders, getDescription]);
 
   // education level select options
   const educationLevelOptions = useMemo<SelectFieldOption[]>(() => {
     if (isEducationLevelsLoading || educationLevelsError) return [];
-    return [...(educationLevels?._embedded.educationLevels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? []), { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') }];
-  }, [t, isEducationLevelsLoading, educationLevelsError, educationLevels, getDescription]);
+    return educationLevels?._embedded.educationLevels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isEducationLevelsLoading, educationLevelsError, educationLevels, getDescription]);
 
-  const yesNoNoPreferNotAnswerOptions = useMemo<RadiosFieldOption[]>(
-    () => [
-      { value: true.toString(), text: t('common:yes') },
-      { value: false.toString(), text: t('common:no') },
-      { value: Constants.NoAnswerOptionValue, text: t('common:prefer-not-answer') },
-    ],
-    [t]
-  );
+  // minorities select options
+  const minoritiesOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isMinoritiesLoading || minoritiesError) return [];
+    return minorities?._embedded.minorities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isMinoritiesLoading, minoritiesError, minorities, getDescription]);
+
+  // newcomers select options
+  const newcomersOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isNewcomersLoading || newcomersError) return [];
+    return newcomers?._embedded.newcomers.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isNewcomersLoading, newcomersError, newcomers, getDescription]);
+
+  // rurals select options
+  const ruralsOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isRuralsLoading || ruralsError) return [];
+    return rurals?._embedded.ruralEntities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isRuralsLoading, ruralsError, rurals, getDescription]);
+
+  // rurals select options
+  const sexualOrientationsOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isSexualOrientationsLoading || sexualOrientationsError) return [];
+    return sexualOrientations?._embedded.sexualOrientations.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isSexualOrientationsLoading, sexualOrientationsError, sexualOrientations, getDescription]);
 
   const getSchemaError = (path: string): string | undefined => {
     if (!schemaErrors || schemaErrors.length === 0) return undefined;
@@ -196,7 +227,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             <SelectField
               field={nameof<IdentityInformationState>((o) => o.genderId)}
               label={t('application:step.identity-information.gender-id.label')}
-              value={formData.identityInformation.genderId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.genderId?.toString()}
+              value={formData.identityInformation.genderId}
               onChange={handleOnOptionsFieldChange}
               options={genderOptions}
               error={getSchemaError(nameof<IdentityInformationState>((o) => o.genderId))}
@@ -209,7 +240,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
               field={nameof<IdentityInformationState>((o) => o.educationLevelId)}
               label={t('application:step.identity-information.education-level-id.label')}
               helperText={t('application:step.identity-information.education-level-id.helper-text')}
-              value={formData.identityInformation.educationLevelId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.educationLevelId?.toString()}
+              value={formData.identityInformation.educationLevelId}
               onChange={handleOnOptionsFieldChange}
               options={educationLevelOptions}
               error={getSchemaError(nameof<IdentityInformationState>((o) => o.educationLevelId))}
@@ -221,24 +252,24 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step.identity-information.information-note-2')}</p>
 
             <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.isDisabled)}
-              label={t('application:step.identity-information.is-disabled.label')}
-              value={formData.identityInformation.isDisabled === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isDisabled?.toString()}
+              field={nameof<IdentityInformationState>((o) => o.disabilityId)}
+              label={t('application:step.identity-information.disability-id.label')}
+              value={formData.identityInformation.disabilityId}
               onChange={handleOnOptionsFieldChange}
-              options={yesNoNoPreferNotAnswerOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isDisabled))}
+              options={disabilitiesOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.disabilityId))}
               required
               gutterBottom
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
             />
 
             <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.isMinority)}
-              label={t('application:step.identity-information.is-minority.label')}
-              value={formData.identityInformation.isMinority === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isMinority?.toString()}
+              field={nameof<IdentityInformationState>((o) => o.minorityId)}
+              label={t('application:step.identity-information.minority-id.label')}
+              value={formData.identityInformation.minorityId}
               onChange={handleOnOptionsFieldChange}
-              options={yesNoNoPreferNotAnswerOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isMinority))}
+              options={minoritiesOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.minorityId))}
               required
               gutterBottom
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
@@ -247,7 +278,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             <SelectField
               field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
               label={t('application:step.identity-information.indigenous-type-id.label')}
-              value={formData.identityInformation.indigenousTypeId === null ? Constants.NoAnswerOptionValue : formData.identityInformation.indigenousTypeId?.toString()}
+              value={formData.identityInformation.indigenousTypeId}
               onChange={handleOnOptionsFieldChange}
               options={indigenousTypeOptions}
               error={getSchemaError(nameof<IdentityInformationState>((o) => o.indigenousTypeId))}
@@ -257,36 +288,36 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             />
 
             <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.isLgbtq)}
-              label={t('application:step.identity-information.is-lgbtq.label')}
-              value={formData.identityInformation.isLgbtq === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isLgbtq?.toString()}
+              field={nameof<IdentityInformationState>((o) => o.sexualOrientationId)}
+              label={t('application:step.identity-information.sexual-orientation-id.label')}
+              value={formData.identityInformation.sexualOrientationId}
               onChange={handleOnOptionsFieldChange}
-              options={yesNoNoPreferNotAnswerOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isLgbtq))}
+              options={sexualOrientationsOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.sexualOrientationId))}
               required
               gutterBottom
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
             />
 
             <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.isRural)}
-              label={t('application:step.identity-information.is-rural.label')}
-              value={formData.identityInformation.isRural === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isRural?.toString()}
+              field={nameof<IdentityInformationState>((o) => o.ruralId)}
+              label={t('application:step.identity-information.rural-id.label')}
+              value={formData.identityInformation.ruralId}
               onChange={handleOnOptionsFieldChange}
-              options={yesNoNoPreferNotAnswerOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isRural))}
+              options={ruralsOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.ruralId))}
               required
               gutterBottom
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
             />
 
             <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.isNewcomer)}
-              label={t('application:step.identity-information.is-newcomer.label')}
-              value={formData.identityInformation.isNewcomer === null ? Constants.NoAnswerOptionValue : formData.identityInformation.isNewcomer?.toString()}
+              field={nameof<IdentityInformationState>((o) => o.newcomerId)}
+              label={t('application:step.identity-information.newcomer-id.label')}
+              value={formData.identityInformation.newcomerId}
               onChange={handleOnOptionsFieldChange}
-              options={yesNoNoPreferNotAnswerOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.isNewcomer))}
+              options={newcomersOptions}
+              error={getSchemaError(nameof<IdentityInformationState>((o) => o.newcomerId))}
               required
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
             />

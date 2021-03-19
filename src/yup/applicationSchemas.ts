@@ -30,12 +30,12 @@ export const personalInformationSchema = Yup.object().shape({
 export const identityInformationSchema = Yup.object().shape({
   genderId: Yup.string().nullable().defined(),
   educationLevelId: Yup.string().nullable().defined(),
-  isDisabled: Yup.boolean().nullable().defined(),
-  isMinority: Yup.boolean().nullable().defined(),
+  disabilityId: Yup.string().nullable().defined(),
+  minorityId: Yup.string().nullable().defined(),
   indigenousTypeId: Yup.string().nullable().defined(),
-  isLgbtq: Yup.boolean().nullable().defined(),
-  isRural: Yup.boolean().nullable().defined(),
-  isNewcomer: Yup.boolean().nullable().defined(),
+  sexualOrientationId: Yup.string().nullable().defined(),
+  ruralId: Yup.string().nullable().defined(),
+  newcomerId: Yup.string().nullable().defined(),
 });
 
 export const expressionOfInterestSchema = Yup.object().shape({

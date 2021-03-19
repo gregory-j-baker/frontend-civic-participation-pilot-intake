@@ -7,7 +7,6 @@
 
 export enum Constants {
   FormDataStorageKey = 'CPP_APPLICATION_FORM_STATE',
-  NoAnswerOptionValue = '--prefer-not-answer',
 }
 
 export interface GetDescriptionFunc {
@@ -33,14 +32,14 @@ export interface IXExpressionOfInterestState extends ExpressionOfInterestState {
 }
 
 export interface IdentityInformationState {
+  disabilityId?: string | null;
   educationLevelId?: string | null;
   genderId?: string | null;
   indigenousTypeId?: string | null;
-  isDisabled?: boolean | null;
-  isLgbtq?: boolean | null;
-  isMinority?: boolean | null;
-  isNewcomer?: boolean | null;
-  isRural?: boolean | null;
+  minorityId?: string | null;
+  newcomerId?: string | null;
+  ruralId?: string | null;
+  sexualOrientationId?: string | null;
 }
 
 export interface IXIdentityInformationState extends IdentityInformationState {
