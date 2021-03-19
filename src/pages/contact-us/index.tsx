@@ -13,12 +13,14 @@ import { TextAreaField, TextAreaFieldOnChangeEvent } from '../../components/form
 import useTranslation from 'next-translate/useTranslation';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
+import Error from '../_error';
 import { Alert, AlertType } from '../../components/Alert';
 import { Button, ButtonOnClickEvent } from '../../components/Button';
 import { TextField, TextFieldOnChangeEvent } from '../../components/form/TextField';
 import { MainLayout } from '../../components/layouts/main/MainLayout';
 import { contactUsSchema } from '../../yup/contactUsSchema';
 import { ValidationError } from 'yup';
+import { HttpClientResponseError } from '../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { ContactUsData, useSubmitContactUs } from '../../hooks/api/useSubmitContactUs';
@@ -30,24 +32,24 @@ interface FormDataState {
   phoneNumber?: string;
 }
 
-interface IXFormDataState extends FormDataState {
-  [key: string]: string | undefined;
-}
-
 const ContactUs: NextPage = () => {
   const { t } = useTranslation();
 
   const router = useRouter();
 
-  const { isLoading: isSubmitting, mutate: submitContactUs } = useSubmitContactUs();
+  const { mutate: submitContactUs, error: submitContactUsError, isLoading: submitContactUsIsLoading, isSuccess: submitContactUsIsSuccess } = useSubmitContactUs({
+    onSuccess: () => {
+      router.push('/contact-us/success');
+    },
+  });
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
-  const [formData, setFormDataState] = useState<IXFormDataState>();
+  const [formData, setFormDataState] = useState<FormDataState>();
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      return { ...prev, [field as keyof IXFormDataState]: value ?? undefined };
+      return { ...prev, [field as keyof FormDataState]: value ?? undefined };
     });
   };
 
@@ -67,8 +69,6 @@ const ContactUs: NextPage = () => {
       };
 
       submitContactUs(contactUsData);
-
-      router.push(`/contact-us/success`);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
@@ -94,6 +94,8 @@ const ContactUs: NextPage = () => {
       )
     );
   };
+
+  if (submitContactUsError) return <Error err={submitContactUsError as HttpClientResponseError} />;
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -126,7 +128,7 @@ const ContactUs: NextPage = () => {
               label={t('contact-us:form.name.label')}
               value={formData?.name}
               onChange={handleOnTextFieldChange}
-              disabled={isSubmitting}
+              disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
               error={getSchemaError(nameof<FormDataState>((o) => o.name))}
               required
               gutterBottom
@@ -138,7 +140,7 @@ const ContactUs: NextPage = () => {
               label={t('contact-us:form.email.label')}
               value={formData?.email}
               onChange={handleOnTextFieldChange}
-              disabled={isSubmitting}
+              disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
               error={getSchemaError(nameof<FormDataState>((o) => o.email))}
               required
               gutterBottom
@@ -151,7 +153,7 @@ const ContactUs: NextPage = () => {
               helperText={t('contact-us:form.phone-number.helper-text')}
               value={formData?.phoneNumber}
               onChange={handleOnTextFieldChange}
-              disabled={isSubmitting}
+              disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
               error={getSchemaError(nameof<FormDataState>((o) => o.phoneNumber))}
               gutterBottom
               className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
@@ -162,7 +164,7 @@ const ContactUs: NextPage = () => {
               label={t('contact-us:form.message.label')}
               value={formData?.message}
               onChange={handleOnTextFieldChange}
-              disabled={isSubmitting}
+              disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
               error={getSchemaError(nameof<FormDataState>((o) => o.message))}
               required
               className="tw-w-full"
@@ -170,7 +172,7 @@ const ContactUs: NextPage = () => {
             />
           </div>
 
-          <Button onClick={handleOnSubmit} disabled={isSubmitting}>
+          <Button onClick={handleOnSubmit} disabled={submitContactUsIsLoading || submitContactUsIsSuccess}>
             {t('contact-us:form.submit')}
           </Button>
         </div>

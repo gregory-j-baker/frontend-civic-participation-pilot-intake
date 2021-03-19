@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useMutation, UseMutationResult } from 'react-query';
+import { useMutation, UseMutationOptions, UseMutationResult } from 'react-query';
+import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { apiConfig } from '../../../config';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
 
 export interface ContactUsData {
   email: string;
@@ -18,14 +18,28 @@ export interface ContactUsData {
 
 export const uri = `${apiConfig.baseUri}/contact-form`;
 
-export const useSubmitContactUs = (): UseMutationResult<Response, unknown, ContactUsData> => {
-  return useMutation((contactUsData: ContactUsData) =>
-    fetchWrapper<any>(uri, {
+export const useSubmitContactUs = (options?: UseMutationOptions<void, HttpClientResponseError, ContactUsData>): UseMutationResult<void, HttpClientResponseError, ContactUsData> => {
+  return useMutation(async (contactUsData): Promise<void> => {
+    const response = await fetch(uri, {
       body: JSON.stringify(contactUsData),
       headers: {
         'Content-Type': 'application/json',
       },
       method: 'POST',
-    })
-  );
+    });
+
+    if (!response.ok) {
+      const responseJson = await response
+        .clone()
+        .json()
+        .catch(() => undefined);
+
+      const responseText = await response
+        .clone()
+        .text()
+        .catch(() => undefined);
+
+      throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
+    }
+  }, options);
 };
