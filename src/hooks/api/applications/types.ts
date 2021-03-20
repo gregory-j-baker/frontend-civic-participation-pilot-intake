@@ -14,6 +14,7 @@ export const applicationsUri = `${apiConfig.baseUri}/applications`;
 export interface ApplicationBase {
   birthYear: number;
   communityInterest: string;
+  demographicId: string;
   discoveryChannelId: string;
   educationLevelId: string;
   email: string;

@@ -19,7 +19,7 @@ import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
-import { ApplicationState, Step4State, Constants, GetDescriptionFunc } from '../types';
+import { ApplicationState, Step4State, Constants, GetDescriptionFunc, Step1State, Step2State, Step3State } from '../types';
 import { step4Schema, step3Schema, applicationSchema, step2Schema, step1Schema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
@@ -104,20 +104,25 @@ const Step4Page = (): JSX.Element => {
 
       if (await applicationSchema.isValid(formData)) {
         // submit appplication
+        const step1State = formData.step1 as Step1State;
+        const step2State = formData.step2 as Step2State;
+        const step3State = formData.step3 as Step3State;
+
         const applicationData: ApplicationSubmitData = {
-          birthYear: formData.step1.birthYear as number,
-          communityInterest: formData.step3.communityInterest as string,
-          discoveryChannelId: formData.step1.discoveryChannelId as string,
-          educationLevelId: formData.step2.educationLevelId as string,
-          email: formData.step1.email as string,
-          firstName: formData.step1.firstName as string,
-          genderId: formData.step2.genderId as string,
-          isCanadianCitizen: formData.step1.isCanadianCitizen as boolean,
-          languageId: formData.step1.languageId as string,
-          lastName: formData.step1.languageId as string,
-          phoneNumber: formData.step1.phoneNumber,
-          provinceId: formData.step1.provinceId as string,
-          skillsInterest: formData.step3.skillsInterest as string,
+          birthYear: step1State.birthYear as number,
+          communityInterest: step3State.communityInterest as string,
+          demographicId: step2State.demographicId as string,
+          discoveryChannelId: step1State.discoveryChannelId as string,
+          educationLevelId: step2State.educationLevelId as string,
+          email: step1State.email as string,
+          firstName: step1State.firstName as string,
+          genderId: step2State.genderId as string,
+          isCanadianCitizen: step1State.isCanadianCitizen as boolean,
+          languageId: step1State.languageId as string,
+          lastName: step1State.languageId as string,
+          phoneNumber: step1State.phoneNumber,
+          provinceId: step1State.provinceId as string,
+          skillsInterest: step3State.skillsInterest as string,
         };
 
         submitApplication(applicationData);

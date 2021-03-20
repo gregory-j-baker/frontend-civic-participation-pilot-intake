@@ -28,6 +28,7 @@ export const step1Schema = Yup.object().shape({
 export const step2Schema = Yup.object().shape({
   genderId: Yup.string().nullable().defined(),
   educationLevelId: Yup.string().nullable().defined(),
+  demographicId: Yup.string().nullable().defined(),
 });
 
 export const step3Schema = Yup.object().shape({

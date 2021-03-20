@@ -32,6 +32,7 @@ export interface IXStep1State extends Step1State {
 
 export interface Step2State {
   educationLevelId?: string;
+  demographicId?: string;
   genderId?: string;
 }
 
