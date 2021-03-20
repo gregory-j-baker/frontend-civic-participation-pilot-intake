@@ -14,25 +14,16 @@ export const applicationsUri = `${apiConfig.baseUri}/applications`;
 export interface ApplicationBase {
   birthYear: number;
   communityInterest: string;
-  disabilityId: string;
   discoveryChannelId: string;
   educationLevelId: string;
   email: string;
   firstName: string;
   genderId: string;
-  hasDedicatedDevice: boolean;
-  indigenousTypeId: string;
-  internetQualityId: string;
   isCanadianCitizen: boolean;
   languageId: string;
   lastName: string;
-  minorityId: string;
-  newcomerId: string;
   phoneNumber?: string;
-  programInterest?: string;
   provinceId: string;
-  ruralId: string;
-  sexualOrientationId: string;
   skillsInterest: string;
 }
 

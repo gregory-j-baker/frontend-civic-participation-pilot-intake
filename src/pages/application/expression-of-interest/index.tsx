@@ -101,7 +101,7 @@ const ApplicationConsentPage = (): JSX.Element => {
     return (
       t('common:error-number', { number: index + 1 }) +
       t(
-        `application:step.expression-of-interest.${schemaErrors[index]?.path
+        `application:field.${schemaErrors[index]?.path
           ?.split('.')
           .map((el) => kebabCase(el))
           .join('.')}.${key}`
@@ -115,7 +115,7 @@ const ApplicationConsentPage = (): JSX.Element => {
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('application:step.expression-of-interest.title')} - ${t('application:header')}`} />
+          <NextSeo title={`${t('application:step-3.title')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -141,7 +141,7 @@ const ApplicationConsentPage = (): JSX.Element => {
           <Wizard activeStep={3} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
             <TextAreaField
               field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
-              label={t('application:step.expression-of-interest.skills-interest.label')}
+              label={t('application:field.skills-interest.label')}
               value={formData.expressionOfInterest.skillsInterest}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))}
@@ -153,22 +153,12 @@ const ApplicationConsentPage = (): JSX.Element => {
 
             <TextAreaField
               field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
-              label={t('application:step.expression-of-interest.community-interest.label')}
+              label={t('application:field.community-interest.label')}
               value={formData.expressionOfInterest.communityInterest}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.communityInterest))}
               required
               gutterBottom
-              className="tw-w-full"
-              wordLimit={250}
-            />
-
-            <TextAreaField
-              field={nameof<ExpressionOfInterestState>((o) => o.programInterest)}
-              label={t('application:step.expression-of-interest.program-interest.label')}
-              value={formData.expressionOfInterest.programInterest}
-              onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.programInterest))}
               className="tw-w-full"
               wordLimit={250}
             />

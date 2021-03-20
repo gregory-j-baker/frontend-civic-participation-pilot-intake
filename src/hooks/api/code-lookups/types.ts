@@ -32,13 +32,6 @@ export interface Lookup {
 }
 
 /**
- * Disabilities
- */
-export const disabilitiesQueryKey = 'disabilities';
-export const disabilitiesUri = `${apiConfig.baseUri}/disabilities`;
-export interface Disability extends Lookup {}
-
-/**
  * Discovery Channels
  */
 export const discoveryChannelsQueryKey = 'discovery-channels';
@@ -60,20 +53,6 @@ export const gendersUri = `${apiConfig.baseUri}/genders`;
 export interface Gender extends Lookup {}
 
 /**
- * Indigenous Types
- */
-export const indigenousTypesQueryKey = 'indigenous-types';
-export const indigenousTypesUri = `${apiConfig.baseUri}/indigenous-types`;
-export interface IndigenousType extends Lookup {}
-
-/**
- * Internet Qualities
- */
-export const internetQualitiesQueryKey = 'internet-qualities';
-export const internetQualitiesUri = `${apiConfig.baseUri}/internet-qualities`;
-export interface InternetQuality extends Lookup {}
-
-/**
  * Languages
  */
 export const languagesQueryKey = 'languages';
@@ -81,36 +60,8 @@ export const languagesUri = `${apiConfig.baseUri}/languages`;
 export interface Language extends Lookup {}
 
 /**
- * Minorities
- */
-export const minoritiesQueryKey = 'minorities';
-export const minoritiesUri = `${apiConfig.baseUri}/minorities`;
-export interface Minority extends Lookup {}
-
-/**
- * Newcomers
- */
-export const newcomersQueryKey = 'newcomers';
-export const newcomersUri = `${apiConfig.baseUri}/newcomers`;
-export interface Newcomer extends Lookup {}
-
-/**
  * Provinces
  */
 export const provincesQueryKey = 'provinces';
 export const provincesUri = `${apiConfig.baseUri}/provinces`;
 export interface Province extends Lookup {}
-
-/**
- * Rurals
- */
-export const ruralsQueryKey = 'rurals';
-export const ruralsUri = `${apiConfig.baseUri}/rurals`;
-export interface Rural extends Lookup {}
-
-/**
- * Sexual Orientations
- */
-export const sexualOrientationsQueryKey = 'sexual-orientations';
-export const sexualOrientationsUri = `${apiConfig.baseUri}/sexual-orientations`;
-export interface SexualOrientation extends Lookup {}

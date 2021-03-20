@@ -23,7 +23,6 @@ export interface IXConsentState extends ConsentState {
 
 export interface ExpressionOfInterestState {
   communityInterest?: string;
-  programInterest?: string;
   skillsInterest?: string;
 }
 
@@ -32,14 +31,8 @@ export interface IXExpressionOfInterestState extends ExpressionOfInterestState {
 }
 
 export interface IdentityInformationState {
-  disabilityId?: string | null;
   educationLevelId?: string | null;
   genderId?: string | null;
-  indigenousTypeId?: string | null;
-  minorityId?: string | null;
-  newcomerId?: string | null;
-  ruralId?: string | null;
-  sexualOrientationId?: string | null;
 }
 
 export interface IXIdentityInformationState extends IdentityInformationState {
@@ -51,8 +44,6 @@ export interface PersonalInformationState {
   discoveryChannelId?: string;
   email?: string;
   firstName?: string;
-  hasDedicatedDevice?: boolean;
-  internetQualityId?: string;
   isCanadianCitizen?: boolean;
   isProvinceMajorCertified?: boolean;
   languageId?: string;

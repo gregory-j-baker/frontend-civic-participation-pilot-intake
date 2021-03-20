@@ -22,7 +22,6 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent } from '../../../components/Wizard';
 import { theme } from '../../../config';
 import { useDiscoveryChannels } from '../../../hooks/api/code-lookups/useDiscoveryChannels';
-import { useInternetQualities } from '../../../hooks/api/code-lookups/useInternetQualities';
 import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
 import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
 import { useCurrentBreakpoint } from '../../../hooks/useCurrentBreakpoint';
@@ -44,7 +43,6 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
   const currentBreakpoint = useCurrentBreakpoint();
 
   const { data: discoveryChannels, isLoading: isDiscoveryChannelsLoading, error: discoveryChannelsError } = useDiscoveryChannels({ lang });
-  const { data: internetQualities, isLoading: isInternetQualitiesLoading, error: internetQualitiesError } = useInternetQualities({ lang });
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces({ lang });
 
@@ -123,12 +121,6 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
     return provinces?._embedded.provinces.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
   }, [isProvincesLoading, provincesError, provinces, getDescription]);
 
-  // internet quality select options
-  const internetQualityOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isInternetQualitiesLoading || internetQualitiesError) return [];
-    return internetQualities?._embedded.internetQualities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isInternetQualitiesLoading, internetQualitiesError, internetQualities, getDescription]);
-
   // discovery channel select options
   const discoveryChannelOptions = useMemo<SelectFieldOption[]>(() => {
     if (isDiscoveryChannelsLoading || discoveryChannelsError) return [];
@@ -155,7 +147,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
     return (
       t('common:error-number', { number: index + 1 }) +
       t(
-        `application:step.personal-information.${schemaErrors[index]?.path
+        `application:field.${schemaErrors[index]?.path
           ?.split('.')
           .map((el) => kebabCase(el))
           .join('.')}.${key}`
@@ -163,17 +155,17 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
     );
   };
 
-  if (discoveryChannelsError || internetQualitiesError || languagesError || provincesError) {
-    return <Error err={(discoveryChannelsError ?? internetQualitiesError ?? languagesError ?? provincesError) as HttpClientResponseError} />;
+  if (discoveryChannelsError || languagesError || provincesError) {
+    return <Error err={(discoveryChannelsError ?? languagesError ?? provincesError) as HttpClientResponseError} />;
   }
 
   return (
     <MainLayout showBreadcrumb={false}>
-      {isDiscoveryChannelsLoading || isInternetQualitiesLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
+      {isDiscoveryChannelsLoading || isLanguagesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('application:step.personal-information.title')} - ${t('application:header')}`} />
+          <NextSeo title={`${t('application:step-1.title')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -199,7 +191,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
           <Wizard activeStep={1} numberOfSteps={4} previousHidden onNextClick={handleWizardOnNextClick}>
             <TextField
               field={nameof<PersonalInformationState>((o) => o.firstName)}
-              label={t('application:step.personal-information.first-name.label')}
+              label={t('application:field.first-name.label')}
               value={formData.personalInformation.firstName}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<PersonalInformationState>((o) => o.firstName))}
@@ -210,7 +202,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
             <TextField
               field={nameof<PersonalInformationState>((o) => o.lastName)}
-              label={t('application:step.personal-information.last-name.label')}
+              label={t('application:field.last-name.label')}
               value={formData.personalInformation.lastName}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<PersonalInformationState>((o) => o.lastName))}
@@ -221,7 +213,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
             <TextField
               field={nameof<PersonalInformationState>((o) => o.email)}
-              label={t('application:step.personal-information.email.label')}
+              label={t('application:field.email.label')}
               value={formData.personalInformation.email}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<PersonalInformationState>((o) => o.email))}
@@ -232,8 +224,8 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
             <TextField
               field={nameof<PersonalInformationState>((o) => o.phoneNumber)}
-              label={t('application:step.personal-information.phone-number.label')}
-              helperText={t('application:step.personal-information.phone-number.helper-text')}
+              label={t('application:field.phone-number.label')}
+              helperText={t('application:field.phone-number.helper-text')}
               value={formData.personalInformation.phoneNumber}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<PersonalInformationState>((o) => o.phoneNumber))}
@@ -243,8 +235,8 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
             <SelectField
               field={nameof<PersonalInformationState>((o) => o.birthYear)}
-              label={t('application:step.personal-information.birth-year.label')}
-              helperText={t('application:step.personal-information.birth-year.helper-text')}
+              label={t('application:field.birth-year.label')}
+              helperText={t('application:field.birth-year.helper-text')}
               value={formData.personalInformation.birthYear?.toString()}
               onChange={handleOnOptionsFieldChange}
               options={yearOfBirthOptions}
@@ -255,7 +247,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
             <CheckboxeField
               field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
-              label={t('application:step.personal-information.is-province-major-certified.label')}
+              label={t('application:field.is-province-major-certified.label')}
               checked={formData.personalInformation.isProvinceMajorCertified}
               onChange={handleOnCheckboxFieldChange}
               error={getSchemaError(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))}
@@ -263,13 +255,13 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
             />
             <div className="tw-mb-8 tw-pl-10">
               <a href="http://example.com" target="_blank" rel="noreferrer">
-                {t('application:step.personal-information.is-province-major-certified.link')}
+                {t('application:field.is-province-major-certified.link')}
               </a>
             </div>
 
             <RadiosField
               field={nameof<PersonalInformationState>((o) => o.languageId)}
-              label={t('application:step.personal-information.language-id.label')}
+              label={t('application:field.language-id.label')}
               value={formData.personalInformation.languageId}
               onChange={handleOnOptionsFieldChange}
               options={preferedLanguageOptions}
@@ -281,11 +273,11 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
             <RadiosField
               field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
-              label={t('application:step.personal-information.is-canadian-citizen.label')}
+              label={t('application:field.is-canadian-citizen.label')}
               value={formData.personalInformation.isCanadianCitizen?.toString()}
               onChange={handleOnOptionsFieldChange}
               options={yesNoOptions}
-              helperText={t('application:step.personal-information.is-canadian-citizen.helper-text')}
+              helperText={t('application:field.is-canadian-citizen.helper-text')}
               error={getSchemaError(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))}
               required
               gutterBottom
@@ -294,7 +286,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
             <SelectField
               field={nameof<PersonalInformationState>((o) => o.provinceId)}
-              label={t('application:step.personal-information.province-id.label')}
+              label={t('application:field.province-id.label')}
               value={formData.personalInformation.provinceId}
               onChange={handleOnOptionsFieldChange}
               options={provinceOptions}
@@ -305,32 +297,8 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
             />
 
             <SelectField
-              field={nameof<PersonalInformationState>((o) => o.internetQualityId)}
-              label={t('application:step.personal-information.internet-quality-id.label')}
-              value={formData.personalInformation.internetQualityId}
-              onChange={handleOnOptionsFieldChange}
-              options={internetQualityOptions}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.internetQualityId))}
-              required
-              gutterBottom
-              className="tw-w-full sm:tw-w-6/12"
-            />
-
-            <RadiosField
-              field={nameof<PersonalInformationState>((o) => o.hasDedicatedDevice)}
-              label={t('application:step.personal-information.has-dedicated-device.label')}
-              value={formData.personalInformation.hasDedicatedDevice?.toString()}
-              onChange={handleOnOptionsFieldChange}
-              options={yesNoOptions}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.hasDedicatedDevice))}
-              required
-              gutterBottom
-              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-            />
-
-            <SelectField
               field={nameof<PersonalInformationState>((o) => o.discoveryChannelId)}
-              label={t('application:step.personal-information.discovery-channel-id.label')}
+              label={t('application:field.discovery-channel-id.label')}
               value={formData.personalInformation.discoveryChannelId}
               onChange={handleOnOptionsFieldChange}
               options={discoveryChannelOptions}

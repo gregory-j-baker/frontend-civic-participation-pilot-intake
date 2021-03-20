@@ -22,26 +22,17 @@ export const personalInformationSchema = Yup.object().shape({
   languageId: Yup.string().required(),
   isCanadianCitizen: Yup.boolean().required(),
   provinceId: Yup.string().required(),
-  internetQualityId: Yup.string().required(),
-  hasDedicatedDevice: Yup.boolean().required(),
   discoveryChannelId: Yup.string().required(),
 });
 
 export const identityInformationSchema = Yup.object().shape({
   genderId: Yup.string().nullable().defined(),
   educationLevelId: Yup.string().nullable().defined(),
-  disabilityId: Yup.string().nullable().defined(),
-  minorityId: Yup.string().nullable().defined(),
-  indigenousTypeId: Yup.string().nullable().defined(),
-  sexualOrientationId: Yup.string().nullable().defined(),
-  ruralId: Yup.string().nullable().defined(),
-  newcomerId: Yup.string().nullable().defined(),
 });
 
 export const expressionOfInterestSchema = Yup.object().shape({
   skillsInterest: Yup.string().required(),
   communityInterest: Yup.string().required(),
-  programInterest: Yup.string(),
 });
 
 export const consentSchema = Yup.object().shape({

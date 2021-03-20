@@ -9,17 +9,13 @@ import { useMemo, useState, useEffect, useCallback } from 'react';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
-import { RadiosField, RadiosFieldOnChangeEvent } from '../../../components/form/RadiosField';
 import type { SelectFieldOnChangeEvent, SelectFieldOption } from '../../../components/form/SelectField';
 import { SelectField } from '../../../components/form/SelectField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../../../components/Wizard';
-import { theme } from '../../../config';
 import { useEducationLevels } from '../../../hooks/api/code-lookups/useEducationLevels';
 import { useGenders } from '../../../hooks/api/code-lookups/useGenders';
-import { useIndigenousTypes } from '../../../hooks/api/code-lookups/useIndigenousTypes';
-import { useCurrentBreakpoint } from '../../../hooks/useCurrentBreakpoint';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
@@ -31,25 +27,13 @@ import { HttpClientResponseError } from '../../../common/HttpClientResponseError
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { sleep } from '../../../utils/misc-utils';
-import { useDisabilities } from '../../../hooks/api/code-lookups/useDisabilities';
-import { useSexualOrientations } from '../../../hooks/api/code-lookups/useSexualOrientations';
-import { useRurals } from '../../../hooks/api/code-lookups/useRurals';
-import { useNewcomers } from '../../../hooks/api/code-lookups/useNewcomers';
-import { useMinorities } from '../../../hooks/api/code-lookups/useMinorities';
 
 const ApplicationIdentityInformationPage = (): JSX.Element => {
   const { lang, t } = useTranslation();
   const router = useRouter();
-  const currentBreakpoint = useCurrentBreakpoint();
 
-  const { data: disabilities, isLoading: isDisabilitiesLoading, error: disabilitiesError } = useDisabilities({ lang });
   const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels({ lang });
   const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders({ lang });
-  const { data: indigenousTypes, isLoading: isIndigenousTypesLoading, error: indigenousTypesError } = useIndigenousTypes({ lang });
-  const { data: minorities, isLoading: isMinoritiesLoading, error: minoritiesError } = useMinorities({ lang });
-  const { data: newcomers, isLoading: isNewcomersLoading, error: newcomersError } = useNewcomers({ lang });
-  const { data: rurals, isLoading: isRuralsLoading, error: ruralsError } = useRurals({ lang });
-  const { data: sexualOrientations, isLoading: isSexualOrientationsLoading, error: sexualOrientationsError } = useSexualOrientations({ lang });
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
@@ -84,7 +68,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
     window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
   }, [formData]);
 
-  const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
+  const handleOnOptionsFieldChange: SelectFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
       let newValue: boolean | string | null | undefined = undefined;
 
@@ -120,18 +104,6 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
-  // disabilities select options
-  const disabilitiesOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isDisabilitiesLoading || disabilitiesError) return [];
-    return disabilities?._embedded.disabilities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isDisabilitiesLoading, disabilitiesError, disabilities, getDescription]);
-
-  // indigenous types select options
-  const indigenousTypeOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isIndigenousTypesLoading || indigenousTypesError) return [];
-    return indigenousTypes?._embedded.indigenousTypes.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isIndigenousTypesLoading, indigenousTypesError, indigenousTypes, getDescription]);
-
   // gender select options
   const genderOptions = useMemo<SelectFieldOption[]>(() => {
     if (isGendersLoading || gendersError) return [];
@@ -143,30 +115,6 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
     if (isEducationLevelsLoading || educationLevelsError) return [];
     return educationLevels?._embedded.educationLevels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
   }, [isEducationLevelsLoading, educationLevelsError, educationLevels, getDescription]);
-
-  // minorities select options
-  const minoritiesOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isMinoritiesLoading || minoritiesError) return [];
-    return minorities?._embedded.minorities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isMinoritiesLoading, minoritiesError, minorities, getDescription]);
-
-  // newcomers select options
-  const newcomersOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isNewcomersLoading || newcomersError) return [];
-    return newcomers?._embedded.newcomers.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isNewcomersLoading, newcomersError, newcomers, getDescription]);
-
-  // rurals select options
-  const ruralsOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isRuralsLoading || ruralsError) return [];
-    return rurals?._embedded.ruralEntities.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isRuralsLoading, ruralsError, rurals, getDescription]);
-
-  // rurals select options
-  const sexualOrientationsOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isSexualOrientationsLoading || sexualOrientationsError) return [];
-    return sexualOrientations?._embedded.sexualOrientations.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isSexualOrientationsLoading, sexualOrientationsError, sexualOrientations, getDescription]);
 
   const getSchemaError = (path: string): string | undefined => {
     if (!schemaErrors || schemaErrors.length === 0) return undefined;
@@ -180,7 +128,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
     return (
       t('common:error-number', { number: index + 1 }) +
       t(
-        `application:step.identity-information.${schemaErrors[index]?.path
+        `application:field.${schemaErrors[index]?.path
           ?.split('.')
           .map((el) => kebabCase(el))
           .join('.')}.${key}`
@@ -188,17 +136,17 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
     );
   };
 
-  if (gendersError || educationLevelsError || indigenousTypesError) {
-    return <Error err={(gendersError ?? educationLevelsError ?? indigenousTypesError) as HttpClientResponseError} />;
+  if (gendersError || educationLevelsError) {
+    return <Error err={(gendersError ?? educationLevelsError) as HttpClientResponseError} />;
   }
 
   return (
     <MainLayout showBreadcrumb={false}>
-      {!previousStepsValidationCompleted || isGendersLoading || isEducationLevelsLoading || isIndigenousTypesLoading ? (
+      {!previousStepsValidationCompleted || isGendersLoading || isEducationLevelsLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
-          <NextSeo title={`${t('application:step.identity-information.title')} - ${t('application:header')}`} />
+          <NextSeo title={`${t('application:step-2.title')} - ${t('application:header')}`} />
 
           <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
             {t('common:app.title')}
@@ -222,11 +170,11 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
           )}
 
           <Wizard activeStep={2} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
-            <p className="tw-m-0 tw-mb-10 tw-font-bold">{t('application:step.identity-information.information-note-1')}</p>
+            <p className="tw-m-0 tw-mb-10 tw-font-bold">{t('application:step-2.information-note-1')}</p>
 
             <SelectField
               field={nameof<IdentityInformationState>((o) => o.genderId)}
-              label={t('application:step.identity-information.gender-id.label')}
+              label={t('application:field.gender-id.label')}
               value={formData.identityInformation.genderId}
               onChange={handleOnOptionsFieldChange}
               options={genderOptions}
@@ -238,8 +186,8 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
 
             <SelectField
               field={nameof<IdentityInformationState>((o) => o.educationLevelId)}
-              label={t('application:step.identity-information.education-level-id.label')}
-              helperText={t('application:step.identity-information.education-level-id.helper-text')}
+              label={t('application:field.education-level-id.label')}
+              helperText={t('application:field.education-level-id.helper-text')}
               value={formData.identityInformation.educationLevelId}
               onChange={handleOnOptionsFieldChange}
               options={educationLevelOptions}
@@ -249,78 +197,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
               className="tw-w-full"
             />
 
-            <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step.identity-information.information-note-2')}</p>
-
-            <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.disabilityId)}
-              label={t('application:step.identity-information.disability-id.label')}
-              value={formData.identityInformation.disabilityId}
-              onChange={handleOnOptionsFieldChange}
-              options={disabilitiesOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.disabilityId))}
-              required
-              gutterBottom
-              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-            />
-
-            <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.minorityId)}
-              label={t('application:step.identity-information.minority-id.label')}
-              value={formData.identityInformation.minorityId}
-              onChange={handleOnOptionsFieldChange}
-              options={minoritiesOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.minorityId))}
-              required
-              gutterBottom
-              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-            />
-
-            <SelectField
-              field={nameof<IdentityInformationState>((o) => o.indigenousTypeId)}
-              label={t('application:step.identity-information.indigenous-type-id.label')}
-              value={formData.identityInformation.indigenousTypeId}
-              onChange={handleOnOptionsFieldChange}
-              options={indigenousTypeOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.indigenousTypeId))}
-              required
-              gutterBottom
-              className="tw-w-full sm:tw-w-6/12"
-            />
-
-            <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.sexualOrientationId)}
-              label={t('application:step.identity-information.sexual-orientation-id.label')}
-              value={formData.identityInformation.sexualOrientationId}
-              onChange={handleOnOptionsFieldChange}
-              options={sexualOrientationsOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.sexualOrientationId))}
-              required
-              gutterBottom
-              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-            />
-
-            <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.ruralId)}
-              label={t('application:step.identity-information.rural-id.label')}
-              value={formData.identityInformation.ruralId}
-              onChange={handleOnOptionsFieldChange}
-              options={ruralsOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.ruralId))}
-              required
-              gutterBottom
-              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-            />
-
-            <RadiosField
-              field={nameof<IdentityInformationState>((o) => o.newcomerId)}
-              label={t('application:step.identity-information.newcomer-id.label')}
-              value={formData.identityInformation.newcomerId}
-              onChange={handleOnOptionsFieldChange}
-              options={newcomersOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.newcomerId))}
-              required
-              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
-            />
+            <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step-2.information-note-2')}</p>
           </Wizard>
         </>
       )}
