@@ -15,6 +15,7 @@ export interface TextAreaFieldOnChangeEvent {
 }
 
 export interface TextAreaFieldProps {
+  children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
   error?: string;
@@ -32,7 +33,7 @@ export interface TextAreaFieldProps {
   wordLimit?: number;
 }
 
-export const TextAreaField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, rows, value, wordLimit }: TextAreaFieldProps): JSX.Element => {
+export const TextAreaField = ({ children, className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, rows, value, wordLimit }: TextAreaFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-field-${field}`;
@@ -61,6 +62,7 @@ export const TextAreaField = ({ className, disabled, error, field, gutterBottom,
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
+      {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       {wordLimit && <HelpBlock className="tw-italic tw-text-sm">{t('common:textarea.word-limit', { count: wordCount, limit: wordLimit })}</HelpBlock>}

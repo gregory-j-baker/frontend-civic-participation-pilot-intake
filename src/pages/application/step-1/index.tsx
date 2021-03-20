@@ -251,13 +251,14 @@ const Step1Page = (): JSX.Element => {
               checked={formData.step1.isProvinceMajorCertified}
               onChange={handleOnCheckboxFieldChange}
               error={getSchemaError(nameof<Step1State>((o) => o.isProvinceMajorCertified))}
-              required
-            />
-            <div className="tw-mb-8 tw-pl-10">
-              <a href="http://example.com" target="_blank" rel="noreferrer">
-                {t('application:field.is-province-major-certified.link')}
-              </a>
-            </div>
+              gutterBottom
+              required>
+              <div className="tw-pl-10">
+                <a href="http://example.com" target="_blank" rel="noreferrer">
+                  {t('application:field.is-province-major-certified.link')}
+                </a>
+              </div>
+            </CheckboxeField>
 
             <RadiosField
               field={nameof<Step1State>((o) => o.languageId)}
