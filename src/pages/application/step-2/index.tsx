@@ -27,11 +27,17 @@ import { HttpClientResponseError } from '../../../common/HttpClientResponseError
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { sleep } from '../../../utils/misc-utils';
+import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../../../components/form/RadiosField';
+import { useDemographics } from '../../../hooks/api/code-lookups/useDemographics';
+import { theme } from '../../../config';
+import { useCurrentBreakpoint } from '../../../hooks/useCurrentBreakpoint';
 
 const Step2Page = (): JSX.Element => {
   const { lang, t } = useTranslation();
   const router = useRouter();
+  const currentBreakpoint = useCurrentBreakpoint();
 
+  const { data: demographics, isLoading: isDemographicsLoading, error: demographicsError } = useDemographics({ lang });
   const { data: educationLevels, isLoading: isEducationLevelsLoading, error: educationLevelsError } = useEducationLevels({ lang });
   const { data: genders, isLoading: isGendersLoading, error: gendersError } = useGenders({ lang });
 
@@ -68,7 +74,7 @@ const Step2Page = (): JSX.Element => {
     window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
   }, [formData]);
 
-  const handleOnOptionsFieldChange: SelectFieldOnChangeEvent = ({ field, value }) => {
+  const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
       const newObj = { ...prev.step2, [field]: value ?? undefined };
       return { ...prev, step2: newObj };
@@ -96,17 +102,23 @@ const Step2Page = (): JSX.Element => {
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
-  // gender select options
-  const genderOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isGendersLoading || gendersError) return [];
-    return genders?._embedded.genders.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isGendersLoading, gendersError, genders, getDescription]);
+  // demographic radio options
+  const demographicOptions = useMemo<RadiosFieldOption[]>(() => {
+    if (isDemographicsLoading || demographicsError) return [];
+    return demographics?._embedded.demographics.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isDemographicsLoading, demographicsError, demographics, getDescription]);
 
-  // education level select options
+  // education level options
   const educationLevelOptions = useMemo<SelectFieldOption[]>(() => {
     if (isEducationLevelsLoading || educationLevelsError) return [];
     return educationLevels?._embedded.educationLevels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
   }, [isEducationLevelsLoading, educationLevelsError, educationLevels, getDescription]);
+
+  // gender options
+  const genderOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isGendersLoading || gendersError) return [];
+    return genders?._embedded.genders.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isGendersLoading, gendersError, genders, getDescription]);
 
   const getSchemaError = (path: string): string | undefined => {
     if (!schemaErrors || schemaErrors.length === 0) return undefined;
@@ -128,13 +140,13 @@ const Step2Page = (): JSX.Element => {
     );
   };
 
-  if (gendersError || educationLevelsError) {
-    return <Error err={(gendersError ?? educationLevelsError) as HttpClientResponseError} />;
+  if (demographicsError || educationLevelsError || gendersError) {
+    return <Error err={(demographicsError ?? educationLevelsError ?? gendersError) as HttpClientResponseError} />;
   }
 
   return (
     <MainLayout showBreadcrumb={false}>
-      {!previousStepsValidationCompleted || isGendersLoading || isEducationLevelsLoading ? (
+      {!previousStepsValidationCompleted || isDemographicsLoading || isEducationLevelsLoading || isGendersLoading ? (
         <PageLoadingSpinner />
       ) : (
         <>
@@ -162,7 +174,7 @@ const Step2Page = (): JSX.Element => {
           )}
 
           <Wizard activeStep={2} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
-            <p className="tw-m-0 tw-mb-10 tw-font-bold">{t('application:step-2.information-note-1')}</p>
+            <p className="tw-m-0 tw-mb-10 tw-font-bold">{t('application:step-2.information-note')}</p>
 
             <SelectField
               field={nameof<Step2State>((o) => o.genderId)}
@@ -189,7 +201,24 @@ const Step2Page = (): JSX.Element => {
               className="tw-w-full"
             />
 
-            <p className="tw-m-0 tw-mb-8 tw-font-bold">{t('application:step-2.information-note-2')}</p>
+            <RadiosField
+              field={nameof<Step2State>((o) => o.demographicId)}
+              label={t('application:field.demographic-id.label')}
+              value={formData.step2.demographicId}
+              onChange={handleOnOptionsFieldChange}
+              options={demographicOptions}
+              error={getSchemaError(nameof<Step2State>((o) => o.demographicId))}
+              required
+              gutterBottom
+              inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}>
+              <ul className="tw-list-disc tw-list-inside tw-my-4 tw-font-bold">
+                {t<string[]>(`application:field.demographic-id.children-items`, {}, { returnObjects: true }).map((val) => (
+                  <li key={val} className="tw-mb-2">
+                    {val}
+                  </li>
+                ))}
+              </ul>
+            </RadiosField>
           </Wizard>
         </>
       )}

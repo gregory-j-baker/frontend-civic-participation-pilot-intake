@@ -34,6 +34,7 @@ import { useGenders } from '../../../hooks/api/code-lookups/useGenders';
 import { sleep } from '../../../utils/misc-utils';
 import Link from 'next/link';
 import { ApplicationSubmitData } from '../../../hooks/api/applications/types';
+import { useDemographics } from '../../../hooks/api/code-lookups/useDemographics';
 
 const Step4Page = (): JSX.Element => {
   const { t } = useTranslation();
@@ -231,6 +232,7 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export interface FormReviewItem {
+  children?: React.ReactNode;
   key: string;
   text: string;
   value: string;
@@ -243,6 +245,7 @@ export interface FormReviewProps {
 export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element => {
   const { t, lang } = useTranslation();
 
+  const { data: demographics } = useDemographics({ lang });
   const { data: discoveryChannels } = useDiscoveryChannels({ lang });
   const { data: educationLevels } = useEducationLevels({ lang });
   const { data: genders } = useGenders({ lang });
@@ -259,12 +262,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       if (applicationState.step1.firstName) {
         items.push({
           key: nameof<ApplicationState>((o) => o.step1.firstName),
-          text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.step1.firstName)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
+          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.firstName))}.label`),
           value: applicationState.step1.firstName,
         });
       }
@@ -273,12 +271,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       if (applicationState.step1.lastName) {
         items.push({
           key: nameof<ApplicationState>((o) => o.step1.lastName),
-          text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.step1.lastName)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
+          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.lastName))}.label`),
           value: applicationState.step1.lastName,
         });
       }
@@ -287,12 +280,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       if (applicationState.step1.email) {
         items.push({
           key: nameof<ApplicationState>((o) => o.step1.email),
-          text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.step1.email)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
+          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.email))}.label`),
           value: applicationState.step1.email,
         });
       }
@@ -301,12 +289,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       if (applicationState.step1.phoneNumber) {
         items.push({
           key: nameof<ApplicationState>((o) => o.step1.phoneNumber),
-          text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.step1.phoneNumber)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
+          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.phoneNumber))}.label`),
           value: applicationState.step1.phoneNumber,
         });
       }
@@ -315,12 +298,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       if (applicationState.step1.birthYear) {
         items.push({
           key: nameof<ApplicationState>((o) => o.step1.birthYear),
-          text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.step1.birthYear)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
+          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.birthYear))}.label`),
           value: applicationState.step1.birthYear.toString(),
         });
       }
@@ -331,12 +309,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
         if (language) {
           items.push({
             key: nameof<ApplicationState>((o) => o.step1.languageId),
-            text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.step1.languageId)
-                .split('.')
-                .map((s) => kebabCase(s))
-                .join('.')}.label`
-            ),
+            text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.languageId))}.label`),
             value: getDescription(language),
           });
         }
@@ -346,12 +319,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       if (applicationState.step1.isCanadianCitizen !== undefined) {
         items.push({
           key: nameof<ApplicationState>((o) => o.step1.isCanadianCitizen),
-          text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.step1.isCanadianCitizen)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
+          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.isCanadianCitizen))}.label`),
           value: applicationState.step1.isCanadianCitizen ? t('common:yes') : t('common:no'),
         });
       }
@@ -362,12 +330,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
         if (province) {
           items.push({
             key: nameof<ApplicationState>((o) => o.step1.provinceId),
-            text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.step1.provinceId)
-                .split('.')
-                .map((s) => kebabCase(s))
-                .join('.')}.label`
-            ),
+            text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.provinceId))}.label`),
             value: getDescription(province),
           });
         }
@@ -379,12 +342,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
         if (discoveryChannel) {
           items.push({
             key: nameof<ApplicationState>((o) => o.step1.discoveryChannelId),
-            text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.step1.discoveryChannelId)
-                .split('.')
-                .map((s) => kebabCase(s))
-                .join('.')}.label`
-            ),
+            text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.discoveryChannelId))}.label`),
             value: getDescription(discoveryChannel),
           });
         }
@@ -398,12 +356,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
         if (gender) {
           items.push({
             key: nameof<ApplicationState>((o) => o.step2.genderId),
-            text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.step2.genderId)
-                .split('.')
-                .map((s) => kebabCase(s))
-                .join('.')}.label`
-            ),
+            text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.genderId))}.label`),
             value: getDescription(gender),
           });
         }
@@ -416,13 +369,30 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
         if (educationLevel) {
           items.push({
             key: nameof<ApplicationState>((o) => o.step2.educationLevelId),
-            text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.step2.educationLevelId)
-                .split('.')
-                .map((s) => kebabCase(s))
-                .join('.')}.label`
-            ),
+            text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.educationLevelId))}.label`),
             value: getDescription(educationLevel),
+          });
+        }
+      }
+
+      // demographicId
+      if (applicationState.step2.demographicId) {
+        const demographic = demographics?._embedded.demographics.find((o) => o.id === applicationState.step2.demographicId);
+
+        if (demographic) {
+          items.push({
+            children: (
+              <ul className="tw-list-disc tw-list-inside tw-my-4">
+                {t<string[]>(`application:field.${kebabCase(nameof<Step2State>((o) => o.demographicId))}.children-items`, {}, { returnObjects: true }).map((val) => (
+                  <li key={val} className="tw-mb-2">
+                    {val}
+                  </li>
+                ))}
+              </ul>
+            ),
+            key: nameof<ApplicationState>((o) => o.step2.demographicId),
+            text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.demographicId))}.label`),
+            value: getDescription(demographic),
           });
         }
       }
@@ -433,12 +403,7 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       if (applicationState.step3.skillsInterest) {
         items.push({
           key: nameof<ApplicationState>((o) => o.step3.skillsInterest),
-          text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.step3.skillsInterest)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
+          text: t(`application:field.${kebabCase(nameof<Step3State>((o) => o.skillsInterest))}.label`),
           value: applicationState.step3.skillsInterest,
         });
       }
@@ -447,24 +412,21 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       if (applicationState.step3.communityInterest) {
         items.push({
           key: nameof<ApplicationState>((o) => o.step3.communityInterest),
-          text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.step3.communityInterest)
-              .split('.')
-              .map((s) => kebabCase(s))
-              .join('.')}.label`
-          ),
+          text: t(`application:field.${kebabCase(nameof<Step3State>((o) => o.communityInterest))}.label`),
           value: applicationState.step3.communityInterest,
         });
       }
     }
 
     return items;
-  }, [applicationState, t, getDescription, discoveryChannels, educationLevels, genders, languages, provinces]);
+  }, [applicationState, t, getDescription, demographics, discoveryChannels, educationLevels, genders, languages, provinces]);
 
   return (
     <dl>
-      {formReviewItems.map(({ key, text, value }, index) => (
-        <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value} />
+      {formReviewItems.map(({ children, key, text, value }, index) => (
+        <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
+          {children}
+        </FormDefinitionListItem>
       ))}
     </dl>
   );

@@ -106,22 +106,22 @@ const Step1Page = (): JSX.Element => {
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
-  // year of birth select options
+  // year of birth options
   const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({ startYear: 1990, endYear: 2003 }).map((year) => ({ value: year.toString(), text: year.toString() })), []);
 
-  // prefered language select options
-  const preferedLanguageOptions = useMemo<RadiosFieldOption[]>(() => {
+  // language options
+  const languageOptions = useMemo<RadiosFieldOption[]>(() => {
     if (isLanguagesLoading || languagesError) return [];
     return languages?._embedded.languages.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
   }, [isLanguagesLoading, languagesError, languages, getDescription]);
 
-  // province select options
+  // province options
   const provinceOptions = useMemo<SelectFieldOption[]>(() => {
     if (isProvincesLoading || provincesError) return [];
     return provinces?._embedded.provinces.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
   }, [isProvincesLoading, provincesError, provinces, getDescription]);
 
-  // discovery channel select options
+  // discovery channel options
   const discoveryChannelOptions = useMemo<SelectFieldOption[]>(() => {
     if (isDiscoveryChannelsLoading || discoveryChannelsError) return [];
     return discoveryChannels?._embedded.discoveryChannels.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
@@ -264,7 +264,7 @@ const Step1Page = (): JSX.Element => {
               label={t('application:field.language-id.label')}
               value={formData.step1.languageId}
               onChange={handleOnOptionsFieldChange}
-              options={preferedLanguageOptions}
+              options={languageOptions}
               error={getSchemaError(nameof<Step1State>((o) => o.languageId))}
               required
               gutterBottom

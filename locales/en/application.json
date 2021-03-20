@@ -13,9 +13,35 @@
       "helper-text": "Please note that to be eligible you must be between 18-30 years of age and of the age of majority in your province or territory of residence.",
       "required": "You must select the year you were born"
     },
+    "community-interest": {
+      "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
+      "required": "You must provide a response to question #2"
+    },
+    "demographic-id": {
+      "label": "Do you identify with one or more of the demographic characteristics listed?",
+      "children-items": [
+        "Visible minority/racialized",
+        "Indigenous (i.e. First Nations, Inuit (Inuk), or Métis, or Non-Affiliated)",
+        "Person with a disability",
+        "LGBTQ2",
+        "Recent newcomer to Canada (within the last five years)",
+        "Official Language Minority Community (OLMC)",
+        "Living in a rural or remote area"
+      ],
+      "required": "You must select a response for demographic characteristics"
+    },
+    "disability-id": {
+      "label": "I am a person living with a disability",
+      "required": "You must select a response for living with a disability"
+    },
     "discovery-channel-id": {
       "label": "How did you hear about the Civic Participation Pilot?",
       "required": "You must indicate how you heard about this pilot"
+    },
+    "education-level-id": {
+      "label": "What is your highest level of formal education completed, or enrolled in currently?",
+      "helper-text": "Please note that there is no education requirement for this program.",
+      "required": "You must select a response for level of education"
     },
     "email": {
       "email-invalid": "You must enter a valid email address",
@@ -26,10 +52,19 @@
       "label": "First name",
       "required": "You must enter your first name"
     },
+    "gender-id": {
+      "label": "With which gender identity do you most identify?",
+      "required": "You must select a response for gender identity"
+    },
     "is-canadian-citizen": {
       "label": "Are you a Canadian citizen, permanent resident, or protected person?",
       "helper-text": "A protected person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or should be of that Act.",
       "required": "You must indicate if you are a citizen, resident, or protected person"
+    },
+    "is-information-consented": {
+      "label": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
+      "required": "You must provide consent to share this information",
+      "must-be-true": "You must provide consent to share this information"
     },
     "is-province-major-certified": {
       "label": "I certify I am of the age of majority in my province or territory of residence",
@@ -54,31 +89,9 @@
       "label": "In which province or territory is your principle residence located?",
       "required": "You must select your province or territory of residence"
     },
-    "disability-id": {
-      "label": "I am a person living with a disability",
-      "required": "You must select a response for living with a disability"
-    },
-    "education-level-id": {
-      "label": "What is your highest level of formal education completed, or enrolled in currently?",
-      "helper-text": "Please note that there is no education requirement for this program.",
-      "required": "You must select a response for level of education"
-    },
-    "gender-id": {
-      "label": "With which gender identity do you most identify?",
-      "required": "You must select a response for gender identity"
-    },
-    "community-interest": {
-      "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
-      "required": "You must provide a response to question #2"
-    },
     "skills-interest": {
       "label": "Tell us about yourself, describe your strenghts, passions and what motivates you. What skills and knowledge do you hope to gain from this experience?",
       "required": "You must provide a response to question #1"
-    },
-    "is-information-consented": {
-      "label": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
-      "required": "You must provide consent to share this information",
-      "must-be-true": "You must provide consent to share this information"
     }
   },
   "step-1": {
@@ -86,8 +99,7 @@
   },
   "step-2": {
     "title": "Step 2",
-    "information-note-1": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answers that you feel are most applicable to you. You may choose to select ‘Prefer not to answer’ for any question in this section.",
-    "information-note-2": "Please select the demographic characteristics with which you identify."
+    "information-note": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answers that you feel are most applicable to you. You may choose to select ‘Prefer not to answer’ for any question in this section."
   },
   "step-3": {
     "title": "Step 3"

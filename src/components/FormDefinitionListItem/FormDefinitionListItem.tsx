@@ -6,14 +6,18 @@
  */
 
 export interface FormDefinitionListItemProps {
+  children?: React.ReactNode;
   definition: string;
   even: boolean;
   term: string;
 }
 
-export const FormDefinitionListItem = ({ definition, even, term }: FormDefinitionListItemProps): JSX.Element => (
+export const FormDefinitionListItem = ({ children, definition, even, term }: FormDefinitionListItemProps): JSX.Element => (
   <div className={`tw-p-4 md:tw-px-6 md:tw-grid md:tw-grid-cols-2 md:tw-gap-4 ${even ? 'tw-bg-gray-50' : ''}`}>
-    <dt className="tw-m-0 tw-mb-2 md:tw-mb-0 tw-font-medium tw-text-gray-500">{term}</dt>
+    <dt className="tw-m-0 tw-mb-4 md:tw-mb-0 tw-font-medium tw-text-gray-500">
+      <div className={children ? 'tw-mb-4' : ''}>{term}</div>
+      {children && <div>{children}</div>}
+    </dt>
     <dd className="tw-m-0">{definition}</dd>
   </div>
 );
