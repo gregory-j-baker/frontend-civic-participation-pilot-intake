@@ -34,6 +34,13 @@ export interface Lookup {
 /**
  * Discovery Channels
  */
+export const demographicsQueryKey = 'demographics';
+export const demographicsUri = `${apiConfig.baseUri}/demographics`;
+export interface Demographic extends Lookup {}
+
+/**
+ * Discovery Channels
+ */
 export const discoveryChannelsQueryKey = 'discovery-channels';
 export const discoveryChannelsUri = `${apiConfig.baseUri}/discovery-channels`;
 export interface DiscoveryChannel extends Lookup {}
