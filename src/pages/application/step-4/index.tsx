@@ -120,7 +120,7 @@ const Step4Page = (): JSX.Element => {
           genderId: step2State.genderId as string,
           isCanadianCitizen: step1State.isCanadianCitizen as boolean,
           languageId: step1State.languageId as string,
-          lastName: step1State.languageId as string,
+          lastName: step1State.lastName as string,
           phoneNumber: step1State.phoneNumber,
           provinceId: step1State.provinceId as string,
           skillsInterest: step3State.skillsInterest as string,
