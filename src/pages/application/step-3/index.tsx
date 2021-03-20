@@ -17,22 +17,22 @@ import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../.
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
-import { ApplicationState, ExpressionOfInterestState, Constants } from '../types';
-import { expressionOfInterestSchema, identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
+import { ApplicationState, Step3State, Constants } from '../types';
+import { step3Schema, step2Schema, step1Schema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { sleep } from '../../../utils/misc-utils';
 
-const ApplicationConsentPage = (): JSX.Element => {
+const Step3Page = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
   const [formData, setFormDataState] = useState<ApplicationState>(() => {
-    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+    const defaultState: ApplicationState = { step1: {}, step2: {}, step3: {}, step4: {} };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -45,10 +45,10 @@ const ApplicationConsentPage = (): JSX.Element => {
   const validatePreviousSteps = useCallback(
     async (formData: ApplicationState): Promise<void> => {
       await sleep(500);
-      if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
-        router.replace('/application/personal-information');
-      } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
-        router.replace('/application/identity-information');
+      if ((await step1Schema.isValid(formData.step1)) === false) {
+        router.replace('/application/step-1');
+      } else if ((await step2Schema.isValid(formData.step2)) === false) {
+        router.replace('/application/step-2');
       } else {
         setPreviousStepsValidationCompleted(true);
       }
@@ -66,26 +66,26 @@ const ApplicationConsentPage = (): JSX.Element => {
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      const newObj = { ...prev.expressionOfInterest, [field]: value ?? undefined };
-      return { ...prev, expressionOfInterest: newObj };
+      const newObj = { ...prev.step3, [field]: value ?? undefined };
+      return { ...prev, step3: newObj };
     });
   };
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
-    router.push('/application/identity-information');
+    router.push('/application/step-2');
   };
 
   const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
     event.preventDefault();
 
     try {
-      await expressionOfInterestSchema.validate(formData.expressionOfInterest, { abortEarly: false });
-      router.push('/application/consent');
+      await step3Schema.validate(formData.step3, { abortEarly: false });
+      router.push('/application/step-4');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push('/application/expression-of-interest#wb-cont', undefined, { shallow: true });
+      window.location.hash = 'wb-cont';
     }
   };
 
@@ -140,11 +140,11 @@ const ApplicationConsentPage = (): JSX.Element => {
 
           <Wizard activeStep={3} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
             <TextAreaField
-              field={nameof<ExpressionOfInterestState>((o) => o.skillsInterest)}
+              field={nameof<Step3State>((o) => o.skillsInterest)}
               label={t('application:field.skills-interest.label')}
-              value={formData.expressionOfInterest.skillsInterest}
+              value={formData.step3.skillsInterest}
               onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.skillsInterest))}
+              error={getSchemaError(nameof<Step3State>((o) => o.skillsInterest))}
               required
               gutterBottom
               className="tw-w-full"
@@ -152,11 +152,11 @@ const ApplicationConsentPage = (): JSX.Element => {
             />
 
             <TextAreaField
-              field={nameof<ExpressionOfInterestState>((o) => o.communityInterest)}
+              field={nameof<Step3State>((o) => o.communityInterest)}
               label={t('application:field.community-interest.label')}
-              value={formData.expressionOfInterest.communityInterest}
+              value={formData.step3.communityInterest}
               onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<ExpressionOfInterestState>((o) => o.communityInterest))}
+              error={getSchemaError(nameof<Step3State>((o) => o.communityInterest))}
               required
               gutterBottom
               className="tw-w-full"
@@ -175,4 +175,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default ApplicationConsentPage;
+export default Step3Page;

@@ -14,7 +14,7 @@ const ApplicationPage = (): JSX.Element => {
 export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
-      destination: '/application/personal-information',
+      destination: '/application/step-1',
       permanent: false,
     },
   };

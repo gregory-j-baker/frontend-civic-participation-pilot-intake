@@ -19,8 +19,8 @@ import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
-import { ApplicationState, ConsentState, Constants, GetDescriptionFunc } from '../types';
-import { consentSchema, expressionOfInterestSchema, applicationSchema, identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
+import { ApplicationState, Step4State, Constants, GetDescriptionFunc } from '../types';
+import { step4Schema, step3Schema, applicationSchema, step2Schema, step1Schema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../../yup/yup-custom';
@@ -35,7 +35,7 @@ import { sleep } from '../../../utils/misc-utils';
 import Link from 'next/link';
 import { ApplicationSubmitData } from '../../../hooks/api/applications/types';
 
-const ConsentPage = (): JSX.Element => {
+const Step4Page = (): JSX.Element => {
   const { t } = useTranslation();
   const router = useRouter();
 
@@ -49,7 +49,7 @@ const ConsentPage = (): JSX.Element => {
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
   const [formData, setFormDataState] = useState<ApplicationState>(() => {
-    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+    const defaultState: ApplicationState = { step1: {}, step2: {}, step3: {}, step4: {} };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -62,12 +62,12 @@ const ConsentPage = (): JSX.Element => {
   const validatePreviousSteps = useCallback(
     async (formData: ApplicationState): Promise<void> => {
       await sleep(500);
-      if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
-        router.replace('/application/personal-information');
-      } else if ((await identityInformationSchema.isValid(formData.identityInformation)) === false) {
-        router.replace('/application/identity-information');
-      } else if ((await expressionOfInterestSchema.isValid(formData.expressionOfInterest)) === false) {
-        router.replace('/application/expression-of-interest');
+      if ((await step1Schema.isValid(formData.step1)) === false) {
+        router.replace('/application/step-1');
+      } else if ((await step2Schema.isValid(formData.step2)) === false) {
+        router.replace('/application/step-2');
+      } else if ((await step3Schema.isValid(formData.step3)) === false) {
+        router.replace('/application/step-3');
       } else {
         setPreviousStepsValidationCompleted(true);
       }
@@ -85,39 +85,39 @@ const ConsentPage = (): JSX.Element => {
 
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
     setFormDataState((prev) => {
-      const newObj = { ...prev.consent, [field]: checked };
-      return { ...prev, consent: newObj };
+      const newObj = { ...prev.step4, [field]: checked };
+      return { ...prev, step4: newObj };
     });
   };
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
-    router.push('/application/expression-of-interest');
+    router.push('/application/step-3');
   };
 
   const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
     event.preventDefault();
 
-    // validate consent schema
+    // validate step4 schema
     try {
-      await consentSchema.validate(formData.consent, { abortEarly: false });
+      await step4Schema.validate(formData.step4, { abortEarly: false });
 
       if (await applicationSchema.isValid(formData)) {
         // submit appplication
         const applicationData: ApplicationSubmitData = {
-          birthYear: formData.personalInformation.birthYear as number,
-          communityInterest: formData.expressionOfInterest.communityInterest as string,
-          discoveryChannelId: formData.personalInformation.discoveryChannelId as string,
-          educationLevelId: formData.identityInformation.educationLevelId as string,
-          email: formData.personalInformation.email as string,
-          firstName: formData.personalInformation.firstName as string,
-          genderId: formData.identityInformation.genderId as string,
-          isCanadianCitizen: formData.personalInformation.isCanadianCitizen as boolean,
-          languageId: formData.personalInformation.languageId as string,
-          lastName: formData.personalInformation.languageId as string,
-          phoneNumber: formData.personalInformation.phoneNumber,
-          provinceId: formData.personalInformation.provinceId as string,
-          skillsInterest: formData.expressionOfInterest.skillsInterest as string,
+          birthYear: formData.step1.birthYear as number,
+          communityInterest: formData.step3.communityInterest as string,
+          discoveryChannelId: formData.step1.discoveryChannelId as string,
+          educationLevelId: formData.step2.educationLevelId as string,
+          email: formData.step1.email as string,
+          firstName: formData.step1.firstName as string,
+          genderId: formData.step2.genderId as string,
+          isCanadianCitizen: formData.step1.isCanadianCitizen as boolean,
+          languageId: formData.step1.languageId as string,
+          lastName: formData.step1.languageId as string,
+          phoneNumber: formData.step1.phoneNumber,
+          provinceId: formData.step1.provinceId as string,
+          skillsInterest: formData.step3.skillsInterest as string,
         };
 
         submitApplication(applicationData);
@@ -125,7 +125,7 @@ const ConsentPage = (): JSX.Element => {
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push('/application/consent#wb-cont', undefined, { shallow: true });
+      window.location.hash = 'wb-cont';
     }
   };
 
@@ -205,12 +205,12 @@ const ConsentPage = (): JSX.Element => {
               </div>
             </div>
             <CheckboxeField
-              field={nameof<ConsentState>((o) => o.isInformationConsented)}
+              field={nameof<Step4State>((o) => o.isInformationConsented)}
               label={t('application:field.is-information-consented.label')}
-              checked={formData.consent.isInformationConsented}
+              checked={formData.step4.isInformationConsented}
               onChange={handleOnCheckboxFieldChange}
               disabled={submitApplicationIsLoading || submitApplicationIsSuccess}
-              error={getSchemaError(nameof<ConsentState>((o) => o.isInformationConsented))}
+              error={getSchemaError(nameof<Step4State>((o) => o.isInformationConsented))}
             />
           </Wizard>
         </>
@@ -249,85 +249,85 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
   const formReviewItems: FormReviewItem[] = useMemo(() => {
     const items: FormReviewItem[] = [];
 
-    if (Object.keys(applicationState.personalInformation).length !== 0) {
+    if (Object.keys(applicationState.step1).length !== 0) {
       // firstName
-      if (applicationState.personalInformation.firstName) {
+      if (applicationState.step1.firstName) {
         items.push({
-          key: nameof<ApplicationState>((o) => o.personalInformation.firstName),
+          key: nameof<ApplicationState>((o) => o.step1.firstName),
           text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.personalInformation.firstName)
+            `application:field.${nameof<ApplicationState>((o) => o.step1.firstName)
               .split('.')
               .map((s) => kebabCase(s))
               .join('.')}.label`
           ),
-          value: applicationState.personalInformation.firstName,
+          value: applicationState.step1.firstName,
         });
       }
 
       // lastName
-      if (applicationState.personalInformation.lastName) {
+      if (applicationState.step1.lastName) {
         items.push({
-          key: nameof<ApplicationState>((o) => o.personalInformation.lastName),
+          key: nameof<ApplicationState>((o) => o.step1.lastName),
           text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.personalInformation.lastName)
+            `application:field.${nameof<ApplicationState>((o) => o.step1.lastName)
               .split('.')
               .map((s) => kebabCase(s))
               .join('.')}.label`
           ),
-          value: applicationState.personalInformation.lastName,
+          value: applicationState.step1.lastName,
         });
       }
 
       // email
-      if (applicationState.personalInformation.email) {
+      if (applicationState.step1.email) {
         items.push({
-          key: nameof<ApplicationState>((o) => o.personalInformation.email),
+          key: nameof<ApplicationState>((o) => o.step1.email),
           text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.personalInformation.email)
+            `application:field.${nameof<ApplicationState>((o) => o.step1.email)
               .split('.')
               .map((s) => kebabCase(s))
               .join('.')}.label`
           ),
-          value: applicationState.personalInformation.email,
+          value: applicationState.step1.email,
         });
       }
 
       // phone
-      if (applicationState.personalInformation.phoneNumber) {
+      if (applicationState.step1.phoneNumber) {
         items.push({
-          key: nameof<ApplicationState>((o) => o.personalInformation.phoneNumber),
+          key: nameof<ApplicationState>((o) => o.step1.phoneNumber),
           text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.personalInformation.phoneNumber)
+            `application:field.${nameof<ApplicationState>((o) => o.step1.phoneNumber)
               .split('.')
               .map((s) => kebabCase(s))
               .join('.')}.label`
           ),
-          value: applicationState.personalInformation.phoneNumber,
+          value: applicationState.step1.phoneNumber,
         });
       }
 
       // birthYear
-      if (applicationState.personalInformation.birthYear) {
+      if (applicationState.step1.birthYear) {
         items.push({
-          key: nameof<ApplicationState>((o) => o.personalInformation.birthYear),
+          key: nameof<ApplicationState>((o) => o.step1.birthYear),
           text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.personalInformation.birthYear)
+            `application:field.${nameof<ApplicationState>((o) => o.step1.birthYear)
               .split('.')
               .map((s) => kebabCase(s))
               .join('.')}.label`
           ),
-          value: applicationState.personalInformation.birthYear.toString(),
+          value: applicationState.step1.birthYear.toString(),
         });
       }
 
       // languageId
-      if (applicationState.personalInformation.languageId) {
-        const language = languages?._embedded.languages.find((o) => o.id === applicationState.personalInformation.languageId);
+      if (applicationState.step1.languageId) {
+        const language = languages?._embedded.languages.find((o) => o.id === applicationState.step1.languageId);
         if (language) {
           items.push({
-            key: nameof<ApplicationState>((o) => o.personalInformation.languageId),
+            key: nameof<ApplicationState>((o) => o.step1.languageId),
             text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.personalInformation.languageId)
+              `application:field.${nameof<ApplicationState>((o) => o.step1.languageId)
                 .split('.')
                 .map((s) => kebabCase(s))
                 .join('.')}.label`
@@ -338,27 +338,27 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       }
 
       // isCanadianCitizen
-      if (applicationState.personalInformation.isCanadianCitizen !== undefined) {
+      if (applicationState.step1.isCanadianCitizen !== undefined) {
         items.push({
-          key: nameof<ApplicationState>((o) => o.personalInformation.isCanadianCitizen),
+          key: nameof<ApplicationState>((o) => o.step1.isCanadianCitizen),
           text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.personalInformation.isCanadianCitizen)
+            `application:field.${nameof<ApplicationState>((o) => o.step1.isCanadianCitizen)
               .split('.')
               .map((s) => kebabCase(s))
               .join('.')}.label`
           ),
-          value: applicationState.personalInformation.isCanadianCitizen ? t('common:yes') : t('common:no'),
+          value: applicationState.step1.isCanadianCitizen ? t('common:yes') : t('common:no'),
         });
       }
 
       // provindId
-      if (applicationState.personalInformation.provinceId) {
-        const province = provinces?._embedded.provinces.find((o) => o.id === applicationState.personalInformation.provinceId);
+      if (applicationState.step1.provinceId) {
+        const province = provinces?._embedded.provinces.find((o) => o.id === applicationState.step1.provinceId);
         if (province) {
           items.push({
-            key: nameof<ApplicationState>((o) => o.personalInformation.provinceId),
+            key: nameof<ApplicationState>((o) => o.step1.provinceId),
             text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.personalInformation.provinceId)
+              `application:field.${nameof<ApplicationState>((o) => o.step1.provinceId)
                 .split('.')
                 .map((s) => kebabCase(s))
                 .join('.')}.label`
@@ -369,13 +369,13 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       }
 
       // discoveryChannelId
-      if (applicationState.personalInformation.discoveryChannelId) {
-        const discoveryChannel = discoveryChannels?._embedded.discoveryChannels.find((o) => o.id === applicationState.personalInformation.discoveryChannelId);
+      if (applicationState.step1.discoveryChannelId) {
+        const discoveryChannel = discoveryChannels?._embedded.discoveryChannels.find((o) => o.id === applicationState.step1.discoveryChannelId);
         if (discoveryChannel) {
           items.push({
-            key: nameof<ApplicationState>((o) => o.personalInformation.discoveryChannelId),
+            key: nameof<ApplicationState>((o) => o.step1.discoveryChannelId),
             text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.personalInformation.discoveryChannelId)
+              `application:field.${nameof<ApplicationState>((o) => o.step1.discoveryChannelId)
                 .split('.')
                 .map((s) => kebabCase(s))
                 .join('.')}.label`
@@ -386,15 +386,15 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       }
     }
 
-    if (Object.keys(applicationState.identityInformation).length !== 0) {
+    if (Object.keys(applicationState.step2).length !== 0) {
       // genderId
-      if (applicationState.identityInformation.genderId) {
-        const gender = genders?._embedded.genders.find((o) => o.id === applicationState.identityInformation.genderId);
+      if (applicationState.step2.genderId) {
+        const gender = genders?._embedded.genders.find((o) => o.id === applicationState.step2.genderId);
         if (gender) {
           items.push({
-            key: nameof<ApplicationState>((o) => o.identityInformation.genderId),
+            key: nameof<ApplicationState>((o) => o.step2.genderId),
             text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.identityInformation.genderId)
+              `application:field.${nameof<ApplicationState>((o) => o.step2.genderId)
                 .split('.')
                 .map((s) => kebabCase(s))
                 .join('.')}.label`
@@ -405,14 +405,14 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       }
 
       // educationLevelId
-      if (applicationState.identityInformation.educationLevelId) {
-        const educationLevel = educationLevels?._embedded.educationLevels.find((o) => o.id === applicationState.identityInformation.educationLevelId);
+      if (applicationState.step2.educationLevelId) {
+        const educationLevel = educationLevels?._embedded.educationLevels.find((o) => o.id === applicationState.step2.educationLevelId);
 
         if (educationLevel) {
           items.push({
-            key: nameof<ApplicationState>((o) => o.identityInformation.educationLevelId),
+            key: nameof<ApplicationState>((o) => o.step2.educationLevelId),
             text: t(
-              `application:field.${nameof<ApplicationState>((o) => o.identityInformation.educationLevelId)
+              `application:field.${nameof<ApplicationState>((o) => o.step2.educationLevelId)
                 .split('.')
                 .map((s) => kebabCase(s))
                 .join('.')}.label`
@@ -423,32 +423,32 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
       }
     }
 
-    if (Object.keys(applicationState.expressionOfInterest).length !== 0) {
+    if (Object.keys(applicationState.step3).length !== 0) {
       // skillsInterest
-      if (applicationState.expressionOfInterest.skillsInterest) {
+      if (applicationState.step3.skillsInterest) {
         items.push({
-          key: nameof<ApplicationState>((o) => o.expressionOfInterest.skillsInterest),
+          key: nameof<ApplicationState>((o) => o.step3.skillsInterest),
           text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.expressionOfInterest.skillsInterest)
+            `application:field.${nameof<ApplicationState>((o) => o.step3.skillsInterest)
               .split('.')
               .map((s) => kebabCase(s))
               .join('.')}.label`
           ),
-          value: applicationState.expressionOfInterest.skillsInterest,
+          value: applicationState.step3.skillsInterest,
         });
       }
 
       // communityInterest
-      if (applicationState.expressionOfInterest.communityInterest) {
+      if (applicationState.step3.communityInterest) {
         items.push({
-          key: nameof<ApplicationState>((o) => o.expressionOfInterest.communityInterest),
+          key: nameof<ApplicationState>((o) => o.step3.communityInterest),
           text: t(
-            `application:field.${nameof<ApplicationState>((o) => o.expressionOfInterest.communityInterest)
+            `application:field.${nameof<ApplicationState>((o) => o.step3.communityInterest)
               .split('.')
               .map((s) => kebabCase(s))
               .join('.')}.label`
           ),
-          value: applicationState.expressionOfInterest.communityInterest,
+          value: applicationState.step3.communityInterest,
         });
       }
     }
@@ -465,4 +465,4 @@ export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element =
   );
 };
 
-export default ConsentPage;
+export default Step4Page;

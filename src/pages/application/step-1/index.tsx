@@ -30,14 +30,14 @@ import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
-import { ApplicationState, GetDescriptionFunc, PersonalInformationState, Constants } from '../types';
-import { personalInformationSchema } from '../../../yup/applicationSchemas';
+import { ApplicationState, GetDescriptionFunc, Step1State, Constants } from '../types';
+import { step1Schema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 
-const ApplicationPersonalInformationPage = (): JSX.Element => {
+const Step1Page = (): JSX.Element => {
   const { lang, t } = useTranslation();
   const router = useRouter();
   const currentBreakpoint = useCurrentBreakpoint();
@@ -49,7 +49,7 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
   const [formData, setFormDataState] = useState<ApplicationState>(() => {
-    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+    const defaultState: ApplicationState = { step1: {}, step2: {}, step3: {}, step4: {} };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -72,22 +72,22 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
         else newValue = value;
       }
 
-      const newObj = { ...prev.personalInformation, [field]: newValue };
-      return { ...prev, personalInformation: newObj };
+      const newObj = { ...prev.step1, [field]: newValue };
+      return { ...prev, step1: newObj };
     });
   };
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      const newObj = { ...prev.personalInformation, [field]: value ?? undefined };
-      return { ...prev, personalInformation: newObj };
+      const newObj = { ...prev.step1, [field]: value ?? undefined };
+      return { ...prev, step1: newObj };
     });
   };
 
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
     setFormDataState((prev) => {
-      const newObj = { ...prev.personalInformation, [field]: checked };
-      return { ...prev, personalInformation: newObj };
+      const newObj = { ...prev.step1, [field]: checked };
+      return { ...prev, step1: newObj };
     });
   };
 
@@ -95,12 +95,12 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
     event.preventDefault();
 
     try {
-      await personalInformationSchema.validate(formData.personalInformation, { abortEarly: false });
-      router.push('/application/identity-information');
+      await step1Schema.validate(formData.step1, { abortEarly: false });
+      router.push('/application/step-2');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push('/application/personal-information#wb-cont', undefined, { shallow: true });
+      window.location.hash = 'wb-cont';
     }
   };
 
@@ -190,67 +190,67 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
 
           <Wizard activeStep={1} numberOfSteps={4} previousHidden onNextClick={handleWizardOnNextClick}>
             <TextField
-              field={nameof<PersonalInformationState>((o) => o.firstName)}
+              field={nameof<Step1State>((o) => o.firstName)}
               label={t('application:field.first-name.label')}
-              value={formData.personalInformation.firstName}
+              value={formData.step1.firstName}
               onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.firstName))}
+              error={getSchemaError(nameof<Step1State>((o) => o.firstName))}
               required
               gutterBottom
               className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
             />
 
             <TextField
-              field={nameof<PersonalInformationState>((o) => o.lastName)}
+              field={nameof<Step1State>((o) => o.lastName)}
               label={t('application:field.last-name.label')}
-              value={formData.personalInformation.lastName}
+              value={formData.step1.lastName}
               onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.lastName))}
+              error={getSchemaError(nameof<Step1State>((o) => o.lastName))}
               required
               gutterBottom
               className="tw-w-full sm:tw-w-6/12 md:tw-w-4/12"
             />
 
             <TextField
-              field={nameof<PersonalInformationState>((o) => o.email)}
+              field={nameof<Step1State>((o) => o.email)}
               label={t('application:field.email.label')}
-              value={formData.personalInformation.email}
+              value={formData.step1.email}
               onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.email))}
+              error={getSchemaError(nameof<Step1State>((o) => o.email))}
               required
               gutterBottom
               className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
             />
 
             <TextField
-              field={nameof<PersonalInformationState>((o) => o.phoneNumber)}
+              field={nameof<Step1State>((o) => o.phoneNumber)}
               label={t('application:field.phone-number.label')}
               helperText={t('application:field.phone-number.helper-text')}
-              value={formData.personalInformation.phoneNumber}
+              value={formData.step1.phoneNumber}
               onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.phoneNumber))}
+              error={getSchemaError(nameof<Step1State>((o) => o.phoneNumber))}
               gutterBottom
               className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
             />
 
             <SelectField
-              field={nameof<PersonalInformationState>((o) => o.birthYear)}
+              field={nameof<Step1State>((o) => o.birthYear)}
               label={t('application:field.birth-year.label')}
               helperText={t('application:field.birth-year.helper-text')}
-              value={formData.personalInformation.birthYear?.toString()}
+              value={formData.step1.birthYear?.toString()}
               onChange={handleOnOptionsFieldChange}
               options={yearOfBirthOptions}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.birthYear))}
+              error={getSchemaError(nameof<Step1State>((o) => o.birthYear))}
               required
               gutterBottom
             />
 
             <CheckboxeField
-              field={nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified)}
+              field={nameof<Step1State>((o) => o.isProvinceMajorCertified)}
               label={t('application:field.is-province-major-certified.label')}
-              checked={formData.personalInformation.isProvinceMajorCertified}
+              checked={formData.step1.isProvinceMajorCertified}
               onChange={handleOnCheckboxFieldChange}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.isProvinceMajorCertified))}
+              error={getSchemaError(nameof<Step1State>((o) => o.isProvinceMajorCertified))}
               required
             />
             <div className="tw-mb-8 tw-pl-10">
@@ -260,49 +260,49 @@ const ApplicationPersonalInformationPage = (): JSX.Element => {
             </div>
 
             <RadiosField
-              field={nameof<PersonalInformationState>((o) => o.languageId)}
+              field={nameof<Step1State>((o) => o.languageId)}
               label={t('application:field.language-id.label')}
-              value={formData.personalInformation.languageId}
+              value={formData.step1.languageId}
               onChange={handleOnOptionsFieldChange}
               options={preferedLanguageOptions}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.languageId))}
+              error={getSchemaError(nameof<Step1State>((o) => o.languageId))}
               required
               gutterBottom
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
             />
 
             <RadiosField
-              field={nameof<PersonalInformationState>((o) => o.isCanadianCitizen)}
+              field={nameof<Step1State>((o) => o.isCanadianCitizen)}
               label={t('application:field.is-canadian-citizen.label')}
-              value={formData.personalInformation.isCanadianCitizen?.toString()}
+              value={formData.step1.isCanadianCitizen?.toString()}
               onChange={handleOnOptionsFieldChange}
               options={yesNoOptions}
               helperText={t('application:field.is-canadian-citizen.helper-text')}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.isCanadianCitizen))}
+              error={getSchemaError(nameof<Step1State>((o) => o.isCanadianCitizen))}
               required
               gutterBottom
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}
             />
 
             <SelectField
-              field={nameof<PersonalInformationState>((o) => o.provinceId)}
+              field={nameof<Step1State>((o) => o.provinceId)}
               label={t('application:field.province-id.label')}
-              value={formData.personalInformation.provinceId}
+              value={formData.step1.provinceId}
               onChange={handleOnOptionsFieldChange}
               options={provinceOptions}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.provinceId))}
+              error={getSchemaError(nameof<Step1State>((o) => o.provinceId))}
               required
               gutterBottom
               className="tw-w-full sm:tw-w-6/12"
             />
 
             <SelectField
-              field={nameof<PersonalInformationState>((o) => o.discoveryChannelId)}
+              field={nameof<Step1State>((o) => o.discoveryChannelId)}
               label={t('application:field.discovery-channel-id.label')}
-              value={formData.personalInformation.discoveryChannelId}
+              value={formData.step1.discoveryChannelId}
               onChange={handleOnOptionsFieldChange}
               options={discoveryChannelOptions}
-              error={getSchemaError(nameof<PersonalInformationState>((o) => o.discoveryChannelId))}
+              error={getSchemaError(nameof<Step1State>((o) => o.discoveryChannelId))}
               required
               className="tw-w-full sm:tw-w-6/12"
             />
@@ -319,4 +319,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default ApplicationPersonalInformationPage;
+export default Step1Page;

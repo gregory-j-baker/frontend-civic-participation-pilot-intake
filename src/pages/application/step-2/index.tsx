@@ -20,15 +20,15 @@ import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
-import { ApplicationState, GetDescriptionFunc, IdentityInformationState, Constants } from '../types';
-import { identityInformationSchema, personalInformationSchema } from '../../../yup/applicationSchemas';
+import { ApplicationState, GetDescriptionFunc, Step2State, Constants } from '../types';
+import { step2Schema, step1Schema } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { sleep } from '../../../utils/misc-utils';
 
-const ApplicationIdentityInformationPage = (): JSX.Element => {
+const Step2Page = (): JSX.Element => {
   const { lang, t } = useTranslation();
   const router = useRouter();
 
@@ -38,7 +38,7 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
   const [formData, setFormDataState] = useState<ApplicationState>(() => {
-    const defaultState: ApplicationState = { personalInformation: {}, identityInformation: {}, expressionOfInterest: {}, consent: {} };
+    const defaultState: ApplicationState = { step1: {}, step2: {}, step3: {}, step4: {} };
 
     if (typeof window === 'undefined') return defaultState;
 
@@ -51,8 +51,8 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
   const validatePreviousSteps = useCallback(
     async (formData: ApplicationState): Promise<void> => {
       await sleep(500);
-      if ((await personalInformationSchema.isValid(formData.personalInformation)) === false) {
-        router.replace('/application/personal-information');
+      if ((await step1Schema.isValid(formData.step1)) === false) {
+        router.replace('/application/step-1');
       } else {
         setPreviousStepsValidationCompleted(true);
       }
@@ -70,35 +70,27 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
 
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      let newValue: boolean | string | null | undefined = undefined;
-
-      if (value) {
-        if (value.toLowerCase() === 'true') newValue = true;
-        else if (value.toLowerCase() === 'false') newValue = false;
-        else newValue = value;
-      }
-
-      const newObj = { ...prev.identityInformation, [field]: newValue };
-      return { ...prev, identityInformation: newObj };
+      const newObj = { ...prev.step2, [field]: value ?? undefined };
+      return { ...prev, step2: newObj };
     });
   };
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
 
-    router.push('/application/personal-information');
+    router.push('/application/step-1');
   };
 
   const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
     event.preventDefault();
 
     try {
-      await identityInformationSchema.validate(formData.identityInformation, { abortEarly: false });
-      router.push('/application/expression-of-interest');
+      await step2Schema.validate(formData.step2, { abortEarly: false });
+      router.push('/application/step-3');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
-      router.push('/application/identity-information#wb-cont', undefined, { shallow: true });
+      window.location.hash = 'wb-cont';
     }
   };
 
@@ -173,25 +165,25 @@ const ApplicationIdentityInformationPage = (): JSX.Element => {
             <p className="tw-m-0 tw-mb-10 tw-font-bold">{t('application:step-2.information-note-1')}</p>
 
             <SelectField
-              field={nameof<IdentityInformationState>((o) => o.genderId)}
+              field={nameof<Step2State>((o) => o.genderId)}
               label={t('application:field.gender-id.label')}
-              value={formData.identityInformation.genderId}
+              value={formData.step2.genderId}
               onChange={handleOnOptionsFieldChange}
               options={genderOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.genderId))}
+              error={getSchemaError(nameof<Step2State>((o) => o.genderId))}
               required
               gutterBottom
               className="tw-w-full sm:tw-w-6/12"
             />
 
             <SelectField
-              field={nameof<IdentityInformationState>((o) => o.educationLevelId)}
+              field={nameof<Step2State>((o) => o.educationLevelId)}
               label={t('application:field.education-level-id.label')}
               helperText={t('application:field.education-level-id.helper-text')}
-              value={formData.identityInformation.educationLevelId}
+              value={formData.step2.educationLevelId}
               onChange={handleOnOptionsFieldChange}
               options={educationLevelOptions}
-              error={getSchemaError(nameof<IdentityInformationState>((o) => o.educationLevelId))}
+              error={getSchemaError(nameof<Step2State>((o) => o.educationLevelId))}
               required
               gutterBottom
               className="tw-w-full"
@@ -211,4 +203,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default ApplicationIdentityInformationPage;
+export default Step2Page;
