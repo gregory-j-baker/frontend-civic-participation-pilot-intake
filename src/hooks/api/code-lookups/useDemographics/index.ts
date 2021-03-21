@@ -5,7 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import indigenousTypeStaticProps from './static-props-data.json';
-
-export { indigenousTypeStaticProps };
-export * from './useIndigenousTypes';
+export * from './useDemographics';

@@ -7,53 +7,17 @@
 
 export enum Constants {
   FormDataStorageKey = 'CPP_APPLICATION_FORM_STATE',
-  NoAnswerOptionValue = '--prefer-not-answer',
 }
 
 export interface GetDescriptionFunc {
   (obj: { descriptionFr: string; descriptionEn: string }): string;
 }
 
-export interface ConsentState {
-  isInformationConsented?: boolean;
-}
-
-export interface IXConsentState extends ConsentState {
-  [key: string]: boolean | undefined;
-}
-
-export interface ExpressionOfInterestState {
-  communityInterest?: string;
-  programInterest?: string;
-  skillsInterest?: string;
-}
-
-export interface IXExpressionOfInterestState extends ExpressionOfInterestState {
-  [key: string]: string | undefined;
-}
-
-export interface IdentityInformationState {
-  educationLevelId?: string | null;
-  genderId?: string | null;
-  indigenousTypeId?: string | null;
-  isDisabled?: boolean | null;
-  isLgbtq?: boolean | null;
-  isMinority?: boolean | null;
-  isNewcomer?: boolean | null;
-  isRural?: boolean | null;
-}
-
-export interface IXIdentityInformationState extends IdentityInformationState {
-  [key: string]: boolean | string | null | undefined;
-}
-
-export interface PersonalInformationState {
+export interface Step1State {
   birthYear?: number;
   discoveryChannelId?: string;
   email?: string;
   firstName?: string;
-  hasDedicatedDevice?: boolean;
-  internetQualityId?: string;
   isCanadianCitizen?: boolean;
   isProvinceMajorCertified?: boolean;
   languageId?: string;
@@ -62,13 +26,40 @@ export interface PersonalInformationState {
   provinceId?: string;
 }
 
-export interface IXPersonalInformationState extends PersonalInformationState {
+export interface IXStep1State extends Step1State {
   [key: string]: boolean | string | number | null | undefined;
 }
 
+export interface Step2State {
+  educationLevelId?: string;
+  demographicId?: string;
+  genderId?: string;
+}
+
+export interface IXStep2State extends Step2State {
+  [key: string]: string | undefined;
+}
+
+export interface Step3State {
+  communityInterest?: string;
+  skillsInterest?: string;
+}
+
+export interface IXStep3State extends Step3State {
+  [key: string]: string | undefined;
+}
+
+export interface Step4State {
+  isInformationConsented?: boolean;
+}
+
+export interface IXStep4State extends Step4State {
+  [key: string]: boolean | undefined;
+}
+
 export interface ApplicationState {
-  consent: IXConsentState;
-  identityInformation: IdentityInformationState;
-  expressionOfInterest: ExpressionOfInterestState;
-  personalInformation: PersonalInformationState;
+  step1: IXStep1State;
+  step2: IXStep2State;
+  step3: IXStep3State;
+  step4: IXStep4State;
 }

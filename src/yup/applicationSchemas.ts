@@ -12,7 +12,7 @@ import './yup-custom';
  * IMPORTANT: Props order is based on screen order
  */
 
-export const personalInformationSchema = Yup.object().shape({
+export const step1Schema = Yup.object().shape({
   firstName: Yup.string().required(),
   lastName: Yup.string().required(),
   email: Yup.string().email().required(),
@@ -22,35 +22,27 @@ export const personalInformationSchema = Yup.object().shape({
   languageId: Yup.string().required(),
   isCanadianCitizen: Yup.boolean().required(),
   provinceId: Yup.string().required(),
-  internetQualityId: Yup.string().required(),
-  hasDedicatedDevice: Yup.boolean().required(),
   discoveryChannelId: Yup.string().required(),
 });
 
-export const identityInformationSchema = Yup.object().shape({
+export const step2Schema = Yup.object().shape({
   genderId: Yup.string().nullable().defined(),
   educationLevelId: Yup.string().nullable().defined(),
-  isDisabled: Yup.boolean().nullable().defined(),
-  isMinority: Yup.boolean().nullable().defined(),
-  indigenousTypeId: Yup.string().nullable().defined(),
-  isLgbtq: Yup.boolean().nullable().defined(),
-  isRural: Yup.boolean().nullable().defined(),
-  isNewcomer: Yup.boolean().nullable().defined(),
+  demographicId: Yup.string().nullable().defined(),
 });
 
-export const expressionOfInterestSchema = Yup.object().shape({
+export const step3Schema = Yup.object().shape({
   skillsInterest: Yup.string().required(),
   communityInterest: Yup.string().required(),
-  programInterest: Yup.string(),
 });
 
-export const consentSchema = Yup.object().shape({
+export const step4Schema = Yup.object().shape({
   isInformationConsented: Yup.boolean().required().isTrue(),
 });
 
 export const applicationSchema = Yup.object().shape({
-  personalInformation: personalInformationSchema.required(),
-  identityInformation: identityInformationSchema.required(),
-  expressionOfInterest: expressionOfInterestSchema.required(),
-  consent: consentSchema.required(),
+  step1: step1Schema.required(),
+  step2: step2Schema.required(),
+  step3: step3Schema.required(),
+  step4: step4Schema.required(),
 });

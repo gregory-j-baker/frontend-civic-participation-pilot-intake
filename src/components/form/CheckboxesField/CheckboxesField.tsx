@@ -21,6 +21,7 @@ export interface CheckboxesFieldOption {
 }
 
 export interface CheckboxesFieldProps {
+  children?: React.ReactNode;
   className?: string;
   error?: string;
   field: string;
@@ -36,7 +37,7 @@ export interface CheckboxesFieldProps {
   values?: string[] | null;
 }
 
-export const CheckboxesField = ({ className, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, values }: CheckboxesFieldProps): JSX.Element => {
+export const CheckboxesField = ({ children, className, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, values }: CheckboxesFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const handleOnChange: React.FormEventHandler<Checkbox> = (event) => {
@@ -52,6 +53,7 @@ export const CheckboxesField = ({ className, error, field, gutterBottom, helperT
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
+      {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <div>

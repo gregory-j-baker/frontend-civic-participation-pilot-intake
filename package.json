@@ -16,12 +16,12 @@
     "google-libphonenumber": "^3.2.18",
     "lodash": "^4.17.21",
     "next": "^10.0.9",
-    "next-seo": "^4.20.0",
+    "next-seo": "^4.22.0",
     "next-translate": "^1.0.4",
     "react": "^17.0.1",
     "react-bootstrap": "0.33.1",
     "react-dom": "^17.0.1",
-    "react-query": "^3.12.2",
+    "react-query": "^3.13.0",
     "yup": "^0.32.9"
   },
   "devDependencies": {
@@ -49,7 +49,7 @@
     "postcss": "^8.2.8",
     "prettier": "^2.2.1",
     "preval.macro": "^5.0.0",
-    "tailwindcss": "^2.0.3",
+    "tailwindcss": "^2.0.4",
     "typescript": "^4.2.3"
   },
   "babel": {

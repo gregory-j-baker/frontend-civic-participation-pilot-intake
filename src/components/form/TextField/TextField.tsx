@@ -14,6 +14,7 @@ export interface TextFieldOnChangeEvent {
 }
 
 export interface TextFieldProps {
+  children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
   error?: string;
@@ -29,7 +30,7 @@ export interface TextFieldProps {
   value?: string | null;
 }
 
-export const TextField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, value }: TextFieldProps): JSX.Element => {
+export const TextField = ({ children, className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, value }: TextFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-field-${field}`;
@@ -46,6 +47,7 @@ export const TextField = ({ className, disabled, error, field, gutterBottom, hel
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
+      {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <FormControl type="text" id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />

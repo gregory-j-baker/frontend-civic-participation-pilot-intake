@@ -19,6 +19,7 @@ export interface SelectFieldOption {
 }
 
 export interface SelectFieldProps {
+  children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
   error?: string;
@@ -33,7 +34,7 @@ export interface SelectFieldProps {
   value?: string | null;
 }
 
-export const SelectField = ({ className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, options, required, value }: SelectFieldProps): JSX.Element => {
+export const SelectField = ({ children, className, disabled, error, field, gutterBottom, helperText, label, labelClassName, onChange, options, required, value }: SelectFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const fieldId = `form-field-${field}`;
 
@@ -51,6 +52,7 @@ export const SelectField = ({ className, disabled, error, field, gutterBottom, h
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
+      {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <FormControl componentClass="select" id={fieldId} value={selectedValue} onChange={handleOnChange} disabled={disabled} className={className}>

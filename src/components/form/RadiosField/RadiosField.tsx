@@ -21,6 +21,7 @@ export interface RadiosFieldOption {
 }
 
 export interface RadiosFieldProps {
+  children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
   error?: string;
@@ -37,7 +38,7 @@ export interface RadiosFieldProps {
   value?: string | null;
 }
 
-export const RadiosField = ({ className, disabled, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
+export const RadiosField = ({ children, className, disabled, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
   const { t } = useTranslation();
   const groupName = `form-field-${field}`;
 
@@ -54,6 +55,7 @@ export const RadiosField = ({ className, disabled, error, field, gutterBottom, h
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
+      {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <div>
