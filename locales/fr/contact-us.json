@@ -8,7 +8,7 @@
     "email": {
       "label": "Adresse courriel",
       "required": "Adresse courriel est requise",
-      "email-invalid": "Adresse courriel n'est pas dans un format valid"
+      "email-invalid": "Adresse courriel n'est pas dans un format valide"
     },
     "message": {
       "label": "Message",

@@ -43,7 +43,7 @@ const ConsentPage = (): JSX.Element => {
   const { mutate: submitApplication, error: submitApplicationError, isLoading: submitApplicationIsLoading, isSuccess: submitApplicationIsSuccess } = useSubmitApplication({
     onSuccess: () => {
       window.sessionStorage.removeItem(Constants.FormDataStorageKey);
-      router.push('/application/confirmation');
+      router.push('/email-verification');
     },
   });
 

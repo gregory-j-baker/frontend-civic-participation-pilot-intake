@@ -25,7 +25,7 @@ const ApplicationConfirmationPage = (): JSX.Element => {
             {t('application:confirmation.header')}
           </h1>
           <h2 className="tw-m-0 tw-border-none tw-mb-16 tw-text-2xl">{t('application:confirmation.sub-header')}</h2>
-          <p className="tw-mb-16">{t('application:confirmation.sub-header')}</p>
+          <p className="tw-mb-16">{t('application:confirmation.instruction')}</p>
 
           <ButtonLink href={lang === 'fr' ? applicationConfig.canadaServiceCorpsUrl.fr : applicationConfig.canadaServiceCorpsUrl.en}>{t('application:confirmation.submit')}</ButtonLink>
         </div>

@@ -32,6 +32,7 @@ const mixedLocale: MixedLocale = {
 const stringLocale: CustomStringLocale = {
   email: ({ path }) => ({ key: 'email-invalid', path } as YupCustomMessage),
   phone: ({ path }) => ({ key: 'phone-invalid', path } as YupCustomMessage),
+  length: ({ path }) => ({ key: 'length-invalid', path } as YupCustomMessage),
 };
 
 const booleanLocale: BooleanLocale = {

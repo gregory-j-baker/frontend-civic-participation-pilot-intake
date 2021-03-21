@@ -6,39 +6,100 @@
  */
 
 import { useState } from 'react';
-import type { GetStaticProps, NextPage } from 'next';
-import Image from 'next/image';
 import { NextSeo } from 'next-seo';
-import useTranslation from 'next-translate/useTranslation';
-import { Button, ButtonOnClickEvent } from '../../components/Button';
+import { useRouter } from 'next/router';
 import { TextField, TextFieldOnChangeEvent } from '../../components/form/TextField';
+import useTranslation from 'next-translate/useTranslation';
+import kebabCase from 'lodash/kebabCase';
+import camelCase from 'lodash/camelCase';
+import Error from '../_error';
+import Image from 'next/image';
+import { Alert, AlertType } from '../../components/Alert';
+import { Button, ButtonOnClickEvent } from '../../components/Button';
 import { MainLayout } from '../../components/layouts/main/MainLayout';
+import { emailVerificationSchema } from '../../yup/emailVerificationSchema';
+import { ValidationError } from 'yup';
+import { HttpClientResponseError } from '../../common/HttpClientResponseError';
+import { YupCustomMessage } from '../../yup/yup-custom';
+import type { GetStaticProps, NextPage } from 'next';
+import { EmailVerificationData, useSubmitEmailVerification } from '../../hooks/api/useSubmitEmailVerification';
 
-interface EmailVerficationPageState {
-  verificationCode?: string;
+interface FormDataState {
+  accessCode: string;
   attempts: number;
-}
-
-interface IXEmailVerficationPageState extends EmailVerficationPageState {
-  [key: string]: string | number | undefined;
+  email: string;
 }
 
 const EmailVerficationPage: NextPage = () => {
   const { t } = useTranslation();
 
-  const [formData, setFormDataState] = useState<IXEmailVerficationPageState>({ attempts: 0 });
+  const router = useRouter();
 
-  const onFieldChange: TextFieldOnChangeEvent = ({ field, value }) => {
+  const { mutate: submitEmailVerification, error: submitEmailVerificationError, isLoading: submitEmailVerificationIsLoading, isSuccess: submitEmailVerificationIsSuccess } = useSubmitEmailVerification({
+    onSuccess: () => {
+      router.push('/email-verification/success');
+    },
+  });
+
+  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
+
+  const [formData, setFormDataState] = useState<FormDataState>({ accessCode: '', attempts: 5, email: 'eric.pitre@hrsdc-rhdcc.gc.ca' });
+
+  const handleOnTextFieldChange: TextFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
-      return { ...prev, [field as keyof IXEmailVerficationPageState]: value ?? undefined };
+      return { ...prev, [field as keyof FormDataState]: value ?? undefined };
     });
   };
 
-  const handleOnSubmit: ButtonOnClickEvent = (event) => {
+  const handleOnCancel: ButtonOnClickEvent = (event) => {
     event.preventDefault();
 
-    setFormDataState((prev) => ({ ...prev, attempts: ++prev.attempts }));
+    router.push('/application/confirmation');
   };
+
+  const handleOnSubmit: ButtonOnClickEvent = async (event) => {
+    event.preventDefault();
+
+    try {
+      await emailVerificationSchema.validate(formData, { abortEarly: false });
+
+      setFormDataState((prev) => ({ ...prev, attempts: ++prev.attempts }));
+
+      // submit email verification form
+      // const emailVerificationData: EmailVerificationData = {
+      //   email: formData?.email as string,
+      //   accessCode: formData?.accessCode as string,
+      // };
+
+      //submitEmailVerification(emailVerificationData);
+      alert('here');
+    } catch (err) {
+      if (!(err instanceof ValidationError)) throw err;
+      setSchemaErrors(err.inner);
+    }
+  };
+
+  const getSchemaError = (path: string): string | undefined => {
+    if (!schemaErrors || schemaErrors.length === 0) return undefined;
+
+    const index = schemaErrors.findIndex((err) => err.path === path);
+
+    if (index === -1) return undefined;
+
+    const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
+
+    return (
+      t('common:error-number', { number: index + 1 }) +
+      t(
+        `email-verification:form.${schemaErrors[index]?.path
+          ?.split('.')
+          .map((el) => kebabCase(el))
+          .join('.')}.${key}`
+      )
+    );
+  };
+
+  if (submitEmailVerificationError) return <Error err={submitEmailVerificationError as HttpClientResponseError} />;
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -50,25 +111,42 @@ const EmailVerficationPage: NextPage = () => {
           </h1>
           <h2 className="tw-border-none tw-m-0 tw-mb-4 tw-text-2xl">{t('email-verification:page.header')}</h2>
 
-          <p className="tw-m-0 ">{t('email-verification:page.description')}</p>
+          <p className="tw-m-0 tw-mb-4">{t('email-verification:page.description')}</p>
+
+          {schemaErrors && schemaErrors.length > 0 && (
+            <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+              <ul className="tw-list-disc">
+                {schemaErrors.map(({ path }) => {
+                  const [field] = path?.split('.') ?? [];
+
+                  return path ? (
+                    <li key={path} className="tw-my-2">
+                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                    </li>
+                  ) : undefined;
+                })}
+              </ul>
+            </Alert>
+          )}
 
           <div className="tw-my-16">
             <TextField
-              field={nameof<EmailVerficationPageState>((o) => o.verificationCode)}
-              label={t('email-verification:form.verification-code')}
-              helperText={t('email-verification:form.verification-code-attempts', { attempts: formData.attempts, maxAttempts: 5 })}
-              value={formData.verificationCode}
-              onChange={onFieldChange}
+              field={nameof<FormDataState>((o) => o.accessCode)}
+              label={t('email-verification:form.access-code.label')}
+              helperText={t('email-verification:form.access-code-attempts', { attempts: formData?.attempts, maxAttempts: 5 })}
+              value={formData?.accessCode}
+              onChange={handleOnTextFieldChange}
+              disabled={submitEmailVerificationIsLoading || submitEmailVerificationIsSuccess}
               required
               className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
             />
           </div>
 
           <div className="tw-flex tw-flex-wrap">
-            <Button onClick={handleOnSubmit} className="tw-m-2">
+            <Button onClick={handleOnSubmit} disabled={submitEmailVerificationIsLoading || submitEmailVerificationIsSuccess} className="tw-m-2">
               {t('email-verification:form.submit')}
             </Button>
-            <Button outline onClick={(event) => console.log(event)} className="tw-m-2">
+            <Button outline onClick={handleOnCancel} disabled={submitEmailVerificationIsLoading || submitEmailVerificationIsSuccess} className="tw-m-2">
               {t('email-verification:form.cancel')}
             </Button>
           </div>
