@@ -18,7 +18,7 @@ import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
 import { ApplicationState, Step3State, Constants } from '../types';
-import { step3Schema, step2Schema, step1Schema } from '../../../yup/applicationSchemas';
+import { step3Schema, step2Schema, step1Schema, SkillsInterestWordLength } from '../../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { YupCustomMessage } from '../../../yup/yup-custom';
@@ -98,13 +98,19 @@ const Step3Page = (): JSX.Element => {
 
     const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
 
+    console.log(schemaErrors[index].params);
+
     return (
       t('common:error-number', { number: index + 1 }) +
       t(
         `application:field.${schemaErrors[index]?.path
           ?.split('.')
           .map((el) => kebabCase(el))
-          .join('.')}.${key}`
+          .join('.')}.${key}`,
+        {
+          min: (schemaErrors[index].params?.min ?? -1) as number,
+          max: (schemaErrors[index].params?.max ?? -1) as number,
+        }
       )
     );
   };
@@ -142,6 +148,7 @@ const Step3Page = (): JSX.Element => {
             <TextAreaField
               field={nameof<Step3State>((o) => o.skillsInterest)}
               label={t('application:field.skills-interest.label')}
+              helperText={t('application:field.skills-interest.helper-text', { ...SkillsInterestWordLength })}
               value={formData.step3.skillsInterest}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<Step3State>((o) => o.skillsInterest))}
@@ -154,6 +161,7 @@ const Step3Page = (): JSX.Element => {
             <TextAreaField
               field={nameof<Step3State>((o) => o.communityInterest)}
               label={t('application:field.community-interest.label')}
+              helperText={t('application:field.community-interest.helper-text', { ...SkillsInterestWordLength })}
               value={formData.step3.communityInterest}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<Step3State>((o) => o.communityInterest))}

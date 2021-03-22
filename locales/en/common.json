@@ -31,7 +31,16 @@
     "description": "This may take a few seconds, please don't close this page."
   },
   "textarea": {
-    "word-limit": "{{count}} out of {{limit}} words maximum"
+    "word-count": {
+      "0": "No word has been entered in the text field",
+      "one": "{{count}} word has been entered in the text field",
+      "other": "{{count}} words have been entered in the text field"
+    },
+    "word-count-limit": {
+      "0": "No word has been entered in the text field",
+      "one": "{{count}} word on a limit of {{limit}} words has been entered in the text field",
+      "other": "{{count}} words on a limit of {{limit}} words has been entered in the text field"
+    }
   },
   "wizard": {
     "next": "Next step",

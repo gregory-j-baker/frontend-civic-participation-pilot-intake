@@ -31,7 +31,16 @@
     "description": "Cela peut prendre quelques secondes, s'il vous plaît ne fermez pas cette page."
   },
   "textarea": {
-    "word-limit": "{{count}} mots sur {{limit}} maximum"
+    "word-count": {
+      "0": "Aucun mot n'a été saisi dans le champ de texte",
+      "one": "{{count}} mot a été saisi dans le champ de texte",
+      "other": "{{count}} mots ont été saisis dans le champ de texte"
+    },
+    "word-count-limit": {
+      "0": "Aucun mot n'a été saisi dans le champ de texte",
+      "one": "{{count}} mot sur une limite de {{limit}} mots a été saisi dans le champ de texte",
+      "other": "{{count}} mots sur une limite de {{limit}} mots ont été saisis dans le champ de texte"
+    }
   },
   "wizard": {
     "next": "Étape suivante",

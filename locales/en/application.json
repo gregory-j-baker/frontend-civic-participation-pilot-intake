@@ -15,6 +15,9 @@
     },
     "community-interest": {
       "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
+      "helper-text": "Minimum of {{min}} words and a maxium of {{max}} words",
+      "min-word": "You must provide a response to question #2 with more or equal to {{min}} words",
+      "max-word": "You must provide a response to question #2 with less or equal to {{max}} words",
       "required": "You must provide a response to question #2"
     },
     "demographic-id": {
@@ -91,6 +94,9 @@
     },
     "skills-interest": {
       "label": "Tell us about yourself, describe your strengths, passions and what motivates you. What skills and knowledge do you hope to gain from this experience?",
+      "helper-text": "Minimum of {{min}} words and a maxium of {{max}} words",
+      "min-word": "You must provide a response to question #1 with more or equal to {{min}} words",
+      "max-word": "You must provide a response to question #1 with less or equal to {{max}} words",
       "required": "You must provide a response to question #1"
     }
   },

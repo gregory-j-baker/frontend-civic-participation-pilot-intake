@@ -8,6 +8,21 @@
 import * as Yup from 'yup';
 import './yup-custom';
 
+export interface WordLength {
+  min: number;
+  max: number;
+}
+
+export const SkillsInterestWordLength: WordLength = {
+  min: 20,
+  max: 250,
+};
+
+export const CommunityInterestWordLength: WordLength = {
+  min: 20,
+  max: 250,
+};
+
 /**
  * IMPORTANT: Props order is based on screen order
  */
@@ -32,8 +47,8 @@ export const step2Schema = Yup.object().shape({
 });
 
 export const step3Schema = Yup.object().shape({
-  skillsInterest: Yup.string().required(),
-  communityInterest: Yup.string().required(),
+  skillsInterest: Yup.string().minWord(SkillsInterestWordLength.min).maxWord(SkillsInterestWordLength.max).required(),
+  communityInterest: Yup.string().minWord(CommunityInterestWordLength.min).maxWord(CommunityInterestWordLength.max).required(),
 });
 
 export const step4Schema = Yup.object().shape({

@@ -15,6 +15,9 @@
     },
     "community-interest": {
       "label": "Si vous pouviez avoir un impact positif sur un problème de votre communauté, quel problème voudriez-vous aborder et pourquoi?",
+      "helper-text": "Minimum de {{min}} mots et un maximum de mots {{max}}",
+      "min-word": "Vous devez fournir une réponse à la question n° 2 avec plus ou égale à {{min}} mots",
+      "max-word": "Vous devez fournir une réponse à la question n° 2 avec moins ou égale à {{max}} mots",
       "required": "Vous devez fournir une réponse à la question n° 2"
     },
     "demographic-id": {
@@ -91,6 +94,9 @@
     },
     "skills-interest": {
       "label": "Parlez-nous de vous-même, décrivez vos forces, vos passions et vos motivations. Quelles compétences et connaissances espérez-vous gagner de cette expérience?",
+      "helper-text": "Minimum de {{min}} mots et un maximum de mots {{max}}",
+      "min-word": "Vous devez fournir une réponse à la question n° 1 avec plus ou égale à {{min}} mots",
+      "max-word": "Vous devez fournir une réponse à la question n° 1 avec moins ou égale à {{max}} mots",
       "required": "Vous devez fournir une réponse à la question n° 1"
     }
   },

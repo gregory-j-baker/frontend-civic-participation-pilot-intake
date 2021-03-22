@@ -8,6 +8,7 @@
 import useTranslation from 'next-translate/useTranslation';
 import { useCallback, useMemo } from 'react';
 import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { WordRegExp } from '../../../common/WordRegExp';
 import { FieldErrorMessage } from '../FieldErrorMessage';
 
 export interface TextAreaFieldOnChangeEvent {
@@ -39,7 +40,7 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
   const fieldId = `form-field-${field}`;
 
   const getWordCount = useCallback((val?: string | null): number => {
-    const reg = new RegExp(/\S+/g);
+    const reg = WordRegExp;
     return val?.match(reg)?.length ?? 0;
   }, []);
 
@@ -65,8 +66,12 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
       {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
-      {wordLimit && <HelpBlock className="tw-italic tw-text-sm">{t('common:textarea.word-limit', { count: wordCount, limit: wordLimit })}</HelpBlock>}
       <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} maxLength={maxLength} className={className} rows={Math.max(contentRows, rows ?? 5)} />
+      {
+        <div className="tw-italic tw-text-sm tw-px-4 tw-py-1 tw-border-l-4 tw--mt-2 tw-pt-3 tw-rounded tw-bg-gray-50 tw-border-gray-600 tw-shadow">
+          {t(wordLimit ? 'common:textarea.word-count-limit' : 'common:textarea.word-count', { count: wordCount, limit: wordLimit ?? -1 })}
+        </div>
+      }
     </FormGroup>
   );
 };
