@@ -90,7 +90,7 @@
       "required": "You must select your province or territory of residence"
     },
     "skills-interest": {
-      "label": "Tell us about yourself, describe your strenghts, passions and what motivates you. What skills and knowledge do you hope to gain from this experience?",
+      "label": "Tell us about yourself, describe your strengths, passions and what motivates you. What skills and knowledge do you hope to gain from this experience?",
       "required": "You must provide a response to question #1"
     }
   },
