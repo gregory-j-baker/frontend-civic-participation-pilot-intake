@@ -40,7 +40,8 @@ export interface RadiosFieldProps {
 
 export const RadiosField = ({ children, className, disabled, error, field, gutterBottom, helperText, inline, label, labelClassName, onChange, options, required, value }: RadiosFieldProps): JSX.Element => {
   const { t } = useTranslation();
-  const groupName = `form-field-${field}`;
+  const fieldId = `form-field-${field}`;
+  const groupName = `form-field-group-${field}`;
 
   const handleOnChange: React.FormEventHandler<Radio> = (event) => {
     const target = event.target as HTMLInputElement;
@@ -50,7 +51,7 @@ export const RadiosField = ({ children, className, disabled, error, field, gutte
   const selectedValue = options.find((option) => option.value === value)?.value ?? '';
 
   return (
-    <FormGroup className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+    <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
       <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
@@ -59,8 +60,17 @@ export const RadiosField = ({ children, className, disabled, error, field, gutte
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <div>
-        {options.map((el) => (
-          <Radio key={el.value} name={groupName} value={el.value} onChange={handleOnChange} checked={el.value === selectedValue} disabled={el.disabled || disabled} className={`${inline ? 'tw-mr-4' : ''} ${className ?? ''}`} inline={inline}>
+        {options.map((el, idx) => (
+          <Radio
+            key={el.value}
+            id={idx === 0 ? fieldId : `${fieldId}-${idx}`}
+            name={groupName}
+            value={el.value}
+            onChange={handleOnChange}
+            checked={el.value === selectedValue}
+            disabled={el.disabled || disabled}
+            className={`${inline ? 'tw-mr-4' : ''} ${className ?? ''}`}
+            inline={inline}>
             {el.text}
           </Radio>
         ))}
