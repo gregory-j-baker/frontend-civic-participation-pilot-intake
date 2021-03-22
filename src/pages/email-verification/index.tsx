@@ -22,12 +22,11 @@ import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../yup/yup-custom';
 import type { GetStaticProps, NextPage } from 'next';
-import { EmailVerificationData, useSubmitEmailVerification } from '../../hooks/api/useSubmitEmailVerification';
+import { EmailVerificationData, useSubmitEmailVerification } from '../../hooks/api/email-validations/useSubmitEmailVerification';
 
 interface FormDataState {
   accessCode: string;
   attempts: number;
-  email: string;
 }
 
 const EmailVerficationPage: NextPage = () => {
@@ -37,13 +36,14 @@ const EmailVerficationPage: NextPage = () => {
 
   const { mutate: submitEmailVerification, error: submitEmailVerificationError, isLoading: submitEmailVerificationIsLoading, isSuccess: submitEmailVerificationIsSuccess } = useSubmitEmailVerification({
     onSuccess: () => {
-      router.push('/email-verification/success');
+      //router.push('/email-verification/success');
+      alert('success');
     },
   });
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
-  const [formData, setFormDataState] = useState<FormDataState>({ accessCode: '', attempts: 5, email: 'eric.pitre@hrsdc-rhdcc.gc.ca' });
+  const [formData, setFormDataState] = useState<FormDataState>({ accessCode: '', attempts: 5 });
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
@@ -66,13 +66,12 @@ const EmailVerficationPage: NextPage = () => {
       setFormDataState((prev) => ({ ...prev, attempts: ++prev.attempts }));
 
       // submit email verification form
-      // const emailVerificationData: EmailVerificationData = {
-      //   email: formData?.email as string,
-      //   accessCode: formData?.accessCode as string,
-      // };
+      const emailVerificationData: EmailVerificationData = {
+        email: router.query['email'] as string,
+        accessCode: formData?.accessCode as string,
+      };
 
-      //submitEmailVerification(emailVerificationData);
-      alert('here');
+      submitEmailVerification(emailVerificationData);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);

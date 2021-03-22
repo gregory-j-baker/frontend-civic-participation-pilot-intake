@@ -23,7 +23,7 @@ import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../yup/yup-custom';
 import { GetStaticProps } from 'next';
-import { ContactUsData, useSubmitContactUs } from '../../hooks/api/useSubmitContactUs';
+import { ContactUsData, useSubmitContactUs } from '../../hooks/api/contact-form/useSubmitContactUs';
 
 interface FormDataState {
   email?: string;

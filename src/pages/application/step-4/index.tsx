@@ -43,7 +43,7 @@ const Step4Page = (): JSX.Element => {
   const { mutate: submitApplication, error: submitApplicationError, isLoading: submitApplicationIsLoading, isSuccess: submitApplicationIsSuccess } = useSubmitApplication({
     onSuccess: () => {
       window.sessionStorage.removeItem(Constants.FormDataStorageKey);
-      router.push('/application/confirmation');
+      router.push({ pathname: '/email-verification', query: { email: formData.step1.email } });
     },
   });
 
