@@ -203,7 +203,6 @@ const Step2Page = (): JSX.Element => {
               options={demographicOptions}
               error={getSchemaError(nameof<Step2State>((o) => o.demographicId))}
               required
-              gutterBottom
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}>
               <ul className="tw-list-disc tw-list-inside tw-my-4 tw-font-bold">
                 {t<string[]>(`application:field.demographic-id.children-items`, {}, { returnObjects: true }).map((val) => (

@@ -162,7 +162,6 @@ const Step3Page = (): JSX.Element => {
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<Step3State>((o) => o.communityInterest))}
               required
-              gutterBottom
               className="tw-w-full"
               wordLimit={250}
               maxLength={2048}
