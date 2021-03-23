@@ -9,7 +9,7 @@
   },
   "field": {
     "birth-year": {
-      "label": "En quelle année es-tu né?",
+      "label": "En quelle année êtes-vous né?",
       "helper-text": "Veuillez noter que pour être éligible, vous devez avoir entre 18 et 30 ans et l'âge de la majorité dans votre province ou votre territoire de résidence.",
       "required": "Vous devez sélectionner l'année où vous êtes né"
     },
