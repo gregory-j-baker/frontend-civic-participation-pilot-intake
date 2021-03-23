@@ -70,20 +70,13 @@ const Step2Page = (): JSX.Element => {
     if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
   }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
-  useEffect(() => {
-    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
-  }, [formData]);
-
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step2, [field]: value ?? undefined };
-      return { ...prev, step2: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step2: { ...prev.step2, [field]: value ?? undefined } }));
   };
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
-
+    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
     router.push('/application/step-1');
   };
 
@@ -92,6 +85,7 @@ const Step2Page = (): JSX.Element => {
 
     try {
       await step2Schema.validate(formData.step2, { abortEarly: false });
+      window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
       router.push('/application/step-3');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
@@ -209,7 +203,6 @@ const Step2Page = (): JSX.Element => {
               options={demographicOptions}
               error={getSchemaError(nameof<Step2State>((o) => o.demographicId))}
               required
-              gutterBottom
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}>
               <ul className="tw-list-disc tw-list-inside tw-my-4 tw-font-bold">
                 {t<string[]>(`application:field.demographic-id.children-items`, {}, { returnObjects: true }).map((val) => (

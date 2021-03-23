@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
@@ -36,6 +36,7 @@ import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
+import { tryFormatPhoneNumber } from '../../../utils/phone-utils';
 
 const Step1Page = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -57,38 +58,31 @@ const Step1Page = (): JSX.Element => {
     return { ...defaultState, ...(storageData ? JSON.parse(storageData) : {}) };
   });
 
-  useEffect(() => {
-    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
-  }, [formData]);
-
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
       let newValue: boolean | string | number | null | undefined = undefined;
 
       if (value) {
-        if (value.toLowerCase() === 'true') newValue = true;
-        else if (value.toLowerCase() === 'false') newValue = false;
+        if (value === true.toString()) newValue = true;
+        else if (value === false.toString()) newValue = false;
         else if (!isNaN(Number(value))) newValue = Number(value);
         else newValue = value;
       }
 
-      const newObj = { ...prev.step1, [field]: newValue };
-      return { ...prev, step1: newObj };
+      return { ...prev, step1: { ...prev.step1, [field]: newValue } };
     });
   };
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step1, [field]: value ?? undefined };
-      return { ...prev, step1: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step1: { ...prev.step1, [field]: value ?? undefined } }));
+  };
+
+  const handleOnPhonNumberFieldChange: TextFieldOnChangeEvent = ({ value }) => {
+    setFormDataState((prev) => ({ ...prev, step1: { ...prev.step1, phoneNumber: tryFormatPhoneNumber(value ?? undefined) } }));
   };
 
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step1, [field]: checked };
-      return { ...prev, step1: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step1: { ...prev.step1, [field]: checked } }));
   };
 
   const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {
@@ -96,6 +90,7 @@ const Step1Page = (): JSX.Element => {
 
     try {
       await step1Schema.validate(formData.step1, { abortEarly: false });
+      window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
       router.push('/application/step-2');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
@@ -212,6 +207,7 @@ const Step1Page = (): JSX.Element => {
             />
 
             <TextField
+              type="email"
               field={nameof<Step1State>((o) => o.email)}
               label={t('application:field.email.label')}
               value={formData.step1.email}
@@ -223,11 +219,12 @@ const Step1Page = (): JSX.Element => {
             />
 
             <TextField
+              type="tel"
               field={nameof<Step1State>((o) => o.phoneNumber)}
               label={t('application:field.phone-number.label')}
               helperText={t('application:field.phone-number.helper-text')}
               value={formData.step1.phoneNumber}
-              onChange={handleOnTextFieldChange}
+              onChange={handleOnPhonNumberFieldChange}
               error={getSchemaError(nameof<Step1State>((o) => o.phoneNumber))}
               gutterBottom
               className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"

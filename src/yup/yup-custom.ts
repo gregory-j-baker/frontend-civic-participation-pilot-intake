@@ -13,7 +13,10 @@
 import * as Yup from 'yup';
 import { BooleanLocale, MixedLocale, StringLocale } from 'yup/lib/locale';
 import { Maybe, Message } from 'yup/lib/types';
+import Reference from 'yup/lib/Reference';
+import isAbsent from 'yup/lib/util/isAbsent';
 import gPhoneNumber from 'google-libphonenumber';
+import { WordRegExp } from '../common/WordRegExp';
 
 export interface YupCustomMessage {
   key: string;
@@ -21,7 +24,9 @@ export interface YupCustomMessage {
 }
 
 export interface CustomStringLocale extends StringLocale {
-  phone?: Message;
+  minWord: Message<{ min: number }>;
+  maxWord: Message<{ max: number }>;
+  phone: Message;
 }
 
 const mixedLocale: MixedLocale = {
@@ -31,6 +36,8 @@ const mixedLocale: MixedLocale = {
 
 const stringLocale: CustomStringLocale = {
   email: ({ path }) => ({ key: 'email-invalid', path } as YupCustomMessage),
+  minWord: ({ path, min }) => ({ key: 'min-word', path, min } as YupCustomMessage),
+  maxWord: ({ path, max }) => ({ key: 'max-word', path, max } as YupCustomMessage),
   phone: ({ path }) => ({ key: 'phone-invalid', path } as YupCustomMessage),
   length: ({ path }) => ({ key: 'length-invalid', path } as YupCustomMessage),
 };
@@ -45,32 +52,20 @@ Yup.setLocale({
   boolean: booleanLocale,
 });
 
-declare module 'yup' {
-  export interface StringSchema {
-    /**
-     * Check for phone number validity.
-     *
-     * @param {String} [countryCode=IN] The country code to check against.
-     * @param {Boolean} [strict=false] How strictly should it check.
-     * @param {String} [errorMessage=DEFAULT_MESSAGE] The error message to return if the validation fails.
-     */
-    phone(countryCode?: string, strict?: boolean, errorMessage?: string): StringSchema;
-  }
-}
-
 const phoneUtil = gPhoneNumber.PhoneNumberUtil.getInstance();
 
 const isValidCountryCode = (countryCode?: string): boolean => typeof countryCode === 'string' && countryCode.length === 2;
 
-Yup.addMethod(Yup.string, 'phone', function (countryCode?: string, strict = false, message = stringLocale.phone) {
+Yup.addMethod(Yup.string, 'phone', function (countryCode?: string, strict = true, message = stringLocale.phone) {
   return this.test({
-    name: 'phone',
     message: message || stringLocale.phone,
+    name: 'phone',
+    exclusive: true,
     test: (value: Maybe<string>) => {
       // if not valid countryCode, then set default country to Canada (CA)
       if (!isValidCountryCode(countryCode)) countryCode = 'CA';
 
-      if (!value) return true;
+      if (isAbsent(value)) return true;
 
       try {
         const phoneNumber = phoneUtil.parseAndKeepRawInput(value, countryCode);
@@ -86,3 +81,35 @@ Yup.addMethod(Yup.string, 'phone', function (countryCode?: string, strict = fals
     },
   });
 });
+
+Yup.addMethod(Yup.string, 'minWord', function (min: number | Reference<number>, message: Message<{ min: number }> = stringLocale.minWord) {
+  return this.test({
+    message,
+    name: 'minWord',
+    exclusive: true,
+    params: { min },
+    test(value: Maybe<string>) {
+      return isAbsent(value) || (value.match(WordRegExp)?.length ?? 0) >= this.resolve(min);
+    },
+  });
+});
+
+Yup.addMethod(Yup.string, 'maxWord', function (max: number | Reference<number>, message: Message<{ max: number }> = stringLocale.maxWord) {
+  return this.test({
+    message,
+    name: 'maxWord',
+    exclusive: true,
+    params: { max },
+    test(value: Maybe<string>) {
+      return isAbsent(value) || (value.match(WordRegExp)?.length ?? 0) <= this.resolve(max);
+    },
+  });
+});
+
+declare module 'yup' {
+  export interface StringSchema {
+    minWord(min: number | Reference<number>, message?: Message<{ min: number }>): StringSchema;
+    maxWord(max: number | Reference<number>, message?: Message<{ max: number }>): StringSchema;
+    phone(countryCode?: string, strict?: boolean, errorMessage?: string): StringSchema;
+  }
+}

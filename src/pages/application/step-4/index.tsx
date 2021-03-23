@@ -7,8 +7,9 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { NextSeo } from 'next-seo';
-import useTranslation from 'next-translate/useTranslation';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import useTranslation from 'next-translate/useTranslation';
 import type { CheckboxeFieldOnChangeEvent } from '../../../components/form/CheckboxeField';
 import { CheckboxeField } from '../../../components/form/CheckboxeField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
@@ -26,15 +27,14 @@ import { HttpClientResponseError } from '../../../common/HttpClientResponseError
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { FormDefinitionListItem } from '../../../components/FormDefinitionListItem';
-import { useDiscoveryChannels } from '../../../hooks/api/code-lookups/useDiscoveryChannels';
-import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
-import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
-import { useEducationLevels } from '../../../hooks/api/code-lookups/useEducationLevels';
-import { useGenders } from '../../../hooks/api/code-lookups/useGenders';
-import { sleep } from '../../../utils/misc-utils';
-import Link from 'next/link';
+import { useDemographic } from '../../../hooks/api/code-lookups/useDemographic';
+import { useDiscoveryChannel } from '../../../hooks/api/code-lookups/useDiscoveryChannel';
+import { useEducationLevel } from '../../../hooks/api/code-lookups/useEducationLevel';
+import { useGender } from '../../../hooks/api/code-lookups/useGender';
+import { useLanguage } from '../../../hooks/api/code-lookups/useLanguage';
+import { useProvince } from '../../../hooks/api/code-lookups/useProvince';
 import { ApplicationSubmitData } from '../../../hooks/api/applications/types';
-import { useDemographics } from '../../../hooks/api/code-lookups/useDemographics';
+import { sleep } from '../../../utils/misc-utils';
 
 const Step4Page = (): JSX.Element => {
   const { t } = useTranslation();
@@ -80,15 +80,8 @@ const Step4Page = (): JSX.Element => {
     if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
   }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
-  useEffect(() => {
-    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
-  }, [formData]);
-
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step4, [field]: checked };
-      return { ...prev, step4: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step4: { ...prev.step4, [field]: checked } }));
   };
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
@@ -195,7 +188,7 @@ const Step4Page = (): JSX.Element => {
             onNextClick={handleWizardOnNextClick}
             disabled={submitApplicationIsLoading || submitApplicationIsSuccess}>
             <div className="tw-mb-10">
-              <FormReview applicationState={formData} />
+              <FormReview {...formData} />
             </div>
             <div className="tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow tw-flex tw-space-x-3 tw-items-center tw-bg-blue-50 tw-border-blue-600 tw-mb-10 ">
               <div className="tw-w-5 tw-h-5 tw-text-blue-600 tw-inline-block tw-flex-shrink-0">
@@ -239,187 +232,166 @@ export interface FormReviewItem {
 }
 
 export interface FormReviewProps {
-  applicationState: ApplicationState;
+  step1: Step1State;
+  step2: Step2State;
+  step3: Step3State;
 }
 
-export const FormReview = ({ applicationState }: FormReviewProps): JSX.Element => {
+export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Element => {
   const { t, lang } = useTranslation();
 
-  const { data: demographics } = useDemographics({ lang });
-  const { data: discoveryChannels } = useDiscoveryChannels({ lang });
-  const { data: educationLevels } = useEducationLevels({ lang });
-  const { data: genders } = useGenders({ lang });
-  const { data: languages } = useLanguages({ lang });
-  const { data: provinces } = useProvinces({ lang });
+  const { data: demographic, isLoading: demographicIsLoading } = useDemographic(step2.demographicId as string);
+  const { data: discoveryChannel, isLoading: discoveryChannelIsLoading } = useDiscoveryChannel(step1.discoveryChannelId as string);
+  const { data: educationLevel, isLoading: educationLevelIsLoading } = useEducationLevel(step2.educationLevelId as string);
+  const { data: gender, isLoading: genderIsLoading } = useGender(step2.genderId as string);
+  const { data: language, isLoading: languageIsLoading } = useLanguage(step1.languageId as string);
+  const { data: province, isLoading: provinceIsLoading } = useProvince(step1.provinceId as string);
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
+
+  console.log({ gender, genderIsLoading, step2: step2.genderId });
 
   const formReviewItems: FormReviewItem[] = useMemo(() => {
     const items: FormReviewItem[] = [];
 
-    if (Object.keys(applicationState.step1).length !== 0) {
-      // firstName
-      if (applicationState.step1.firstName) {
-        items.push({
-          key: nameof<ApplicationState>((o) => o.step1.firstName),
-          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.firstName))}.label`),
-          value: applicationState.step1.firstName,
-        });
-      }
-
-      // lastName
-      if (applicationState.step1.lastName) {
-        items.push({
-          key: nameof<ApplicationState>((o) => o.step1.lastName),
-          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.lastName))}.label`),
-          value: applicationState.step1.lastName,
-        });
-      }
-
-      // email
-      if (applicationState.step1.email) {
-        items.push({
-          key: nameof<ApplicationState>((o) => o.step1.email),
-          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.email))}.label`),
-          value: applicationState.step1.email,
-        });
-      }
-
-      // phone
-      if (applicationState.step1.phoneNumber) {
-        items.push({
-          key: nameof<ApplicationState>((o) => o.step1.phoneNumber),
-          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.phoneNumber))}.label`),
-          value: applicationState.step1.phoneNumber,
-        });
-      }
-
-      // birthYear
-      if (applicationState.step1.birthYear) {
-        items.push({
-          key: nameof<ApplicationState>((o) => o.step1.birthYear),
-          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.birthYear))}.label`),
-          value: applicationState.step1.birthYear.toString(),
-        });
-      }
-
-      // languageId
-      if (applicationState.step1.languageId) {
-        const language = languages?._embedded.languages.find((o) => o.id === applicationState.step1.languageId);
-        if (language) {
-          items.push({
-            key: nameof<ApplicationState>((o) => o.step1.languageId),
-            text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.languageId))}.label`),
-            value: getDescription(language),
-          });
-        }
-      }
-
-      // isCanadianCitizen
-      if (applicationState.step1.isCanadianCitizen !== undefined) {
-        items.push({
-          key: nameof<ApplicationState>((o) => o.step1.isCanadianCitizen),
-          text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.isCanadianCitizen))}.label`),
-          value: applicationState.step1.isCanadianCitizen ? t('common:yes') : t('common:no'),
-        });
-      }
-
-      // provindId
-      if (applicationState.step1.provinceId) {
-        const province = provinces?._embedded.provinces.find((o) => o.id === applicationState.step1.provinceId);
-        if (province) {
-          items.push({
-            key: nameof<ApplicationState>((o) => o.step1.provinceId),
-            text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.provinceId))}.label`),
-            value: getDescription(province),
-          });
-        }
-      }
-
-      // discoveryChannelId
-      if (applicationState.step1.discoveryChannelId) {
-        const discoveryChannel = discoveryChannels?._embedded.discoveryChannels.find((o) => o.id === applicationState.step1.discoveryChannelId);
-        if (discoveryChannel) {
-          items.push({
-            key: nameof<ApplicationState>((o) => o.step1.discoveryChannelId),
-            text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.discoveryChannelId))}.label`),
-            value: getDescription(discoveryChannel),
-          });
-        }
-      }
+    // firstName
+    if (step1.firstName) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.firstName),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.firstName))}.label`),
+        value: step1.firstName,
+      });
     }
 
-    if (Object.keys(applicationState.step2).length !== 0) {
-      // genderId
-      if (applicationState.step2.genderId) {
-        const gender = genders?._embedded.genders.find((o) => o.id === applicationState.step2.genderId);
-        if (gender) {
-          items.push({
-            key: nameof<ApplicationState>((o) => o.step2.genderId),
-            text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.genderId))}.label`),
-            value: getDescription(gender),
-          });
-        }
-      }
-
-      // educationLevelId
-      if (applicationState.step2.educationLevelId) {
-        const educationLevel = educationLevels?._embedded.educationLevels.find((o) => o.id === applicationState.step2.educationLevelId);
-
-        if (educationLevel) {
-          items.push({
-            key: nameof<ApplicationState>((o) => o.step2.educationLevelId),
-            text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.educationLevelId))}.label`),
-            value: getDescription(educationLevel),
-          });
-        }
-      }
-
-      // demographicId
-      if (applicationState.step2.demographicId) {
-        const demographic = demographics?._embedded.demographics.find((o) => o.id === applicationState.step2.demographicId);
-
-        if (demographic) {
-          items.push({
-            children: (
-              <ul className="tw-list-disc tw-list-inside tw-my-4">
-                {t<string[]>(`application:field.${kebabCase(nameof<Step2State>((o) => o.demographicId))}.children-items`, {}, { returnObjects: true }).map((val) => (
-                  <li key={val} className="tw-mb-2">
-                    {val}
-                  </li>
-                ))}
-              </ul>
-            ),
-            key: nameof<ApplicationState>((o) => o.step2.demographicId),
-            text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.demographicId))}.label`),
-            value: getDescription(demographic),
-          });
-        }
-      }
+    // lastName
+    if (step1.lastName) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.lastName),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.lastName))}.label`),
+        value: step1.lastName,
+      });
     }
 
-    if (Object.keys(applicationState.step3).length !== 0) {
-      // skillsInterest
-      if (applicationState.step3.skillsInterest) {
-        items.push({
-          key: nameof<ApplicationState>((o) => o.step3.skillsInterest),
-          text: t(`application:field.${kebabCase(nameof<Step3State>((o) => o.skillsInterest))}.label`),
-          value: applicationState.step3.skillsInterest,
-        });
-      }
+    // email
+    if (step1.email) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.email),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.email))}.label`),
+        value: step1.email,
+      });
+    }
 
-      // communityInterest
-      if (applicationState.step3.communityInterest) {
-        items.push({
-          key: nameof<ApplicationState>((o) => o.step3.communityInterest),
-          text: t(`application:field.${kebabCase(nameof<Step3State>((o) => o.communityInterest))}.label`),
-          value: applicationState.step3.communityInterest,
-        });
-      }
+    // phone
+    if (step1.phoneNumber) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.phoneNumber),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.phoneNumber))}.label`),
+        value: step1.phoneNumber,
+      });
+    }
+
+    // birthYear
+    if (step1.birthYear) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.birthYear),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.birthYear))}.label`),
+        value: step1.birthYear.toString(),
+      });
+    }
+
+    // languageId
+    if (!languageIsLoading && language) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.languageId),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.languageId))}.label`),
+        value: getDescription(language),
+      });
+    }
+
+    // isCanadianCitizen
+    if (step1.isCanadianCitizen !== undefined) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.isCanadianCitizen),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.isCanadianCitizen))}.label`),
+        value: step1.isCanadianCitizen ? t('common:yes') : t('common:no'),
+      });
+    }
+
+    // provindId
+    if (!provinceIsLoading && province) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.provinceId),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.provinceId))}.label`),
+        value: getDescription(province),
+      });
+    }
+
+    // discoveryChannelId
+    if (!discoveryChannelIsLoading && discoveryChannel) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step1.discoveryChannelId),
+        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.discoveryChannelId))}.label`),
+        value: getDescription(discoveryChannel),
+      });
+    }
+
+    // genderId
+    if (!genderIsLoading && gender) {
+      console.log(gender);
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step2.genderId),
+        text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.genderId))}.label`),
+        value: getDescription(gender),
+      });
+    }
+
+    // educationLevelId
+    if (!educationLevelIsLoading && educationLevel) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step2.educationLevelId),
+        text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.educationLevelId))}.label`),
+        value: getDescription(educationLevel),
+      });
+    }
+
+    // demographicId
+    if (!demographicIsLoading && demographic) {
+      items.push({
+        children: (
+          <ul className="tw-list-disc tw-list-inside tw-my-4">
+            {t<string[]>(`application:field.${kebabCase(nameof<Step2State>((o) => o.demographicId))}.children-items`, {}, { returnObjects: true }).map((val) => (
+              <li key={val} className="tw-mb-2">
+                {val}
+              </li>
+            ))}
+          </ul>
+        ),
+        key: nameof<ApplicationState>((o) => o.step2.demographicId),
+        text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.demographicId))}.label`),
+        value: getDescription(demographic),
+      });
+    }
+
+    // skillsInterest
+    if (step3.skillsInterest) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step3.skillsInterest),
+        text: t(`application:field.${kebabCase(nameof<Step3State>((o) => o.skillsInterest))}.label`),
+        value: step3.skillsInterest,
+      });
+    }
+
+    // communityInterest
+    if (step3.communityInterest) {
+      items.push({
+        key: nameof<ApplicationState>((o) => o.step3.communityInterest),
+        text: t(`application:field.${kebabCase(nameof<Step3State>((o) => o.communityInterest))}.label`),
+        value: step3.communityInterest,
+      });
     }
 
     return items;
-  }, [applicationState, t, getDescription, demographics, discoveryChannels, educationLevels, genders, languages, provinces]);
+  }, [step1, step3, t, getDescription, demographic, demographicIsLoading, discoveryChannel, discoveryChannelIsLoading, educationLevel, educationLevelIsLoading, gender, genderIsLoading, language, languageIsLoading, province, provinceIsLoading]);
 
   return (
     <dl>

@@ -44,8 +44,8 @@ const getColorClasses: getColorClassesFunc = (color) => {
 
     case TailwindColor.green:
       return {
-        defaultColorClasses: 'tw-bg-green-600 hover:tw-bg-green-700 tw-text-white tw-border-green-700',
-        outlineClasses: 'hover:tw-bg-green-700 tw-text-green-700 hover:tw-text-white tw-border-green-700',
+        defaultColorClasses: 'tw-bg-green-700 hover:tw-bg-green-800 tw-text-white tw-border-green-800',
+        outlineClasses: 'tw-text-green-700 hover:tw-bg-green-800 hover:tw-text-white tw-border-green-800',
       };
     case TailwindColor.indigo:
       return {
@@ -74,8 +74,8 @@ const getColorClasses: getColorClassesFunc = (color) => {
       };
     case TailwindColor.white:
       return {
-        defaultColorClasses: 'tw-bg-white hover:tw-bg-gray-100 tw-text-gray-600 tw-border-gray-600',
-        outlineClasses: 'hover:tw-bg-gray-100 tw-text-gray-600 tw-border-gray-600',
+        defaultColorClasses: 'tw-bg-white hover:tw-bg-gray-100 tw-text-gray-800 tw-border-gray-400',
+        outlineClasses: 'hover:tw-bg-gray-100 tw-text-gray-800 tw-border-gray-400',
       };
     case TailwindColor.yellow:
       return {
@@ -93,7 +93,7 @@ const getColorClasses: getColorClassesFunc = (color) => {
 export const Button = ({ className, color, disabled, children, onClick, outline }: ButtonProps): JSX.Element => {
   const colorClasses = useMemo(() => getColorClasses(color ?? TailwindColor.green), [color]);
 
-  const commonClasses = 'tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded';
+  const commonClasses = 'tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded tw-shadow';
 
   const defaultClasses = `${commonClasses} ${colorClasses.defaultColorClasses} `;
   const outlineClasses = `${commonClasses} tw-bg-transparent ${colorClasses.outlineClasses}`;

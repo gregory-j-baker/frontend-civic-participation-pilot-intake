@@ -9,6 +9,7 @@ import { MouseEvent } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { Button, ButtonOnClickEvent } from '../Button';
 import { ContentPaper } from '../ContentPaper/ContentPaper';
+import { TailwindColor } from '../../common/types';
 
 export interface WizardOnNextClickEvent {
   (event: MouseEvent<HTMLButtonElement>): void;
@@ -50,29 +51,25 @@ export const Wizard = ({ activeStep, children, disabled, header, nextDisabled, n
 
   return (
     <div id={WIZARD_CONTAINER_ID}>
-      <ContentPaper disablePadding>
+      <ContentPaper disablePadding className="tw-bg-white">
         <header className="tw-border-b-2 tw-mx-6 tw-py-4">
-          <h3 className="tw-text-base tw-uppercase tw-tracking-wide tw-leading-tight tw-m-0">{`${stepText ? stepText : t('common:wizard.step')}${t('common:wizard.x-of-y', {
+          <h3 className="tw-uppercase tw-tracking-wide tw-leading-tight tw-m-0 tw-text-lg">{`${stepText ? stepText : t('common:wizard.step')}${t('common:wizard.x-of-y', {
             active: activeStep,
             length: numberOfSteps,
           })}`}</h3>
-          {header && <h6 className="tw-text-gray-500 tw-leading-tight tw-m-0 tw-mt-2">{header}</h6>}
+          {header && <h4 className="tw-text-gray-500 tw-leading-tight tw-m-0 tw-mt-2 tw-text-lg">{header}</h4>}
         </header>
-        <div className="tw-my-8 tw-mx-6">{children}</div>
-        <div className="tw-flex tw-justify-between tw-flex-col sm:tw-flex-row-reverse tw-border-t-2 tw-py-5 tw-px-6 tw-bg-gray-50">
-          <div className="tw-w-full sm:tw-w-4/12 md:tw-w-3/12 tw-text-right">
-            {!nextHidden && (
-              <Button onClick={handleOnNextClick} disabled={nextDisabled || disabled} className="tw-w-full tw-whitespace-nowrap">
-                {nextText ? nextText : t('common:wizard.next')}
-              </Button>
-            )}
-          </div>
+        <div className="tw-px-6 tw-py-8">{children}</div>
+        <div className="tw-flex tw-flex-col sm:tw-flex-row tw-border-t-2 tw-py-5 tw-px-6">
           {!previousHidden && (
-            <div className="tw-w-full sm:tw-w-4/12 md:tw-w-3/12 tw-mt-4 sm:tw-mt-0">
-              <Button onClick={handleOnPreviousClick} outline disabled={previousDisabled || disabled} className="tw-w-full tw-whitespace-nowrap">
-                {previousText ? previousText : t('common:wizard.previous')}
-              </Button>
-            </div>
+            <Button onClick={handleOnPreviousClick} color={TailwindColor.white} disabled={previousDisabled || disabled} className="tw-w-full sm:tw-w-4/12 md:tw-w-3/12 tw-mb-4 sm:tw-mb-0 tw-whitespace-nowrap">
+              {previousText ? previousText : t('common:wizard.previous')}
+            </Button>
+          )}
+          {!nextHidden && (
+            <Button onClick={handleOnNextClick} disabled={nextDisabled || disabled} className="tw-w-full sm:tw-w-4/12 md:tw-w-3/12 tw-whitespace-nowrap tw-ml-auto">
+              {nextText ? nextText : t('common:wizard.next')}
+            </Button>
           )}
         </div>
       </ContentPaper>
