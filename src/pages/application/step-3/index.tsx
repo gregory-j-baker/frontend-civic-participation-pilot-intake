@@ -69,6 +69,7 @@ const Step3Page = (): JSX.Element => {
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
     event.preventDefault();
+    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
     router.push('/application/step-2');
   };
 
