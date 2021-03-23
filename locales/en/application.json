@@ -3,7 +3,7 @@
   "confirmation": {
     "title": "Application confirmation",
     "header": "Thank you for submitting your application",
-    "sub-header": "We have sent you an verification email",
+    "sub-header": "We have sent you a verification email",
     "instruction": "Please click the link in that email to confirm your email address",
     "submit": "Visit the CSC website"
   },
