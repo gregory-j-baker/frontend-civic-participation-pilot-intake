@@ -60,10 +60,6 @@ const Step3Page = (): JSX.Element => {
     if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
   }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
-  useEffect(() => {
-    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
-  }, [formData]);
-
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
       const newObj = { ...prev.step3, [field]: value ?? undefined };
@@ -81,6 +77,7 @@ const Step3Page = (): JSX.Element => {
 
     try {
       await step3Schema.validate(formData.step3, { abortEarly: false });
+      window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
       router.push('/application/step-4');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;

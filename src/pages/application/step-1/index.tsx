@@ -57,10 +57,6 @@ const Step1Page = (): JSX.Element => {
     return { ...defaultState, ...(storageData ? JSON.parse(storageData) : {}) };
   });
 
-  useEffect(() => {
-    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
-  }, [formData]);
-
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
     setFormDataState((prev) => {
       let newValue: boolean | string | number | null | undefined = undefined;
@@ -96,6 +92,7 @@ const Step1Page = (): JSX.Element => {
 
     try {
       await step1Schema.validate(formData.step1, { abortEarly: false });
+      window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
       router.push('/application/step-2');
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;

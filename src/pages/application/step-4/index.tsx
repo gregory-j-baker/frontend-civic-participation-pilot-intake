@@ -80,10 +80,6 @@ const Step4Page = (): JSX.Element => {
     if (!previousStepsValidationCompleted) validatePreviousSteps(formData);
   }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
-  useEffect(() => {
-    window.sessionStorage.setItem(Constants.FormDataStorageKey, JSON.stringify(formData));
-  }, [formData]);
-
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
     setFormDataState((prev) => {
       const newObj = { ...prev.step4, [field]: checked };
