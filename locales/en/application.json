@@ -118,12 +118,5 @@
       "link": "Privacy Notice Statement"
     }
   },
-  "submit": "Submit application",
-  "email-verification": {
-    "page": {
-      "title": "Verify your email address",
-      "header": "Check your inbox for a six digit verification code",
-      "description": "Thank you for your interest in the CSC-CPP pilot, please enter the verification code sent to you to validate your email. If you can't access your email at the moment, press \"I will do this later\" and click the validation link from the email directly at a later time."
-    }
-  }
+  "submit": "Submit application"
 }
