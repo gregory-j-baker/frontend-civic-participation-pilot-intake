@@ -212,6 +212,7 @@ const Step1Page = (): JSX.Element => {
             />
 
             <TextField
+              type="email"
               field={nameof<Step1State>((o) => o.email)}
               label={t('application:field.email.label')}
               value={formData.step1.email}
@@ -223,6 +224,7 @@ const Step1Page = (): JSX.Element => {
             />
 
             <TextField
+              type="tel"
               field={nameof<Step1State>((o) => o.phoneNumber)}
               label={t('application:field.phone-number.label')}
               helperText={t('application:field.phone-number.helper-text')}
