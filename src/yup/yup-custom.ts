@@ -55,7 +55,7 @@ const phoneUtil = gPhoneNumber.PhoneNumberUtil.getInstance();
 
 const isValidCountryCode = (countryCode?: string): boolean => typeof countryCode === 'string' && countryCode.length === 2;
 
-Yup.addMethod(Yup.string, 'phone', function (countryCode?: string, strict = false, message = stringLocale.phone) {
+Yup.addMethod(Yup.string, 'phone', function (countryCode?: string, strict = true, message = stringLocale.phone) {
   return this.test({
     message: message || stringLocale.phone,
     name: 'phone',
