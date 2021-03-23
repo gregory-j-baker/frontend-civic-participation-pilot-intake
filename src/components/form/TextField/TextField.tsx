@@ -27,10 +27,11 @@ export interface TextFieldProps {
   onChange: TextFieldOnChangeEvent;
   placeholder?: string;
   required?: boolean;
+  type?: 'email' | 'search' | 'tel' | 'text';
   value?: string | null;
 }
 
-export const TextField = ({ children, className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, value }: TextFieldProps): JSX.Element => {
+export const TextField = ({ children, className, disabled, error, field, gutterBottom, helperText, label, labelClassName, maxLength, onChange, placeholder, required, type, value }: TextFieldProps): JSX.Element => {
   const { t } = useTranslation();
 
   const fieldId = `form-field-${field}`;
@@ -50,7 +51,7 @@ export const TextField = ({ children, className, disabled, error, field, gutterB
       {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
-      <FormControl type="text" id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />
+      <FormControl type={type ?? 'text'} id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />
     </FormGroup>
   );
 };
