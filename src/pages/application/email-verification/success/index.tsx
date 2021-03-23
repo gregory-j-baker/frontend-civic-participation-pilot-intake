@@ -9,9 +9,9 @@ import type { GetStaticProps, NextPage } from 'next';
 import Image from 'next/image';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
-import { MainLayout } from '../../../components/layouts/main/MainLayout';
-import { applicationConfig } from '../../../config';
-import { ButtonLink } from '../../../components/ButtonLink';
+import { MainLayout } from '../../../../components/layouts/main/MainLayout';
+import { applicationConfig } from '../../../../config';
+import { ButtonLink } from '../../../../components/ButtonLink';
 
 const EmailVerficationSuccessPage: NextPage = () => {
   const { t, lang } = useTranslation();

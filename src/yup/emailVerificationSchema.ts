@@ -9,5 +9,5 @@ import * as Yup from 'yup';
 import './yup-custom';
 
 export const emailVerificationSchema = Yup.object().shape({
-  accessCode: Yup.string().length(6),
+  accessCode: Yup.string().nullable(false).defined().length(6),
 });

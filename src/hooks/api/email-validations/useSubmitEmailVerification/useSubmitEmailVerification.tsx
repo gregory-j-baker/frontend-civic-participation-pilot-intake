@@ -21,15 +21,17 @@ export interface EmailVerificationResponse {
 
 export const uri = `${apiConfig.baseUri}/email-validations/access-codes`;
 
-export const useSubmitEmailVerification = (): UseMutationResult<EmailVerificationResponse, HttpClientResponseError, EmailVerificationData> => {
+export const useSubmitEmailVerification = (options?: UseMutationOptions<EmailVerificationResponse, HttpClientResponseError, EmailVerificationData>): UseMutationResult<EmailVerificationResponse, HttpClientResponseError, EmailVerificationData> => {
   return useMutation(
-    fetchWrapper<EmailVerificationResponse>(uri, {
-      body: JSON.stringify(emailVerificationData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    });
+    (emailVerificationData) =>
+      fetchWrapper<EmailVerificationResponse>(uri, {
+        body: JSON.stringify(emailVerificationData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      }),
+    options
   );
 };
 

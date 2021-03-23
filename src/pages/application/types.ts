@@ -7,6 +7,7 @@
 
 export enum Constants {
   FormDataStorageKey = 'CPP_APPLICATION_FORM_STATE',
+  EmailVerificationStorageKey = 'CPP_EMAIL_VERIFICATION_STORAGE_KEY',
 }
 
 export interface GetDescriptionFunc {

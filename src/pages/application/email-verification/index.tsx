@@ -8,51 +8,71 @@
 import { useState } from 'react';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
-import { TextField, TextFieldOnChangeEvent } from '../../components/form/TextField';
+import { TextField, TextFieldOnChangeEvent } from '../../../components/form/TextField';
 import useTranslation from 'next-translate/useTranslation';
 import kebabCase from 'lodash/kebabCase';
 import camelCase from 'lodash/camelCase';
-import Error from '../_error';
+import Error from '../../_error';
 import Image from 'next/image';
-import { Alert, AlertType } from '../../components/Alert';
-import { Button, ButtonOnClickEvent } from '../../components/Button';
-import { MainLayout } from '../../components/layouts/main/MainLayout';
-import { emailVerificationSchema } from '../../yup/emailVerificationSchema';
+import { Alert, AlertType } from '../../../components/Alert';
+import { Button, ButtonOnClickEvent } from '../../../components/Button';
+import { MainLayout } from '../../../components/layouts/main/MainLayout';
+import { emailVerificationSchema } from '../../../yup/emailVerificationSchema';
 import { ValidationError } from 'yup';
-import { HttpClientResponseError } from '../../common/HttpClientResponseError';
-import { YupCustomMessage } from '../../yup/yup-custom';
+import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
+import { YupCustomMessage } from '../../../yup/yup-custom';
 import type { GetStaticProps, NextPage } from 'next';
-import { EmailVerificationData, useSubmitEmailVerification } from '../../hooks/api/email-validations/useSubmitEmailVerification';
+import { EmailVerificationData, useSubmitEmailVerification } from '../../../hooks/api/email-validations/useSubmitEmailVerification';
+import { Constants } from '../types';
+import Custom404 from '../../404';
 
 interface FormDataState {
-  accessCode: string;
+  accessCode?: string;
   attempts: number;
+  email?: string;
 }
 
 const EmailVerficationPage: NextPage = () => {
-  const { t } = useTranslation();
+  const maxAttempts = 5;
+
+  const { t } = useTranslation('email-verification');
 
   const router = useRouter();
 
-  const { mutate: submitEmailVerification, error: submitEmailVerificationError, isLoading: submitEmailVerificationIsLoading, isSuccess: submitEmailVerificationIsSuccess } = useSubmitEmailVerification({
+  const { mutate: submitEmailVerification, error: submitEmailVerificationError, reset: resetSubmitEmailVerificationError, isLoading: submitEmailVerificationIsLoading, isSuccess: submitEmailVerificationIsSuccess } = useSubmitEmailVerification({
     onSuccess: () => {
-      //router.push('/email-verification/success');
-      alert('success');
+      sessionStorage.removeItem(Constants.EmailVerificationStorageKey);
+      router.push('/application/email-verification/success');
+    },
+    onError: (HttpClientResponseError) => {
+      if (HttpClientResponseError.responseJson.verificationCount >= maxAttempts) {
+        sessionStorage.removeItem(Constants.EmailVerificationStorageKey);
+        router.push('/application/email-verification/failed');
+      }
+      setFormDataState((prev) => ({ ...prev, attempts: maxAttempts - HttpClientResponseError.responseJson.verificationCount }));
     },
   });
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
-  const [formData, setFormDataState] = useState<FormDataState>({ accessCode: '', attempts: 5 });
+  const [formData, setFormDataState] = useState<FormDataState>(() => {
+    const defaultState: FormDataState = { accessCode: undefined, attempts: maxAttempts, email: undefined };
 
-  const handleOnTextFieldChange: TextFieldOnChangeEvent = ({ field, value }) => {
+    if (typeof window === 'undefined') return defaultState;
+
+    return { ...defaultState, email: window.sessionStorage.getItem(Constants.EmailVerificationStorageKey) as string };
+  });
+
+  const handleOnTextFieldChange: TextFieldOnChangeEvent = ({ value }) => {
     setFormDataState((prev) => {
-      return { ...prev, [field as keyof FormDataState]: value ?? undefined };
+      return { ...prev, accessCode: value ?? undefined };
     });
   };
 
   const handleOnCancel: ButtonOnClickEvent = (event) => {
     event.preventDefault();
+
+    sessionStorage.removeItem(Constants.EmailVerificationStorageKey);
 
     router.push('/application/confirmation');
   };
@@ -60,14 +80,15 @@ const EmailVerficationPage: NextPage = () => {
   const handleOnSubmit: ButtonOnClickEvent = async (event) => {
     event.preventDefault();
 
+    resetSubmitEmailVerificationError();
+    setSchemaErrors(null);
+
     try {
       await emailVerificationSchema.validate(formData, { abortEarly: false });
 
-      setFormDataState((prev) => ({ ...prev, attempts: ++prev.attempts }));
-
       // submit email verification form
       const emailVerificationData: EmailVerificationData = {
-        email: router.query['email'] as string,
+        email: formData.email as string,
         accessCode: formData?.accessCode as string,
       };
 
@@ -98,7 +119,10 @@ const EmailVerficationPage: NextPage = () => {
     );
   };
 
-  if (submitEmailVerificationError) return <Error err={submitEmailVerificationError as HttpClientResponseError} />;
+  if (submitEmailVerificationError instanceof HttpClientResponseError && (submitEmailVerificationError as HttpClientResponseError).responseStatus !== 400 && (submitEmailVerificationError as HttpClientResponseError).responseStatus !== 429)
+    return <Error err={submitEmailVerificationError as HttpClientResponseError} />;
+
+  if (!formData.email) return <Custom404 />;
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -124,6 +148,16 @@ const EmailVerficationPage: NextPage = () => {
                     </li>
                   ) : undefined;
                 })}
+              </ul>
+            </Alert>
+          )}
+
+          {submitEmailVerificationError && (
+            <Alert title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
+              <ul className="tw-list-disc">
+                <li key="{path}" className="tw-my-2">
+                  <a href={`#form-field-${camelCase('accessCode')}`}>{t('email-verification:form.access-code.invalid')}</a>
+                </li>
               </ul>
             </Alert>
           )}
