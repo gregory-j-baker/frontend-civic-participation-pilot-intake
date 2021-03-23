@@ -81,10 +81,7 @@ const Step4Page = (): JSX.Element => {
   }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step4, [field]: checked };
-      return { ...prev, step4: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step4: { ...prev.step4, [field]: checked } }));
   };
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {

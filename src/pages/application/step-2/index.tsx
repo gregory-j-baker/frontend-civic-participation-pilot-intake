@@ -71,10 +71,7 @@ const Step2Page = (): JSX.Element => {
   }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
   const handleOnOptionsFieldChange: SelectFieldOnChangeEvent & RadiosFieldOnChangeEvent = ({ field, value }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step2, [field]: value ?? undefined };
-      return { ...prev, step2: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step2: { ...prev.step2, [field]: value ?? undefined } }));
   };
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {

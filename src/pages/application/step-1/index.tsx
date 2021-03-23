@@ -63,22 +63,18 @@ const Step1Page = (): JSX.Element => {
       let newValue: boolean | string | number | null | undefined = undefined;
 
       if (value) {
-        if (value.toLowerCase() === 'true') newValue = true;
-        else if (value.toLowerCase() === 'false') newValue = false;
+        if (value === true.toString()) newValue = true;
+        else if (value === false.toString()) newValue = false;
         else if (!isNaN(Number(value))) newValue = Number(value);
         else newValue = value;
       }
 
-      const newObj = { ...prev.step1, [field]: newValue };
-      return { ...prev, step1: newObj };
+      return { ...prev, step1: { ...prev.step1, [field]: newValue } };
     });
   };
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step1, [field]: value ?? undefined };
-      return { ...prev, step1: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step1: { ...prev.step1, [field]: value ?? undefined } }));
   };
 
   const handleOnPhonNumberFieldChange: TextFieldOnChangeEvent = ({ value }) => {
@@ -86,10 +82,7 @@ const Step1Page = (): JSX.Element => {
   };
 
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step1, [field]: checked };
-      return { ...prev, step1: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step1: { ...prev.step1, [field]: checked } }));
   };
 
   const handleWizardOnNextClick: WizardOnNextClickEvent = async (event) => {

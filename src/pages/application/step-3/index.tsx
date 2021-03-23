@@ -61,10 +61,7 @@ const Step3Page = (): JSX.Element => {
   }, [validatePreviousSteps, previousStepsValidationCompleted, formData]);
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
-    setFormDataState((prev) => {
-      const newObj = { ...prev.step3, [field]: value ?? undefined };
-      return { ...prev, step3: newObj };
-    });
+    setFormDataState((prev) => ({ ...prev, step3: { ...prev.step3, [field]: value ?? undefined } }));
   };
 
   const handleWizardOnPreviousClick: WizardOnPreviousClickEvent = (event) => {
@@ -154,6 +151,7 @@ const Step3Page = (): JSX.Element => {
               gutterBottom
               className="tw-w-full"
               wordLimit={250}
+              maxLength={2048}
             />
 
             <TextAreaField
@@ -167,6 +165,7 @@ const Step3Page = (): JSX.Element => {
               gutterBottom
               className="tw-w-full"
               wordLimit={250}
+              maxLength={2048}
             />
           </Wizard>
         </>

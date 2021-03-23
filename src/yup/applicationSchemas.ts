@@ -47,8 +47,8 @@ export const step2Schema = Yup.object().shape({
 });
 
 export const step3Schema = Yup.object().shape({
-  skillsInterest: Yup.string().minWord(SkillsInterestWordLength.min).maxWord(SkillsInterestWordLength.max).required(),
-  communityInterest: Yup.string().minWord(CommunityInterestWordLength.min).maxWord(CommunityInterestWordLength.max).required(),
+  skillsInterest: Yup.string().minWord(SkillsInterestWordLength.min).maxWord(SkillsInterestWordLength.max).max(2048).required(),
+  communityInterest: Yup.string().minWord(CommunityInterestWordLength.min).maxWord(CommunityInterestWordLength.max).max(2048).required(),
 });
 
 export const step4Schema = Yup.object().shape({
