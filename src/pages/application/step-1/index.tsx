@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useMemo, useState, useEffect, useCallback } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import { useRouter } from 'next/router';
@@ -36,6 +36,7 @@ import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import { GetStaticProps } from 'next';
+import { tryFormatPhoneNumber } from '../../../utils/phone-utils';
 
 const Step1Page = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -78,6 +79,10 @@ const Step1Page = (): JSX.Element => {
       const newObj = { ...prev.step1, [field]: value ?? undefined };
       return { ...prev, step1: newObj };
     });
+  };
+
+  const handleOnPhonNumberFieldChange: TextFieldOnChangeEvent = ({ value }) => {
+    setFormDataState((prev) => ({ ...prev, step1: { ...prev.step1, phoneNumber: tryFormatPhoneNumber(value ?? undefined) } }));
   };
 
   const handleOnCheckboxFieldChange: CheckboxeFieldOnChangeEvent = ({ field, checked }) => {
@@ -226,7 +231,7 @@ const Step1Page = (): JSX.Element => {
               label={t('application:field.phone-number.label')}
               helperText={t('application:field.phone-number.helper-text')}
               value={formData.step1.phoneNumber}
-              onChange={handleOnTextFieldChange}
+              onChange={handleOnPhonNumberFieldChange}
               error={getSchemaError(nameof<Step1State>((o) => o.phoneNumber))}
               gutterBottom
               className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
