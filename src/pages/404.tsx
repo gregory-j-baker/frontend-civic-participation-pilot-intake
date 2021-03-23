@@ -22,7 +22,9 @@ const Custom404 = (): JSX.Element => {
             <span className="glyphicon glyphicon-warning-sign glyphicon-error tw-flex-shrink-0"></span>
           </div>
           <div className="tw-flex-grow">
-            <h1 className="tw-mt-0">{t('common:custom-404.header')}</h1>
+            <h1 id="wb-cont" className="tw-mt-0">
+              {t('common:custom-404.header')}
+            </h1>
             <p className="tw-m-0">
               <b>{t('common:custom-404.error-code')}</b>
             </p>
