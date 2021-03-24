@@ -10,37 +10,20 @@ import useTranslation from 'next-translate/useTranslation';
 import { useCurrentBreakpoint } from '../../../../hooks/useCurrentBreakpoint';
 import { theme } from '../../../../config';
 import { getNextElementSibling, getPreviousElementSibling } from '../../../../utils/misc-utils';
-
-export interface MenuData {
-  id: string;
-  text: string;
-  href: string;
-  items: [
-    {
-      href: string;
-      text: string;
-    }
-  ];
-  mostRequestedItems: [
-    {
-      href: string;
-      text: string;
-    }
-  ];
-}
+import { useMainMenu } from '../../../../hooks/useMainMenu';
 
 export const Menu = (): JSX.Element => {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const currentBreakpoint = useCurrentBreakpoint();
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const menuData = useMemo(() => t<[MenuData]>('menu:data', {}, { returnObjects: true }), [t]);
+  const { data: menuItems, isLoading: isMenuItemsLoading } = useMainMenu({ lang });
 
   const [hoveredMenuId, setHoveredMenuId] = useState<string | undefined>();
-  const [selectedMenuId, setSelectedMenuId] = useState<string>(menuData[0].id);
+  const [selectedMenuId, setSelectedMenuId] = useState<string | undefined>(menuItems?.[0].id);
   const [mostRequestedExpanded, setMostRequestedExpanded] = useState<boolean>(false);
-  const selectedMenuData = useMemo(() => menuData.find(({ id }) => id === selectedMenuId), [menuData, selectedMenuId]);
+  const selectedMenuData = useMemo(() => menuItems?.find(({ id }) => id === selectedMenuId), [menuItems, selectedMenuId]);
 
   const handleMenuOnChange = (e: React.MouseEvent<HTMLAnchorElement>, menuId: string): void => {
     e.preventDefault();
@@ -66,6 +49,12 @@ export const Menu = (): JSX.Element => {
       setSelectedMenuId(hoveredMenuId);
     }
   }, [hoveredMenuId]);
+
+  useEffect(() => {
+    if (!isMenuItemsLoading && menuItems && !selectedMenuId) {
+      setSelectedMenuId(menuItems[0].id);
+    }
+  }, [isMenuItemsLoading, selectedMenuId, menuItems]);
 
   useEffect(() => {
     const timer = hoveredMenuId !== undefined ? setTimeout(onHoveredTimeoutCallback, 300) : undefined;
@@ -188,7 +177,7 @@ export const Menu = (): JSX.Element => {
           <span className="expicon glyphicon glyphicon-chevron-down"></span>
         </button>
         <ul role="menu" aria-orientation="vertical" className="menubar">
-          {menuData.map(({ id, text }) => (
+          {menuItems?.map(({ id, text }) => (
             <li key={id} role="presentation">
               <a
                 role="menuitem"
@@ -214,7 +203,7 @@ export const Menu = (): JSX.Element => {
                     </a>
                   </li>
                   <li role="separator"></li>
-                  {selectedMenuData.items.map(({ href, text }) => (
+                  {selectedMenuData.items?.map(({ href, text }) => (
                     <li key={text} role="presentation">
                       <a role="menuitem" tabIndex={-1} href={href} onKeyDown={handleMenueItemOnKeydown}>
                         {text}
@@ -236,7 +225,7 @@ export const Menu = (): JSX.Element => {
                       {t('menu:most-requested')}
                     </a>
                     <ul id={`gc-mnu-${id}-sub`} role="menu" aria-orientation="vertical">
-                      {selectedMenuData.mostRequestedItems.map(({ href, text }) => (
+                      {selectedMenuData.mostRequestedItems?.map(({ href, text }) => (
                         <li key={text} role="presentation">
                           <a role="menuitem" tabIndex={-1} href={href} onKeyDown={handleMenueItemOnKeydown}>
                             {text}

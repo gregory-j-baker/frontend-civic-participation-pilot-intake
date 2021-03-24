@@ -1,0 +1,77 @@
+[
+  {
+    "id": "jobs",
+    "text": "Jobs and the workplace",
+    "href": "https://www.canada.ca/en/services/jobs.html"
+  },
+  {
+    "id": "cit",
+    "text": "Immigration and citizenship",
+    "href": "https://www.canada.ca/en/services/immigration-citizenship.html"
+  },
+  {
+    "id": "travel",
+    "text": "Travel and tourism",
+    "href": "https://travel.gc.ca/"
+  },
+  {
+    "id": "biz",
+    "text": "Business and industry",
+    "href": "https://www.canada.ca/en/services/business.html"
+  },
+  {
+    "id": "benny",
+    "text": "Benefits",
+    "href": "https://www.canada.ca/en/services/benefits.html"
+  },
+  {
+    "id": "health",
+    "text": "Health",
+    "href": "https://www.canada.ca/en/services/health.html"
+  },
+  {
+    "id": "taxes",
+    "text": "Taxes",
+    "href": "https://www.canada.ca/en/services/taxes.html"
+  },
+  {
+    "id": "enviro",
+    "text": "Environment and natural resources",
+    "href": "https://www.canada.ca/en/services/environment.html"
+  },
+  {
+    "id": "defence",
+    "text": "National security and defence",
+    "href": "https://www.canada.ca/en/services/defence.html"
+  },
+  {
+    "id": "culture",
+    "text": "Culture, history and sport",
+    "href": "https://www.canada.ca/en/services/culture.html"
+  },
+  {
+    "id": "policing",
+    "text": "Policing, justice and emergencies",
+    "href": "https://www.canada.ca/en/services/policing.html"
+  },
+  {
+    "id": "trans",
+    "text": "Transport and infrastructure",
+    "href": "https://www.canada.ca/en/services/transport.html"
+  },
+  {
+    "id": "canworld",
+    "text": "Canada and the world",
+    "href": "http://international.gc.ca/world-monde/index.aspx?lang=eng"
+  },
+  {
+    "id": "money",
+    "text": "Money and finances",
+    "href": "https://www.canada.ca/en/services/finance.html"
+  },
+  {
+    "id": "science",
+    "text": "Science and innovation",
+    "href": "https://www.canada.ca/en/services/science.html"
+  }
+]

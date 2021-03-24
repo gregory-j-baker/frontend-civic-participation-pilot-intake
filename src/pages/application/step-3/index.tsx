@@ -93,8 +93,6 @@ const Step3Page = (): JSX.Element => {
 
     const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
 
-    console.log(schemaErrors[index].params);
-
     return (
       t('common:error-number', { number: index + 1 }) +
       t(

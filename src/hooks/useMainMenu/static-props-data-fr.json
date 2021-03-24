@@ -1,0 +1,77 @@
+[
+  {
+    "id": "jobs",
+    "text": "Emplois et milieu de travail",
+    "href": "https://www.canada.ca/fr/services/emplois.html"
+  },
+  {
+    "id": "cit",
+    "text": "Immigration et citoyenneté",
+    "href": "https://www.canada.ca/fr/services/immigration-citoyennete.html"
+  },
+  {
+    "id": "travel",
+    "text": "Voyage et tourisme",
+    "href": "https://voyage.gc.ca/"
+  },
+  {
+    "id": "biz",
+    "text": "Entreprises et industrie",
+    "href": "https://www.canada.ca/fr/services/entreprises.html"
+  },
+  {
+    "id": "benny",
+    "text": "Prestations",
+    "href": "https://www.canada.ca/fr/services/prestations.html"
+  },
+  {
+    "id": "health",
+    "text": "Santé",
+    "href": "https://www.canada.ca/fr/services/sante.html"
+  },
+  {
+    "id": "taxes",
+    "text": "Impôts",
+    "href": "https://www.canada.ca/fr/services/impots.html"
+  },
+  {
+    "id": "enviro",
+    "text": "Environnement et ressources naturelles",
+    "href": "https://www.canada.ca/fr/services/environnement.html"
+  },
+  {
+    "id": "defence",
+    "text": "Sécurité nationale et défense",
+    "href": "https://www.canada.ca/fr/services/defense.html"
+  },
+  {
+    "id": "culture",
+    "text": "Culture, histoire et sport",
+    "href": "https://www.canada.ca/fr/services/culture.html"
+  },
+  {
+    "id": "policing",
+    "text": "Services de police, justice et urgences",
+    "href": "https://www.canada.ca/fr/services/police.html"
+  },
+  {
+    "id": "trans",
+    "text": "Transport et infrastructure",
+    "href": "https://www.canada.ca/fr/services/transport.html"
+  },
+  {
+    "id": "canworld",
+    "text": "Canada et le monde",
+    "href": "http://international.gc.ca/world-monde/index.aspx?lang=fra"
+  },
+  {
+    "id": "money",
+    "text": "Argent et finances",
+    "href": "https://www.canada.ca/fr/services/finance.html"
+  },
+  {
+    "id": "science",
+    "text": "Science et innovation",
+    "href": "https://www.canada.ca/fr/services/science.html"
+  }
+]

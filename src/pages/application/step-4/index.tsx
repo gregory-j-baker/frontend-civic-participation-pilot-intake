@@ -250,8 +250,6 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
-  console.log({ gender, genderIsLoading, step2: step2.genderId });
-
   const formReviewItems: FormReviewItem[] = useMemo(() => {
     const items: FormReviewItem[] = [];
 
@@ -338,7 +336,6 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
 
     // genderId
     if (!genderIsLoading && gender) {
-      console.log(gender);
       items.push({
         key: nameof<ApplicationState>((o) => o.step2.genderId),
         text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.genderId))}.label`),
