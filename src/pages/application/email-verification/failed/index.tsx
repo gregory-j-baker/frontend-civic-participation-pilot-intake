@@ -16,6 +16,7 @@ import { ButtonLink } from '../../../../components/ButtonLink';
 
 const EmailVerficationFailedPage: NextPage = () => {
   const { t, lang } = useTranslation();
+  const { supportEmail } = applicationConfig;
 
   return (
     <MainLayout showBreadcrumb={false}>
@@ -30,8 +31,8 @@ const EmailVerficationFailedPage: NextPage = () => {
             <Trans
               i18nKey="email-verification:failed.page.description"
               components={[
-                <a key="support_email" href={`mailto:${process.env.NEXT_PUBLIC_SUPPORT_EMAIL}`}>
-                  {process.env.NEXT_PUBLIC_SUPPORT_EMAIL}
+                <a key="support_email" href={`mailto:${supportEmail}`}>
+                  {supportEmail}
                 </a>,
               ]}
             />

@@ -7,15 +7,16 @@
 
 import React, { useEffect } from 'react';
 import { ApplicationInsights as AppInsightsWeb } from '@microsoft/applicationinsights-web';
+import { applicationConfig } from '../../config';
 
 export const AppInsightsPageViewTracking = (): JSX.Element => {
-  const instrumentationKey = process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY;
+  const { appInsights_InstrumentationKey } = applicationConfig;
 
   useEffect(() => {
-    if (instrumentationKey) {
+    if (appInsights_InstrumentationKey) {
       const appInsightsWeb = new AppInsightsWeb({
         config: {
-          instrumentationKey,
+          instrumentationKey: appInsights_InstrumentationKey,
           /* ...Other Configuration Options... */
         },
       });
@@ -23,7 +24,7 @@ export const AppInsightsPageViewTracking = (): JSX.Element => {
       appInsightsWeb.loadAppInsights();
       appInsightsWeb.trackPageView();
     }
-  }, [instrumentationKey]);
+  }, [appInsights_InstrumentationKey]);
 
   return <></>;
 };

@@ -12,9 +12,7 @@ import { getApplicationVersion, getDateModified, getGitCommit } from './utils/mi
  * Application specific configuration.
  */
 export const applicationConfig = {
-  dateModified: getDateModified(),
-  gitCommit: getGitCommit(),
-  version: getApplicationVersion(),
+  appInsights_InstrumentationKey: process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY,
   canadaMenuUrl: {
     en: process.env.NEXT_PUBLIC_CANADA_MENU_URL_EN ?? 'https://www.canada.ca/content/dam/canada/sitemenu/sitemenu-v2-en.html',
     fr: process.env.NEXT_PUBLIC_CANADA_MENU_URL_FR ?? 'https://www.canada.ca/content/dam/canada/sitemenu/sitemenu-v2-fr.html',
@@ -23,6 +21,10 @@ export const applicationConfig = {
     en: process.env.NEXT_PUBLIC_CSC_URL_EN ?? 'https://www.canada.ca/en/services/youth/canada-service-corps.html',
     fr: process.env.NEXT_PUBLIC_CSC_URL_FR ?? 'https://www.canada.ca/fr/services/jeunesse/service-jeunesse-canada.html',
   },
+  dateModified: getDateModified(),
+  gitCommit: getGitCommit(),
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? 'support@example.com',
+  version: getApplicationVersion(),
 };
 
 /**

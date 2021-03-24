@@ -12,6 +12,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { ErrorPageLinks } from '../components/ErrorPageLinks';
 import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
+import { applicationConfig } from '../config';
 
 export interface ErrorMainContentProps {
   lang: string;
@@ -57,17 +58,17 @@ export interface ErrorProps {
 }
 
 const Error: NextPage<ErrorProps> = ({ statusCode, err, source }) => {
-  const instrumentationKey = process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY;
+  const { appInsights_InstrumentationKey } = applicationConfig;
   const { locale } = useRouter();
   const { t } = useTranslation();
 
   const lang = locale ?? 'en';
 
   useEffect(() => {
-    if (instrumentationKey) {
+    if (appInsights_InstrumentationKey) {
       const appInsightsWeb = new AppInsightsWeb({
         config: {
-          instrumentationKey,
+          instrumentationKey: appInsights_InstrumentationKey,
           /* ...Other Configuration Options... */
         },
       });
@@ -75,7 +76,7 @@ const Error: NextPage<ErrorProps> = ({ statusCode, err, source }) => {
       appInsightsWeb.loadAppInsights();
       appInsightsWeb.trackException({ exception: err === null ? undefined : err, properties: { statusCode, source } });
     }
-  }, [instrumentationKey, statusCode, err, source]);
+  }, [appInsights_InstrumentationKey, statusCode, err, source]);
 
   return (
     <div className="tw-flex tw-flex-col tw-h-screen">
