@@ -6,8 +6,8 @@
  */
 
 import { useMutation, UseMutationOptions, UseMutationResult } from 'react-query';
-import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { apiConfig } from '../../../config';
+import { HttpClientResponseError } from '../../../../common/HttpClientResponseError';
+import { apiConfig } from '../../../../config';
 
 export interface ContactUsData {
   email: string;

@@ -39,6 +39,7 @@ const stringLocale: CustomStringLocale = {
   minWord: ({ path, min }) => ({ key: 'min-word', path, min } as YupCustomMessage),
   maxWord: ({ path, max }) => ({ key: 'max-word', path, max } as YupCustomMessage),
   phone: ({ path }) => ({ key: 'phone-invalid', path } as YupCustomMessage),
+  length: ({ path }) => ({ key: 'length-invalid', path } as YupCustomMessage),
 };
 
 const booleanLocale: BooleanLocale = {

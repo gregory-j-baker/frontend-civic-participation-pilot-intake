@@ -10,8 +10,8 @@
     "/application/step-4": ["application"],
     "/contact-us": ["contact-us"],
     "/contact-us/success": ["contact-us"],
-    "/email-verification": ["email-verification"],
-    "/email-verification/failed": ["email-verification"],
-    "/email-verification/success": ["email-verification"]
+    "/application/email-verification": ["email-verification"],
+    "/application/email-verification/failed": ["email-verification"],
+    "/application/email-verification/success": ["email-verification"]
   }
 }
