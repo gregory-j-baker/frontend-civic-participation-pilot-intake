@@ -24,6 +24,7 @@ import { HttpClientResponseError } from '../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { ContactUsData, useSubmitContactUs } from '../../hooks/api/contact-form/useSubmitContactUs';
+import { tryFormatPhoneNumber } from '../../utils/phone-utils';
 
 interface FormDataState {
   email?: string;
@@ -32,7 +33,7 @@ interface FormDataState {
   phoneNumber?: string;
 }
 
-const ContactUs: NextPage = () => {
+const ContactUsPage: NextPage = () => {
   const { t } = useTranslation();
 
   const router = useRouter();
@@ -51,6 +52,10 @@ const ContactUs: NextPage = () => {
     setFormDataState((prev) => {
       return { ...prev, [field as keyof FormDataState]: value ?? undefined };
     });
+  };
+
+  const handleOnPhonNumberFieldChange: TextFieldOnChangeEvent = ({ value }) => {
+    setFormDataState((prev) => ({ ...prev, phoneNumber: tryFormatPhoneNumber(value ?? undefined) }));
   };
 
   const handleOnSubmit: ButtonOnClickEvent = async (event) => {
@@ -100,83 +105,80 @@ const ContactUs: NextPage = () => {
   return (
     <MainLayout showBreadcrumb={false}>
       <NextSeo title={t('contact-us:page.title')} />
-      <div className="tw-flex tw-space-x-10">
-        <div className="tw-w-full md:tw-w-1/2">
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-16 tw-text-3xl">
-            {t('contact-us:page.header')}
-          </h1>
-          <h2 className="tw-m-0 tw-border-none tw-mb-8 tw-text-2xl">{t('contact-us:page.sub-header')}</h2>
-          {schemaErrors && schemaErrors.length > 0 && (
-            <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
-              <ul className="tw-list-disc">
-                {schemaErrors.map(({ path }) => {
-                  const [field] = path?.split('.') ?? [];
 
-                  return path ? (
-                    <li key={path} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
-                    </li>
-                  ) : undefined;
-                })}
-              </ul>
-            </Alert>
-          )}
+      <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+        {t('contact-us:page.header')}
+      </h1>
+      <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('contact-us:page.sub-header')}</h2>
 
-          <div className="tw-my-16">
-            <TextField
-              field={nameof<FormDataState>((o) => o.name)}
-              label={t('contact-us:form.name.label')}
-              value={formData?.name}
-              onChange={handleOnTextFieldChange}
-              disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
-              error={getSchemaError(nameof<FormDataState>((o) => o.name))}
-              required
-              gutterBottom
-              className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-            />
+      {schemaErrors && schemaErrors.length > 0 && (
+        <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+          <ul className="tw-list-disc">
+            {schemaErrors.map(({ path }) => {
+              const [field] = path?.split('.') ?? [];
 
-            <TextField
-              field={nameof<FormDataState>((o) => o.email)}
-              label={t('contact-us:form.email.label')}
-              value={formData?.email}
-              onChange={handleOnTextFieldChange}
-              disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
-              error={getSchemaError(nameof<FormDataState>((o) => o.email))}
-              required
-              gutterBottom
-              className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-            />
+              return path ? (
+                <li key={path} className="tw-my-2">
+                  <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                </li>
+              ) : undefined;
+            })}
+          </ul>
+        </Alert>
+      )}
 
-            <TextField
-              field={nameof<FormDataState>((o) => o.phoneNumber)}
-              label={t('contact-us:form.phone-number.label')}
-              helperText={t('contact-us:form.phone-number.helper-text')}
-              value={formData?.phoneNumber}
-              onChange={handleOnTextFieldChange}
-              disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
-              error={getSchemaError(nameof<FormDataState>((o) => o.phoneNumber))}
-              gutterBottom
-              className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-            />
+      <TextField
+        field={nameof<FormDataState>((o) => o.name)}
+        label={t('contact-us:form.name.label')}
+        value={formData?.name}
+        onChange={handleOnTextFieldChange}
+        disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
+        error={getSchemaError(nameof<FormDataState>((o) => o.name))}
+        required
+        gutterBottom
+        className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+      />
 
-            <TextAreaField
-              field={nameof<FormDataState>((o) => o.message)}
-              label={t('contact-us:form.message.label')}
-              value={formData?.message}
-              onChange={handleOnTextFieldChange}
-              disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
-              error={getSchemaError(nameof<FormDataState>((o) => o.message))}
-              required
-              className="tw-w-full"
-              wordLimit={250}
-            />
-          </div>
+      <TextField
+        field={nameof<FormDataState>((o) => o.email)}
+        label={t('contact-us:form.email.label')}
+        value={formData?.email}
+        onChange={handleOnTextFieldChange}
+        disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
+        error={getSchemaError(nameof<FormDataState>((o) => o.email))}
+        required
+        gutterBottom
+        className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+      />
 
-          <Button onClick={handleOnSubmit} disabled={submitContactUsIsLoading || submitContactUsIsSuccess}>
-            {t('contact-us:form.submit')}
-          </Button>
-        </div>
-      </div>
+      <TextField
+        field={nameof<FormDataState>((o) => o.phoneNumber)}
+        label={t('contact-us:form.phone-number.label')}
+        helperText={t('contact-us:form.phone-number.helper-text')}
+        value={formData?.phoneNumber}
+        onChange={handleOnPhonNumberFieldChange}
+        disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
+        error={getSchemaError(nameof<FormDataState>((o) => o.phoneNumber))}
+        gutterBottom
+        className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+      />
+
+      <TextAreaField
+        field={nameof<FormDataState>((o) => o.message)}
+        label={t('contact-us:form.message.label')}
+        value={formData?.message}
+        onChange={handleOnTextFieldChange}
+        disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
+        error={getSchemaError(nameof<FormDataState>((o) => o.message))}
+        required
+        gutterBottom
+        className="tw-w-full"
+        wordLimit={250}
+      />
+
+      <Button onClick={handleOnSubmit} disabled={submitContactUsIsLoading || submitContactUsIsSuccess}>
+        {t('contact-us:form.submit')}
+      </Button>
     </MainLayout>
   );
 };
@@ -187,4 +189,4 @@ export const getStaticProps: GetStaticProps = async () => {
   };
 };
 
-export default ContactUs;
+export default ContactUsPage;
