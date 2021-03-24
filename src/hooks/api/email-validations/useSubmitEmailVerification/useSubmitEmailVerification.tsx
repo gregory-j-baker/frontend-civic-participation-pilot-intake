@@ -34,33 +34,3 @@ export const useSubmitEmailVerification = (options?: UseMutationOptions<EmailVer
     options
   );
 };
-
-// export const useSubmitEmailVerification = (options?: UseMutationOptions<void, HttpClientResponseError, EmailVerificationData>): UseMutationResult<void, HttpClientResponseError, EmailVerificationData> => {
-//   return useMutation(async (emailVerificationData): Promise<void> => {
-//     const response = await fetch(uri, {
-//       body: JSON.stringify(emailVerificationData),
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       method: 'POST',
-//     });
-
-//     console.log(response.body);
-
-//     if (!response.ok) {
-//       const responseJson = await response
-//         .clone()
-//         .json()
-//         .catch(() => undefined);
-
-//       const responseText = await response
-//         .clone()
-//         .text()
-//         .catch(() => undefined);
-
-//       console.log(responseJson['verificationCount']);
-
-//       //throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
-//     }
-//   }, options);
-// };
