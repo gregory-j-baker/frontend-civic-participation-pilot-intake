@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
-    "start": "next start",
-    "start:docker": "yarn build && yarn start"
+    "start": "next start"
   },
   "dependencies": {
     "@microsoft/applicationinsights-web": "^2.5.11",
