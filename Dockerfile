@@ -23,11 +23,8 @@ COPY . /usr/app
 # install dependencies
 RUN yarn
 
-# build pages
-RUN yarn build
-
 # expose port
 EXPOSE 3000
 
-# start app
-CMD ["yarn", "start"]
+# start app with start:docker
+CMD ["npm", "run", "start:docker"]
