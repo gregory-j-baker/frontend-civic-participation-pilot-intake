@@ -6,24 +6,18 @@
  */
 
 import type { GetServerSideProps, NextPage } from 'next';
-import { MainLayout } from '../../../../components/layouts/main/MainLayout';
-import { PageLoadingSpinner } from '../../../../components/PageLoadingSpinner';
 import { apiConfig } from '../../../../config';
 import { Params } from 'next/dist/next-server/server/router';
 
+interface EmailVerificationTokenData {
+  accessToken: string;
+}
+
 const EmailVerficationTokenPage: NextPage = () => {
-  return (
-    <MainLayout showBreadcrumb={false}>
-      <PageLoadingSpinner />
-    </MainLayout>
-  );
+  return <></>;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }: Params) => {
-  interface EmailVerificationTokenData {
-    accessToken: string;
-  }
-
   const emailVerificationTokenData: EmailVerificationTokenData = {
     accessToken: params.token,
   };
