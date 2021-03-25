@@ -22,7 +22,7 @@ import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../../yup/yup-custom';
 import type { GetStaticProps, NextPage } from 'next';
-import { EmailVerificationData, useSubmitEmailVerification } from '../../../hooks/api/email-validations/useSubmitEmailVerification';
+import { EmailVerificationAccessCodeData, useSubmitAccessCode } from '../../../hooks/api/email-verifications/useSubmitAccessCode';
 import { Constants } from '../types';
 import Custom404 from '../../404';
 
@@ -39,7 +39,7 @@ const EmailVerficationPage: NextPage = () => {
 
   const router = useRouter();
 
-  const { mutate: submitEmailVerification, error: submitEmailVerificationError, reset: resetSubmitEmailVerificationError, isLoading: submitEmailVerificationIsLoading, isSuccess: submitEmailVerificationIsSuccess } = useSubmitEmailVerification({
+  const { mutate: submitAccessCode, error: submitAccessCodeError, reset: resetSubmitAccessCodeError, isLoading: submitAccessCodeIsLoading, isSuccess: submitAccessCodeIsSuccess } = useSubmitAccessCode({
     onSuccess: () => {
       sessionStorage.removeItem(Constants.EmailVerificationStorageKey);
       router.push('/application/email-verification/success');
@@ -80,19 +80,19 @@ const EmailVerficationPage: NextPage = () => {
   const handleOnSubmit: ButtonOnClickEvent = async (event) => {
     event.preventDefault();
 
-    resetSubmitEmailVerificationError();
+    resetSubmitAccessCodeError();
     setSchemaErrors(null);
 
     try {
       await emailVerificationSchema.validate(formData, { abortEarly: false });
 
       // submit email verification form
-      const emailVerificationData: EmailVerificationData = {
+      const emailVerificationAccessCodeData: EmailVerificationAccessCodeData = {
         email: formData.email as string,
         accessCode: formData?.accessCode as string,
       };
 
-      submitEmailVerification(emailVerificationData);
+      submitAccessCode(emailVerificationAccessCodeData);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
@@ -119,8 +119,8 @@ const EmailVerficationPage: NextPage = () => {
     );
   };
 
-  if (submitEmailVerificationError instanceof HttpClientResponseError && (submitEmailVerificationError as HttpClientResponseError).responseStatus !== 400 && (submitEmailVerificationError as HttpClientResponseError).responseStatus !== 429)
-    return <Error err={submitEmailVerificationError as HttpClientResponseError} />;
+  if (submitAccessCodeError instanceof HttpClientResponseError && (submitAccessCodeError as HttpClientResponseError).responseStatus !== 400 && (submitAccessCodeError as HttpClientResponseError).responseStatus !== 429)
+    return <Error err={submitAccessCodeError as HttpClientResponseError} />;
 
   if (!formData.email) return <Custom404 />;
 
@@ -152,7 +152,7 @@ const EmailVerficationPage: NextPage = () => {
             </Alert>
           )}
 
-          {submitEmailVerificationError && (
+          {submitAccessCodeError && (
             <Alert title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
               <ul className="tw-list-disc">
                 <li key="{path}" className="tw-my-2">
@@ -169,17 +169,17 @@ const EmailVerficationPage: NextPage = () => {
               helperText={t('email-verification:form.access-code-attempts', { attempts: formData?.attempts, maxAttempts: 5 })}
               value={formData?.accessCode}
               onChange={handleOnTextFieldChange}
-              disabled={submitEmailVerificationIsLoading || submitEmailVerificationIsSuccess}
+              disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess}
               required
               className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
             />
           </div>
 
           <div className="tw-flex tw-flex-wrap">
-            <Button onClick={handleOnSubmit} disabled={submitEmailVerificationIsLoading || submitEmailVerificationIsSuccess} className="tw-m-2">
+            <Button onClick={handleOnSubmit} disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
               {t('email-verification:form.submit')}
             </Button>
-            <Button outline onClick={handleOnCancel} disabled={submitEmailVerificationIsLoading || submitEmailVerificationIsSuccess} className="tw-m-2">
+            <Button outline onClick={handleOnCancel} disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
               {t('email-verification:form.cancel')}
             </Button>
           </div>

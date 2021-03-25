@@ -9,7 +9,7 @@ import { HttpClientResponseError } from '../../../../common/HttpClientResponseEr
 import { apiConfig } from '../../../../config';
 import { fetchWrapper } from '../../../../utils/fetch-wrapper';
 
-export interface EmailVerificationData {
+export interface EmailVerificationAccessCodeData {
   email: string;
   accessCode: string;
 }
@@ -21,11 +21,13 @@ export interface EmailVerificationResponse {
 
 export const uri = `${apiConfig.baseUri}/email-validations/access-codes`;
 
-export const useSubmitEmailVerification = (options?: UseMutationOptions<EmailVerificationResponse, HttpClientResponseError, EmailVerificationData>): UseMutationResult<EmailVerificationResponse, HttpClientResponseError, EmailVerificationData> => {
+export const useSubmitAccessCode = (
+  options?: UseMutationOptions<EmailVerificationResponse, HttpClientResponseError, EmailVerificationAccessCodeData>
+): UseMutationResult<EmailVerificationResponse, HttpClientResponseError, EmailVerificationAccessCodeData> => {
   return useMutation(
-    (emailVerificationData) =>
+    (emailVerificationAccessCodeData) =>
       fetchWrapper<EmailVerificationResponse>(uri, {
-        body: JSON.stringify(emailVerificationData),
+        body: JSON.stringify(emailVerificationAccessCodeData),
         headers: {
           'Content-Type': 'application/json',
         },
