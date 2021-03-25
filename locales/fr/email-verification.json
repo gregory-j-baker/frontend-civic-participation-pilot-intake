@@ -29,7 +29,8 @@
     "page": {
       "title": "Vérification du courrier électronique validé",
       "header": "Merci de valider votre adresse email",
-      "sub-header": "Votre processus de candidature est maintenant complet"
+      "sub-header": "Votre processus de candidature est maintenant complet",
+      "message": "Merci d'avoir postulé pour participer au projet pilote de participation civique du Service canadien des services du Canada! Les participants seront sélectionnés à l'aide d'un tirage au sort généré par ordinateur. Tous les candidats éligibles seront automatiquement inscrits au tirage. Vous pouvez vous attendre à savoir si vous avez été sélectionné en mai 2021."
     },
     "form": {
       "submit": "Visitez le site Web du CSC"

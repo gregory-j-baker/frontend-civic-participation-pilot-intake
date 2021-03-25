@@ -29,7 +29,8 @@
     "page": {
       "title": "Email verification's validated",
       "header": "Thank you for validating your email address",
-      "sub-header": "Your application process is now complete"
+      "sub-header": "Your application process is now complete",
+      "message": "Thank you for applying to participate in the Canada Service Corps Civic Participation Pilot! Participants will be selected using a randomized, computer-generated draw. All eligible applicants will be automatically entered into the draw. You can expect to hear whether you were selected in May 2021."
     },
     "form": {
       "submit": "Visit the CSC website"
