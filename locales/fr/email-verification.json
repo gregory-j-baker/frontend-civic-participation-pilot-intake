@@ -19,7 +19,7 @@
     "page": {
       "title": "Code de vérification de courrier électronique incorrect",
       "header": "Le code que vous avez entré est incorrect",
-      "description": "Essayez de cliquer sur le lien envoyé à votre email, si cela ne résout pas le problème, contactez-nous à <0></0>"
+      "description": "Essayez de cliquer sur le lien de valildation envoyé à votre courriel. Si cela ne résout toujours pas le problème, contactez-nous à <0></0>"
     },
     "form": {
       "submit": "Visitez le site Web du CSC"

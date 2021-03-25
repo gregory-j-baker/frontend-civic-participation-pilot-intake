@@ -19,7 +19,7 @@
     "page": {
       "title": "Email verification's code incorrect",
       "header": "The code you've entered is incorect",
-      "description": "Try clicking the link sent to your email, if this still doesn't solve the issue, contact us at <0></0>"
+      "description": "Try clicking the validation link sent to your email. If this still doesn’t solve the issue, contact us at <0></0>"
     },
     "form": {
       "submit": "Visit the CSC website"
