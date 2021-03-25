@@ -23,7 +23,7 @@ export const applicationConfig = {
   },
   dateModified: getDateModified(),
   gitCommit: getGitCommit(),
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? 'esdc.csc.youth.leadership-leadership.jeunes.sjc.edsc@hrsdc-rhdcc.gc.ca',
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL ?? 'support@example.com',
   version: getApplicationVersion(),
 };
 
