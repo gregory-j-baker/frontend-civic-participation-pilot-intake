@@ -5,10 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { NextApiHandler } from 'next';
-import NextAuth, { User } from 'next-auth';
-import { JWT } from 'next-auth/jwt';
-import Providers, { Provider } from 'next-auth/providers';
+import type { NextApiHandler } from 'next';
+import type { User } from 'next-auth';
+import NextAuth from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+import type { Provider } from 'next-auth/providers';
+import Providers from 'next-auth/providers';
 
 type OptionsBase = {
   [K in keyof Omit<Provider, 'id'>]?: Provider[K];
@@ -18,15 +20,15 @@ interface AzureADB2COptions extends OptionsBase {
   name?: string;
   clientId: string;
   clientSecret: string;
-  idToken?: boolean;
+  idToken: boolean;
+  tenantId: string;
 }
 
-interface JTWAccount extends Record<string, unknown> {
+interface JWTAccount extends Record<string, unknown> {
   accessToken?: string;
-  idToken?: string;
 }
 
-interface JTWUser extends User {
+interface JWTUser extends User {
   roles?: string[];
 }
 
@@ -39,35 +41,33 @@ type UserOrToken = (User | JWT) & {
 
 const handler: NextApiHandler = (req, res) => {
   const options: AzureADB2COptions = {
-    name: 'Canada Service Corps',
-
     clientId: process.env.ESDC_AD_CLIENT_ID ?? '',
     clientSecret: process.env.ESDC_AD_CLIENT_SECRET ?? '',
-
-    accessTokenUrl: `https://login.microsoftonline.com/${process.env.ESDC_AD_TENANT_ID}/oauth2/v2.0/token`,
-    authorizationUrl: `https://login.microsoftonline.com/${process.env.ESDC_AD_TENANT_ID}/oauth2/v2.0/authorize?response_type=code&response_mode=query&id_token=true`,
-
-    scope: 'openid email profile',
-
     idToken: true,
-
-    profile: (profile) => {
-      return { ...profile, id: profile.oid as string } as Profile;
-    },
+    profile: (profile) => ({ ...profile, id: profile.oid as string } as Profile),
+    scope: 'openid profile api://civic-participation-management/manage',
+    tenantId: process.env.ESDC_AD_TENANT_ID ?? '',
   };
 
   return NextAuth(req, res, {
     providers: [Providers.AzureADB2C(options)],
     callbacks: {
-      jwt: async (token, user: JTWUser, account: JTWAccount) => {
-        if (user?.roles) token.roles = user.roles;
-        if (account?.idToken) token.accessToken = account.idToken;
-        return token;
+      jwt: async (token, user: JWTUser, account: JWTAccount) => {
+        return {
+          ...token,
+          ...(user?.roles && { roles: user.roles }),
+          ...(account?.accessToken && { accessToken: account.accessToken }),
+        };
       },
       session: async (session, userOrToken: UserOrToken) => {
-        return { ...session, accessToken: userOrToken.accessToken, roles: userOrToken.roles };
+        return {
+          ...session,
+          accessToken: userOrToken.accessToken,
+          roles: userOrToken.roles,
+        };
       },
     },
   });
 };
+
 export default handler;
