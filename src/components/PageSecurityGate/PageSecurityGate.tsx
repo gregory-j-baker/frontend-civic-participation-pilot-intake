@@ -6,8 +6,12 @@
  */
 
 import { useSession, signIn } from 'next-auth/client';
-import jwt_decode from 'jwt-decode';
-// import AccessDeniedPage from '../AccessDeniedPage/AccessDeniedPage';
+import { Session } from 'next-auth';
+import AccessDeniedPage from '../AccessDeniedPage/AccessDeniedPage';
+
+export interface AADSession extends Session {
+  roles?: string[];
+}
 
 export interface PageSecurityGateProps {
   children: React.ReactNode;
@@ -17,9 +21,7 @@ export interface PageSecurityGateProps {
 export const PageSecurityGate = ({ children, secured }: PageSecurityGateProps): JSX.Element => {
   const [session, loading] = useSession();
 
-  console.log({ session, loading });
-
-  if (secured) {
+  if (typeof window !== 'undefined' && secured) {
     if (loading) {
       return <></>;
     }
@@ -29,12 +31,11 @@ export const PageSecurityGate = ({ children, secured }: PageSecurityGateProps): 
       return <></>;
     }
 
+    console.log((session as AADSession).roles?.includes('CivicParticipationProgram.Manage'));
+
     // validate roles
-    if (session.accessToken) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const jwtDecoded = jwt_decode(session.accessToken ?? '');
-      console.log(jwtDecoded);
-      //return <AccessDeniedPage />;
+    if (((session as AADSession).roles?.includes('CivicParticipationProgram.Manage') ?? false) === false) {
+      return <AccessDeniedPage />;
     }
   }
 

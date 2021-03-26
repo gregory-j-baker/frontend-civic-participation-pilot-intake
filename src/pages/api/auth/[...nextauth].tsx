@@ -8,38 +8,64 @@
 import { NextApiHandler } from 'next';
 import NextAuth, { User } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
-import Providers from 'next-auth/providers';
+import Providers, { Provider } from 'next-auth/providers';
 
-interface Account extends Record<string, unknown> {
-  accessToken?: string;
+type OptionsBase = {
+  [K in keyof Omit<Provider, 'id'>]?: Provider[K];
+};
+
+interface AzureADB2COptions extends OptionsBase {
+  name?: string;
+  clientId: string;
+  clientSecret: string;
+  idToken?: boolean;
 }
+
+interface JTWAccount extends Record<string, unknown> {
+  accessToken?: string;
+  idToken?: string;
+}
+
+interface JTWUser extends User {
+  roles?: string[];
+}
+
+type Profile = User & { id: string };
 
 type UserOrToken = (User | JWT) & {
   accessToken?: string;
+  roles?: string[];
 };
 
 const handler: NextApiHandler = (req, res) => {
+  const options: AzureADB2COptions = {
+    name: 'Canada Service Corps',
+
+    clientId: process.env.ESDC_AD_CLIENT_ID ?? '',
+    clientSecret: process.env.ESDC_AD_CLIENT_SECRET ?? '',
+
+    accessTokenUrl: `https://login.microsoftonline.com/${process.env.ESDC_AD_TENANT_ID}/oauth2/v2.0/token`,
+    authorizationUrl: `https://login.microsoftonline.com/${process.env.ESDC_AD_TENANT_ID}/oauth2/v2.0/authorize?response_type=code&response_mode=query&id_token=true`,
+
+    scope: 'openid email profile',
+
+    idToken: true,
+
+    profile: (profile) => {
+      return { ...profile, id: profile.oid as string } as Profile;
+    },
+  };
+
   return NextAuth(req, res, {
-    providers: [
-      Providers.AzureADB2C({
-        name: 'Canada Service Corps',
-
-        clientId: process.env.ESDC_AD_CLIENT_ID ?? '',
-        clientSecret: process.env.ESDC_AD_CLIENT_SECRET ?? '',
-
-        accessTokenUrl: `https://login.microsoftonline.com/${process.env.ESDC_AD_TENANT_ID}/oauth2/v2.0/token`,
-        authorizationUrl: `https://login.microsoftonline.com/${process.env.ESDC_AD_TENANT_ID}/oauth2/v2.0/authorize?response_type=code&response_mode=query`,
-
-        scope: 'openid email profile api://civic-participation-management/manage',
-      }),
-    ],
+    providers: [Providers.AzureADB2C(options)],
     callbacks: {
-      jwt: async (token, _user, account: Account) => {
-        if (account?.accessToken) token.accessToken = account.accessToken;
+      jwt: async (token, user: JTWUser, account: JTWAccount) => {
+        if (user?.roles) token.roles = user.roles;
+        if (account?.idToken) token.accessToken = account.idToken;
         return token;
       },
       session: async (session, userOrToken: UserOrToken) => {
-        return { ...session, accessToken: userOrToken?.accessToken };
+        return { ...session, accessToken: userOrToken.accessToken, roles: userOrToken.roles };
       },
     },
   });
