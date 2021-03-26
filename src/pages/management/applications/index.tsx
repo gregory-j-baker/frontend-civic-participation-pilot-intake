@@ -6,16 +6,22 @@
  */
 
 import { GetStaticProps } from 'next';
+import { MainLayout } from '../../../components/layouts/main/MainLayout';
 
-const HomePage = (): JSX.Element => <></>;
+const ManagementApplicationsPage = (): JSX.Element => {
+  return (
+    <MainLayout showBreadcrumb={false}>
+      <h1>Management - Applications Listing here!</h1>
+    </MainLayout>
+  );
+};
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
-    redirect: {
-      destination: `/application`,
-      permanent: false,
+    props: {
+      secured: true,
     },
   };
 };
 
-export default HomePage;
+export default ManagementApplicationsPage;

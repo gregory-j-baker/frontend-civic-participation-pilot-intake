@@ -6,6 +6,12 @@
     "en": "English",
     "fr": "Français"
   },
+  "access-denied": {
+    "page-title": "Access Denied",
+    "header": "You do not have permission to access this page",
+    "error-code": "Error 403",
+    "description": "Please contact your Site Administartor(s) to request access."
+  },
   "custom-404": {
     "page-title": "Not Found",
     "header": "We couldn't find that Web page",
