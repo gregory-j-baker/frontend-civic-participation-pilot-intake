@@ -102,7 +102,7 @@ const Step1Page = (): JSX.Element => {
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
   // year of birth options
-  const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({ startYear: 1990, endYear: 2003 }).map((year) => ({ value: year.toString(), text: year.toString() })), []);
+  const yearOfBirthOptions = useMemo<SelectFieldOption[]>(() => getYears({ startYear: 1991, endYear: 2006 }).map((year) => ({ value: year.toString(), text: year.toString() })), []);
 
   // language options
   const languageOptions = useMemo<RadiosFieldOption[]>(() => {
