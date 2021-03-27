@@ -7,6 +7,7 @@
 
 import type { QueryFunction, QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
+import { HttpClientResponseError } from '../../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../../common/types';
 import { beforeNow } from '../../../../utils/date-utils';
 import { fetchWrapper } from '../../../../utils/fetch-wrapper';
@@ -36,7 +37,7 @@ export const fetchProvinces: QueryFunction<Promise<ProvincesResponse>> = ({ quer
   return fetchWrapper<ProvincesResponse>(`${provincesUri}?${queries.join('&')}`);
 };
 
-export const useProvinces = ({ enabled, lang, onlyActive }: UseProvincesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<ProvincesResponse, unknown> => {
+export const useProvinces = ({ enabled, lang, onlyActive }: UseProvincesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<ProvincesResponse, HttpClientResponseError> => {
   return useQuery([provincesQueryKey, { lang } as FetchProvincesOptions], fetchProvinces, {
     enabled,
     cacheTime: Infinity,

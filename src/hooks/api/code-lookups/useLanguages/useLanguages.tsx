@@ -7,6 +7,7 @@
 
 import type { QueryFunction, QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
+import { HttpClientResponseError } from '../../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../../common/types';
 import { beforeNow } from '../../../../utils/date-utils';
 import { fetchWrapper } from '../../../../utils/fetch-wrapper';
@@ -36,7 +37,7 @@ export const fetchLanguages: QueryFunction<Promise<LanguagesResponse>> = ({ quer
   return fetchWrapper<LanguagesResponse>(`${languagesUri}?${queries.join('&')}`);
 };
 
-export const useLanguages = ({ enabled, lang, onlyActive }: UseLanguagesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<LanguagesResponse, unknown> => {
+export const useLanguages = ({ enabled, lang, onlyActive }: UseLanguagesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<LanguagesResponse, HttpClientResponseError> => {
   return useQuery([languagesQueryKey, { lang } as FetchLanguagesOptions], fetchLanguages, {
     enabled,
     cacheTime: Infinity,

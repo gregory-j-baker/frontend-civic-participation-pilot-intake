@@ -7,6 +7,7 @@
 
 import type { QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery, QueryFunction } from 'react-query';
+import { HttpClientResponseError } from '../../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../../common/types';
 import { beforeNow } from '../../../../utils/date-utils';
 import { fetchWrapper } from '../../../../utils/fetch-wrapper';
@@ -36,7 +37,7 @@ export const fetchDiscoveryChannels: QueryFunction<Promise<DiscoveryChannelsResp
   return fetchWrapper<DiscoveryChannelsResponse>(`${discoveryChannelsUri}?${queries.join('&')}`);
 };
 
-export const useDiscoveryChannels = ({ enabled, lang, onlyActive }: UseDiscoveryChannelsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<DiscoveryChannelsResponse, unknown> => {
+export const useDiscoveryChannels = ({ enabled, lang, onlyActive }: UseDiscoveryChannelsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<DiscoveryChannelsResponse, HttpClientResponseError> => {
   return useQuery([discoveryChannelsQueryKey, { lang } as FetchDiscoveryChannelsOptions], fetchDiscoveryChannels, {
     enabled,
     cacheTime: Infinity,

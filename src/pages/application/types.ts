@@ -11,7 +11,7 @@ export enum Constants {
 }
 
 export interface GetDescriptionFunc {
-  (obj: { descriptionFr: string; descriptionEn: string }): string;
+  (obj: { descriptionFr: string; descriptionEn: string } | undefined): string;
 }
 
 export interface Step1State {

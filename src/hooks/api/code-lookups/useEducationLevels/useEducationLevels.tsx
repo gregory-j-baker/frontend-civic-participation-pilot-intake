@@ -7,6 +7,7 @@
 
 import type { QueryFunction, QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
+import { HttpClientResponseError } from '../../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../../common/types';
 import { beforeNow } from '../../../../utils/date-utils';
 import { fetchWrapper } from '../../../../utils/fetch-wrapper';
@@ -36,7 +37,7 @@ export const fetchEducationLevels: QueryFunction<Promise<EducationLevelsResponse
   return fetchWrapper<EducationLevelsResponse>(`${educationLevelsUri}?${queries.join('&')}`);
 };
 
-export const useEducationLevels = ({ enabled, lang, onlyActive }: UseEducationLevelsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<EducationLevelsResponse, unknown> => {
+export const useEducationLevels = ({ enabled, lang, onlyActive }: UseEducationLevelsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<EducationLevelsResponse, HttpClientResponseError> => {
   return useQuery([educationLevelsQueryKey, { lang } as FetchEducationLevelsOptions], fetchEducationLevels, {
     enabled,
     cacheTime: Infinity,

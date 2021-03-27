@@ -39,7 +39,7 @@ export const fetchApplications: QueryFunction<Promise<ApplicationsResponse>> = a
 
   return fetchWrapper<ApplicationsResponse>(`${applicationsUri}${queries.length > 0 ? '?' : ''}${queries.join('&')}`, {
     headers: {
-      Authorization: accessToken,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 };
