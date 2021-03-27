@@ -33,7 +33,6 @@ export const PageSecurityGate = ({ children, requiredRoles, secured }: PageSecur
       signIn();
       return <></>;
     }
-    console.log(session);
 
     // validate roles
     if (requiredRoles && requiredRoles.length > 0) {

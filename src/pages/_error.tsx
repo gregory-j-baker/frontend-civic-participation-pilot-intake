@@ -14,38 +14,6 @@ import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { applicationConfig } from '../config';
 
-export interface ErrorMainContentProps {
-  lang: string;
-}
-
-export const ErrorMainContent = ({ lang }: ErrorMainContentProps): JSX.Element => {
-  return (
-    <>
-      <div className="tw-flex tw-items-center">
-        <div className="tw-w-24 tw-flex-shrink-0">
-          <span className="glyphicon glyphicon-warning-sign glyphicon-error tw-flex-shrink-0"></span>
-        </div>
-        <div className="tw-flex-grow">
-          <h1 className="tw-m-0 tw-border-none">{lang === 'fr' ? 'Un problème est survenu' : 'A problem has occurred'}</h1>
-        </div>
-      </div>
-
-      {lang === 'fr' ? (
-        <>
-          <p className="tw-m-0 tw-my-4">Nous éprouvons temporairement des difficultés d’ordre technique.</p>
-          <p className="tw-m-0 tw-my-4">Veuillez réessayer plus tard. Nous nous excusons des inconvénients que cela peut vous avoir causer.</p>
-        </>
-      ) : (
-        <>
-          <p className="tw-m-0 tw-my-4">We are temporarily experiencing technical difficulties.</p>
-          <p className="tw-m-0 tw-my-4">Please try again later. We apologize for any inconvenience.</p>
-        </>
-      )}
-      <ErrorPageLinks lang={lang} />
-    </>
-  );
-};
-
 export enum SourceEnum {
   Client,
   Server,
@@ -136,6 +104,38 @@ const Error: NextPage<ErrorProps> = ({ statusCode, err, source }) => {
 Error.getInitialProps = async ({ res, err }: NextPageContext) => {
   const statusCode = res ? res?.statusCode : err ? err.statusCode : 404;
   return { statusCode, err, source: SourceEnum.Server };
+};
+
+export interface ErrorMainContentProps {
+  lang: string;
+}
+
+export const ErrorMainContent = ({ lang }: ErrorMainContentProps): JSX.Element => {
+  return (
+    <>
+      <div className="tw-flex tw-items-center">
+        <div className="tw-w-24 tw-flex-shrink-0">
+          <span className="glyphicon glyphicon-warning-sign glyphicon-error tw-flex-shrink-0"></span>
+        </div>
+        <div className="tw-flex-grow">
+          <h1 className="tw-m-0 tw-border-none">{lang === 'fr' ? 'Un problème est survenu' : 'A problem has occurred'}</h1>
+        </div>
+      </div>
+
+      {lang === 'fr' ? (
+        <>
+          <p className="tw-m-0 tw-my-4">Nous éprouvons temporairement des difficultés d’ordre technique.</p>
+          <p className="tw-m-0 tw-my-4">Veuillez réessayer plus tard. Nous nous excusons des inconvénients que cela peut vous avoir causer.</p>
+        </>
+      ) : (
+        <>
+          <p className="tw-m-0 tw-my-4">We are temporarily experiencing technical difficulties.</p>
+          <p className="tw-m-0 tw-my-4">Please try again later. We apologize for any inconvenience.</p>
+        </>
+      )}
+      <ErrorPageLinks lang={lang} />
+    </>
+  );
 };
 
 export default Error;

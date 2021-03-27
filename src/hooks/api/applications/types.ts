@@ -28,4 +28,17 @@ export interface ApplicationBase {
   skillsInterest: string;
 }
 
+export interface Application extends ApplicationBase {
+  accessCode: number;
+  accessToken: string;
+  applicationStatusId: string;
+  createdBy: string;
+  createdDate: string;
+  emailVerificationId: string;
+  id: string;
+  isEmailValidated: boolean;
+  lastModifiedBy: string;
+  lastModifiedDate: string;
+}
+
 export interface ApplicationSubmitData extends ApplicationBase {}

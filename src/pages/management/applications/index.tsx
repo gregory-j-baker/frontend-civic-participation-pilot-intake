@@ -8,12 +8,20 @@
 import { GetStaticProps } from 'next';
 import { Role } from '../../../common/types';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
+import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { PageSecurityGateProps } from '../../../components/PageSecurityGate';
+import { useApplications } from '../../../hooks/api/applications/useApplications';
+import Error from '../../_error';
 
 const ManagementApplicationsPage = (): JSX.Element => {
+  const { data: applications, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({});
+
+  if (applicationsError) return <Error err={applicationsError} />;
+
   return (
     <MainLayout showBreadcrumb={false}>
-      <h1>Management - Applications Listing here!</h1>
+      <h1 className="tw-m-0 tw-mb-10 tw-border-none">Management - Applications Listing here!</h1>
+      {isApplicationsLoading ? <PageLoadingSpinner /> : <>{JSON.stringify(applications)}</>}
     </MainLayout>
   );
 };
