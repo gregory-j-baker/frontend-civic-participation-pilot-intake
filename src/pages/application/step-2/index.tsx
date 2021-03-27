@@ -16,8 +16,6 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../../../components/Wizard';
 import { useEducationLevels } from '../../../hooks/api/code-lookups/useEducationLevels';
 import { useGenders } from '../../../hooks/api/code-lookups/useGenders';
-import kebabCase from 'lodash/kebabCase';
-import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
 import { ApplicationState, GetDescriptionFunc, Step2State, Constants } from '../types';
@@ -123,15 +121,7 @@ const Step2Page = (): JSX.Element => {
 
     const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
 
-    return (
-      t('common:error-number', { number: index + 1 }) +
-      t(
-        `application:field.${schemaErrors[index]?.path
-          ?.split('.')
-          .map((el) => kebabCase(el))
-          .join('.')}.${key}`
-      )
-    );
+    return t('common:error-number', { number: index + 1 }) + t(`application:field.${schemaErrors[index]?.path}.${key}`);
   };
 
   if (demographicsError || educationLevelsError || gendersError) {
@@ -159,7 +149,7 @@ const Step2Page = (): JSX.Element => {
 
                   return path ? (
                     <li key={path} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                      <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
                     </li>
                   ) : undefined;
                 })}
@@ -172,7 +162,7 @@ const Step2Page = (): JSX.Element => {
 
             <SelectField
               field={nameof<Step2State>((o) => o.genderId)}
-              label={t('application:field.gender-id.label')}
+              label={t('application:field.genderId.label')}
               value={formData.step2.genderId}
               onChange={handleOnOptionsFieldChange}
               options={genderOptions}
@@ -184,8 +174,8 @@ const Step2Page = (): JSX.Element => {
 
             <SelectField
               field={nameof<Step2State>((o) => o.educationLevelId)}
-              label={t('application:field.education-level-id.label')}
-              helperText={t('application:field.education-level-id.helper-text')}
+              label={t('application:field.educationLevelId.label')}
+              helperText={t('application:field.educationLevelId.helper-text')}
               value={formData.step2.educationLevelId}
               onChange={handleOnOptionsFieldChange}
               options={educationLevelOptions}
@@ -197,7 +187,7 @@ const Step2Page = (): JSX.Element => {
 
             <RadiosField
               field={nameof<Step2State>((o) => o.demographicId)}
-              label={t('application:field.demographic-id.label')}
+              label={t('application:field.demographicId.label')}
               value={formData.step2.demographicId}
               onChange={handleOnOptionsFieldChange}
               options={demographicOptions}
@@ -206,13 +196,13 @@ const Step2Page = (): JSX.Element => {
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}>
               <ul className="tw-list-disc tw-list-inside tw-my-4 tw-font-bold">
                 {[
-                  t('application:field.demographic-id.children-items.item-1'),
-                  t('application:field.demographic-id.children-items.item-2'),
-                  t('application:field.demographic-id.children-items.item-3'),
-                  t('application:field.demographic-id.children-items.item-4'),
-                  t('application:field.demographic-id.children-items.item-5'),
-                  t('application:field.demographic-id.children-items.item-6'),
-                  t('application:field.demographic-id.children-items.item-7'),
+                  t('application:field.demographicId.children-items.item-1'),
+                  t('application:field.demographicId.children-items.item-2'),
+                  t('application:field.demographicId.children-items.item-3'),
+                  t('application:field.demographicId.children-items.item-4'),
+                  t('application:field.demographicId.children-items.item-5'),
+                  t('application:field.demographicId.children-items.item-6'),
+                  t('application:field.demographicId.children-items.item-7'),
                 ].map((val) => (
                   <li key={val} className="tw-mb-2">
                     {val}

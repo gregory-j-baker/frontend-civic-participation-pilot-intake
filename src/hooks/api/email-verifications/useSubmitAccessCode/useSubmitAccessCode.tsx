@@ -19,7 +19,7 @@ export interface EmailVerificationResponse {
   verificationCount: 0;
 }
 
-export const uri = `${apiConfig.baseUri}/email-validations/access-codes`;
+export const uri = `${apiConfig.baseUri}/email-validations/accessCodes`;
 
 export const useSubmitAccessCode = (
   options?: UseMutationOptions<EmailVerificationResponse, HttpClientResponseError, EmailVerificationAccessCodeData>

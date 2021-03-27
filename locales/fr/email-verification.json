@@ -5,13 +5,13 @@
     "description": "Merci à vous de vous intéresser au pilote CSC-CPP, veuillez entrer le code de vérification qui vous a été envoyé pour valider votre adresse courriel. Si vous ne pouvez pas accéder à votre courrier électronique pour le moment, appuyez sur \"Je le ferai plus tard\" et cliquez sur le lien de vérification directement dans le courriel ultérieurement."
   },
   "form": {
-    "access-code": {
+    "accessCode": {
       "label": "Code de vérification à six chiffres",
       "required": "Code de vérificiation est requis",
       "length-invalid": "Code de vérification doit être 6 chiffres",
-      "invalid": "Code de vérification est invalide"
+      "invalid": "Code de vérification est invalide",
+      "help-text": "{{attempts}}/{{maxAttempts}} tentatives restantes"
     },
-    "access-code-attempts": "{{attempts}}/{{maxAttempts}} tentatives restantes",
     "submit": "Soumettre",
     "cancel": "Je le ferai plus tard"
   },

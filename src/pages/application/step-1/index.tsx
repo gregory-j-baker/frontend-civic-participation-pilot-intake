@@ -26,8 +26,6 @@ import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
 import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
 import { useCurrentBreakpoint } from '../../../hooks/useCurrentBreakpoint';
 import { getYears } from '../../../utils/misc-utils';
-import kebabCase from 'lodash/kebabCase';
-import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
 import { ApplicationState, GetDescriptionFunc, Step1State, Constants } from '../types';
@@ -139,15 +137,7 @@ const Step1Page = (): JSX.Element => {
 
     const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
 
-    return (
-      t('common:error-number', { number: index + 1 }) +
-      t(
-        `application:field.${schemaErrors[index]?.path
-          ?.split('.')
-          .map((el) => kebabCase(el))
-          .join('.')}.${key}`
-      )
-    );
+    return t('common:error-number', { number: index + 1 }) + t(`application:field.${schemaErrors[index]?.path}.${key}`);
   };
 
   if (discoveryChannelsError || languagesError || provincesError) {
@@ -175,7 +165,7 @@ const Step1Page = (): JSX.Element => {
 
                   return path ? (
                     <li key={path} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                      <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
                     </li>
                   ) : undefined;
                 })}
@@ -186,7 +176,7 @@ const Step1Page = (): JSX.Element => {
           <Wizard activeStep={1} numberOfSteps={4} previousHidden onNextClick={handleWizardOnNextClick}>
             <TextField
               field={nameof<Step1State>((o) => o.firstName)}
-              label={t('application:field.first-name.label')}
+              label={t('application:field.firstName.label')}
               value={formData.step1.firstName}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<Step1State>((o) => o.firstName))}
@@ -197,7 +187,7 @@ const Step1Page = (): JSX.Element => {
 
             <TextField
               field={nameof<Step1State>((o) => o.lastName)}
-              label={t('application:field.last-name.label')}
+              label={t('application:field.lastName.label')}
               value={formData.step1.lastName}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<Step1State>((o) => o.lastName))}
@@ -221,8 +211,8 @@ const Step1Page = (): JSX.Element => {
             <TextField
               type="tel"
               field={nameof<Step1State>((o) => o.phoneNumber)}
-              label={t('application:field.phone-number.label')}
-              helperText={t('application:field.phone-number.helper-text')}
+              label={t('application:field.phoneNumber.label')}
+              helperText={t('application:field.phoneNumber.helper-text')}
               value={formData.step1.phoneNumber}
               onChange={handleOnPhonNumberFieldChange}
               error={getSchemaError(nameof<Step1State>((o) => o.phoneNumber))}
@@ -232,8 +222,8 @@ const Step1Page = (): JSX.Element => {
 
             <SelectField
               field={nameof<Step1State>((o) => o.birthYear)}
-              label={t('application:field.birth-year.label')}
-              helperText={t('application:field.birth-year.helper-text')}
+              label={t('application:field.birthYear.label')}
+              helperText={t('application:field.birthYear.helper-text')}
               value={formData.step1.birthYear?.toString()}
               onChange={handleOnOptionsFieldChange}
               options={yearOfBirthOptions}
@@ -244,7 +234,7 @@ const Step1Page = (): JSX.Element => {
 
             <CheckboxeField
               field={nameof<Step1State>((o) => o.isProvinceMajorCertified)}
-              label={t('application:field.is-province-major-certified.label')}
+              label={t('application:field.isProvinceMajorCertified.label')}
               checked={formData.step1.isProvinceMajorCertified}
               onChange={handleOnCheckboxFieldChange}
               error={getSchemaError(nameof<Step1State>((o) => o.isProvinceMajorCertified))}
@@ -252,14 +242,14 @@ const Step1Page = (): JSX.Element => {
               required>
               <div className="tw-pl-10">
                 <a href="http://example.com" target="_blank" rel="noreferrer">
-                  {t('application:field.is-province-major-certified.link')}
+                  {t('application:field.isProvinceMajorCertified.link')}
                 </a>
               </div>
             </CheckboxeField>
 
             <RadiosField
               field={nameof<Step1State>((o) => o.languageId)}
-              label={t('application:field.language-id.label')}
+              label={t('application:field.languageId.label')}
               value={formData.step1.languageId}
               onChange={handleOnOptionsFieldChange}
               options={languageOptions}
@@ -271,11 +261,11 @@ const Step1Page = (): JSX.Element => {
 
             <RadiosField
               field={nameof<Step1State>((o) => o.isCanadianCitizen)}
-              label={t('application:field.is-canadian-citizen.label')}
+              label={t('application:field.isCanadianCitizen.label')}
               value={formData.step1.isCanadianCitizen?.toString()}
               onChange={handleOnOptionsFieldChange}
               options={yesNoOptions}
-              helperText={t('application:field.is-canadian-citizen.helper-text')}
+              helperText={t('application:field.isCanadianCitizen.helper-text')}
               error={getSchemaError(nameof<Step1State>((o) => o.isCanadianCitizen))}
               required
               gutterBottom
@@ -284,7 +274,7 @@ const Step1Page = (): JSX.Element => {
 
             <SelectField
               field={nameof<Step1State>((o) => o.provinceId)}
-              label={t('application:field.province-id.label')}
+              label={t('application:field.provinceId.label')}
               value={formData.step1.provinceId}
               onChange={handleOnOptionsFieldChange}
               options={provinceOptions}
@@ -296,7 +286,7 @@ const Step1Page = (): JSX.Element => {
 
             <SelectField
               field={nameof<Step1State>((o) => o.discoveryChannelId)}
-              label={t('application:field.discovery-channel-id.label')}
+              label={t('application:field.discoveryChannelId.label')}
               value={formData.step1.discoveryChannelId}
               onChange={handleOnOptionsFieldChange}
               options={discoveryChannelOptions}

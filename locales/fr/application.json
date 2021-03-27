@@ -8,19 +8,19 @@
     "submit": "Visitez le site Web du CSC"
   },
   "field": {
-    "birth-year": {
+    "birthYear": {
       "label": "En quelle année êtes-vous né?",
       "helper-text": "Veuillez noter que pour être éligible, vous devez avoir entre 18 et 30 ans et l'âge de la majorité dans votre province ou votre territoire de résidence.",
       "required": "Vous devez sélectionner l'année où vous êtes né"
     },
-    "community-interest": {
+    "communityInterest": {
       "label": "Si vous pouviez avoir un impact positif sur un problème de votre communauté, quel problème voudriez-vous aborder et pourquoi?",
       "helper-text": "Minimum de {{min}} mots et un maximum de mots {{max}}",
       "min-word": "Vous devez fournir une réponse à la question n° 2 avec plus ou égale à {{min}} mots",
       "max-word": "Vous devez fournir une réponse à la question n° 2 avec moins ou égale à {{max}} mots",
       "required": "Vous devez fournir une réponse à la question n° 2"
     },
-    "demographic-id": {
+    "demographicId": {
       "label": "Vous identifiez-vous avec une ou plusieurs des caractéristiques démographiques répertoriées?",
       "children-items": {
         "item-1": "Minorité visible / racialisée",
@@ -37,11 +37,11 @@
       "label": "Je suis une personne vivant avec un handicap",
       "required": "Vous devez sélectionner une réponse à vivre avec un handicap"
     },
-    "discovery-channel-id": {
+    "discoveryChannelId": {
       "label": "Comment avez-vous entendu parler du pilote de participation civique?",
       "required": "Vous devez indiquer comment vous avez entendu parler de ce pilote"
     },
-    "education-level-id": {
+    "educationLevelId": {
       "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
       "helper-text": "Veuillez noter qu'il n'y a pas d'obligation d'éducation pour ce programme.",
       "required": "Vous devez sélectionner une réponse pour le niveau d'éducation"
@@ -51,48 +51,48 @@
       "label": "Adresse courriel",
       "required": "Vous devez entrer une adresse courriel"
     },
-    "first-name": {
+    "firstName": {
       "label": "Prénom",
       "required": "Vous devez entrer votre prénom"
     },
-    "gender-id": {
+    "genderId": {
       "label": "Avec quelle identité de genre vous identifiez-vous le plus?",
       "required": "Vous devez sélectionner une réponse pour l'identité de genre"
     },
-    "is-canadian-citizen": {
+    "isCanadianCitizen": {
       "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
       "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108(3), 109(3) ou 114(4) ou devrait être de cet acte.",
       "required": "Vous devez indiquer si vous êtes un citoyen, un résident ou une personne protégée"
     },
-    "is-information-consented": {
+    "isInformationConsented": {
       "label": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
       "required": "Vous devez fournir le consentement à partager ces informations",
       "must-be-true": "Vous devez fournir le consentement à partager ces informations"
     },
-    "is-province-major-certified": {
+    "isProvinceMajorCertified": {
       "label": "Je certifie que je suis de l'âge de la majorité dans ma province ou territoire de résidence",
       "link": "Trouvez l'âge de la majorité dans votre province ou votre territoire",
       "required": "Vous devez certifier que vous avez plus d'âge de la majorité",
       "must-be-true": "Vous devez certifier que vous avez plus d'âge de la majorité"
     },
-    "language-id": {
+    "languageId": {
       "label": "Dans quelle langue officielle préféreriez-vous être contacté et participer?",
       "required": "Vous devez indiquer votre préférence de langue"
     },
-    "last-name": {
+    "lastName": {
       "label": "Nom de famille",
       "required": "Vous devez entrer votre nom de famille"
     },
-    "phone-number": {
+    "phoneNumber": {
       "label": "Numéro de téléphone",
       "helper-text": "Format acceptable: 506-555-5555",
       "phone-invalid": "Vous devez entrer un numéro de téléphone à dix chiffres valide (ex. 506-555-5555)"
     },
-    "province-id": {
+    "provinceId": {
       "label": "Dans quelle province ou territoire votre principale résidence est-elle située?",
       "required": "Vous devez sélectionner votre province ou votre territoire de résidence"
     },
-    "skills-interest": {
+    "skillsInterest": {
       "label": "Parlez-nous de vous-même, décrivez vos forces, vos passions et vos motivations. Quelles compétences et connaissances espérez-vous gagner de cette expérience?",
       "helper-text": "Minimum de {{min}} mots et un maximum de mots {{max}}",
       "min-word": "Vous devez fournir une réponse à la question n° 1 avec plus ou égale à {{min}} mots",

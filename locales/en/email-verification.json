@@ -5,13 +5,13 @@
     "description": "Thank you for your interest in the CSC-CPP pilot, please enter the verification code sent to you to validate your email. If you can't access your email at the moment, press \"I will do this later\" and click the validation link from the email directly at a later time."
   },
   "form": {
-    "access-code": {
+    "accessCode": {
       "label": "Six digit verification code",
       "required": "Verification code is required",
       "length-invalid": "Verification code must be 6 digit",
-      "invalid": "Verification code is not valid"
+      "invalid": "Verification code is not valid",
+      "help-text": "{{attempts}}/{{maxAttempts}} attempts remaining"
     },
-    "access-code-attempts": "{{attempts}}/{{maxAttempts}} attempts remaining",
     "submit": "Submit application",
     "cancel": "I will do it later"
   },

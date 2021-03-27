@@ -11,8 +11,6 @@ import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { TextAreaField, TextAreaFieldOnChangeEvent } from '../../components/form/TextAreaField';
 import useTranslation from 'next-translate/useTranslation';
-import kebabCase from 'lodash/kebabCase';
-import camelCase from 'lodash/camelCase';
 import Error from '../_error';
 import { Alert, AlertType } from '../../components/Alert';
 import { Button, ButtonOnClickEvent } from '../../components/Button';
@@ -89,15 +87,7 @@ const ContactUsPage: NextPage = () => {
 
     const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
 
-    return (
-      t('common:error-number', { number: index + 1 }) +
-      t(
-        `contact-us:form.${schemaErrors[index]?.path
-          ?.split('.')
-          .map((el) => kebabCase(el))
-          .join('.')}.${key}`
-      )
-    );
+    return t('common:error-number', { number: index + 1 }) + t(`contact-us:form.${schemaErrors[index]?.path}.${key}`);
   };
 
   if (submitContactUsError) return <Error err={submitContactUsError as HttpClientResponseError} />;
@@ -119,7 +109,7 @@ const ContactUsPage: NextPage = () => {
 
               return path ? (
                 <li key={path} className="tw-my-2">
-                  <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                  <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
                 </li>
               ) : undefined;
             })}
@@ -153,8 +143,8 @@ const ContactUsPage: NextPage = () => {
 
       <TextField
         field={nameof<FormDataState>((o) => o.phoneNumber)}
-        label={t('contact-us:form.phone-number.label')}
-        helperText={t('contact-us:form.phone-number.helper-text')}
+        label={t('contact-us:form.phoneNumber.label')}
+        helperText={t('contact-us:form.phoneNumber.helper-text')}
         value={formData?.phoneNumber}
         onChange={handleOnPhonNumberFieldChange}
         disabled={submitContactUsIsLoading || submitContactUsIsSuccess}

@@ -16,8 +16,6 @@ import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { Wizard, WizardOnPreviousClickEvent, WizardOnNextClickEvent } from '../../../components/Wizard';
 import { useSubmitApplication } from '../../../hooks/api/applications/useSubmitApplication';
-import kebabCase from 'lodash/kebabCase';
-import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
 import { ApplicationState, Step4State, Constants, GetDescriptionFunc, Step1State, Step2State, Step3State } from '../types';
@@ -138,15 +136,7 @@ const Step4Page = (): JSX.Element => {
 
     const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
 
-    return (
-      t('common:error-number', { number: index + 1 }) +
-      t(
-        `application:field.${schemaErrors[index]?.path
-          ?.split('.')
-          .map((el) => kebabCase(el))
-          .join('.')}.${key}`
-      )
-    );
+    return t('common:error-number', { number: index + 1 }) + t(`application:field.${schemaErrors[index]?.path}.${key}`);
   };
 
   if (submitApplicationError) return <Error err={submitApplicationError as HttpClientResponseError} />;
@@ -172,7 +162,7 @@ const Step4Page = (): JSX.Element => {
 
                   return path ? (
                     <li key={path} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                      <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
                     </li>
                   ) : undefined;
                 })}
@@ -206,7 +196,7 @@ const Step4Page = (): JSX.Element => {
             </div>
             <CheckboxeField
               field={nameof<Step4State>((o) => o.isInformationConsented)}
-              label={t('application:field.is-information-consented.label')}
+              label={t('application:field.isInformationConsented.label')}
               checked={formData.step4.isInformationConsented}
               onChange={handleOnCheckboxFieldChange}
               disabled={submitApplicationIsLoading || submitApplicationIsSuccess}
@@ -257,7 +247,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (step1.firstName) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.firstName),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.firstName))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.firstName)}.label`),
         value: step1.firstName,
       });
     }
@@ -266,7 +256,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (step1.lastName) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.lastName),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.lastName))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.lastName)}.label`),
         value: step1.lastName,
       });
     }
@@ -275,7 +265,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (step1.email) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.email),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.email))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.email)}.label`),
         value: step1.email,
       });
     }
@@ -284,7 +274,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (step1.phoneNumber) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.phoneNumber),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.phoneNumber))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.phoneNumber)}.label`),
         value: step1.phoneNumber,
       });
     }
@@ -293,7 +283,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (step1.birthYear) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.birthYear),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.birthYear))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.birthYear)}.label`),
         value: step1.birthYear.toString(),
       });
     }
@@ -302,7 +292,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (!languageIsLoading && language) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.languageId),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.languageId))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.languageId)}.label`),
         value: getDescription(language),
       });
     }
@@ -311,7 +301,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (step1.isCanadianCitizen !== undefined) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.isCanadianCitizen),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.isCanadianCitizen))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.isCanadianCitizen)}.label`),
         value: step1.isCanadianCitizen ? t('common:yes') : t('common:no'),
       });
     }
@@ -320,7 +310,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (!provinceIsLoading && province) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.provinceId),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.provinceId))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.provinceId)}.label`),
         value: getDescription(province),
       });
     }
@@ -329,7 +319,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (!discoveryChannelIsLoading && discoveryChannel) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step1.discoveryChannelId),
-        text: t(`application:field.${kebabCase(nameof<Step1State>((o) => o.discoveryChannelId))}.label`),
+        text: t(`application:field.${nameof<Step1State>((o) => o.discoveryChannelId)}.label`),
         value: getDescription(discoveryChannel),
       });
     }
@@ -338,7 +328,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (!genderIsLoading && gender) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step2.genderId),
-        text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.genderId))}.label`),
+        text: t(`application:field.${nameof<Step2State>((o) => o.genderId)}.label`),
         value: getDescription(gender),
       });
     }
@@ -347,7 +337,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (!educationLevelIsLoading && educationLevel) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step2.educationLevelId),
-        text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.educationLevelId))}.label`),
+        text: t(`application:field.${nameof<Step2State>((o) => o.educationLevelId)}.label`),
         value: getDescription(educationLevel),
       });
     }
@@ -358,13 +348,13 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
         children: (
           <ul className="tw-list-disc tw-list-inside tw-my-4">
             {[
-              t('application:field.demographic-id.children-items.item-1'),
-              t('application:field.demographic-id.children-items.item-2'),
-              t('application:field.demographic-id.children-items.item-3'),
-              t('application:field.demographic-id.children-items.item-4'),
-              t('application:field.demographic-id.children-items.item-5'),
-              t('application:field.demographic-id.children-items.item-6'),
-              t('application:field.demographic-id.children-items.item-7'),
+              t('application:field.demographicId.children-items.item-1'),
+              t('application:field.demographicId.children-items.item-2'),
+              t('application:field.demographicId.children-items.item-3'),
+              t('application:field.demographicId.children-items.item-4'),
+              t('application:field.demographicId.children-items.item-5'),
+              t('application:field.demographicId.children-items.item-6'),
+              t('application:field.demographicId.children-items.item-7'),
             ].map((val) => (
               <li key={val} className="tw-mb-2">
                 {val}
@@ -373,7 +363,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
           </ul>
         ),
         key: nameof<ApplicationState>((o) => o.step2.demographicId),
-        text: t(`application:field.${kebabCase(nameof<Step2State>((o) => o.demographicId))}.label`),
+        text: t(`application:field.${nameof<Step2State>((o) => o.demographicId)}.label`),
         value: getDescription(demographic),
       });
     }
@@ -382,7 +372,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (step3.skillsInterest) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step3.skillsInterest),
-        text: t(`application:field.${kebabCase(nameof<Step3State>((o) => o.skillsInterest))}.label`),
+        text: t(`application:field.${nameof<Step3State>((o) => o.skillsInterest)}.label`),
         value: step3.skillsInterest,
       });
     }
@@ -391,7 +381,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
     if (step3.communityInterest) {
       items.push({
         key: nameof<ApplicationState>((o) => o.step3.communityInterest),
-        text: t(`application:field.${kebabCase(nameof<Step3State>((o) => o.communityInterest))}.label`),
+        text: t(`application:field.${nameof<Step3State>((o) => o.communityInterest)}.label`),
         value: step3.communityInterest,
       });
     }

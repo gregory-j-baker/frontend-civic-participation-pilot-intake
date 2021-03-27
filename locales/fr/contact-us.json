@@ -18,7 +18,7 @@
       "label": "Prénom",
       "required": "Prénom est requis"
     },
-    "phone-number": {
+    "phoneNumber": {
       "helper-text": "Format acceptable: 506-555-5555",
       "label": "Numéro de téléphone",
       "phone-invalid": "Numéro de téléphone n'est pas dans un format valide (ex. 506-555-5555)"

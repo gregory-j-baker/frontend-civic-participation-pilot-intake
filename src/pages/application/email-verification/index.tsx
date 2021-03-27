@@ -10,8 +10,6 @@ import { NextSeo } from 'next-seo';
 import { useRouter } from 'next/router';
 import { TextField, TextFieldOnChangeEvent } from '../../../components/form/TextField';
 import useTranslation from 'next-translate/useTranslation';
-import kebabCase from 'lodash/kebabCase';
-import camelCase from 'lodash/camelCase';
 import Error from '../../_error';
 import Image from 'next/image';
 import { Alert, AlertType } from '../../../components/Alert';
@@ -108,15 +106,7 @@ const EmailVerficationPage: NextPage = () => {
 
     const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
 
-    return (
-      t('common:error-number', { number: index + 1 }) +
-      t(
-        `email-verification:form.${schemaErrors[index]?.path
-          ?.split('.')
-          .map((el) => kebabCase(el))
-          .join('.')}.${key}`
-      )
-    );
+    return t('common:error-number', { number: index + 1 }) + t(`email-verification:form.${schemaErrors[index]?.path}.${key}`);
   };
 
   if (submitAccessCodeError instanceof HttpClientResponseError && (submitAccessCodeError as HttpClientResponseError).responseStatus !== 400 && (submitAccessCodeError as HttpClientResponseError).responseStatus !== 429)
@@ -144,7 +134,7 @@ const EmailVerficationPage: NextPage = () => {
 
                   return path ? (
                     <li key={path} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                      <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
                     </li>
                   ) : undefined;
                 })}
@@ -156,7 +146,7 @@ const EmailVerficationPage: NextPage = () => {
             <Alert title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
               <ul className="tw-list-disc">
                 <li key="{path}" className="tw-my-2">
-                  <a href={`#form-field-${camelCase('accessCode')}`}>{t('email-verification:form.access-code.invalid')}</a>
+                  <a href="#form-field-accessCode">{t('email-verification:form.accessCode.invalid')}</a>
                 </li>
               </ul>
             </Alert>
@@ -165,8 +155,8 @@ const EmailVerficationPage: NextPage = () => {
           <div className="tw-my-16">
             <TextField
               field={nameof<FormDataState>((o) => o.accessCode)}
-              label={t('email-verification:form.access-code.label')}
-              helperText={t('email-verification:form.access-code-attempts', { attempts: formData?.attempts, maxAttempts: 5 })}
+              label={t('email-verification:form.accessCode.label')}
+              helperText={t('email-verification:form.accessCode.help-text', { attempts: formData?.attempts, maxAttempts: 5 })}
               value={formData?.accessCode}
               onChange={handleOnTextFieldChange}
               disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess}

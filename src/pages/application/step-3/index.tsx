@@ -14,8 +14,6 @@ import { TextAreaField } from '../../../components/form/TextAreaField';
 import type { TextFieldOnChangeEvent } from '../../../components/form/TextField';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { Wizard, WizardOnNextClickEvent, WizardOnPreviousClickEvent } from '../../../components/Wizard';
-import kebabCase from 'lodash/kebabCase';
-import camelCase from 'lodash/camelCase';
 import { Alert, AlertType } from '../../../components/Alert/Alert';
 import { ApplicationState, Step3State, Constants } from '../types';
 import { step3Schema, step2Schema, step1Schema, SkillsInterestWordLength } from '../../../yup/applicationSchemas';
@@ -95,16 +93,10 @@ const Step3Page = (): JSX.Element => {
 
     return (
       t('common:error-number', { number: index + 1 }) +
-      t(
-        `application:field.${schemaErrors[index]?.path
-          ?.split('.')
-          .map((el) => kebabCase(el))
-          .join('.')}.${key}`,
-        {
-          min: (schemaErrors[index].params?.min ?? -1) as number,
-          max: (schemaErrors[index].params?.max ?? -1) as number,
-        }
-      )
+      t(`application:field.${schemaErrors[index]?.path}.${key}`, {
+        min: (schemaErrors[index].params?.min ?? -1) as number,
+        max: (schemaErrors[index].params?.max ?? -1) as number,
+      })
     );
   };
 
@@ -129,7 +121,7 @@ const Step3Page = (): JSX.Element => {
 
                   return path ? (
                     <li key={path} className="tw-my-2">
-                      <a href={`#form-field-${camelCase(field)}`}>{getSchemaError(path)}</a>
+                      <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
                     </li>
                   ) : undefined;
                 })}
@@ -140,8 +132,8 @@ const Step3Page = (): JSX.Element => {
           <Wizard activeStep={3} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
             <TextAreaField
               field={nameof<Step3State>((o) => o.skillsInterest)}
-              label={t('application:field.skills-interest.label')}
-              helperText={t('application:field.skills-interest.helper-text', { ...SkillsInterestWordLength })}
+              label={t('application:field.skillsInterest.label')}
+              helperText={t('application:field.skillsInterest.helper-text', { ...SkillsInterestWordLength })}
               value={formData.step3.skillsInterest}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<Step3State>((o) => o.skillsInterest))}
@@ -154,8 +146,8 @@ const Step3Page = (): JSX.Element => {
 
             <TextAreaField
               field={nameof<Step3State>((o) => o.communityInterest)}
-              label={t('application:field.community-interest.label')}
-              helperText={t('application:field.community-interest.helper-text', { ...SkillsInterestWordLength })}
+              label={t('application:field.communityInterest.label')}
+              helperText={t('application:field.communityInterest.helper-text', { ...SkillsInterestWordLength })}
               value={formData.step3.communityInterest}
               onChange={handleOnTextFieldChange}
               error={getSchemaError(nameof<Step3State>((o) => o.communityInterest))}

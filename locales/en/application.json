@@ -8,19 +8,19 @@
     "submit": "Visit the CSC website"
   },
   "field": {
-    "birth-year": {
+    "birthYear": {
       "label": "What year were you born?",
       "helper-text": "Please note that to be eligible you must be between 18-30 years of age and of the age of majority in your province or territory of residence.",
       "required": "You must select the year you were born"
     },
-    "community-interest": {
+    "communityInterest": {
       "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
       "helper-text": "Minimum of {{min}} words and a maxium of {{max}} words",
       "min-word": "You must provide a response to question #2 with more or equal to {{min}} words",
       "max-word": "You must provide a response to question #2 with less or equal to {{max}} words",
       "required": "You must provide a response to question #2"
     },
-    "demographic-id": {
+    "demographicId": {
       "label": "Do you identify with one or more of the demographic characteristics listed?",
       "children-items": {
         "item-1": "Visible minority/racialized",
@@ -37,11 +37,11 @@
       "label": "I am a person living with a disability",
       "required": "You must select a response for living with a disability"
     },
-    "discovery-channel-id": {
+    "discoveryChannelId": {
       "label": "How did you hear about the Civic Participation Pilot?",
       "required": "You must indicate how you heard about this pilot"
     },
-    "education-level-id": {
+    "educationLevelId": {
       "label": "What is your highest level of formal education completed, or enrolled in currently?",
       "helper-text": "Please note that there is no education requirement for this program.",
       "required": "You must select a response for level of education"
@@ -51,48 +51,48 @@
       "label": "Email address",
       "required": "You must enter an email address"
     },
-    "first-name": {
+    "firstName": {
       "label": "First name",
       "required": "You must enter your first name"
     },
-    "gender-id": {
+    "genderId": {
       "label": "With which gender identity do you most identify?",
       "required": "You must select a response for gender identity"
     },
-    "is-canadian-citizen": {
+    "isCanadianCitizen": {
       "label": "Are you a Canadian citizen, permanent resident, or protected person?",
       "helper-text": "A protected person is a person on whom refugee protection is conferred under the Immigration and Refugee Protection Act, and whose claim or application has not subsequently been deemed to be rejected under subsection 108(3), 109(3) or 114(4) or should be of that Act.",
       "required": "You must indicate if you are a citizen, resident, or protected person"
     },
-    "is-information-consented": {
+    "isInformationConsented": {
       "label": "To the best of my knowledge, all information above is true and accurate, and I consent to sharing my response with Employment and Social Development Canada",
       "required": "You must provide consent to share this information",
       "must-be-true": "You must provide consent to share this information"
     },
-    "is-province-major-certified": {
+    "isProvinceMajorCertified": {
       "label": "I certify I am of the age of majority in my province or territory of residence",
       "link": "Find the age of majority in your province or territory",
       "required": "You must certify you are over the age of majority",
       "must-be-true": "You must certify you are over the age of majority"
     },
-    "language-id": {
+    "languageId": {
       "label": "In which official language would you prefer to be contacted and participate?",
       "required": "You must indicate your language preference"
     },
-    "last-name": {
+    "lastName": {
       "label": "Last name",
       "required": "You must enter your last name"
     },
-    "phone-number": {
+    "phoneNumber": {
       "label": "Phone number",
       "helper-text": "Acceptable format: 506-555-5555",
       "phone-invalid": "You must enter a valid ten-digit phone number (ex. 506-555-5555)"
     },
-    "province-id": {
+    "provinceId": {
       "label": "In which province or territory is your principle residence located?",
       "required": "You must select your province or territory of residence"
     },
-    "skills-interest": {
+    "skillsInterest": {
       "label": "Tell us about yourself, describe your strengths, passions and what motivates you. What skills and knowledge do you hope to gain from this experience?",
       "helper-text": "Minimum of {{min}} words and a maxium of {{max}} words",
       "min-word": "You must provide a response to question #1 with more or equal to {{min}} words",
