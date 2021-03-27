@@ -48,3 +48,8 @@ export interface HateoasLink {
     type?: string;
   };
 }
+
+export enum Role {
+  CPP_Administe = 'CivicParticipationProgram.Administer',
+  CPP_Manage = 'CivicParticipationProgram.Manage',
+}

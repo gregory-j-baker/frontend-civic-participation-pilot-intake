@@ -8,6 +8,8 @@
 import { useSession, signIn } from 'next-auth/client';
 import { Session } from 'next-auth';
 import AccessDeniedPage from '../AccessDeniedPage/AccessDeniedPage';
+import { Role } from '../../common/types';
+import { exists } from 'node:fs';
 
 export interface AADSession extends Session {
   roles?: string[];
@@ -15,10 +17,11 @@ export interface AADSession extends Session {
 
 export interface PageSecurityGateProps {
   children: React.ReactNode;
+  requiredRoles?: Role[];
   secured?: boolean;
 }
 
-export const PageSecurityGate = ({ children, secured }: PageSecurityGateProps): JSX.Element => {
+export const PageSecurityGate = ({ children, requiredRoles, secured }: PageSecurityGateProps): JSX.Element => {
   const [session, loading] = useSession();
 
   if (typeof window !== 'undefined' && secured) {
@@ -30,12 +33,15 @@ export const PageSecurityGate = ({ children, secured }: PageSecurityGateProps): 
       signIn();
       return <></>;
     }
-
-    console.log((session as AADSession).roles?.includes('CivicParticipationProgram.Manage'));
+    console.log(session);
 
     // validate roles
-    if (((session as AADSession).roles?.includes('CivicParticipationProgram.Manage') ?? false) === false) {
-      return <AccessDeniedPage />;
+    if (requiredRoles && requiredRoles.length > 0) {
+      const sessionRoles = (session as AADSession).roles;
+      if (!sessionRoles || sessionRoles.length === 0) return <AccessDeniedPage />;
+      if (sessionRoles.filter((role) => requiredRoles.map((r) => r as string).includes(role)).length === 0) {
+        return <AccessDeniedPage />;
+      }
     }
   }
 

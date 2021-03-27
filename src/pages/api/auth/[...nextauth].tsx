@@ -45,7 +45,7 @@ const handler: NextApiHandler = (req, res) => {
     clientSecret: process.env.ESDC_AD_CLIENT_SECRET ?? '',
     idToken: true,
     profile: (profile) => ({ ...profile, id: profile.oid as string } as Profile),
-    scope: 'openid profile api://civic-participation-management/manage',
+    scope: 'openid profile',
     tenantId: process.env.ESDC_AD_TENANT_ID ?? '',
   };
 

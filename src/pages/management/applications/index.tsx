@@ -6,7 +6,9 @@
  */
 
 import { GetStaticProps } from 'next';
+import { Role } from '../../../common/types';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
+import { PageSecurityGateProps } from '../../../components/PageSecurityGate';
 
 const ManagementApplicationsPage = (): JSX.Element => {
   return (
@@ -19,7 +21,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
-      secured: true,
+      ...({ secured: true, requiredRoles: [Role.CPP_Manage] } as PageSecurityGateProps),
     },
   };
 };

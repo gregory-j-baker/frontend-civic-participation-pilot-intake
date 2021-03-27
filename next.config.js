@@ -9,4 +9,11 @@ const nextTranslate = require('next-translate');
 
 module.exports = nextTranslate({
   pageExtensions: ['tsx'],
+  redirects: async () => [
+    {
+      source: '/application',
+      destination: '/application/step-1',
+      permanent: false,
+    },
+  ],
 });
