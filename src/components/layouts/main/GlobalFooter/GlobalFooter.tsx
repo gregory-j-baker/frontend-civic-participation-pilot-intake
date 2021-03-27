@@ -18,7 +18,17 @@ export const GlobalFooter = (): JSX.Element => {
           <nav className="container wb-navcurr">
             <h2 className="wb-inv">{t('layouts:main.footer.about-government.header')}</h2>
             <ul className="list-unstyled colcount-sm-2 colcount-md-3">
-              {t<[{ text: string; href: string }]>('layouts:main.footer.about-government.links', {}, { returnObjects: true }).map(({ text, href }) => (
+              {[
+                { text: t('layouts:main.footer.about-government.links.item-1.text'), href: t('layouts:main.footer.about-government.links.item-1.href') },
+                { text: t('layouts:main.footer.about-government.links.item-2.text'), href: t('layouts:main.footer.about-government.links.item-2.href') },
+                { text: t('layouts:main.footer.about-government.links.item-3.text'), href: t('layouts:main.footer.about-government.links.item-3.href') },
+                { text: t('layouts:main.footer.about-government.links.item-4.text'), href: t('layouts:main.footer.about-government.links.item-4.href') },
+                { text: t('layouts:main.footer.about-government.links.item-5.text'), href: t('layouts:main.footer.about-government.links.item-5.href') },
+                { text: t('layouts:main.footer.about-government.links.item-6.text'), href: t('layouts:main.footer.about-government.links.item-6.href') },
+                { text: t('layouts:main.footer.about-government.links.item-7.text'), href: t('layouts:main.footer.about-government.links.item-7.href') },
+                { text: t('layouts:main.footer.about-government.links.item-8.text'), href: t('layouts:main.footer.about-government.links.item-8.href') },
+                { text: t('layouts:main.footer.about-government.links.item-9.text'), href: t('layouts:main.footer.about-government.links.item-9.href') },
+              ].map(({ text, href }) => (
                 <li key={text}>
                   <a href={href}>{text}</a>
                 </li>
@@ -32,7 +42,13 @@ export const GlobalFooter = (): JSX.Element => {
               <nav className="col-md-10 ftr-urlt-lnk">
                 <h2 className="wb-inv">{t('layouts:main.footer.about-this-site.header')}</h2>
                 <ul>
-                  {t<[{ text: string; href: string }]>('layouts:main.footer.about-this-site.links', {}, { returnObjects: true }).map(({ text, href }) => (
+                  {[
+                    { text: t('layouts:main.footer.about-this-site.links.item-1.text'), href: t('layouts:main.footer.about-this-site.links.item-1.href') },
+                    { text: t('layouts:main.footer.about-this-site.links.item-2.text'), href: t('layouts:main.footer.about-this-site.links.item-2.href') },
+                    { text: t('layouts:main.footer.about-this-site.links.item-3.text'), href: t('layouts:main.footer.about-this-site.links.item-3.href') },
+                    { text: t('layouts:main.footer.about-this-site.links.item-4.text'), href: t('layouts:main.footer.about-this-site.links.item-4.href') },
+                    { text: t('layouts:main.footer.about-this-site.links.item-5.text'), href: t('layouts:main.footer.about-this-site.links.item-5.href') },
+                  ].map(({ text, href }) => (
                     <li key={text}>
                       <a href={href}>{text}</a>
                     </li>

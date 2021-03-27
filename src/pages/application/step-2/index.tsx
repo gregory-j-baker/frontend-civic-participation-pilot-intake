@@ -205,7 +205,15 @@ const Step2Page = (): JSX.Element => {
               required
               inline={currentBreakpoint === undefined || currentBreakpoint >= theme.breakpoints.sm}>
               <ul className="tw-list-disc tw-list-inside tw-my-4 tw-font-bold">
-                {t<string[]>(`application:field.demographic-id.children-items`, {}, { returnObjects: true }).map((val) => (
+                {[
+                  t('application:field.demographic-id.children-items.item-1'),
+                  t('application:field.demographic-id.children-items.item-2'),
+                  t('application:field.demographic-id.children-items.item-3'),
+                  t('application:field.demographic-id.children-items.item-4'),
+                  t('application:field.demographic-id.children-items.item-5'),
+                  t('application:field.demographic-id.children-items.item-6'),
+                  t('application:field.demographic-id.children-items.item-7'),
+                ].map((val) => (
                   <li key={val} className="tw-mb-2">
                     {val}
                   </li>

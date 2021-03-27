@@ -357,7 +357,15 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
       items.push({
         children: (
           <ul className="tw-list-disc tw-list-inside tw-my-4">
-            {t<string[]>(`application:field.${kebabCase(nameof<Step2State>((o) => o.demographicId))}.children-items`, {}, { returnObjects: true }).map((val) => (
+            {[
+              t('application:field.demographic-id.children-items.item-1'),
+              t('application:field.demographic-id.children-items.item-2'),
+              t('application:field.demographic-id.children-items.item-3'),
+              t('application:field.demographic-id.children-items.item-4'),
+              t('application:field.demographic-id.children-items.item-5'),
+              t('application:field.demographic-id.children-items.item-6'),
+              t('application:field.demographic-id.children-items.item-7'),
+            ].map((val) => (
               <li key={val} className="tw-mb-2">
                 {val}
               </li>

@@ -22,15 +22,15 @@
     },
     "demographic-id": {
       "label": "Do you identify with one or more of the demographic characteristics listed?",
-      "children-items": [
-        "Visible minority/racialized",
-        "Indigenous (i.e. First Nations, Inuit (Inuk), or Métis, or Non-Affiliated)",
-        "Person with a disability",
-        "LGBTQ2",
-        "Recent newcomer to Canada (within the last five years)",
-        "Official Language Minority Community (OLMC)",
-        "Living in a rural or remote area"
-      ],
+      "children-items": {
+        "item-1": "Visible minority/racialized",
+        "item-2": "Indigenous (i.e. First Nations, Inuit (Inuk), or Métis, or Non-Affiliated)",
+        "item-3": "Person with a disability",
+        "item-4": "LGBTQ2",
+        "item-5": "Recent newcomer to Canada (within the last five years)",
+        "item-6": "Official Language Minority Community (OLMC)",
+        "item-7": "Living in a rural or remote area"
+      },
       "required": "You must select a response for demographic characteristics"
     },
     "disability-id": {
