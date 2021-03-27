@@ -7,7 +7,6 @@
 
 import { useCallback, useMemo } from 'react';
 import { GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
 import { Role } from '../../../common/types';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
@@ -16,17 +15,18 @@ import { useApplications } from '../../../hooks/api/applications/useApplications
 import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
 import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
 import { GetDescriptionFunc } from '../../application/types';
+import useTranslation from 'next-translate/useTranslation';
 import Error from '../../_error';
 import Link from 'next/link';
 
 const ManagementApplicationsPage = (): JSX.Element => {
-  const { locale } = useRouter();
+  const { lang } = useTranslation();
   const { data: applications, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({});
-  const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang: locale });
-  const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces({ lang: locale });
+  const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
+  const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces({ lang });
 
-  const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${locale}-CA`), [locale]);
-  const getDescription: GetDescriptionFunc = useCallback((obj) => (obj ? (locale === 'fr' ? obj.descriptionFr : obj.descriptionEn) : ''), [locale]);
+  const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
+  const getDescription: GetDescriptionFunc = useCallback((obj) => (obj ? (lang === 'fr' ? obj.descriptionFr : obj.descriptionEn) : ''), [lang]);
 
   if (applicationsError || languagesError || provincesError) return <Error err={applicationsError ?? languagesError ?? provincesError} />;
 
