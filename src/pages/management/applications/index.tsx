@@ -37,7 +37,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
   }
 
   return (
-    <MainLayout showBreadcrumb={false}>
+    <MainLayout>
       <h1 className="tw-m-0 tw-mb-10 tw-border-none">Management - Applications Listing here!</h1>
       {isApplicationsLoading || isApplicationStatusesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />

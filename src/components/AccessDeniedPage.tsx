@@ -7,14 +7,14 @@
 
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
-import { ErrorPageLinks } from '../components/ErrorPageLinks';
-import { MainLayout } from '../components/layouts/main/MainLayout';
+import { ErrorPageLinks } from './ErrorPageLinks';
+import { MainLayout } from './layouts/main/MainLayout';
 
-const Custom404 = (): JSX.Element => {
+const AccessDeniedPage: React.FC = (): JSX.Element => {
   const { t, lang } = useTranslation();
   return (
     <MainLayout>
-      <NextSeo title={t('common:custom-404.page-title')} />
+      <NextSeo title={t('common:access-denied.page-title')} />
 
       <div className="tw-my-8">
         <div className="tw-flex">
@@ -23,15 +23,15 @@ const Custom404 = (): JSX.Element => {
           </div>
           <div className="tw-flex-grow">
             <h1 id="wb-cont" className="tw-mt-0">
-              {t('common:custom-404.header')}
+              {t('common:access-denied.header')}
             </h1>
             <p className="tw-m-0">
-              <b>{t('common:custom-404.error-code')}</b>
+              <b>{t('common:access-denied.error-code')}</b>
             </p>
           </div>
         </div>
 
-        <p className="tw-m-0 tw-my-4">{t('common:custom-404.description')}</p>
+        <p className="tw-m-0 tw-my-4">{t('common:access-denied.description')}</p>
 
         <ErrorPageLinks lang={lang} />
       </div>
@@ -39,4 +39,4 @@ const Custom404 = (): JSX.Element => {
   );
 };
 
-export default Custom404;
+export default AccessDeniedPage;

@@ -115,7 +115,7 @@ const EmailVerficationPage: NextPage = () => {
   if (!formData.email) return <Custom404 />;
 
   return (
-    <MainLayout showBreadcrumb={false}>
+    <MainLayout>
       <NextSeo title={t('email-verification:page.title')} />
       <div className="tw-flex tw-space-x-10">
         <div className="tw-w-full md:tw-w-1/2">

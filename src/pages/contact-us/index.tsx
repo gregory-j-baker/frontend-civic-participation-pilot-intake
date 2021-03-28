@@ -93,7 +93,7 @@ const ContactUsPage: NextPage = () => {
   if (submitContactUsError) return <Error err={submitContactUsError as HttpClientResponseError} />;
 
   return (
-    <MainLayout showBreadcrumb={false}>
+    <MainLayout>
       <NextSeo title={t('contact-us:page.title')} />
 
       <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
