@@ -1116,10 +1116,10 @@
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.168.tgz#fe24632e79b7ade3f132891afff86caa5e5ce008"
   integrity sha512-oVfRvqHV/V6D1yifJbVRU3TMp8OT6o6BG+U9MkwuJ3U8/CsDHvalRpsxBqivn71ztOFZBTfJMvETbqHiaNSj7Q==
 
-"@types/next-auth@~3.7.2":
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/@types/next-auth/-/next-auth-3.7.2.tgz#d8c6a99fd7882fe6b25144f334d10af838b3298b"
-  integrity sha512-04NTYd/eM/pr0YDqXQnaLcFFcmzWgah3oNsEftzbKWzRZ4GjJ1ul4fjOglxvH0bllCKqFhx5fEIorNymD1CPWQ==
+"@types/next-auth@^3.7.4":
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/@types/next-auth/-/next-auth-3.7.4.tgz#bb294b73bd42cb478e34e6140a550ec243215178"
+  integrity sha512-JzU9RJJEJR1UqcN15J8p49SzhLlyFIcDGdxiMAuLqcQKU/145D5uanMxFBi9zakOgYhT/2gDX5UanbfjdmAKAA==
   dependencies:
     "@types/node" "*"
     "@types/react" "*"

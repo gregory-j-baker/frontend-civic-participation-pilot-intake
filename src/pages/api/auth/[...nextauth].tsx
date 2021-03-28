@@ -9,20 +9,11 @@ import type { NextApiHandler } from 'next';
 import type { User } from 'next-auth';
 import NextAuth from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
-import type { Provider } from 'next-auth/providers';
 import Providers from 'next-auth/providers';
 
-type OptionsBase = {
-  [K in keyof Omit<Provider, 'id'>]?: Provider[K];
+type AzureADB2CProfile = Record<string, unknown> & {
+  oid?: string;
 };
-
-interface AzureADB2COptions extends OptionsBase {
-  name?: string;
-  clientId: string;
-  clientSecret: string;
-  idToken: boolean;
-  tenantId: string;
-}
 
 interface JWTAccount extends Record<string, unknown> {
   accessToken?: string;
@@ -40,17 +31,17 @@ type UserOrToken = (User | JWT) & {
 };
 
 const handler: NextApiHandler = (req, res) => {
-  const options: AzureADB2COptions = {
-    clientId: process.env.ESDC_AD_CLIENT_ID ?? '',
-    clientSecret: process.env.ESDC_AD_CLIENT_SECRET ?? '',
-    idToken: true,
-    profile: (profile) => ({ ...profile, id: profile.oid as string } as Profile),
-    scope: 'openid profile api://civic-participation-management/manage',
-    tenantId: process.env.ESDC_AD_TENANT_ID ?? '',
-  };
-
   return NextAuth(req, res, {
-    providers: [Providers.AzureADB2C(options)],
+    providers: [
+      Providers.AzureADB2C({
+        clientId: process.env.ESDC_AD_CLIENT_ID ?? '',
+        clientSecret: process.env.ESDC_AD_CLIENT_SECRET ?? '',
+        idToken: true,
+        profile: (profile: AzureADB2CProfile) => ({ ...profile, id: profile.oid } as Profile),
+        scope: 'openid profile api://civic-participation-management/manage',
+        tenantId: process.env.ESDC_AD_TENANT_ID,
+      }),
+    ],
     callbacks: {
       jwt: async (token, user: JWTUser, account: JWTAccount) => {
         return {
