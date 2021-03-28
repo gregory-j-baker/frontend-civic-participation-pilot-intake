@@ -22,7 +22,6 @@ import { HttpClientResponseError } from '../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../yup/yup-custom';
 import { GetStaticProps } from 'next';
 import { ContactUsData, useSubmitContactUs } from '../../hooks/api/contact-form/useSubmitContactUs';
-import { tryFormatPhoneNumber } from '../../utils/phone-utils';
 
 interface FormDataState {
   email?: string;
@@ -47,13 +46,7 @@ const ContactUsPage: NextPage = () => {
   const [formData, setFormDataState] = useState<FormDataState>();
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent & TextAreaFieldOnChangeEvent = ({ field, value }) => {
-    setFormDataState((prev) => {
-      return { ...prev, [field as keyof FormDataState]: value ?? undefined };
-    });
-  };
-
-  const handleOnPhonNumberFieldChange: TextFieldOnChangeEvent = ({ value }) => {
-    setFormDataState((prev) => ({ ...prev, phoneNumber: tryFormatPhoneNumber(value ?? undefined) }));
+    setFormDataState((prev) => ({ ...prev, [field as keyof FormDataState]: value ?? undefined }));
   };
 
   const handleOnSubmit: ButtonOnClickEvent = async (event) => {
@@ -146,7 +139,7 @@ const ContactUsPage: NextPage = () => {
         label={t('contact-us:form.phoneNumber.label')}
         helperText={t('contact-us:form.phoneNumber.helper-text')}
         value={formData?.phoneNumber}
-        onChange={handleOnPhonNumberFieldChange}
+        onChange={handleOnTextFieldChange}
         disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
         error={getSchemaError(nameof<FormDataState>((o) => o.phoneNumber))}
         gutterBottom
