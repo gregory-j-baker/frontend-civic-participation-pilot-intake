@@ -11,13 +11,8 @@ import { Button, ButtonOnClickEvent } from '../Button';
 import { ContentPaper } from '../ContentPaper/ContentPaper';
 import { TailwindColor } from '../../common/types';
 
-export interface WizardOnNextClickEvent {
-  (event: MouseEvent<HTMLButtonElement>): void;
-}
-
-export interface WizardOnPreviousClickEvent {
-  (event: MouseEvent<HTMLButtonElement>): void;
-}
+export type WizardOnNextClickEvent = (event: MouseEvent<HTMLButtonElement>) => void;
+export type WizardOnPreviousClickEvent = (event: MouseEvent<HTMLButtonElement>) => void;
 
 export interface WizardProps {
   activeStep: number;

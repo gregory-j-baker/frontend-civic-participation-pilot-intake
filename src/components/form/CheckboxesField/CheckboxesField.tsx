@@ -10,9 +10,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { Checkbox, ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from '../FieldErrorMessage';
 
-export interface CheckboxesFieldOnChangeEvent {
-  (event: { field: string; value: string | null; checked: boolean }): void;
-}
+export type CheckboxesFieldOnChangeEvent = (event: { field: string; value: string | null; checked: boolean }) => void;
 
 export interface CheckboxesFieldOption {
   disabled?: boolean;

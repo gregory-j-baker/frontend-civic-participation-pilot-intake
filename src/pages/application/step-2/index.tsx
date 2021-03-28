@@ -92,7 +92,7 @@ const Step2Page = (): JSX.Element => {
     }
   };
 
-  const getDescription: GetDescriptionFunc = useCallback((obj) => (obj ? (lang === 'fr' ? obj.descriptionFr : obj.descriptionEn) : ''), [lang]);
+  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
   // demographic radio options
   const demographicOptions = useMemo<RadiosFieldOption[]>(() => {

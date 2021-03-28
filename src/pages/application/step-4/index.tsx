@@ -238,7 +238,7 @@ export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Elemen
   const { data: language, isLoading: languageIsLoading } = useLanguage(step1.languageId as string);
   const { data: province, isLoading: provinceIsLoading } = useProvince(step1.provinceId as string);
 
-  const getDescription: GetDescriptionFunc = useCallback((obj) => (obj ? (lang === 'fr' ? obj.descriptionFr : obj.descriptionEn) : ''), [lang]);
+  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
   const formReviewItems: FormReviewItem[] = useMemo(() => {
     const items: FormReviewItem[] = [];

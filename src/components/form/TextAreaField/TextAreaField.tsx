@@ -11,9 +11,7 @@ import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap
 import { WordRegExp } from '../../../common/WordRegExp';
 import { FieldErrorMessage } from '../FieldErrorMessage';
 
-export interface TextAreaFieldOnChangeEvent {
-  (event: { field: string; value: string | null }): void;
-}
+export type TextAreaFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
 
 export interface TextAreaFieldProps {
   children?: React.ReactNode;

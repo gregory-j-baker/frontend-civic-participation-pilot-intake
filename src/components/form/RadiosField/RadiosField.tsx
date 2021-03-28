@@ -10,9 +10,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { ControlLabel, FormGroup, HelpBlock, Radio } from 'react-bootstrap';
 import { FieldErrorMessage } from '../FieldErrorMessage';
 
-export interface RadiosFieldOnChangeEvent {
-  (event: { field: string; value: string | null }): void;
-}
+export type RadiosFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
 
 export interface RadiosFieldOption {
   disabled?: boolean;

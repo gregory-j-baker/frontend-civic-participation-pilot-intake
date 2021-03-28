@@ -18,6 +18,7 @@ import { GetDescriptionFunc } from '../../application/types';
 import useTranslation from 'next-translate/useTranslation';
 import Error from '../../_error';
 import Link from 'next/link';
+import { Language, Province } from '../../../hooks/api/code-lookups/types';
 
 const ManagementApplicationsPage = (): JSX.Element => {
   const { lang } = useTranslation();
@@ -26,7 +27,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces({ lang });
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
-  const getDescription: GetDescriptionFunc = useCallback((obj) => (obj ? (lang === 'fr' ? obj.descriptionFr : obj.descriptionEn) : ''), [lang]);
+  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
   if (applicationsError || languagesError || provincesError) return <Error err={applicationsError ?? languagesError ?? provincesError} />;
 
@@ -70,8 +71,8 @@ const ManagementApplicationsPage = (): JSX.Element => {
                           <div className="tw-text-sm tw-font-medium tw-text-gray-900">{`${application.firstName} ${application.lastName}`}</div>
                           <div className="tw-text-sm tw-text-gray-500">{`${application.email}`}</div>
                         </td>
-                        <td className="tw-px-4 tw-py-2 ">{getDescription(languages?._embedded.languages.find((obj) => obj.id === application.languageId))}</td>
-                        <td className="tw-px-4 tw-py-2 ">{getDescription(provinces?._embedded.provinces.find((obj) => obj.id === application.provinceId))}</td>
+                        <td className="tw-px-4 tw-py-2 ">{languages && getDescription(languages._embedded.languages.find((obj) => obj.id === application.languageId) as Language)}</td>
+                        <td className="tw-px-4 tw-py-2 ">{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</td>
                         <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</td>
                         <td className="tw-px-4 tw-py-2 ">{application.applicationStatusId}</td>
                         <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap tw-text-right tw-text-sm tw-font-medium">

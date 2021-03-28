@@ -9,9 +9,7 @@ import useTranslation from 'next-translate/useTranslation';
 import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from '../FieldErrorMessage';
 
-export interface TextFieldOnChangeEvent {
-  (event: { field: string; value: string | null }): void;
-}
+export type TextFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
 
 export interface TextFieldProps {
   children?: React.ReactNode;

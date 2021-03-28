@@ -17,14 +17,9 @@ export interface ButtonLinkProps extends LinkProps {
   outline?: boolean;
 }
 
-export interface getColorClassesFunc {
-  (color: TailwindColor): {
-    defaultColorClasses: string;
-    outlineClasses: string;
-  };
-}
+export type GetColorClassesFunc = (color: TailwindColor) => { defaultColorClasses: string; outlineClasses: string };
 
-const getColorClasses: getColorClassesFunc = (color) => {
+export const getColorClasses: GetColorClassesFunc = (color) => {
   switch (color) {
     case TailwindColor.blue:
       return {

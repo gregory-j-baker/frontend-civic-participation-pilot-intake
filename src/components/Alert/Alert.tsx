@@ -22,14 +22,9 @@ export interface AlertProps {
   type?: AlertType;
 }
 
-export interface getColorClassesFunc {
-  (alertType: AlertType): {
-    rootColorClasses: string;
-    iconColorClasses: string;
-  };
-}
+export type GetColorClassesFunc = (alertType: AlertType) => { rootColorClasses: string; iconColorClasses: string };
 
-const getColorClasses: getColorClassesFunc = (alertType) => {
+export const getColorClasses: GetColorClassesFunc = (alertType) => {
   switch (alertType) {
     case AlertType.danger:
       return {

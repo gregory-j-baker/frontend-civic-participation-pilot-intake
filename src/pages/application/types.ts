@@ -10,9 +10,7 @@ export enum Constants {
   EmailVerificationStorageKey = 'CPP_EMAIL_VERIFICATION_STORAGE_KEY',
 }
 
-export interface GetDescriptionFunc {
-  (obj: { descriptionFr: string; descriptionEn: string } | undefined): string;
-}
+export type GetDescriptionFunc = (obj: { descriptionFr: string; descriptionEn: string }) => string;
 
 export interface Step1State {
   birthYear?: number;
