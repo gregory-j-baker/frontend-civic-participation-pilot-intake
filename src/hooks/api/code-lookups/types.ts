@@ -32,7 +32,14 @@ export interface Lookup {
 }
 
 /**
- * Discovery Channels
+ * Application Statuses
+ */
+export const applicationStatusesQueryKey = 'application-statuses';
+export const applicationStatusesUri = `${apiConfig.baseUri}/application-statuses`;
+export interface ApplicationStatus extends Lookup {}
+
+/**
+ * Demographics
  */
 export const demographicsQueryKey = 'demographics';
 export const demographicsUri = `${apiConfig.baseUri}/demographics`;
