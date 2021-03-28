@@ -18,23 +18,28 @@ import { GetDescriptionFunc } from '../../application/types';
 import useTranslation from 'next-translate/useTranslation';
 import Error from '../../_error';
 import Link from 'next/link';
-import { Language, Province } from '../../../hooks/api/code-lookups/types';
+import { ApplicationStatus, Language, Province } from '../../../hooks/api/code-lookups/types';
+import { useApplicationStatuses } from '../../../hooks/api/code-lookups/useApplicationStatuses';
 
 const ManagementApplicationsPage = (): JSX.Element => {
   const { lang } = useTranslation();
+
   const { data: applications, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({});
+  const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({});
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces({ lang });
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
-  if (applicationsError || languagesError || provincesError) return <Error err={applicationsError ?? languagesError ?? provincesError} />;
+  if (applicationsError || applicationStatusesError || languagesError || provincesError) {
+    return <Error err={applicationsError ?? languagesError ?? provincesError ?? applicationStatusesError} />;
+  }
 
   return (
     <MainLayout showBreadcrumb={false}>
       <h1 className="tw-m-0 tw-mb-10 tw-border-none">Management - Applications Listing here!</h1>
-      {isApplicationsLoading || isLanguagesLoading || isProvincesLoading ? (
+      {isApplicationsLoading || isApplicationStatusesLoading || isLanguagesLoading || isProvincesLoading ? (
         <PageLoadingSpinner />
       ) : (
         <div className="tw-flex tw-flex-col">
@@ -74,7 +79,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
                         <td className="tw-px-4 tw-py-2 ">{languages && getDescription(languages._embedded.languages.find((obj) => obj.id === application.languageId) as Language)}</td>
                         <td className="tw-px-4 tw-py-2 ">{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</td>
                         <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</td>
-                        <td className="tw-px-4 tw-py-2 ">{application.applicationStatusId}</td>
+                        <td className="tw-px-4 tw-py-2 ">{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</td>
                         <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap tw-text-right tw-text-sm tw-font-medium">
                           <Link href={`/management/applications/${application.id}`} passHref>
                             <a className="tw-text-indigo-600 hover:tw-text-indigo-900">Edit</a>
