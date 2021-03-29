@@ -8,15 +8,15 @@
 import type { QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery, QueryFunction } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
+import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { Province, provincesQueryKey, provincesUri } from './types';
 
-export const fetchProvince: QueryFunction<Promise<Province>> = ({ queryKey }: QueryFunctionContext) => {
+export const fetchProvince: QueryFunction<Promise<Province | null>> = ({ queryKey }: QueryFunctionContext) => {
   const provinceId = queryKey[1] as string;
-  return fetchWrapper<Province>(`${provincesUri}/${provinceId}`);
+  return fetchWrapperNotFound<Province>(`${provincesUri}/${provinceId}`);
 };
 
-export const useProvince = (provinceId: string): UseQueryResult<Province, HttpClientResponseError> => {
+export const useProvince = (provinceId: string): UseQueryResult<Province | null, HttpClientResponseError> => {
   return useQuery([provincesQueryKey, provinceId], fetchProvince, {
     cacheTime: Infinity,
     staleTime: Infinity,

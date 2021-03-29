@@ -8,15 +8,15 @@
 import type { QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery, QueryFunction } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
+import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { Demographic, demographicsQueryKey, demographicsUri } from './types';
 
-export const fetchDemographic: QueryFunction<Promise<Demographic>> = ({ queryKey }: QueryFunctionContext) => {
+export const fetchDemographic: QueryFunction<Promise<Demographic | null>> = ({ queryKey }: QueryFunctionContext) => {
   const demographicId = queryKey[1] as string;
-  return fetchWrapper<Demographic>(`${demographicsUri}/${demographicId}`);
+  return fetchWrapperNotFound<Demographic>(`${demographicsUri}/${demographicId}`);
 };
 
-export const useDemographic = (demographicId: string): UseQueryResult<Demographic, HttpClientResponseError> => {
+export const useDemographic = (demographicId: string): UseQueryResult<Demographic | null, HttpClientResponseError> => {
   return useQuery([demographicsQueryKey, demographicId], fetchDemographic, {
     cacheTime: Infinity,
     staleTime: Infinity,

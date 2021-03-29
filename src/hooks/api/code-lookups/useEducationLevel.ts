@@ -8,15 +8,15 @@
 import type { QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery, QueryFunction } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
+import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { EducationLevel, educationLevelsQueryKey, educationLevelsUri } from './types';
 
-export const fetchEducationLevel: QueryFunction<Promise<EducationLevel>> = ({ queryKey }: QueryFunctionContext) => {
+export const fetchEducationLevel: QueryFunction<Promise<EducationLevel | null>> = ({ queryKey }: QueryFunctionContext) => {
   const educationLevelId = queryKey[1] as string;
-  return fetchWrapper<EducationLevel>(`${educationLevelsUri}/${educationLevelId}`);
+  return fetchWrapperNotFound<EducationLevel>(`${educationLevelsUri}/${educationLevelId}`);
 };
 
-export const useEducationLevel = (educationLevelId: string): UseQueryResult<EducationLevel, HttpClientResponseError> => {
+export const useEducationLevel = (educationLevelId: string): UseQueryResult<EducationLevel | null, HttpClientResponseError> => {
   return useQuery([educationLevelsQueryKey, educationLevelId], fetchEducationLevel, {
     cacheTime: Infinity,
     staleTime: Infinity,

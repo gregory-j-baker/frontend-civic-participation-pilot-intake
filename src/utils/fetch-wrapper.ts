@@ -16,19 +16,40 @@ import { HttpClientResponseError } from '../common/HttpClientResponseError';
 export const fetchWrapper = async <T>(input: RequestInfo, init?: RequestInit): Promise<T> => {
   const response = await fetch(input, init);
 
-  if (!response.ok) {
-    const responseJson = await response
-      .clone()
-      .json()
-      .catch(() => undefined);
+  if (response.ok) return response.json();
 
-    const responseText = await response
-      .clone()
-      .text()
-      .catch(() => undefined);
+  const responseJson = await response
+    .clone()
+    .json()
+    .catch(() => undefined);
 
-    throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
-  }
+  const responseText = await response
+    .clone()
+    .text()
+    .catch(() => undefined);
 
-  return response.json();
+  throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
+};
+
+/**
+ * Usage with fetch and others clients that do not throw by default
+ * @see https://react-query.tanstack.com/guides/query-functions#usage-with-fetch-and-others-clients-that-do-not-throw-by-default
+ */
+export const fetchWrapperNotFound = async <T>(input: RequestInfo, init?: RequestInit): Promise<T | null> => {
+  const response = await fetch(input, init);
+
+  if (response.ok) return response.json();
+  if (response.status === 404) return null;
+
+  const responseJson = await response
+    .clone()
+    .json()
+    .catch(() => undefined);
+
+  const responseText = await response
+    .clone()
+    .text()
+    .catch(() => undefined);
+
+  throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
 };

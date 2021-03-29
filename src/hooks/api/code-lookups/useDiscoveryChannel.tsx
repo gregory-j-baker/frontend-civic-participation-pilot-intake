@@ -8,15 +8,15 @@
 import type { QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery, QueryFunction } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
+import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { DiscoveryChannel, discoveryChannelsQueryKey, discoveryChannelsUri } from './types';
 
-export const fetchDiscoveryChannel: QueryFunction<Promise<DiscoveryChannel>> = ({ queryKey }: QueryFunctionContext) => {
+export const fetchDiscoveryChannel: QueryFunction<Promise<DiscoveryChannel | null>> = ({ queryKey }: QueryFunctionContext) => {
   const discoveryChannelId = queryKey[1] as string;
-  return fetchWrapper<DiscoveryChannel>(`${discoveryChannelsUri}/${discoveryChannelId}`);
+  return fetchWrapperNotFound<DiscoveryChannel>(`${discoveryChannelsUri}/${discoveryChannelId}`);
 };
 
-export const useDiscoveryChannel = (discoveryChannelId: string): UseQueryResult<DiscoveryChannel, HttpClientResponseError> => {
+export const useDiscoveryChannel = (discoveryChannelId: string): UseQueryResult<DiscoveryChannel | null, HttpClientResponseError> => {
   return useQuery([discoveryChannelsQueryKey, discoveryChannelId], fetchDiscoveryChannel, {
     cacheTime: Infinity,
     staleTime: Infinity,

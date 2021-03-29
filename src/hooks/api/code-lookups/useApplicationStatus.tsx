@@ -8,15 +8,15 @@
 import type { QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery, QueryFunction } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
+import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { ApplicationStatus, applicationStatusesQueryKey, applicationStatusesUri } from './types';
 
-export const fetchApplicationStatus: QueryFunction<Promise<ApplicationStatus>> = ({ queryKey }: QueryFunctionContext) => {
+export const fetchApplicationStatus: QueryFunction<Promise<ApplicationStatus | null>> = async ({ queryKey }: QueryFunctionContext) => {
   const applicationStatusId = queryKey[1] as string;
-  return fetchWrapper<ApplicationStatus>(`${applicationStatusesUri}/${applicationStatusId}`);
+  return fetchWrapperNotFound<ApplicationStatus>(`${applicationStatusesUri}/${applicationStatusId}`);
 };
 
-export const useApplicationStatus = (applicationStatusId: string): UseQueryResult<ApplicationStatus, HttpClientResponseError> => {
+export const useApplicationStatus = (applicationStatusId: string): UseQueryResult<ApplicationStatus | null, HttpClientResponseError> => {
   return useQuery([applicationStatusesQueryKey, applicationStatusId], fetchApplicationStatus, {
     cacheTime: Infinity,
     staleTime: Infinity,

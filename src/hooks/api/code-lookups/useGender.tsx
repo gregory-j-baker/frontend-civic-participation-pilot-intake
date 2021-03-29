@@ -8,15 +8,15 @@
 import type { QueryFunctionContext, UseQueryResult } from 'react-query';
 import { useQuery, QueryFunction } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { fetchWrapper } from '../../../utils/fetch-wrapper';
+import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { Gender, gendersQueryKey, gendersUri } from './types';
 
-export const fetchGender: QueryFunction<Promise<Gender>> = ({ queryKey }: QueryFunctionContext) => {
+export const fetchGender: QueryFunction<Promise<Gender | null>> = ({ queryKey }: QueryFunctionContext) => {
   const genderId = queryKey[1] as string;
-  return fetchWrapper<Gender>(`${gendersUri}/${genderId}`);
+  return fetchWrapperNotFound<Gender>(`${gendersUri}/${genderId}`);
 };
 
-export const useGender = (genderId: string): UseQueryResult<Gender, HttpClientResponseError> => {
+export const useGender = (genderId: string): UseQueryResult<Gender | null, HttpClientResponseError> => {
   return useQuery([gendersQueryKey, genderId], fetchGender, {
     cacheTime: Infinity,
     staleTime: Infinity,
