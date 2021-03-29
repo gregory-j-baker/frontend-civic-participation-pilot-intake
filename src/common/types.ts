@@ -5,6 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { IncomingMessage } from 'node:http';
+
 /**
  * Enum representing Tailwind CSS colors.
  * @see https://v1.tailwindcss.com/docs/customizing-colors#default-color-palette
@@ -53,3 +55,10 @@ export enum Role {
   CPP_Administe = 'CivicParticipationProgram.Administer',
   CPP_Manage = 'CivicParticipationProgram.Manage',
 }
+
+export interface NextContext {
+  req?: IncomingMessage;
+  ctx?: { req: IncomingMessage };
+}
+
+export type SessionContext = NextContext & { triggerEvent?: boolean };

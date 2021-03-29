@@ -20,11 +20,20 @@ import Error from '../../_error';
 import Link from 'next/link';
 import { ApplicationStatus, Language, Province } from '../../../hooks/api/code-lookups/types';
 import { useApplicationStatuses } from '../../../hooks/api/code-lookups/useApplicationStatuses';
+import { useRouter } from 'next/router';
+
+interface RouterQuery {
+  page?: number;
+}
 
 const ManagementApplicationsPage = (): JSX.Element => {
   const { lang } = useTranslation();
 
-  const { data: applications, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({});
+  const router = useRouter();
+  const { page } = router.query as RouterQuery;
+
+  const { data: applications, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page });
+
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({});
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
   const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces({ lang });
