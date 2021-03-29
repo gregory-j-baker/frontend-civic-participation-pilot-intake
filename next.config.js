@@ -15,5 +15,17 @@ module.exports = nextTranslate({
       destination: '/application/step-1',
       permanent: false,
     },
+    {
+      source: '/catchall',
+      destination: '/en',
+      locale: false,
+      permanent: true,
+    },
+    {
+      source: '/catchall/:slug*',
+      destination: '/en/:slug*',
+      locale: false,
+      permanent: true,
+    },
   ],
 });
