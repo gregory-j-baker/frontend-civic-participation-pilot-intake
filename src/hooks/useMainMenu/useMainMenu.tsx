@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 /**
  * Copyright (c) 2021 Her Majesty the Queen in Right of Canada, as represented by the Employment and Social Development Canada
  *
@@ -5,21 +6,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { mainMenuStaticPropsEn, mainMenuStaticPropsFr } from '.';
 import { mainMenuQueryKey, MenuItem, MenuSubItem } from './types';
 import { applicationConfig } from '../../config';
 import xmlParser, { X2jOptionsOptional } from 'fast-xml-parser';
 import { decodeXML, decodeHTML } from 'entities';
 
-export interface UseMainMenuOptions {
-  lang?: string;
-}
-
 export interface FetchMainMenuOptions {
   lang?: string;
 }
+export interface UseMainMenuOptions extends FetchMainMenuOptions {}
 
 export interface CanadaSiteMenuAnchor {
   href: string;
@@ -41,8 +39,8 @@ export interface CanadaSiteMenuJson {
   li?: CanadaSiteMenuListItem[];
 }
 
-export const fetchMainMenu: QueryFunction<Promise<MenuItem[]>> = async ({ queryKey }: QueryFunctionContext) => {
-  const { lang } = queryKey[1] as FetchMainMenuOptions;
+export const fetchMainMenu = async (options: FetchMainMenuOptions): Promise<MenuItem[]> => {
+  const { lang } = options;
 
   try {
     const { canadaMenuUrl } = applicationConfig;
@@ -84,6 +82,6 @@ export const fetchMainMenu: QueryFunction<Promise<MenuItem[]>> = async ({ queryK
   }
 };
 
-export const useMainMenu = ({ lang }: UseMainMenuOptions = { lang: 'en' }): UseQueryResult<MenuItem[], unknown> => {
-  return useQuery([mainMenuQueryKey, { lang } as FetchMainMenuOptions], fetchMainMenu, { cacheTime: Infinity, staleTime: Infinity });
+export const useMainMenu = (options: UseMainMenuOptions = { lang: 'en' }): UseQueryResult<MenuItem[], unknown> => {
+  return useQuery([mainMenuQueryKey, options], () => fetchMainMenu(options), { cacheTime: Infinity, staleTime: Infinity });
 };

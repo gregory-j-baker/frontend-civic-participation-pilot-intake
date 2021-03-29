@@ -5,19 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { Province, provincesQueryKey, provincesUri } from './types';
 
-export const fetchProvince: QueryFunction<Promise<Province | null>> = ({ queryKey }: QueryFunctionContext) => {
-  const provinceId = queryKey[1] as string;
+export const fetchProvince = (provinceId: string): Promise<Province | null> => {
   return fetchWrapperNotFound<Province>(`${provincesUri}/${provinceId}`);
 };
 
 export const useProvince = (provinceId: string): UseQueryResult<Province | null, HttpClientResponseError> => {
-  return useQuery([provincesQueryKey, provinceId], fetchProvince, {
+  return useQuery([provincesQueryKey, provinceId], () => fetchProvince(provinceId), {
     cacheTime: Infinity,
     staleTime: Infinity,
   });

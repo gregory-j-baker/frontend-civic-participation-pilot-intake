@@ -5,19 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { Language, languagesQueryKey, languagesUri } from './types';
 
-export const fetchLanguage: QueryFunction<Promise<Language | null>> = ({ queryKey }: QueryFunctionContext) => {
-  const languageId = queryKey[1] as string;
+export const fetchLanguage = (languageId: string): Promise<Language | null> => {
   return fetchWrapperNotFound<Language>(`${languagesUri}/${languageId}`);
 };
 
 export const useLanguage = (languageId: string): UseQueryResult<Language | null, HttpClientResponseError> => {
-  return useQuery([languagesQueryKey, languageId], fetchLanguage, {
+  return useQuery([languagesQueryKey, languageId], () => fetchLanguage(languageId), {
     cacheTime: Infinity,
     staleTime: Infinity,
   });

@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../common/types';
 import { beforeNow } from '../../../utils/date-utils';
@@ -19,26 +19,25 @@ export interface ApplicationStatusesResponse extends HateoasCollection {
   };
 }
 
-export interface UseApplicationStatusesOptions {
-  enabled?: boolean;
-  lang?: string;
-  onlyActive?: boolean;
-}
-
 export interface FetchApplicationStatusesOptions {
   lang?: string;
 }
+export interface UseApplicationStatusesOptions extends FetchApplicationStatusesOptions {
+  enabled?: boolean;
+  onlyActive?: boolean;
+}
 
-export const fetchApplicationStatuses: QueryFunction<Promise<ApplicationStatusesResponse>> = ({ queryKey }: QueryFunctionContext) => {
-  const { lang } = queryKey[1] as FetchApplicationStatusesOptions;
+export const fetchApplicationStatuses = (options: FetchApplicationStatusesOptions): Promise<ApplicationStatusesResponse> => {
+  const { lang } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<ApplicationStatus>((o) => o.uiDisplayOrderFr) : nameof<ApplicationStatus>((o) => o.uiDisplayOrderEn)}`];
 
   return fetchWrapper<ApplicationStatusesResponse>(`${applicationStatusesUri}?${queries.join('&')}`);
 };
 
-export const useApplicationStatuses = ({ enabled, lang, onlyActive }: UseApplicationStatusesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<ApplicationStatusesResponse, HttpClientResponseError> => {
-  return useQuery([applicationStatusesQueryKey, { lang } as FetchApplicationStatusesOptions], fetchApplicationStatuses, {
+export const useApplicationStatuses = (options: UseApplicationStatusesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<ApplicationStatusesResponse, HttpClientResponseError> => {
+  const { enabled, onlyActive } = options;
+  return useQuery([applicationStatusesQueryKey, options], () => fetchApplicationStatuses(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

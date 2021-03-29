@@ -5,19 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { Gender, gendersQueryKey, gendersUri } from './types';
 
-export const fetchGender: QueryFunction<Promise<Gender | null>> = ({ queryKey }: QueryFunctionContext) => {
-  const genderId = queryKey[1] as string;
+export const fetchGender = (genderId: string): Promise<Gender | null> => {
   return fetchWrapperNotFound<Gender>(`${gendersUri}/${genderId}`);
 };
 
 export const useGender = (genderId: string): UseQueryResult<Gender | null, HttpClientResponseError> => {
-  return useQuery([gendersQueryKey, genderId], fetchGender, {
+  return useQuery([gendersQueryKey, genderId], () => fetchGender(genderId), {
     cacheTime: Infinity,
     staleTime: Infinity,
   });

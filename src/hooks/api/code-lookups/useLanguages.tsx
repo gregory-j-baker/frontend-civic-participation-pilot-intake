@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunction, QueryFunctionContext, UseQueryResult } from 'react-query';
+import type { UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../common/types';
@@ -19,26 +19,25 @@ export interface LanguagesResponse extends HateoasCollection {
   };
 }
 
-export interface UseLanguagesOptions {
-  enabled?: boolean;
-  lang?: string;
-  onlyActive?: boolean;
-}
-
 export interface FetchLanguagesOptions {
   lang?: string;
 }
+export interface UseLanguagesOptions extends FetchLanguagesOptions {
+  enabled?: boolean;
+  onlyActive?: boolean;
+}
 
-export const fetchLanguages: QueryFunction<Promise<LanguagesResponse>> = ({ queryKey }: QueryFunctionContext) => {
-  const { lang } = queryKey[1] as FetchLanguagesOptions;
+export const fetchLanguages = (options: FetchLanguagesOptions): Promise<LanguagesResponse> => {
+  const { lang } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<Language>((o) => o.uiDisplayOrderFr) : nameof<Language>((o) => o.uiDisplayOrderEn)}`];
 
   return fetchWrapper<LanguagesResponse>(`${languagesUri}?${queries.join('&')}`);
 };
 
-export const useLanguages = ({ enabled, lang, onlyActive }: UseLanguagesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<LanguagesResponse, HttpClientResponseError> => {
-  return useQuery([languagesQueryKey, { lang } as FetchLanguagesOptions], fetchLanguages, {
+export const useLanguages = (options: UseLanguagesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<LanguagesResponse, HttpClientResponseError> => {
+  const { enabled, onlyActive } = options;
+  return useQuery([languagesQueryKey, options], () => fetchLanguages(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

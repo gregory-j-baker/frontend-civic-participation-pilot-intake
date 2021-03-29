@@ -5,19 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { ApplicationStatus, applicationStatusesQueryKey, applicationStatusesUri } from './types';
 
-export const fetchApplicationStatus: QueryFunction<Promise<ApplicationStatus | null>> = async ({ queryKey }: QueryFunctionContext) => {
-  const applicationStatusId = queryKey[1] as string;
+export const fetchApplicationStatus = async (applicationStatusId: string): Promise<ApplicationStatus | null> => {
   return fetchWrapperNotFound<ApplicationStatus>(`${applicationStatusesUri}/${applicationStatusId}`);
 };
 
 export const useApplicationStatus = (applicationStatusId: string): UseQueryResult<ApplicationStatus | null, HttpClientResponseError> => {
-  return useQuery([applicationStatusesQueryKey, applicationStatusId], fetchApplicationStatus, {
+  return useQuery([applicationStatusesQueryKey, applicationStatusId], () => fetchApplicationStatus(applicationStatusId), {
     cacheTime: Infinity,
     staleTime: Infinity,
   });

@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../common/types';
 import { beforeNow } from '../../../utils/date-utils';
@@ -19,26 +19,26 @@ export interface DemographicsResponse extends HateoasCollection {
   };
 }
 
-export interface UseDemographicsOptions {
-  enabled?: boolean;
-  lang?: string;
-  onlyActive?: boolean;
-}
-
 export interface FetchDemographicsOptions {
   lang?: string;
 }
 
-export const fetchDemographics: QueryFunction<Promise<DemographicsResponse>> = ({ queryKey }: QueryFunctionContext) => {
-  const { lang } = queryKey[1] as FetchDemographicsOptions;
+export interface UseDemographicsOptions extends FetchDemographicsOptions {
+  enabled?: boolean;
+  onlyActive?: boolean;
+}
+
+export const fetchDemographics = (options: FetchDemographicsOptions): Promise<DemographicsResponse> => {
+  const { lang } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<Demographic>((o) => o.uiDisplayOrderFr) : nameof<Demographic>((o) => o.uiDisplayOrderEn)}`];
 
   return fetchWrapper<DemographicsResponse>(`${demographicsUri}?${queries.join('&')}`);
 };
 
-export const useDemographics = ({ enabled, lang, onlyActive }: UseDemographicsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<DemographicsResponse, HttpClientResponseError> => {
-  return useQuery([demographicsQueryKey, { lang } as FetchDemographicsOptions], fetchDemographics, {
+export const useDemographics = (options: UseDemographicsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<DemographicsResponse, HttpClientResponseError> => {
+  const { enabled, onlyActive } = options;
+  return useQuery([demographicsQueryKey, options], () => fetchDemographics(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

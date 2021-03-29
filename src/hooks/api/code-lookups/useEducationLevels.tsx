@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunction, QueryFunctionContext, UseQueryResult } from 'react-query';
+import type { UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../common/types';
@@ -19,26 +19,26 @@ export interface EducationLevelsResponse extends HateoasCollection {
   };
 }
 
-export interface UseEducationLevelsOptions {
-  enabled?: boolean;
-  lang?: string;
-  onlyActive?: boolean;
-}
-
 export interface FetchEducationLevelsOptions {
   lang?: string;
 }
 
-export const fetchEducationLevels: QueryFunction<Promise<EducationLevelsResponse>> = ({ queryKey }: QueryFunctionContext) => {
-  const { lang } = queryKey[1] as FetchEducationLevelsOptions;
+export interface UseEducationLevelsOptions extends FetchEducationLevelsOptions {
+  enabled?: boolean;
+  onlyActive?: boolean;
+}
+
+export const fetchEducationLevels = (options: FetchEducationLevelsOptions): Promise<EducationLevelsResponse> => {
+  const { lang } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<EducationLevel>((o) => o.uiDisplayOrderFr) : nameof<EducationLevel>((o) => o.uiDisplayOrderEn)}`];
 
   return fetchWrapper<EducationLevelsResponse>(`${educationLevelsUri}?${queries.join('&')}`);
 };
 
-export const useEducationLevels = ({ enabled, lang, onlyActive }: UseEducationLevelsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<EducationLevelsResponse, HttpClientResponseError> => {
-  return useQuery([educationLevelsQueryKey, { lang } as FetchEducationLevelsOptions], fetchEducationLevels, {
+export const useEducationLevels = (options: UseEducationLevelsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<EducationLevelsResponse, HttpClientResponseError> => {
+  const { enabled, onlyActive } = options;
+  return useQuery([educationLevelsQueryKey, options], () => fetchEducationLevels(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

@@ -5,19 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { DiscoveryChannel, discoveryChannelsQueryKey, discoveryChannelsUri } from './types';
 
-export const fetchDiscoveryChannel: QueryFunction<Promise<DiscoveryChannel | null>> = ({ queryKey }: QueryFunctionContext) => {
-  const discoveryChannelId = queryKey[1] as string;
+export const fetchDiscoveryChannel = (discoveryChannelId: string): Promise<DiscoveryChannel | null> => {
   return fetchWrapperNotFound<DiscoveryChannel>(`${discoveryChannelsUri}/${discoveryChannelId}`);
 };
 
 export const useDiscoveryChannel = (discoveryChannelId: string): UseQueryResult<DiscoveryChannel | null, HttpClientResponseError> => {
-  return useQuery([discoveryChannelsQueryKey, discoveryChannelId], fetchDiscoveryChannel, {
+  return useQuery([discoveryChannelsQueryKey, discoveryChannelId], () => fetchDiscoveryChannel(discoveryChannelId), {
     cacheTime: Infinity,
     staleTime: Infinity,
   });

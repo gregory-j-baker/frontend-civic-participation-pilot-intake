@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunction, QueryFunctionContext, UseQueryResult } from 'react-query';
+import type { UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import type { HateoasCollection } from '../../../common/types';
@@ -19,26 +19,25 @@ export interface ProvincesResponse extends HateoasCollection {
   };
 }
 
-export interface UseProvincesOptions {
-  enabled?: boolean;
-  lang?: string;
-  onlyActive?: boolean;
-}
-
 export interface FetchProvincesOptions {
   lang?: string;
 }
+export interface UseProvincesOptions extends FetchProvincesOptions {
+  enabled?: boolean;
+  onlyActive?: boolean;
+}
 
-export const fetchProvinces: QueryFunction<Promise<ProvincesResponse>> = ({ queryKey }: QueryFunctionContext) => {
-  const { lang } = queryKey[1] as FetchProvincesOptions;
+export const fetchProvinces = (options: FetchProvincesOptions): Promise<ProvincesResponse> => {
+  const { lang } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<Province>((o) => o.uiDisplayOrderFr) : nameof<Province>((o) => o.uiDisplayOrderEn)}`];
 
   return fetchWrapper<ProvincesResponse>(`${provincesUri}?${queries.join('&')}`);
 };
 
-export const useProvinces = ({ enabled, lang, onlyActive }: UseProvincesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<ProvincesResponse, HttpClientResponseError> => {
-  return useQuery([provincesQueryKey, { lang } as FetchProvincesOptions], fetchProvinces, {
+export const useProvinces = (options: UseProvincesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<ProvincesResponse, HttpClientResponseError> => {
+  const { enabled, onlyActive } = options;
+  return useQuery([provincesQueryKey, options], () => fetchProvinces(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,

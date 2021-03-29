@@ -5,19 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
 import { EducationLevel, educationLevelsQueryKey, educationLevelsUri } from './types';
 
-export const fetchEducationLevel: QueryFunction<Promise<EducationLevel | null>> = ({ queryKey }: QueryFunctionContext) => {
-  const educationLevelId = queryKey[1] as string;
+export const fetchEducationLevel = (educationLevelId: string): Promise<EducationLevel | null> => {
   return fetchWrapperNotFound<EducationLevel>(`${educationLevelsUri}/${educationLevelId}`);
 };
 
 export const useEducationLevel = (educationLevelId: string): UseQueryResult<EducationLevel | null, HttpClientResponseError> => {
-  return useQuery([educationLevelsQueryKey, educationLevelId], fetchEducationLevel, {
+  return useQuery([educationLevelsQueryKey, educationLevelId], () => fetchEducationLevel(educationLevelId), {
     cacheTime: Infinity,
     staleTime: Infinity,
   });
