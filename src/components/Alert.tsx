@@ -18,6 +18,7 @@ export enum AlertType {
 export interface AlertProps {
   description?: string;
   children?: React.ReactNode;
+  id?: string;
   title: string;
   type?: AlertType;
 }
@@ -57,11 +58,11 @@ export const getColorClasses: GetColorClassesFunc = (alertType) => {
   };
 };
 
-export const Alert = ({ children, description, title, type }: AlertProps): JSX.Element => {
+export const Alert = ({ children, description, id, title, type }: AlertProps): JSX.Element => {
   const colorClasses = useMemo(() => getColorClasses(type ?? AlertType.default), [type]);
 
   return (
-    <section className={`${colorClasses.rootColorClasses} tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow tw-mb-8`} role="alert" tabIndex={-1}>
+    <section {...(id ? { id } : {})} className={`${colorClasses.rootColorClasses} tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow tw-mb-8`} role="alert" tabIndex={-1}>
       <div className="tw-flex-col">
         <div className="tw-flex md:tw-items-center">
           <div className={`tw-h-10 tw-w-10 tw-mr-4 tw-flex-shrink-0`}>
