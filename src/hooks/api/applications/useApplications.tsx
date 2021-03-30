@@ -23,6 +23,7 @@ export interface ApplicationsResponse extends HateoasCollection {
 export interface FetchApplicationsOptions {
   applicationStatusId?: string;
   page?: number;
+  size?: number;
 }
 
 export interface UseApplicationsOptions extends FetchApplicationsOptions {}
@@ -33,9 +34,9 @@ export const fetchApplications = async (options: FetchApplicationsOptions, conte
 
   if (!accessToken) throw new Error('No accessToken exists');
 
-  const { applicationStatusId, page } = options;
+  const { applicationStatusId, page, size } = options;
 
-  const queries: string[] = [`page=${page ?? 1}`, `size=${20}`];
+  const queries: string[] = [`page=${page ?? 1}`, `size=${size ?? 20}`];
   if (applicationStatusId) queries.push(`applicationStatusId=${applicationStatusId}`);
 
   return fetchWrapper<ApplicationsResponse>(`${applicationsUri}?${queries.join('&')}`, {
