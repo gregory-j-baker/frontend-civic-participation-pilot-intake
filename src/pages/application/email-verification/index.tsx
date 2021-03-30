@@ -6,11 +6,11 @@
  */
 
 import type { GetStaticProps, NextPage } from 'next';
+import { useState, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 import useTranslation from 'next-translate/useTranslation';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 import { Alert, AlertType } from '../../../components/Alert';
@@ -24,6 +24,7 @@ import { YupCustomMessage } from '../../../yup/yup-custom';
 import Custom404 from '../../404';
 import Error from '../../_error';
 import { Constants } from '../types';
+import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 
 interface FormDataState {
   accessCode?: string;
@@ -36,10 +37,13 @@ interface FormDataState {
  */
 const maxAttempts = apiConfig.maxEmailVerificationAttempts;
 
-const EmailVerficationPage: NextPage<{ initialFormData: FormDataState }> = ({ initialFormData }) => {
-  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
+const EmailVerficationPage: NextPage = () => {
   const { t } = useTranslation('email-verification');
   const router = useRouter();
+
+  const [pageLoading, setPageLoading] = useState<boolean>(true);
+  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
+  const [formData, setFormDataState] = useState<FormDataState>({ accessCode: undefined, attempts: maxAttempts, email: undefined });
 
   const { mutate: submitAccessCode, error: submitAccessCodeError, reset: resetSubmitAccessCodeError, isLoading: submitAccessCodeIsLoading, isSuccess: submitAccessCodeIsSuccess } = useSubmitAccessCode({
     onSuccess: () => {
@@ -55,12 +59,6 @@ const EmailVerficationPage: NextPage<{ initialFormData: FormDataState }> = ({ in
       setFormDataState((prev) => ({ ...prev, attempts: maxAttempts - HttpClientResponseError.responseJson.verificationCount }));
       if (submitAccessCodeError) document.getElementById('validation-error')?.focus();
     },
-  });
-
-  const [formData, setFormDataState] = useState<FormDataState>(() => {
-    const defaultState: FormDataState = initialFormData;
-    if (typeof window === 'undefined') return defaultState;
-    return { ...defaultState, email: window.sessionStorage.getItem(Constants.EmailVerificationStorageKey) as string };
   });
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent = ({ value }) => setFormDataState((prev) => ({ ...prev, accessCode: value ?? undefined }));
@@ -106,92 +104,92 @@ const EmailVerficationPage: NextPage<{ initialFormData: FormDataState }> = ({ in
     return t('common:error-number', { number: index + 1 }) + t(`email-verification:form.${schemaErrors[index]?.path}.${key}`);
   };
 
-  if (submitAccessCodeError instanceof HttpClientResponseError) {
-    if ((submitAccessCodeError as HttpClientResponseError).responseStatus !== 400) return <Error err={submitAccessCodeError as HttpClientResponseError} />;
-    if ((submitAccessCodeError as HttpClientResponseError).responseStatus !== 429) return <Error err={submitAccessCodeError as HttpClientResponseError} />;
+  useEffect(() => {
+    setFormDataState((prev) => ({ ...prev, email: window.sessionStorage.getItem(Constants.EmailVerificationStorageKey) as string }));
+    setPageLoading(false);
+  }, []);
+
+  if (submitAccessCodeError instanceof HttpClientResponseError && ![400, 429].includes((submitAccessCodeError as HttpClientResponseError).responseStatus)) {
+    return <Error err={submitAccessCodeError as HttpClientResponseError} />;
   }
 
-  if (!formData.email) {
-    router.push('/404');
-    return <></>;
-  }
+  if (!pageLoading && !formData.email) return <Custom404 />;
 
   return (
     <MainLayout>
       <NextSeo title={t('email-verification:page.title')} />
-      <div className="tw-flex tw-space-x-10">
-        <div className="tw-w-full md:tw-w-1/2">
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
-            {t('email-verification:page.title')}
-          </h1>
-          <h2 className="tw-border-none tw-m-0 tw-mb-4 tw-text-2xl">{t('email-verification:page.header')}</h2>
+      {pageLoading ? (
+        <PageLoadingSpinner />
+      ) : (
+        <div className="tw-flex tw-space-x-10">
+          <div className="tw-w-full md:tw-w-1/2">
+            <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+              {t('email-verification:page.title')}
+            </h1>
+            <h2 className="tw-border-none tw-m-0 tw-mb-4 tw-text-2xl">{t('email-verification:page.header')}</h2>
 
-          <p className="tw-m-0 tw-mb-4">{t('email-verification:page.description')}</p>
+            <p className="tw-m-0 tw-mb-4">{t('email-verification:page.description')}</p>
 
-          {schemaErrors && schemaErrors.length > 0 && (
-            <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
-              <ul className="tw-list-disc">
-                {schemaErrors.map(({ path }) => {
-                  const [field] = path?.split('.') ?? [];
+            {schemaErrors && schemaErrors.length > 0 && (
+              <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+                <ul className="tw-list-disc">
+                  {schemaErrors.map(({ path }) => {
+                    const [field] = path?.split('.') ?? [];
 
-                  return path ? (
-                    <li key={path} className="tw-my-2">
-                      <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
-                    </li>
-                  ) : undefined;
-                })}
-              </ul>
-            </Alert>
-          )}
+                    return path ? (
+                      <li key={path} className="tw-my-2">
+                        <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
+                      </li>
+                    ) : undefined;
+                  })}
+                </ul>
+              </Alert>
+            )}
 
-          {submitAccessCodeError && (
-            <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
-              <ul className="tw-list-disc">
-                <li key="{path}" className="tw-my-2">
-                  <a href="#form-field-accessCode">{t('email-verification:form.accessCode.invalid')}</a>
-                </li>
-              </ul>
-            </Alert>
-          )}
+            {submitAccessCodeError && (
+              <Alert title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
+                <ul className="tw-list-disc">
+                  <li key="{path}" className="tw-my-2">
+                    <a href="#form-field-accessCode">{t('email-verification:form.accessCode.invalid')}</a>
+                  </li>
+                </ul>
+              </Alert>
+            )}
 
-          <div className="tw-my-16">
-            <TextField
-              field={nameof<FormDataState>((o) => o.accessCode)}
-              label={t('email-verification:form.accessCode.label')}
-              helperText={t('email-verification:form.accessCode.help-text', { attempts: formData?.attempts, maxAttempts: 5 })}
-              value={formData?.accessCode}
-              onChange={handleOnTextFieldChange}
-              disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess}
-              required
-              className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
-            />
+            <div className="tw-my-16">
+              <TextField
+                field={nameof<FormDataState>((o) => o.accessCode)}
+                label={t('email-verification:form.accessCode.label')}
+                helperText={t('email-verification:form.accessCode.help-text', { attempts: formData?.attempts, maxAttempts: 5 })}
+                value={formData?.accessCode}
+                onChange={handleOnTextFieldChange}
+                disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess}
+                required
+                className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+              />
+            </div>
+
+            <div className="tw-flex tw-flex-wrap">
+              <Button onClick={handleOnSubmit} disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
+                {t('email-verification:form.submit')}
+              </Button>
+              <Button outline onClick={handleOnCancel} disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
+                {t('email-verification:form.cancel')}
+              </Button>
+            </div>
           </div>
-
-          <div className="tw-flex tw-flex-wrap">
-            <Button onClick={handleOnSubmit} disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
-              {t('email-verification:form.submit')}
-            </Button>
-            <Button outline onClick={handleOnCancel} disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
-              {t('email-verification:form.cancel')}
-            </Button>
+          <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">
+            <Image src="/img/undraw_authentication_fsn5.svg" alt="" layout="fill" />
           </div>
         </div>
-        <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">
-          <Image src="/img/undraw_authentication_fsn5.svg" alt="" layout="fill" />
-        </div>
-      </div>
+      )}
     </MainLayout>
   );
 };
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
-    props: {
-      initialFormData: {
-        attempts: maxAttempts,
-        email: 'user@example.com',
-      },
-    },
+    props: {},
   };
 };
 
