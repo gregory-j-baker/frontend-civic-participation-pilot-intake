@@ -58,19 +58,19 @@ const ManagementApplicationsPage = (): JSX.Element => {
                 <table className="tw-min-w-full tw-divide-y tw-divide-gray-200">
                   <thead className="tw-bg-gray-50">
                     <tr>
-                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs font-medium tw-text-gray-500 tw-uppercase tw-tracking-wider">
+                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider">
                         Name
                       </th>
-                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs font-medium tw-text-gray-500 tw-uppercase tw-tracking-wider">
+                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider">
                         Language
                       </th>
-                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs font-medium tw-text-gray-500 tw-uppercase tw-tracking-wider">
+                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider">
                         Province
                       </th>
-                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs font-medium tw-text-gray-500 tw-uppercase tw-tracking-wider">
+                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider">
                         Date recived
                       </th>
-                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs font-medium tw-text-gray-500 tw-uppercase tw-tracking-wider">
+                      <th scope="col" className="tw-px-4 tw-py-3 tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider">
                         Status
                       </th>
                       <th scope="col" className="tw-relative tw-px-4 tw-py-3">
@@ -84,14 +84,14 @@ const ManagementApplicationsPage = (): JSX.Element => {
                         applicationsResponse._embedded.applications.map((application) => (
                           <tr key={application.id}>
                             <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap">
-                              <div className="tw-text-sm tw-font-medium tw-text-gray-900">{`${application.firstName} ${application.lastName}`}</div>
+                              <div className="tw-text-sm tw-font-bold tw-text-gray-900">{`${application.firstName} ${application.lastName}`}</div>
                               <div className="tw-text-sm tw-text-gray-500">{`${application.email}`}</div>
                             </td>
-                            <td className="tw-px-4 tw-py-2 ">{languages && getDescription(languages._embedded.languages.find((obj) => obj.id === application.languageId) as Language)}</td>
-                            <td className="tw-px-4 tw-py-2 ">{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</td>
-                            <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</td>
-                            <td className="tw-px-4 tw-py-2 ">{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</td>
-                            <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap tw-text-right tw-text-sm tw-font-medium">
+                            <td className="tw-px-4 tw-py-2 tw-text-sm">{languages && getDescription(languages._embedded.languages.find((obj) => obj.id === application.languageId) as Language)}</td>
+                            <td className="tw-px-4 tw-py-2 tw-text-sm">{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</td>
+                            <td className="tw-px-4 tw-py-2 tw-text-sm tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</td>
+                            <td className="tw-px-4 tw-py-2 tw-text-sm">{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</td>
+                            <td className="tw-px-4 tw-py-2 tw-text-sm tw-whitespace-nowrap tw-text-right tw-font-bold">
                               <Link href={`/management/applications/${application.id}`} passHref>
                                 <a className="tw-text-indigo-600 hover:tw-text-indigo-900">Edit</a>
                               </Link>
@@ -100,7 +100,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
                         ))
                       ) : (
                         <tr>
-                          <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap tw-text-center" colSpan={7}>
+                          <td className="tw-px-4 tw-py-2 tw-text-sm tw-whitespace-nowrap tw-text-center" colSpan={7}>
                             No matching entries found
                           </td>
                         </tr>
