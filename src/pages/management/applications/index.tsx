@@ -32,7 +32,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
   const router = useRouter();
   const { page } = router.query as RouterQuery;
 
-  const { data: applications, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page });
+  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page });
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({});
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
@@ -78,26 +78,67 @@ const ManagementApplicationsPage = (): JSX.Element => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="tw-bg-white tw-divide-y tw-divide-gray-200">
-                    {applications?._embedded.applications.map((application) => (
-                      <tr key={application.id}>
-                        <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap">
-                          <div className="tw-text-sm tw-font-medium tw-text-gray-900">{`${application.firstName} ${application.lastName}`}</div>
-                          <div className="tw-text-sm tw-text-gray-500">{`${application.email}`}</div>
-                        </td>
-                        <td className="tw-px-4 tw-py-2 ">{languages && getDescription(languages._embedded.languages.find((obj) => obj.id === application.languageId) as Language)}</td>
-                        <td className="tw-px-4 tw-py-2 ">{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</td>
-                        <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</td>
-                        <td className="tw-px-4 tw-py-2 ">{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</td>
-                        <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap tw-text-right tw-text-sm tw-font-medium">
-                          <Link href={`/management/applications/${application.id}`} passHref>
-                            <a className="tw-text-indigo-600 hover:tw-text-indigo-900">Edit</a>
-                          </Link>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
+                  {applicationsResponse && (
+                    <tbody className="tw-bg-white tw-divide-y tw-divide-gray-200">
+                      {applicationsResponse._embedded.applications.length > 0 ? (
+                        applicationsResponse._embedded.applications.map((application) => (
+                          <tr key={application.id}>
+                            <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap">
+                              <div className="tw-text-sm tw-font-medium tw-text-gray-900">{`${application.firstName} ${application.lastName}`}</div>
+                              <div className="tw-text-sm tw-text-gray-500">{`${application.email}`}</div>
+                            </td>
+                            <td className="tw-px-4 tw-py-2 ">{languages && getDescription(languages._embedded.languages.find((obj) => obj.id === application.languageId) as Language)}</td>
+                            <td className="tw-px-4 tw-py-2 ">{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</td>
+                            <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</td>
+                            <td className="tw-px-4 tw-py-2 ">{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</td>
+                            <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap tw-text-right tw-text-sm tw-font-medium">
+                              <Link href={`/management/applications/${application.id}`} passHref>
+                                <a className="tw-text-indigo-600 hover:tw-text-indigo-900">Edit</a>
+                              </Link>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td className="tw-px-4 tw-py-2 tw-whitespace-nowrap tw-text-center" colSpan={7}>
+                            No matching entries found
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  )}
                 </table>
+                {applicationsResponse?.page && (
+                  <div className="tw-bg-white tw-px-4 tw-py-3 tw-flex tw-items-center tw-justify-between tw-border-t tw-border-gray-200">
+                    <div className="tw-hidden sm:tw-block">
+                      <div className="tw-text-sm tw-text-gray-700 tw-hidden sm:tw-block">
+                        Showing&nbsp;
+                        <span className="tw-font-bold">{(applicationsResponse.page.number - 1) * applicationsResponse.page.size + 1}</span>
+                        &nbsp;to&nbsp;
+                        <span className="tw-font-bold">{applicationsResponse.page.number === applicationsResponse.page.totalPages ? applicationsResponse.page.totalElements : applicationsResponse.page.number * applicationsResponse.page.size}</span>
+                        &nbsp;of&nbsp;
+                        <span className="tw-font-bold">{applicationsResponse.page.totalElements}</span>
+                        &nbsp;entries
+                      </div>
+                    </div>
+                    <div className="tw-flex tw-items-center tw-justify-between tw-space-x-4">
+                      {applicationsResponse.page.number > 1 && (
+                        <Link href={`/management/applications?page=${applicationsResponse.page.number - 1}`} passHref>
+                          <a className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-text-sm tw-font-bold tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-rounded-md tw-text-gray-700 visited:tw-text-gray-700 tw-bg-white hover:tw-text-gray-500 focus:tw-text-gray-500">
+                            Previous
+                          </a>
+                        </Link>
+                      )}
+                      {applicationsResponse.page.number < applicationsResponse.page.totalPages && (
+                        <Link href={`/management/applications?page=${applicationsResponse.page.number + 1}`} passHref>
+                          <a className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-text-sm tw-font-bold tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-rounded-md tw-text-gray-700 visited:tw-text-gray-700 tw-bg-white hover:tw-text-gray-500 focus:tw-text-gray-500">
+                            Next
+                          </a>
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -9,7 +9,7 @@
 import { getSession } from 'next-auth/client';
 import type { UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
-import type { SessionContext, HateoasCollection } from '../../../common/types';
+import type { SessionContext, HateoasCollection, Page } from '../../../common/types';
 import { fetchWrapper } from '../../../utils/fetch-wrapper';
 import { Application, applicationsQueryKey, applicationsUri } from './types';
 
@@ -17,6 +17,7 @@ export interface ApplicationsResponse extends HateoasCollection {
   _embedded: {
     applications: Application[];
   };
+  page?: Page;
 }
 
 export interface FetchApplicationsOptions {

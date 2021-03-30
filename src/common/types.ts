@@ -51,6 +51,13 @@ export interface HateoasLink {
   };
 }
 
+export interface Page {
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  number: number;
+}
+
 export enum Role {
   CPP_Administe = 'CivicParticipationProgram.Administer',
   CPP_Manage = 'CivicParticipationProgram.Manage',
