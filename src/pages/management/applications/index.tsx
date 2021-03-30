@@ -16,6 +16,7 @@ import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
 import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
 import { GetDescriptionFunc } from '../../application/types';
 import useTranslation from 'next-translate/useTranslation';
+import Trans from 'next-translate/Trans';
 import Error from '../../_error';
 import Link from 'next/link';
 import { ApplicationStatus, Language, Province } from '../../../hooks/api/code-lookups/types';
@@ -144,13 +145,15 @@ const ManagementApplicationsPage = (): JSX.Element => {
                     <div className="tw-bg-white tw-px-4 tw-py-3 tw-flex tw-items-center tw-justify-between tw-border-t tw-border-gray-200">
                       <div className="tw-hidden sm:tw-block">
                         <div className="tw-text-sm tw-text-gray-700 tw-hidden sm:tw-block">
-                          {t('common:pagination.info.showing')}&nbsp;
-                          <span className="tw-font-bold">{(applicationsResponse.page.number - 1) * applicationsResponse.page.size + 1}</span>
-                          &nbsp;{t('common:pagination.info.to')}&nbsp;
-                          <span className="tw-font-bold">{applicationsResponse.page.number === applicationsResponse.page.totalPages ? applicationsResponse.page.totalElements : applicationsResponse.page.number * applicationsResponse.page.size}</span>
-                          &nbsp;{t('common:pagination.info.of')}&nbsp;
-                          <span className="tw-font-bold">{applicationsResponse.page.totalElements}</span>
-                          &nbsp;{t('common:pagination.info.results')}
+                          <Trans
+                            i18nKey="common:pagination.info"
+                            components={{ label: <span className="tw-font-bold" /> }}
+                            values={{
+                              start: (applicationsResponse.page.number - 1) * applicationsResponse.page.size + 1,
+                              end: applicationsResponse.page.number === applicationsResponse.page.totalPages ? applicationsResponse.page.totalElements : applicationsResponse.page.number * applicationsResponse.page.size,
+                              total: applicationsResponse.page.totalElements,
+                            }}
+                          />
                         </div>
                       </div>
                       <div className="tw-flex tw-items-center tw-justify-between tw-space-x-4">

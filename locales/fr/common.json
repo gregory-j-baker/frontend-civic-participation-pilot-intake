@@ -59,11 +59,6 @@
     "next": "Prochaine",
     "no-data": "Aucune entrée correspondante trouvée",
     "previous": "Précédente",
-    "info": {
-      "showing": "Affichage",
-      "to": "à",
-      "of": "de",
-      "results": "entrées"
-    }
+    "info": "Affichage <label>{{start}}</label> à <label>{{end}}</label> de <label>{{total}}</label> entrées"
   }
 }
