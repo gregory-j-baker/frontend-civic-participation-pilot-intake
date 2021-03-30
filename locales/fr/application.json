@@ -1,35 +1,35 @@
 {
-  "header": "Formulaire de demande",
+  "header": "Formulaire de candidature",
   "confirmation": {
-    "title": "Confirmation de la demande",
-    "header": "Merci d'avoir soumis votre demande",
-    "sub-header": "Nous vous avons envoyé un courriel de vérification",
-    "instruction": "Veuillez cliquer sur le lien dans ce courriel pour confirmer votre adresse courriel",
-    "submit": "Visitez le site Web du CSC"
+    "title": "Merci pour votre candidature.",
+    "header": "Merci pour votre candidature.",
+    "sub-header": "Nous vous avons envoyé un courriel de vérification.",
+    "instruction": "Veuillez cliquer sur le lien présent dans le courriel afin de confirmer votre adresse courriel.",
+    "submit": "Visiter notre site-web"
   },
   "field": {
     "birthYear": {
-      "label": "En quelle année êtes-vous né?",
-      "helper-text": "Veuillez noter que pour être éligible, vous devez avoir entre 18 et 30 ans et l'âge de la majorité dans votre province ou votre territoire de résidence.",
-      "required": "Vous devez sélectionner l'année où vous êtes né"
+      "label": "Année de naissance",
+      "helper-text": "Veuillez noter que pour être admissible, vous devez avoir entre l’âge de 18 et 30 ans et avoir l’âge de la majorité dans la province ou le territoire où vous résidez.",
+      "required": "Vous devez sélectionner l'année de votre naissance"
     },
     "communityInterest": {
-      "label": "Si vous pouviez avoir un impact positif sur un problème de votre communauté, quel problème voudriez-vous aborder et pourquoi?",
-      "helper-text": "Minimum de {{min}} mots et un maximum de mots {{max}}",
-      "min-word": "Vous devez fournir une réponse à la question n° 2 avec plus ou égale à {{min}} mots",
-      "max-word": "Vous devez fournir une réponse à la question n° 2 avec moins ou égale à {{max}} mots",
-      "required": "Vous devez fournir une réponse à la question n° 2"
+      "label": "Si vous pouviez avoir une incidence positive sur votre collectivité, quel enjeu voudriez-vous aborder et pourquoi?",
+      "helper-text": "Texte libre, minimum de {{min}} mots et maximum de {{max}} mots",
+      "min-word": "Vous devez fournir une réponse à la question 1 avec plus ou égale à {{min}} mots",
+      "max-word": "Vous devez fournir une réponse à la question 1 avec moins ou égale à {{max}} mots",
+      "required": "Vous devez fournir une réponse à la question 1"
     },
     "demographicId": {
-      "label": "Vous identifiez-vous avec une ou plusieurs des caractéristiques démographiques répertoriées?",
+      "label": "Vous identifiez-vous à une ou plusieurs des caractéristiques démographiques énumérées?",
       "children-items": {
-        "item-1": "Minorité visible / racialisée",
-        "item-2": "Indigènes (I.e. Premières nations, Inuits (Inuk), ou Métis, ou non affiliés)",
-        "item-3": "Personne handicapée",
+        "item-1": "minorités visibles/communauté racialisée",
+        "item-2": "autochtone (Premières Nations, Inuit, Métis(es), ou non-affilié)",
+        "item-3": "personne handicapée",
         "item-4": "LGBTQ2",
-        "item-5": "Nouveau venu au Canada (au cours des cinq dernières années)",
-        "item-6": "Communauté minoritaire de langue officielle (OLMC)",
-        "item-7": "Vivre dans une zone rurale ou éloignée"
+        "item-5": "Nouvel arrivant au Canada (depuis moins de cinq ans)",
+        "item-6": "Communauté de langue officielle en situation minoritaire",
+        "item-7": "Vis dans une zone rurale ou une région éloignée"
       },
       "required": "Vous devez sélectionner une réponse pour les caractéristiques démographiques"
     },
@@ -38,66 +38,66 @@
       "required": "Vous devez sélectionner une réponse à vivre avec un handicap"
     },
     "discoveryChannelId": {
-      "label": "Comment avez-vous entendu parler du pilote de participation civique?",
-      "required": "Vous devez indiquer comment vous avez entendu parler de ce pilote"
+      "label": "Comment avez-vous entendu parler du projet pilote de participation civique? ",
+      "required": "Vous devez indiquer comment vous avez entendu parler de ce projet pilote"
     },
     "educationLevelId": {
-      "label": "Quel est votre plus haut niveau d'éducation formelle achevé ou inscrit actuellement?",
-      "helper-text": "Veuillez noter qu'il n'y a pas d'obligation d'éducation pour ce programme.",
+      "label": "Choisissez le plus haut niveau d’études complété, ou celui auquel vous êtes actuellement inscrit.",
+      "helper-text": "Veuillez noter qu’il n’y a aucune exigence liée aux études pour ce programme.",
       "required": "Vous devez sélectionner une réponse pour le niveau d'éducation"
     },
     "email": {
-      "email-invalid": "Vous devez entrer une adresse courriel valide",
+      "email-invalid": "Vous devez saisir une adresse courriel valide",
       "label": "Adresse courriel",
-      "required": "Vous devez entrer une adresse courriel"
+      "required": "Vous devez saisir une adresse courriel"
     },
     "firstName": {
       "label": "Prénom",
-      "required": "Vous devez entrer votre prénom"
+      "required": "Vous devez saisir votre prénom"
     },
     "genderId": {
-      "label": "Avec quelle identité de genre vous identifiez-vous le plus?",
+      "label": "À quelle identité de genre vous identifiez-vous le plus?",
       "required": "Vous devez sélectionner une réponse pour l'identité de genre"
     },
     "isCanadianCitizen": {
       "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
-      "helper-text": "Une personne protégée est une personne sur laquelle la protection des réfugiés est conférée en vertu de la Loi sur l'immigration et la protection des réfugiés et dont la réclamation ou la demande n'a pas été considérée par la suite à être rejetée en vertu du paragraphe 108(3), 109(3) ou 114(4) ou devrait être de cet acte.",
+      "helper-text": "Une personne protégée est une personne à qui l’asile est conféré en vertu de la Loi sur l’immigration et la protection des réfugiés, et dont la demande n’est pas ensuite réputée rejetée au titre des paragraphes 108(3), 109(3) ou 114(4) de la Loi.",
       "required": "Vous devez indiquer si vous êtes un citoyen, un résident ou une personne protégée"
     },
     "isInformationConsented": {
-      "label": "À ma connaissance, toutes les informations ci-dessus sont vraies et exactes, et je consens à partager ma réponse avec l'emploi et le développement social Canada",
-      "required": "Vous devez fournir le consentement à partager ces informations",
-      "must-be-true": "Vous devez fournir le consentement à partager ces informations"
+      "label": "À ma connaissance, tous les renseignements fournis (à la section 1) sont vrais et exacts, et je consens à ce que mes réponses soient communiquées à Emploi et Développement social Canada.",
+      "required": "Vous devez donner votre consentement pour partager cette information",
+      "must-be-true": "Vous devez donner votre consentement pour partager cette information"
     },
     "isProvinceMajorCertified": {
-      "label": "Je certifie que je suis de l'âge de la majorité dans ma province ou territoire de résidence",
+      "label": "J’atteste que j’ai l’âge de la majorité dans la province ou le territoire où je réside",
       "link": "Trouvez l'âge de la majorité dans votre province ou votre territoire",
-      "required": "Vous devez certifier que vous avez plus d'âge de la majorité",
-      "must-be-true": "Vous devez certifier que vous avez plus d'âge de la majorité"
+      "required": "Vous devez certifier que vous avez atteint l'âge de la majorité",
+      "must-be-true": "Vous devez certifier que vous avez atteint l'âge de la majorité"
     },
     "languageId": {
-      "label": "Dans quelle langue officielle préféreriez-vous être contacté et participer?",
-      "required": "Vous devez indiquer votre préférence de langue"
+      "label": "Dans quelle langue officielle préférez-vous que l’on communique avec vous et dans quelle langue souhaitez-vous participer? ",
+      "required": "Vous devez indiquer votre préférence linguistique"
     },
     "lastName": {
       "label": "Nom de famille",
-      "required": "Vous devez entrer votre nom de famille"
+      "required": "Vous devez saisir votre nom de famille"
     },
     "phoneNumber": {
       "label": "Numéro de téléphone",
       "helper-text": "Format acceptable: 506-555-5555",
-      "phone-invalid": "Vous devez entrer un numéro de téléphone à dix chiffres valide (ex. 506-555-5555)"
+      "phone-invalid": "Vous devez saisir un numéro de téléphone valide à dix chiffres"
     },
     "provinceId": {
-      "label": "Dans quelle province ou territoire votre principale résidence est-elle située?",
-      "required": "Vous devez sélectionner votre province ou votre territoire de résidence"
+      "label": "Dans quelle province ou quel territoire se situe votre résidence principale?",
+      "required": "Vous devez sélectionner votre province ou territoire de résidence"
     },
     "skillsInterest": {
-      "label": "Parlez-nous de vous-même, décrivez vos forces, vos passions et vos motivations. Quelles compétences et connaissances espérez-vous gagner de cette expérience?",
-      "helper-text": "Minimum de {{min}} mots et un maximum de mots {{max}}",
-      "min-word": "Vous devez fournir une réponse à la question n° 1 avec plus ou égale à {{min}} mots",
-      "max-word": "Vous devez fournir une réponse à la question n° 1 avec moins ou égale à {{max}} mots",
-      "required": "Vous devez fournir une réponse à la question n° 1"
+      "label": "Quelles compétences et connaissances pensez-vous devoir acquérir pour aborder cette enjeu?",
+      "helper-text": "Texte libre, minimum de {{min}} mots et maximum de {{max}} mots",
+      "min-word": "Vous devez fournir une réponse à la question 2 avec plus ou égale à {{min}} mots",
+      "max-word": "Vous devez fournir une réponse à la question 2 avec moins ou égale à {{max}} mots",
+      "required": "Vous devez fournir une réponse à la question 2"
     }
   },
   "step-1": {
@@ -105,7 +105,7 @@
   },
   "step-2": {
     "title": "Étape 2",
-    "information-note": "Veuillez noter que les questions de cette section n'affecteront pas votre admissibilité au programme et ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir les réponses que vous jugez le plus applicable. Vous pouvez choisir de sélectionner «Préférer ne pas répondre» pour toute question dans cette section."
+    "information-note": "Veuillez noter que les questions de cette section n'auront aucune incidence sur votre admissibilité au programme et qu'elles ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir la réponse qui, selon vous, s'applique le mieux à votre cas. Vous pouvez choisir de sélectionner «Je préfère ne pas répondre» pour toute question de cette section."
   },
   "step-3": {
     "title": "Étape 3"
