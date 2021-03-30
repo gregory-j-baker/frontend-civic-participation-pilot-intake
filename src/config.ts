@@ -32,6 +32,7 @@ export const applicationConfig = {
  */
 export const apiConfig = {
   baseUri: process.env.NEXT_PUBLIC_API_INTAKE_BASE_URI,
+  maxEmailVerificationAttempts: (process.env.NEXT_PUBLIC_API_MAX_EMAIL_VERIFICATION_ATTEMPTS ?? 5) as number,
 };
 
 /**

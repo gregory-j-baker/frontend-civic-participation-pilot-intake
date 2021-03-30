@@ -5,24 +5,25 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useState } from 'react';
+import type { GetStaticProps, NextPage } from 'next';
 import { NextSeo } from 'next-seo';
-import { useRouter } from 'next/router';
-import { TextField, TextFieldOnChangeEvent } from '../../../components/form/TextField';
 import useTranslation from 'next-translate/useTranslation';
-import Error from '../../_error';
 import Image from 'next/image';
-import { Alert, AlertType } from '../../../components/Alert';
-import { Button, ButtonOnClickEvent } from '../../../components/Button';
-import { MainLayout } from '../../../components/layouts/main/MainLayout';
-import { emailVerificationSchema } from '../../../yup/emailVerificationSchema';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { YupCustomMessage } from '../../../yup/yup-custom';
-import type { GetStaticProps, NextPage } from 'next';
+import { Alert, AlertType } from '../../../components/Alert';
+import { Button, ButtonOnClickEvent } from '../../../components/Button';
+import { TextField, TextFieldOnChangeEvent } from '../../../components/form/TextField';
+import { MainLayout } from '../../../components/layouts/main/MainLayout';
+import { apiConfig } from '../../../config';
 import { EmailVerificationAccessCodeData, useSubmitAccessCode } from '../../../hooks/api/email-verifications/useSubmitAccessCode';
-import { Constants } from '../types';
+import { emailVerificationSchema } from '../../../yup/emailVerificationSchema';
+import { YupCustomMessage } from '../../../yup/yup-custom';
 import Custom404 from '../../404';
+import Error from '../../_error';
+import { Constants } from '../types';
 
 interface FormDataState {
   accessCode?: string;
@@ -30,11 +31,14 @@ interface FormDataState {
   email?: string;
 }
 
-const EmailVerficationPage: NextPage = () => {
-  const maxAttempts = 5;
+/**
+ * Maximum number of email verification attempts allowed by the API.
+ */
+const maxAttempts = apiConfig.maxEmailVerificationAttempts;
 
+const EmailVerficationPage: NextPage<{ initialFormData: FormDataState }> = ({ initialFormData }) => {
+  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
   const { t } = useTranslation('email-verification');
-
   const router = useRouter();
 
   const { mutate: submitAccessCode, error: submitAccessCodeError, reset: resetSubmitAccessCodeError, isLoading: submitAccessCodeIsLoading, isSuccess: submitAccessCodeIsSuccess } = useSubmitAccessCode({
@@ -47,31 +51,23 @@ const EmailVerficationPage: NextPage = () => {
         sessionStorage.removeItem(Constants.EmailVerificationStorageKey);
         router.push('/application/email-verification/failed');
       }
+
       setFormDataState((prev) => ({ ...prev, attempts: maxAttempts - HttpClientResponseError.responseJson.verificationCount }));
+      if (submitAccessCodeError) document.getElementById('validation-error')?.focus();
     },
   });
 
-  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
-
   const [formData, setFormDataState] = useState<FormDataState>(() => {
-    const defaultState: FormDataState = { accessCode: undefined, attempts: maxAttempts, email: undefined };
-
+    const defaultState: FormDataState = initialFormData;
     if (typeof window === 'undefined') return defaultState;
-
     return { ...defaultState, email: window.sessionStorage.getItem(Constants.EmailVerificationStorageKey) as string };
   });
 
-  const handleOnTextFieldChange: TextFieldOnChangeEvent = ({ value }) => {
-    setFormDataState((prev) => {
-      return { ...prev, accessCode: value ?? undefined };
-    });
-  };
+  const handleOnTextFieldChange: TextFieldOnChangeEvent = ({ value }) => setFormDataState((prev) => ({ ...prev, accessCode: value ?? undefined }));
 
   const handleOnCancel: ButtonOnClickEvent = (event) => {
     event.preventDefault();
-
     sessionStorage.removeItem(Constants.EmailVerificationStorageKey);
-
     router.push('/application/confirmation');
   };
 
@@ -94,6 +90,7 @@ const EmailVerficationPage: NextPage = () => {
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
+      document.getElementById('validation-error')?.focus();
     }
   };
 
@@ -109,10 +106,15 @@ const EmailVerficationPage: NextPage = () => {
     return t('common:error-number', { number: index + 1 }) + t(`email-verification:form.${schemaErrors[index]?.path}.${key}`);
   };
 
-  if (submitAccessCodeError instanceof HttpClientResponseError && (submitAccessCodeError as HttpClientResponseError).responseStatus !== 400 && (submitAccessCodeError as HttpClientResponseError).responseStatus !== 429)
-    return <Error err={submitAccessCodeError as HttpClientResponseError} />;
+  if (submitAccessCodeError instanceof HttpClientResponseError) {
+    if ((submitAccessCodeError as HttpClientResponseError).responseStatus !== 400) return <Error err={submitAccessCodeError as HttpClientResponseError} />;
+    if ((submitAccessCodeError as HttpClientResponseError).responseStatus !== 429) return <Error err={submitAccessCodeError as HttpClientResponseError} />;
+  }
 
-  if (!formData.email) return <Custom404 />;
+  if (!formData.email) {
+    router.push('/404');
+    return <></>;
+  }
 
   return (
     <MainLayout>
@@ -127,7 +129,7 @@ const EmailVerficationPage: NextPage = () => {
           <p className="tw-m-0 tw-mb-4">{t('email-verification:page.description')}</p>
 
           {schemaErrors && schemaErrors.length > 0 && (
-            <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+            <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc">
                 {schemaErrors.map(({ path }) => {
                   const [field] = path?.split('.') ?? [];
@@ -143,7 +145,7 @@ const EmailVerficationPage: NextPage = () => {
           )}
 
           {submitAccessCodeError && (
-            <Alert title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
+            <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
               <ul className="tw-list-disc">
                 <li key="{path}" className="tw-my-2">
                   <a href="#form-field-accessCode">{t('email-verification:form.accessCode.invalid')}</a>
@@ -184,7 +186,12 @@ const EmailVerficationPage: NextPage = () => {
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
-    props: {},
+    props: {
+      initialFormData: {
+        attempts: maxAttempts,
+        email: 'user@example.com',
+      },
+    },
   };
 };
 
