@@ -54,5 +54,16 @@
     "step": "Étape",
     "x-of-y": "\u00A0: {{active}} de {{length}}",
     "submit": "Soumettre"
+  },
+  "pagination": {
+    "next": "Prochaine",
+    "no-data": "Aucune entrée correspondante trouvée",
+    "previous": "Précédente",
+    "info": {
+      "showing": "Affichage",
+      "to": "à",
+      "of": "de",
+      "results": "entrées"
+    }
   }
 }

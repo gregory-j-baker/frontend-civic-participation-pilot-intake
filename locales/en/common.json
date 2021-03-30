@@ -54,5 +54,16 @@
     "step": "Step",
     "x-of-y": ": {{active}} of {{length}}",
     "submit": "Submit"
+  },
+  "pagination": {
+    "next": "Next",
+    "no-data": "No matching entries found",
+    "previous": "Previous",
+    "info": {
+      "showing": "Showing",
+      "to": "to",
+      "of": "of",
+      "results": "entries"
+    }
   }
 }

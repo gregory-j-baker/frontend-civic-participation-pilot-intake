@@ -118,5 +118,20 @@
       "link": "déclaration d'avis de confidentialité"
     }
   },
-  "submit": "Soumettre la demande"
+  "submit": "Soumettre la demande",
+  "management": {
+    "list": {
+      "title": "Liste - Gestion des applications",
+      "header": "Gestion des applications - Liste",
+      "table-header": {
+        "name": "Nom",
+        "language": "Language",
+        "province": "Province",
+        "date-received": "Date de réception",
+        "status": "Statut",
+        "edit": "Modifier"
+      },
+      "edit-link": "Modifier"
+    }
+  }
 }

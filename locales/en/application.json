@@ -118,5 +118,20 @@
       "link": "Privacy Notice Statement"
     }
   },
-  "submit": "Submit application"
+  "submit": "Submit application",
+  "management": {
+    "list": {
+      "title": "List - Applications management",
+      "header": "Applications management - List",
+      "table-header": {
+        "name": "Name",
+        "language": "Language",
+        "province": "Province",
+        "date-received": "Date received",
+        "status": "Status",
+        "edit": "Edit"
+      },
+      "edit-link": "Edit"
+    }
+  }
 }
