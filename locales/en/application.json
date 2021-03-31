@@ -122,8 +122,9 @@
   "submit": "Submit application",
   "management": {
     "list": {
-      "title": "List - Applications management",
-      "header": "Applications management - List",
+      "title": "Applicant list",
+      "header": "Applicant list",
+      "filter-by": "Filter by:",
       "table-header": {
         "name": "Name",
         "language": "Language",

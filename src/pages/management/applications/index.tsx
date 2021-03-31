@@ -78,7 +78,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
 
           <SelectField
             field="status"
-            label={t('application:field.application-status')}
+            label={t('application:management.list.filter-by')}
             value={status ?? ApplicationStatusEnum.NEW}
             options={applicationStatuseOptions}
             onChange={({ value }) => router.push({ pathname, query: { ...query, status: value } })}
