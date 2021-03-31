@@ -10,7 +10,7 @@
   "field": {
     "birthYear": {
       "label": "Année de naissance",
-      "helper-text": "Veuillez noter que pour être admissible, vous devez avoir entre l’âge de 18 et 30 ans et avoir l’âge de la majorité dans la province ou le territoire où vous résidez.",
+      "helper-text": "Veuillez noter que pour être admissible, vous devez avoir entre l'âge de 18 et 30 ans et avoir l'âge de la majorité dans la province ou le territoire où vous résidez.",
       "required": "Vous devez sélectionner l'année de votre naissance"
     },
     "communityInterest": {
@@ -42,8 +42,8 @@
       "required": "Vous devez indiquer comment vous avez entendu parler de ce projet pilote"
     },
     "educationLevelId": {
-      "label": "Choisissez le plus haut niveau d’études complété, ou celui auquel vous êtes actuellement inscrit.",
-      "helper-text": "Veuillez noter qu’il n’y a aucune exigence liée aux études pour ce programme.",
+      "label": "Choisissez le plus haut niveau d'études complété, ou celui auquel vous êtes actuellement inscrit.",
+      "helper-text": "Veuillez noter qu'il n'y a aucune exigence liée aux études pour ce programme.",
       "required": "Vous devez sélectionner une réponse pour le niveau d'éducation"
     },
     "email": {
@@ -61,7 +61,7 @@
     },
     "isCanadianCitizen": {
       "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
-      "helper-text": "Une personne protégée est une personne à qui l’asile est conféré en vertu de la Loi sur l’immigration et la protection des réfugiés, et dont la demande n’est pas ensuite réputée rejetée au titre des paragraphes 108(3), 109(3) ou 114(4) de la Loi.",
+      "helper-text": "Une personne protégée est une personne à qui l'asile est conféré en vertu de la Loi sur l'immigration et la protection des réfugiés, et dont la demande n'est pas ensuite réputée rejetée au titre des paragraphes 108(3), 109(3) ou 114(4) de la Loi.",
       "required": "Vous devez indiquer si vous êtes un citoyen, un résident ou une personne protégée"
     },
     "isInformationConsented": {
@@ -70,13 +70,13 @@
       "must-be-true": "Vous devez donner votre consentement pour partager cette information"
     },
     "isProvinceMajorCertified": {
-      "label": "J’atteste que j’ai l’âge de la majorité dans la province ou le territoire où je réside",
+      "label": "J'atteste que j'ai l'âge de la majorité dans la province ou le territoire où je réside",
       "link": "Trouvez l'âge de la majorité dans votre province ou votre territoire",
       "required": "Vous devez certifier que vous avez atteint l'âge de la majorité",
       "must-be-true": "Vous devez certifier que vous avez atteint l'âge de la majorité"
     },
     "languageId": {
-      "label": "Dans quelle langue officielle préférez-vous que l’on communique avec vous et dans quelle langue souhaitez-vous participer? ",
+      "label": "Dans quelle langue officielle préférez-vous que l'on communique avec vous et dans quelle langue souhaitez-vous participer? ",
       "required": "Vous devez indiquer votre préférence linguistique"
     },
     "lastName": {
@@ -105,7 +105,7 @@
   },
   "step-2": {
     "title": "Étape 2",
-    "information-note": "Veuillez noter que les questions de cette section n'auront aucune incidence sur votre admissibilité au programme et qu'elles ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir la réponse qui, selon vous, s'applique le mieux à votre cas. Vous pouvez choisir de sélectionner «Je préfère ne pas répondre» pour toute question de cette section."
+    "information-note": "Veuillez noter que les questions de cette section n'auront aucune incidence sur votre admissibilité au programme et qu'elles ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir la réponse qui, selon vous, s'applique le mieux à votre cas. Vous pouvez choisir de sélectionner « Je préfère ne pas répondre » pour toute question de cette section."
   },
   "step-3": {
     "title": "Étape 3"

@@ -2,7 +2,7 @@
   "page": {
     "title": "Verify your email address",
     "header": "Check your inbox for a six digit verification code",
-    "description": "Thank you for your interest in the Civic Participation Pilot. Please enter the validation code sent to you to validate your email. If you can’t access your email at the moment, press “I will do this later” and click the validation link from the email directly at a later time."
+    "description": "Thank you for your interest in the Civic Participation Pilot. Please enter the validation code sent to you to validate your email. If you can't access your email at the moment, press \"I will do this later\" and click the validation link from the email directly at a later time."
   },
   "form": {
     "accessCode": {
@@ -17,9 +17,9 @@
   },
   "failed": {
     "page": {
-      "title": "The code you’ve entered is incorrect",
+      "title": "The code you've entered is incorrect",
       "header": "The code you've entered is incorrect",
-      "description": "Try clicking the validation link sent to your email. If this still doesn’t solve the issue, contact us at <0></0>"
+      "description": "Try clicking the validation link sent to your email. If this still doesn't solve the issue, contact us at <0></0>"
     },
     "form": {
       "submit": "Visit our website"

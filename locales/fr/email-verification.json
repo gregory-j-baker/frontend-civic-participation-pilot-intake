@@ -2,7 +2,7 @@
   "page": {
     "title": "Vérifier votre adresse courriel",
     "header": "Regarder dans votre boîte courriel pour obtenir le code vérification à six caractères",
-    "description": "Merci pour votre intérêt envers le pilote de participation civique. S’il vous plait, veuillez entrer le code reçu par courriel afin de valider votre adresse courriel. Si vous êtes dans l’impossibilité d’accéder à vos courriels pour le moment, cliquer sur « Je le ferai plus tard », vous n’aurez qu’à cliquer sur le lien de validation inclus dans le courriel au moment désiré."
+    "description": "Merci pour votre intérêt envers le pilote de participation civique. S'il vous plait, veuillez entrer le code reçu par courriel afin de valider votre adresse courriel. Si vous êtes dans l'impossibilité d'accéder à vos courriels pour le moment, cliquer sur « Je le ferai plus tard », vous n'aurez qu'à cliquer sur le lien de validation inclus dans le courriel au moment désiré."
   },
   "form": {
     "accessCode": {
