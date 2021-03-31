@@ -8,6 +8,7 @@
     "submit": "Visit our website"
   },
   "field": {
+    "application-status": "Status",
     "birthYear": {
       "label": "What year were you born?",
       "helper-text": "Please note that to be eligible you must be between 18-30 years of age and of the age of majority in your province or territory of residence.",

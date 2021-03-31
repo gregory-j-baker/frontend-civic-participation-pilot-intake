@@ -59,11 +59,6 @@
     "next": "Next",
     "no-data": "No matching entries found",
     "previous": "Previous",
-    "info": {
-      "showing": "Showing",
-      "to": "to",
-      "of": "of",
-      "results": "entries"
-    }
+    "info": "Showing <label>{{start}}</label> to <label>{{end}}</label> of <label>{{total}}</label> entries"
   }
 }

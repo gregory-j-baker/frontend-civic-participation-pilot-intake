@@ -8,6 +8,7 @@
     "submit": "Visiter notre site-web"
   },
   "field": {
+    "application-status": "Statut",
     "birthYear": {
       "label": "Année de naissance",
       "helper-text": "Veuillez noter que pour être admissible, vous devez avoir entre l'âge de 18 et 30 ans et avoir l'âge de la majorité dans la province ou le territoire où vous résidez.",

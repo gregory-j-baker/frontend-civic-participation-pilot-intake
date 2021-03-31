@@ -16,24 +16,28 @@ import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
 import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
 import { GetDescriptionFunc } from '../../application/types';
 import useTranslation from 'next-translate/useTranslation';
+import Trans from 'next-translate/Trans';
 import Error from '../../_error';
 import Link from 'next/link';
 import { ApplicationStatus, Language, Province } from '../../../hooks/api/code-lookups/types';
 import { useApplicationStatuses } from '../../../hooks/api/code-lookups/useApplicationStatuses';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
+import { SelectField, SelectFieldOption } from '../../../components/form/SelectField';
 
 interface RouterQuery {
   page?: number;
+  status?: string;
 }
 
 const ManagementApplicationsPage = (): JSX.Element => {
   const { t, lang } = useTranslation();
 
   const router = useRouter();
-  const { page } = router.query as RouterQuery;
+  const { query } = router;
+  const { page, status } = query as RouterQuery;
 
-  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page });
+  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status });
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({});
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
@@ -41,6 +45,12 @@ const ManagementApplicationsPage = (): JSX.Element => {
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
+
+  // province options
+  const applicationStatuseOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isApplicationStatusesLoading || applicationsError) return [];
+    return applicationStatuses?._embedded.applicationStatuses.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isApplicationStatusesLoading, applicationsError, applicationStatuses, getDescription]);
 
   if (applicationsError || applicationStatusesError || languagesError || provincesError) {
     return <Error err={applicationsError ?? languagesError ?? provincesError ?? applicationStatusesError} />;
@@ -58,6 +68,21 @@ const ManagementApplicationsPage = (): JSX.Element => {
             {t('common:app.title')}
           </h1>
           <h2 className="tw-m-0 tw-mb-10 tw-text-2xl">{t('application:management.list.header')}</h2>
+
+          <SelectField
+            field="status"
+            label={t('application:field.application-status')}
+            value={status}
+            options={applicationStatuseOptions}
+            onChange={({ value }) =>
+              router.push({
+                pathname: '/management/applications',
+                query: { ...query, status: value },
+              })
+            }
+            gutterBottom
+            className="tw-w-full sm:tw-w-6/12"
+          />
 
           <div className="tw-flex tw-flex-col">
             <div className="tw--my-2 tw-overflow-x-auto sm:tw--mx-6 lg:tw--mx-8">
@@ -120,25 +145,37 @@ const ManagementApplicationsPage = (): JSX.Element => {
                     <div className="tw-bg-white tw-px-4 tw-py-3 tw-flex tw-items-center tw-justify-between tw-border-t tw-border-gray-200">
                       <div className="tw-hidden sm:tw-block">
                         <div className="tw-text-sm tw-text-gray-700 tw-hidden sm:tw-block">
-                          {t('common:pagination.info.showing')}&nbsp;
-                          <span className="tw-font-bold">{(applicationsResponse.page.number - 1) * applicationsResponse.page.size + 1}</span>
-                          &nbsp;{t('common:pagination.info.to')}&nbsp;
-                          <span className="tw-font-bold">{applicationsResponse.page.number === applicationsResponse.page.totalPages ? applicationsResponse.page.totalElements : applicationsResponse.page.number * applicationsResponse.page.size}</span>
-                          &nbsp;{t('common:pagination.info.of')}&nbsp;
-                          <span className="tw-font-bold">{applicationsResponse.page.totalElements}</span>
-                          &nbsp;{t('common:pagination.info.results')}
+                          <Trans
+                            i18nKey="common:pagination.info"
+                            components={{ label: <span className="tw-font-bold" /> }}
+                            values={{
+                              start: (applicationsResponse.page.number - 1) * applicationsResponse.page.size + 1,
+                              end: applicationsResponse.page.number === applicationsResponse.page.totalPages ? applicationsResponse.page.totalElements : applicationsResponse.page.number * applicationsResponse.page.size,
+                              total: applicationsResponse.page.totalElements,
+                            }}
+                          />
                         </div>
                       </div>
                       <div className="tw-flex tw-items-center tw-justify-between tw-space-x-4">
                         {applicationsResponse.page.number > 1 && (
-                          <Link href={`/management/applications?page=${applicationsResponse.page.number - 1}`} passHref>
+                          <Link
+                            href={{
+                              pathname: '/management/applications',
+                              query: { ...query, page: applicationsResponse.page.number - 1 },
+                            }}
+                            passHref>
                             <a className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-text-sm tw-font-bold tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-rounded-md tw-text-gray-700 visited:tw-text-gray-700 tw-bg-white hover:tw-text-gray-500 focus:tw-text-gray-500">
                               {t('common:pagination.previous')}
                             </a>
                           </Link>
                         )}
                         {applicationsResponse.page.number < applicationsResponse.page.totalPages && (
-                          <Link href={`/management/applications?page=${applicationsResponse.page.number + 1}`} passHref>
+                          <Link
+                            href={{
+                              pathname: '/management/applications',
+                              query: { ...query, page: applicationsResponse.page.number + 1 },
+                            }}
+                            passHref>
                             <a className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-text-sm tw-font-bold tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-rounded-md tw-text-gray-700 visited:tw-text-gray-700 tw-bg-white hover:tw-text-gray-500 focus:tw-text-gray-500">
                               {t('common:pagination.next')}
                             </a>

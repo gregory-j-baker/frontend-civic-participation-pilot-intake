@@ -9,6 +9,8 @@ import { useSession, signIn } from 'next-auth/client';
 import { Session } from 'next-auth';
 import AccessDeniedPage from './AccessDeniedPage';
 import { Role } from '../common/types';
+import { MainLayout } from './layouts/main/MainLayout';
+import { PageLoadingSpinner } from './PageLoadingSpinner';
 
 export interface AADSession extends Session {
   roles?: string[];
@@ -23,23 +25,29 @@ export interface PageSecurityGateProps {
 export const PageSecurityGate = ({ children, requiredRoles, secured }: PageSecurityGateProps): JSX.Element => {
   const [session, loading] = useSession();
 
-  if (typeof window !== 'undefined' && secured) {
+  if (secured) {
     if (loading) {
-      return <></>;
+      return (
+        <MainLayout>
+          <PageLoadingSpinner />
+        </MainLayout>
+      );
     }
 
     if (!session) {
       signIn();
-      return <></>;
+      return (
+        <MainLayout>
+          <PageLoadingSpinner />
+        </MainLayout>
+      );
     }
 
     // validate roles
     if (requiredRoles && requiredRoles.length > 0) {
       const sessionRoles = (session as AADSession).roles;
       if (!sessionRoles || sessionRoles.length === 0) return <AccessDeniedPage />;
-      if (sessionRoles.filter((role) => requiredRoles.map((r) => r as string).includes(role)).length === 0) {
-        return <AccessDeniedPage />;
-      }
+      if (sessionRoles.filter((role) => requiredRoles.map((r) => r as string).includes(role)).length === 0) return <AccessDeniedPage />;
     }
   }
 
