@@ -13,7 +13,8 @@ import { MainLayout } from './layouts/main/MainLayout';
 import { PageLoadingSpinner } from './PageLoadingSpinner';
 
 export interface AADSession extends Session {
-  roles?: string[];
+  roles: string[];
+  accessTokenExpires: number;
 }
 
 export interface PageSecurityGateProps {
@@ -34,8 +35,8 @@ export const PageSecurityGate = ({ children, requiredRoles, secured }: PageSecur
       );
     }
 
-    if (!session) {
-      signIn();
+    if (!session || Date.now() >= (session as AADSession).accessTokenExpires) {
+      signIn('azure-ad-b2c');
       return (
         <MainLayout>
           <PageLoadingSpinner />
@@ -46,7 +47,7 @@ export const PageSecurityGate = ({ children, requiredRoles, secured }: PageSecur
     // validate roles
     if (requiredRoles && requiredRoles.length > 0) {
       const sessionRoles = (session as AADSession).roles;
-      if (!sessionRoles || sessionRoles.length === 0) return <AccessDeniedPage />;
+      if (sessionRoles.length === 0) return <AccessDeniedPage />;
       if (sessionRoles.filter((role) => requiredRoles.map((r) => r as string).includes(role)).length === 0) return <AccessDeniedPage />;
     }
   }

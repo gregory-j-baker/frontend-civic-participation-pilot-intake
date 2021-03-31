@@ -19,7 +19,7 @@ import useTranslation from 'next-translate/useTranslation';
 import Trans from 'next-translate/Trans';
 import Error from '../../_error';
 import Link from 'next/link';
-import { ApplicationStatus, Language, Province } from '../../../hooks/api/code-lookups/types';
+import { ApplicationStatus, ApplicationStatus_NEW, Language, Province } from '../../../hooks/api/code-lookups/types';
 import { useApplicationStatuses } from '../../../hooks/api/code-lookups/useApplicationStatuses';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
@@ -37,7 +37,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
   const { query } = router;
   const { page, status } = query as RouterQuery;
 
-  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status });
+  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatus_NEW });
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({});
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
@@ -72,7 +72,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
           <SelectField
             field="status"
             label={t('application:field.application-status')}
-            value={status}
+            value={status ?? ApplicationStatus_NEW}
             options={applicationStatuseOptions}
             onChange={({ value }) =>
               router.push({

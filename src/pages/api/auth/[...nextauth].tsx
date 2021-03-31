@@ -13,6 +13,7 @@ import Providers from 'next-auth/providers';
 
 type AzureADB2CProfile = Record<string, unknown> & {
   oid?: string;
+  expires_in?: number;
 };
 
 interface JWTAccount extends Record<string, unknown> {
@@ -44,11 +45,17 @@ const handler: NextApiHandler = (req, res) => {
     ],
     callbacks: {
       jwt: async (token, user: JWTUser, account: JWTAccount) => {
-        return {
-          ...token,
-          ...(user?.roles && { roles: user.roles }),
-          ...(account?.accessToken && { accessToken: account.accessToken }),
-        };
+        // Initial sign in
+        if (account && user) {
+          return {
+            ...token,
+            roles: user.roles,
+            accessToken: account.accessToken,
+            accessTokenExpires: Date.now() + (account.expires_in as number) * 1000,
+          };
+        }
+
+        return token;
       },
       session: async (session, userOrToken: UserOrToken) => {
         return {
