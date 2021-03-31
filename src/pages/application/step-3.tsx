@@ -131,12 +131,12 @@ const Step3Page = (): JSX.Element => {
 
           <Wizard activeStep={3} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
             <TextAreaField
-              field={nameof<Step3State>((o) => o.skillsInterest)}
-              label={t('application:field.skillsInterest.label')}
-              helperText={t('application:field.skillsInterest.helper-text', { ...SkillsInterestWordLength })}
-              value={formData.step3.skillsInterest}
+              field={nameof<Step3State>((o) => o.communityInterest)}
+              label={t('application:field.communityInterest.label')}
+              helperText={t('application:field.communityInterest.helper-text', { ...SkillsInterestWordLength })}
+              value={formData.step3.communityInterest}
               onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<Step3State>((o) => o.skillsInterest))}
+              error={getSchemaError(nameof<Step3State>((o) => o.communityInterest))}
               required
               gutterBottom
               className="tw-w-full"
@@ -145,12 +145,12 @@ const Step3Page = (): JSX.Element => {
             />
 
             <TextAreaField
-              field={nameof<Step3State>((o) => o.communityInterest)}
-              label={t('application:field.communityInterest.label')}
-              helperText={t('application:field.communityInterest.helper-text', { ...SkillsInterestWordLength })}
-              value={formData.step3.communityInterest}
+              field={nameof<Step3State>((o) => o.skillsInterest)}
+              label={t('application:field.skillsInterest.label')}
+              helperText={t('application:field.skillsInterest.helper-text', { ...SkillsInterestWordLength })}
+              value={formData.step3.skillsInterest}
               onChange={handleOnTextFieldChange}
-              error={getSchemaError(nameof<Step3State>((o) => o.communityInterest))}
+              error={getSchemaError(nameof<Step3State>((o) => o.skillsInterest))}
               required
               className="tw-w-full"
               wordLimit={250}

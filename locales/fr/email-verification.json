@@ -1,39 +1,39 @@
 {
   "page": {
-    "title": "Vérifiez votre adresse courriel",
-    "header": "Vérifiez votre boîte de réception pour un code de vérification à six chiffres",
-    "description": "Merci à vous de vous intéresser au pilote CSC-CPP, veuillez entrer le code de vérification qui vous a été envoyé pour valider votre adresse courriel. Si vous ne pouvez pas accéder à votre courrier électronique pour le moment, appuyez sur \"Je le ferai plus tard\" et cliquez sur le lien de vérification directement dans le courriel ultérieurement."
+    "title": "Vérifier votre adresse courriel",
+    "header": "Regarder dans votre boîte courriel pour obtenir le code vérification à six caractères",
+    "description": "Merci pour votre intérêt envers le pilote de participation civique. S'il vous plait, veuillez entrer le code reçu par courriel afin de valider votre adresse courriel. Si vous êtes dans l'impossibilité d'accéder à vos courriels pour le moment, cliquer sur « Je le ferai plus tard », vous n'aurez qu'à cliquer sur le lien de validation inclus dans le courriel au moment désiré."
   },
   "form": {
     "accessCode": {
-      "label": "Code de vérification à six chiffres",
+      "label": "Code de vérification à six caractères",
       "required": "Code de vérificiation est requis",
-      "length-invalid": "Code de vérification doit être 6 chiffres",
+      "length-invalid": "Code de vérification doit être 6 caractères",
       "invalid": "Code de vérification est invalide",
-      "help-text": "{{attempts}}/{{maxAttempts}} tentatives restantes"
+      "help-text": "Nombre d'essai restant: {{attempts}}/{{maxAttempts}}"
     },
     "submit": "Soumettre",
     "cancel": "Je le ferai plus tard"
   },
   "failed": {
     "page": {
-      "title": "Code de vérification de courrier électronique incorrect",
-      "header": "Le code que vous avez entré est incorrect",
-      "description": "Essayez de cliquer sur le lien de valildation envoyé à votre courriel. Si cela ne résout toujours pas le problème, contactez-nous à <0></0>"
+      "title": "Le code que vous avez entré est invalide.",
+      "header": "Le code que vous avez entré est invalide.",
+      "description": "Essayer de cliquer sur le lien présent dans le courriel de validation qui vous a été envoyé. Si le problème persiste, veuillez nous contacter au <0></0>"
     },
     "form": {
-      "submit": "Visitez le site Web du CSC"
+      "submit": "Visiter notre site-web"
     }
   },
   "success": {
     "page": {
-      "title": "Vérification du courrier électronique validé",
-      "header": "Merci de valider votre adresse email",
-      "sub-header": "Votre processus de candidature est maintenant complet",
-      "message": "Merci d'avoir postulé pour participer au projet pilote de participation civique du Service canadien des services du Canada! Les participants seront sélectionnés à l'aide d'un tirage au sort généré par ordinateur. Tous les candidats éligibles seront automatiquement inscrits au tirage. Vous pouvez vous attendre à savoir si vous avez été sélectionné en mai 2021."
+      "title": "Merci de confirmer votre adresse e-mail",
+      "header": "Merci de confirmer votre adresse e-mail",
+      "sub-header": "Votre processus de candidature est maintenant terminé",
+      "message": "Merci d'avoir posé votre candidature pour participer au projet pilote de participation civique du Service jeunesse Canada ! Les participants seront sélectionnés par un tirage au sort aléatoire effectué par ordinateur. Tous les candidats admissibles seront automatiquement inscrits au tirage au sort.  Vous pouvez vous attendre à savoir si vous avez été sélectionné en mai 2021."
     },
     "form": {
-      "submit": "Visitez le site Web du CSC"
+      "submit": "Visiter notre site-web"
     }
   }
 }
