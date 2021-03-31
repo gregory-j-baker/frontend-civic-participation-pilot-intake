@@ -122,8 +122,9 @@
   "submit": "Soumettre la demande",
   "management": {
     "list": {
-      "title": "Liste - Gestion des applications",
-      "header": "Gestion des applications - Liste",
+      "title": "Liste des applications",
+      "header": "Liste des applications",
+      "filter-by": "Filtrer par\u00A0:",
       "table-header": {
         "name": "Nom",
         "language": "Language",
