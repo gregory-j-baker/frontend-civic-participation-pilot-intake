@@ -41,7 +41,9 @@ export interface ApplicationStatus extends Lookup {}
 /**
  * @see https://dev.azure.com/youth-digital-gateway/Civic%20Participation%20Pilot/_git/api-civic-participation-intake?path=%2Fsrc%2Fmain%2Fresources%2Fdb%2Fmigration%2Fv1.1-init-data.sql&version=GBmaster&line=3&lineEnd=4&lineStartColumn=1&lineEndColumn=1&lineStyle=plain&_a=contents
  */
-export const ApplicationStatus_NEW = 'b36a6695-4314-4fe1-bc16-bf4894b7a289';
+export enum ApplicationStatusEnum {
+  NEW = 'b36a6695-4314-4fe1-bc16-bf4894b7a289',
+}
 
 /**
  * Demographics
