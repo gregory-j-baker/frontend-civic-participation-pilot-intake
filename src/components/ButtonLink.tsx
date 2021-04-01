@@ -79,7 +79,7 @@ export const getColorClasses: GetColorClassesFunc = (color) => {
 export const ButtonLink = (props: ButtonLinkProps): JSX.Element => {
   const colorClasses = useMemo(() => getColorClasses(props.color ?? TailwindColor.green), [props.color]);
 
-  const commonClasses = 'tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded tw-no-underline hover:tw-no-underline focus:tw-no-underline';
+  const commonClasses = 'tw-font-semibold tw-py-2 tw-px-4 tw-border tw-rounded tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-inline-block';
 
   const defaultClasses = `${commonClasses} ${colorClasses.defaultColorClasses} `;
   const outlineClasses = `${commonClasses} tw-bg-transparent ${colorClasses.outlineClasses}`;

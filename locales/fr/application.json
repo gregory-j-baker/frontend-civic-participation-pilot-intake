@@ -137,7 +137,13 @@
     },
     "edit": {
       "title": "Modifier l'application",
-      "header": "Application"
+      "header": "Application",
+      "submit": "Sauvegarder",
+      "cancel": "Annuler",
+      "field": {
+        "application-status": "Mettre à jour le statut d'application",
+        "reasoning": "Raisonnement"
+      }
     }
   }
 }

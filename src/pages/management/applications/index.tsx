@@ -46,18 +46,18 @@ const ManagementApplicationsPage = (): JSX.Element => {
 
   const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW });
 
-  const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({});
-  const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages({ lang });
-  const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces({ lang });
+  const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({ lang });
+  const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
+  const { data: provinces, isLoading: isProvincesLoading, error: provincesError } = useProvinces();
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
-  // province options
+  // application statuse options
   const applicationStatuseOptions = useMemo<SelectFieldOption[]>(() => {
-    if (isApplicationStatusesLoading || applicationsError) return [];
+    if (isApplicationStatusesLoading || applicationStatusesError) return [];
     return applicationStatuses?._embedded.applicationStatuses.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isApplicationStatusesLoading, applicationsError, applicationStatuses, getDescription]);
+  }, [isApplicationStatusesLoading, applicationStatusesError, applicationStatuses, getDescription]);
 
   if (applicationsError || applicationStatusesError || languagesError || provincesError) {
     return <Error err={applicationsError ?? languagesError ?? provincesError ?? applicationStatusesError} />;

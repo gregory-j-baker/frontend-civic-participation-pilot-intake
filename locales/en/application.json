@@ -137,7 +137,13 @@
     },
     "edit": {
       "title": "Edit application",
-      "header": "Application"
+      "header": "Application",
+      "submit": "Save",
+      "cancel": "Cancel",
+      "field": {
+        "application-status": "Update application status",
+        "reasoning": "Reasoning"
+      }
     }
   }
 }

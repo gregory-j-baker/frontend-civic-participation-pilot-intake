@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { AADSession, Role } from '../../../common/types';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
@@ -16,6 +16,18 @@ import { Application } from '../../../hooks/api/applications/types';
 import { ContentPaper } from '../../../components/ContentPaper';
 import useTranslation from 'next-translate/useTranslation';
 import { NextSeo } from 'next-seo';
+import { SelectField, SelectFieldOption } from '../../../components/form/SelectField';
+import { useApplicationStatuses } from '../../../hooks/api/code-lookups/useApplicationStatuses';
+import { GetDescriptionFunc } from '../../application/types';
+import Error from '../../_error';
+import { TextAreaField } from '../../../components/form/TextAreaField';
+import { ButtonLink } from '../../../components/ButtonLink';
+import { Button } from '../../../components/Button';
+
+export interface ManagementEditApplicationPageState {
+  applicationStatueId: string;
+  reasoning?: string;
+}
 
 export interface ManagementEditApplicationPageProps {
   application: Application;
@@ -24,7 +36,22 @@ export interface ManagementEditApplicationPageProps {
 const ManagementEditApplicationPage = ({ application }: ManagementEditApplicationPageProps): JSX.Element => {
   const { t, lang } = useTranslation();
 
+  const [formState, setFormState] = useState<ManagementEditApplicationPageState>({ applicationStatueId: application.applicationStatusId });
+
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
+
+  const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({ lang });
+  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
+
+  // application statuse options
+  const applicationStatuseOptions = useMemo<SelectFieldOption[]>(() => {
+    if (isApplicationStatusesLoading || applicationStatusesError) return [];
+    return applicationStatuses?._embedded.applicationStatuses.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isApplicationStatusesLoading, applicationStatusesError, applicationStatuses, getDescription]);
+
+  if (applicationStatusesError) {
+    return <Error err={applicationStatusesError} />;
+  }
 
   return (
     <MainLayout>
@@ -37,9 +64,37 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
         {dateTimeFormat.format(new Date(application.createdDate))}
       </h3>
 
-      <ContentPaper>
+      <ContentPaper className="tw-mb-10">
         <ApplicationReview application={application} />
       </ContentPaper>
+
+      {!isApplicationStatusesLoading && (
+        <ContentPaper>
+          <SelectField
+            field="status"
+            label={t('application:management.edit.field.application-status')}
+            value={formState.applicationStatueId}
+            options={applicationStatuseOptions}
+            onChange={({ value }) => setFormState((prev) => ({ ...prev, applicationStatueId: value as string }))}
+            gutterBottom
+            className="tw-w-full sm:tw-w-6/12"
+          />
+
+          <TextAreaField
+            field="status"
+            label={t('application:management.edit.field.reasoning')}
+            value={formState.reasoning}
+            onChange={({ value }) => setFormState((prev) => ({ ...prev, reasoning: value ?? undefined }))}
+            gutterBottom
+            className="tw-w-full"
+          />
+
+          <Button className="tw-m-2">{t('application:management.edit.submit')}</Button>
+          <ButtonLink className="tw-m-2" href="/management/applications" outline>
+            {t('application:management.edit.cancel')}
+          </ButtonLink>
+        </ContentPaper>
+      )}
     </MainLayout>
   );
 };
