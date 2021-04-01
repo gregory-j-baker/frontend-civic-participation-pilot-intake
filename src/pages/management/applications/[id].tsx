@@ -23,6 +23,7 @@ import Error from '../../_error';
 import { TextAreaField } from '../../../components/form/TextAreaField';
 import { ButtonLink } from '../../../components/ButtonLink';
 import { Button } from '../../../components/Button';
+import * as Yup from 'yup';
 
 export interface ManagementEditApplicationPageState {
   applicationStatueId: string;
@@ -48,6 +49,8 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
     if (isApplicationStatusesLoading || applicationStatusesError) return [];
     return applicationStatuses?._embedded.applicationStatuses.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
   }, [isApplicationStatusesLoading, applicationStatusesError, applicationStatuses, getDescription]);
+
+  const canSubmit = application.applicationStatusId !== formState.applicationStatueId && Yup.string().defined().isValidSync(formState.reasoning);
 
   if (applicationStatusesError) {
     return <Error err={applicationStatusesError} />;
@@ -89,7 +92,9 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
             className="tw-w-full"
           />
 
-          <Button className="tw-m-2">{t('application:management.edit.submit')}</Button>
+          <Button className="tw-m-2" disabled={!canSubmit}>
+            {t('application:management.edit.submit')}
+          </Button>
           <ButtonLink className="tw-m-2" href="/management/applications" outline>
             {t('application:management.edit.cancel')}
           </ButtonLink>
