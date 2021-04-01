@@ -30,26 +30,43 @@ import { useLanguage } from '../../../hooks/api/code-lookups/useLanguage';
 import { useProvince } from '../../../hooks/api/code-lookups/useProvince';
 import { ApplicationReview, ApplicationReviewProps } from '../../../components/pages/ApplicationReview';
 
-const ManagementEditApplicationPage: NextPage = ({ data }) => {
+const ManagementEditApplicationPage: NextPage = (props) => {
   const { lang } = useTranslation();
 
-  console.log(data.id);
+  console.log(props);
+
+  // const applicationReviewProps: ApplicationReviewProps = {
+  //   firstName: props.firstName as string,
+  //   lastName: props.lastName as string,
+  //   email: props.email as string,
+  //   phoneNumber: props.phoneNumber as string,
+  //   birthYear: props.birthYear as number,
+  //   languageId: props.languageId as string,
+  //   isCanadianCitizen: props.isCanadianCitizen as boolean,
+  //   provinceId: props.provinceId as string,
+  //   discoveryChannelId: props.discoveryChannelId as string,
+  //   genderId: props.genderId as string,
+  //   educationLevelId: props.educationLevelId as string,
+  //   demographicId: props.demographicId as string,
+  //   skillsInterest: props.skillsInterest as string,
+  //   communityInterest: props.communityInterest as string,
+  // };
 
   const applicationReviewProps: ApplicationReviewProps = {
-    firstName: data.firstName as string,
-    lastName: data.lastName as string,
-    email: data.email as string,
-    phoneNumber: data.phoneNumber as string,
-    birthYear: data.birthYear as number,
-    languageId: data.languageId as string,
-    isCanadianCitizen: data.isCanadianCitizen as boolean,
-    provinceId: data.provinceId as string,
-    discoveryChannelId: data.discoveryChannelId as string,
-    genderId: data.genderId as string,
-    educationLevelId: data.educationLevelId as string,
-    demographicId: data.demographicId as string,
-    skillsInterest: data.skillsInterest as string,
-    communityInterest: data.communityInterest as string,
+    firstName: 'first name',
+    lastName: 'last name',
+    email: 'email',
+    phoneNumber: 'phone',
+    birthYear: 1979,
+    languageId: '2b05e0d0-995c-4267-ba29-4fa2d3f00199',
+    isCanadianCitizen: true,
+    provinceId: 'e09b7ca2-1664-4dd2-9aa3-6de3d28d6606',
+    discoveryChannelId: '77057e6f-6267-4459-8599-8b0796724d8f',
+    genderId: '8be28fb2-f5be-44fc-a01b-5dd6ebf64ab8',
+    educationLevelId: '8d47ccef-4908-4866-8e35-bb90792005e6',
+    demographicId: '808b164a-86d4-11eb-8dcd-0242ac130003',
+    skillsInterest: 'skills',
+    communityInterest: 'community',
   };
 
   //const { data: applications, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({});
