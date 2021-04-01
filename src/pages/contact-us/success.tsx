@@ -17,7 +17,7 @@ const ContactUsSuccess: NextPage = () => {
   const { t, lang } = useTranslation();
 
   return (
-    <MainLayout>
+    <MainLayout showAppTitle={false}>
       <div className="tw-flex tw-space-x-10">
         <div className="tw-w-full md:tw-w-1/2">
           <NextSeo title={t('contact-us:success.page.title')} />

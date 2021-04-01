@@ -147,9 +147,6 @@ const Step1Page = (): JSX.Element => {
         <>
           <NextSeo title={`${t('application:step-1.title')} - ${t('application:header')}`} />
 
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
-            {t('common:app.title')}
-          </h1>
           <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('application:header')}</h2>
 
           {schemaErrors && schemaErrors.length > 0 && (

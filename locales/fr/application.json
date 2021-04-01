@@ -134,6 +134,10 @@
         "edit": "Modifier"
       },
       "edit-link": "Modifier"
+    },
+    "edit": {
+      "title": "Modifier l'application",
+      "header": "Application"
     }
   }
 }

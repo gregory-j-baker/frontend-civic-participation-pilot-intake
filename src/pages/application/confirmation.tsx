@@ -21,9 +21,7 @@ const ApplicationConfirmationPage = (): JSX.Element => {
       <div className="tw-flex tw-space-x-10">
         <div className="tw-w-full md:tw-w-1/2">
           <NextSeo title={t('application:confirmation.title')} />
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-8 tw-text-3xl">
-            {t('application:confirmation.header')}
-          </h1>
+
           <h2 className="tw-m-0 tw-border-none tw-mb-16 tw-text-2xl">{t('application:confirmation.sub-header')}</h2>
           <p className="tw-mb-16">{t('application:confirmation.instruction')}</p>
 

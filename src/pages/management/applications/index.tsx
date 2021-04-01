@@ -71,10 +71,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
         <>
           <NextSeo title={t('application:management.list.title')} />
 
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-8 tw-text-3xl">
-            {t('common:app.title')}
-          </h1>
-          <h2 className="tw-m-0 tw-mb-10 tw-text-2xl">{t('application:management.list.header')}</h2>
+          <h2 className="tw-m-0 tw-mb-8 tw-text-2xl">{t('application:management.list.header')}</h2>
 
           <SelectField
             field="status"

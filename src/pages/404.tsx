@@ -13,7 +13,7 @@ import { MainLayout } from '../components/layouts/main/MainLayout';
 const Custom404 = (): JSX.Element => {
   const { t, lang } = useTranslation();
   return (
-    <MainLayout>
+    <MainLayout showAppTitle={false}>
       <NextSeo title={t('common:custom-404.page-title')} />
 
       <div className="tw-my-8">

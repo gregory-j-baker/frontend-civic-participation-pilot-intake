@@ -122,8 +122,8 @@
   "submit": "Submit application",
   "management": {
     "list": {
-      "title": "Applicant list",
-      "header": "Applicant list",
+      "title": "Application list",
+      "header": "Application list",
       "filter-by": "Filter by:",
       "table-header": {
         "name": "Name",
@@ -134,6 +134,10 @@
         "edit": "Edit"
       },
       "edit-link": "Edit"
+    },
+    "edit": {
+      "title": "Edit application",
+      "header": "Application"
     }
   }
 }

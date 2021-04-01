@@ -15,22 +15,28 @@ import { ApplicationReview } from '../../../components/pages/ApplicationReview';
 import { Application } from '../../../hooks/api/applications/types';
 import { ContentPaper } from '../../../components/ContentPaper';
 import useTranslation from 'next-translate/useTranslation';
+import { NextSeo } from 'next-seo';
 
 export interface ManagementEditApplicationPageProps {
   application: Application;
 }
 
 const ManagementEditApplicationPage = ({ application }: ManagementEditApplicationPageProps): JSX.Element => {
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
+
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
+
   return (
     <MainLayout>
-      <h1 className="tw-m-0 tw-mb-8 tw-border-none">Applicant #NO_ID</h1>
-      <h2 className="tw-m-0 tw-mb-8 tw-text-2xl tw-text-gray-500">
-        {`${application.firstName} ${application.lastName}`}
-        <br />
+      <NextSeo title={t('application:management.edit.title')} />
+
+      <h2 className="tw-m-0 tw-mb-8 tw-text-2xl">{t('application:management.edit.header')}</h2>
+
+      <h3 className="tw-m-0 tw-mb-8 tw-text-xxl tw-text-gray-500">
+        <span className="tw-block tw-mb-2">{`${application.firstName} ${application.lastName}`}</span>
         {dateTimeFormat.format(new Date(application.createdDate))}
-      </h2>
+      </h3>
+
       <ContentPaper>
         <ApplicationReview application={application} />
       </ContentPaper>

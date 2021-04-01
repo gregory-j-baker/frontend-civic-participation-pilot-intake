@@ -111,7 +111,7 @@ const EmailVerficationPage: NextPage = () => {
   if (!pageLoading && !formData.email) return <Custom404 />;
 
   return (
-    <MainLayout>
+    <MainLayout showAppTitle={false}>
       <NextSeo title={t('email-verification:page.title')} />
       {pageLoading ? (
         <PageLoadingSpinner />

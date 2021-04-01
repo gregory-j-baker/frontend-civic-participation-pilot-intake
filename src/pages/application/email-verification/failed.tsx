@@ -19,7 +19,7 @@ const EmailVerficationFailedPage: NextPage = () => {
   const { supportEmail } = applicationConfig;
 
   return (
-    <MainLayout>
+    <MainLayout showAppTitle={false}>
       <NextSeo title={t('email-verification:failed.page.title')} />
       <div className="tw-flex tw-space-x-10">
         <div className="tw-w-full md:tw-w-1/2">

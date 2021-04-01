@@ -17,7 +17,7 @@ const EmailVerficationSuccessPage: NextPage = () => {
   const { t, lang } = useTranslation();
 
   return (
-    <MainLayout>
+    <MainLayout showAppTitle={false}>
       <div className="tw-flex tw-space-x-10">
         <div className="tw-w-full md:tw-w-1/2">
           <NextSeo title={t('email-verification:success.page.title')} />

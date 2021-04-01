@@ -13,7 +13,7 @@ import { MainLayout } from './layouts/main/MainLayout';
 const AccessDeniedPage: React.FC = (): JSX.Element => {
   const { t, lang } = useTranslation();
   return (
-    <MainLayout>
+    <MainLayout showAppTitle={false}>
       <NextSeo title={t('common:access-denied.page-title')} />
 
       <div className="tw-my-8">
