@@ -41,7 +41,7 @@ export const PageSecurityGate = ({ children, requiredRoles, secured }: PageSecur
     // validate roles
     if (requiredRoles && requiredRoles.length > 0) {
       const sessionRoles = (session as AADSession).roles;
-      if (sessionRoles.length === 0) return <AccessDeniedPage />;
+      if (!sessionRoles || sessionRoles.length === 0) return <AccessDeniedPage />;
       if (sessionRoles.filter((role) => requiredRoles.map((r) => r as string).includes(role)).length === 0) return <AccessDeniedPage />;
     }
   }

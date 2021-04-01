@@ -28,6 +28,7 @@ type Profile = User & { id: string };
 
 type UserOrToken = (User | JWT) & {
   accessToken?: string;
+  accessTokenExpires?: number;
   roles?: string[];
 };
 
@@ -49,18 +50,21 @@ const handler: NextApiHandler = (req, res) => {
         if (account && user) {
           return {
             ...token,
-            roles: user.roles,
             accessToken: account.accessToken,
             accessTokenExpires: Date.now() + (account.expires_in as number) * 1000,
+            roles: user.roles,
           };
         }
 
         return token;
       },
       session: async (session, userOrToken: UserOrToken) => {
+        console.log('/********* SESSION');
+        console.log(userOrToken);
         return {
           ...session,
           accessToken: userOrToken.accessToken,
+          accessTokenExpires: userOrToken.accessTokenExpires,
           roles: userOrToken.roles,
         };
       },

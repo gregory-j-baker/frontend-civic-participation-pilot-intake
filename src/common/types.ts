@@ -72,6 +72,6 @@ export interface NextContext {
 export type SessionContext = NextContext & { triggerEvent?: boolean };
 
 export interface AADSession extends Session {
-  roles: string[];
+  roles?: string[];
   accessTokenExpires: number;
 }
