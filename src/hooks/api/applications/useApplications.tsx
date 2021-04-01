@@ -9,7 +9,7 @@
 import { getSession } from 'next-auth/client';
 import type { UseQueryResult } from 'react-query';
 import { useQuery } from 'react-query';
-import type { SessionContext, HateoasCollection, Page } from '../../../common/types';
+import type { SessionContext, HateoasCollection, Page, AADSession } from '../../../common/types';
 import { fetchWrapper } from '../../../utils/fetch-wrapper';
 import { Application, applicationsQueryKey, applicationsUri } from './types';
 
@@ -29,10 +29,8 @@ export interface FetchApplicationsOptions {
 export interface UseApplicationsOptions extends FetchApplicationsOptions {}
 
 export const fetchApplications = async (options: FetchApplicationsOptions, context?: SessionContext): Promise<ApplicationsResponse> => {
-  const session = await getSession(context);
-  const accessToken = session?.accessToken;
-
-  if (!accessToken) throw new Error('No accessToken exists');
+  const session = (await getSession(context)) as AADSession;
+  if (!session || Date.now() >= session.accessTokenExpires || !session.accessToken) Error('Invalid session');
 
   const { applicationStatusId, page, size } = options;
 
@@ -41,7 +39,7 @@ export const fetchApplications = async (options: FetchApplicationsOptions, conte
 
   return fetchWrapper<ApplicationsResponse>(`${applicationsUri}?${queries.join('&')}`, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${session.accessToken}`,
     },
   });
 };
