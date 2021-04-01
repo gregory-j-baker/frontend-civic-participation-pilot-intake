@@ -25,6 +25,7 @@ import Custom404 from '../../404';
 import Error from '../../_error';
 import { Constants } from '../types';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
+import { ButtonLink } from '../../../components/ButtonLink';
 
 interface FormDataState {
   accessCode?: string;
@@ -62,12 +63,6 @@ const EmailVerficationPage: NextPage = () => {
   });
 
   const handleOnTextFieldChange: TextFieldOnChangeEvent = ({ value }) => setFormDataState((prev) => ({ ...prev, accessCode: value ?? undefined }));
-
-  const handleOnCancel: ButtonOnClickEvent = (event) => {
-    event.preventDefault();
-    sessionStorage.removeItem(Constants.EmailVerificationStorageKey);
-    router.push('/application/confirmation');
-  };
 
   const handleOnSubmit: ButtonOnClickEvent = async (event) => {
     event.preventDefault();
@@ -173,9 +168,9 @@ const EmailVerficationPage: NextPage = () => {
               <Button onClick={handleOnSubmit} disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
                 {t('email-verification:form.submit')}
               </Button>
-              <Button outline onClick={handleOnCancel} disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
+              <ButtonLink href="/application/confirmation" outline disabled={submitAccessCodeIsLoading || submitAccessCodeIsSuccess} className="tw-m-2">
                 {t('email-verification:form.cancel')}
-              </Button>
+              </ButtonLink>
             </div>
           </div>
           <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">

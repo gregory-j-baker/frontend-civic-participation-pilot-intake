@@ -26,39 +26,39 @@ export const getColorClasses: GetColorClassesFunc = (color) => {
     case TailwindColor.blue:
       return {
         defaultColorClasses: 'tw-bg-blue-600 hover:tw-bg-blue-700 focus:tw-bg-blue-700 tw-text-white tw-border-blue-700',
-        outlineClasses: 'hover:tw-bg-blue-700 focus:tw-bg-blue-700 tw-text-blue-700 hover:tw-text-white tw-border-blue-700',
+        outlineClasses: 'hover:tw-bg-blue-700 focus:tw-bg-blue-700 tw-text-blue-700 hover:tw-text-white focus:tw-text-white tw-border-blue-700',
       };
 
     case TailwindColor.gray:
       return {
         defaultColorClasses: 'tw-bg-gray-600 hover:tw-bg-gray-700 focus:tw-bg-gray-700 tw-text-white tw-border-gray-700',
-        outlineClasses: 'hover:tw-bg-gray-700 focus:tw-bg-gray-700 tw-text-gray-700 hover:tw-text-white tw-border-gray-700',
+        outlineClasses: 'hover:tw-bg-gray-700 focus:tw-bg-gray-700 tw-text-gray-700 hover:tw-text-white focus:tw-text-white tw-border-gray-700',
       };
 
     case TailwindColor.green:
       return {
         defaultColorClasses: 'tw-bg-green-700 hover:tw-bg-green-800 focus:tw-bg-green-800 tw-text-white tw-border-green-800',
-        outlineClasses: 'tw-text-green-700 hover:tw-bg-green-800 focus:tw-bg-green-800 hover:tw-text-white tw-border-green-800',
+        outlineClasses: 'tw-text-green-700 hover:tw-bg-green-800 focus:tw-bg-green-800 hover:tw-text-white focus:tw-text-white tw-border-green-800',
       };
     case TailwindColor.indigo:
       return {
         defaultColorClasses: 'tw-bg-indigo-600 hover:tw-bg-indigo-700 focus:tw-bg-indigo-700 tw-text-white tw-border-indigo-700',
-        outlineClasses: 'hover:tw-bg-indigo-700 focus:tw-bg-indigo-700 tw-text-indigo-700 hover:tw-text-white tw-border-indigo-700',
+        outlineClasses: 'hover:tw-bg-indigo-700 focus:tw-bg-indigo-700 tw-text-indigo-700 hover:tw-text-white focus:tw-text-white tw-border-indigo-700',
       };
     case TailwindColor.pink:
       return {
         defaultColorClasses: 'tw-bg-pink-600 hover:tw-bg-pink-700 focus:tw-bg-pink-700 tw-text-white tw-border-pink-700',
-        outlineClasses: 'hover:tw-bg-pink-700 focus:tw-bg-pink-700 tw-text-pink-700 hover:tw-text-white tw-border-pink-700',
+        outlineClasses: 'hover:tw-bg-pink-700 focus:tw-bg-pink-700 tw-text-pink-700 hover:tw-text-white focus:tw-text-white tw-border-pink-700',
       };
     case TailwindColor.purple:
       return {
         defaultColorClasses: 'tw-bg-purple-600 hover:tw-bg-purple-700 focus:tw-bg-purple-700 tw-text-white tw-border-purple-700',
-        outlineClasses: 'hover:tw-bg-purple-700 focus:tw-bg-purple-700 tw-text-purple-700 hover:tw-text-white tw-border-purple-700',
+        outlineClasses: 'hover:tw-bg-purple-700 focus:tw-bg-purple-700 tw-text-purple-700 hover:tw-text-white focus:tw-text-white tw-border-purple-700',
       };
     case TailwindColor.red:
       return {
         defaultColorClasses: 'tw-bg-red-600 hover:tw-bg-red-700 focus:tw-bg-red-700 tw-text-white tw-border-red-700',
-        outlineClasses: 'hover:tw-bg-red-700 focus:tw-bg-red-700 tw-text-red-700 hover:tw-text-white tw-border-red-700',
+        outlineClasses: 'hover:tw-bg-red-700 focus:tw-bg-red-700 tw-text-red-700 hover:tw-text-white focus:tw-text-white tw-border-red-700',
       };
     case TailwindColor.white:
       return {
@@ -68,13 +68,13 @@ export const getColorClasses: GetColorClassesFunc = (color) => {
     case TailwindColor.yellow:
       return {
         defaultColorClasses: 'tw-bg-yellow-400 hover:tw-bg-yellow-500 focus:tw-bg-yellow-500 tw-text-black tw-border-yellow-500',
-        outlineClasses: 'hover:tw-bg-yellow-500 focus:tw-bg-yellow-500 tw-text-yellow-500 hover:tw-text-black tw-border-yellow-500',
+        outlineClasses: 'hover:tw-bg-yellow-500 focus:tw-bg-yellow-500 tw-text-yellow-500 hover:tw-text-black focus:tw-text-black tw-border-yellow-500',
       };
   }
 
   return {
     defaultColorClasses: 'tw-bg-green-700 hover:tw-bg-green-800 focus:tw-bg-green-800 tw-text-white tw-border-green-800',
-    outlineClasses: 'tw-text-green-700 hover:tw-bg-green-800 focus:tw-bg-green-800 hover:tw-text-white tw-border-green-800',
+    outlineClasses: 'tw-text-green-700 hover:tw-bg-green-800 focus:tw-bg-green-800 hover:tw-text-white focus:tw-text-white tw-border-green-800',
   };
 };
 
