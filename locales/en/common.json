@@ -60,5 +60,6 @@
     "no-data": "No matching entries found",
     "previous": "Previous",
     "info": "Showing <label>{{start}}</label> to <label>{{end}}</label> of <label>{{total}}</label> entries"
-  }
+  },
+  "data-not-found": "Data not found"
 }

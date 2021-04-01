@@ -60,5 +60,6 @@
     "no-data": "Aucune entrée correspondante trouvée",
     "previous": "Précédente",
     "info": "Affichage <label>{{start}}</label> à <label>{{end}}</label> de <label>{{total}}</label> entrées"
-  }
+  },
+  "data-not-found": "Données non trouvées"
 }

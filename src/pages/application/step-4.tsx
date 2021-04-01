@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,21 +18,15 @@ import { Wizard, WizardOnPreviousClickEvent, WizardOnNextClickEvent } from '../.
 import { useSubmitApplication } from '../../hooks/api/applications/useSubmitApplication';
 import Error from '../_error';
 import { Alert, AlertType } from '../../components/Alert';
-import { ApplicationState, Step4State, Constants, GetDescriptionFunc, Step1State, Step2State, Step3State } from './types';
+import { ApplicationState, Step4State, Constants, Step1State, Step2State, Step3State } from './types';
 import { step4Schema, step3Schema, applicationSchema, step2Schema, step1Schema } from '../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../yup/yup-custom';
 import { GetStaticProps } from 'next';
-import { FormDefinitionListItem } from '../../components/FormDefinitionListItem';
-import { useDemographic } from '../../hooks/api/code-lookups/useDemographic';
-import { useDiscoveryChannel } from '../../hooks/api/code-lookups/useDiscoveryChannel';
-import { useEducationLevel } from '../../hooks/api/code-lookups/useEducationLevel';
-import { useGender } from '../../hooks/api/code-lookups/useGender';
-import { useLanguage } from '../../hooks/api/code-lookups/useLanguage';
-import { useProvince } from '../../hooks/api/code-lookups/useProvince';
 import { ApplicationSubmitData } from '../../hooks/api/applications/types';
 import { sleep } from '../../utils/misc-utils';
+import { ApplicationReview } from '../../components/pages/ApplicationReview';
 
 const Step4Page = (): JSX.Element => {
   const { t } = useTranslation();
@@ -179,7 +173,24 @@ const Step4Page = (): JSX.Element => {
             onNextClick={handleWizardOnNextClick}
             disabled={submitApplicationIsLoading || submitApplicationIsSuccess}>
             <div className="tw-mb-10">
-              <FormReview {...formData} />
+              <ApplicationReview
+                application={{
+                  birthYear: formData.step1.birthYear as number,
+                  communityInterest: formData.step3.communityInterest as string,
+                  demographicId: formData.step2.demographicId as string,
+                  discoveryChannelId: formData.step1.discoveryChannelId as string,
+                  educationLevelId: formData.step2.educationLevelId as string,
+                  email: formData.step1.email as string,
+                  firstName: formData.step1.firstName as string,
+                  genderId: formData.step2.genderId as string,
+                  isCanadianCitizen: formData.step1.isCanadianCitizen as boolean,
+                  languageId: formData.step1.languageId as string,
+                  lastName: formData.step1.lastName as string,
+                  phoneNumber: formData.step1.phoneNumber,
+                  provinceId: formData.step1.provinceId as string,
+                  skillsInterest: formData.step3.skillsInterest as string,
+                }}
+              />
             </div>
             <CheckboxeField
               field={nameof<Step4State>((o) => o.isInformationConsented)}
@@ -213,191 +224,6 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {},
   };
-};
-
-export interface FormReviewItem {
-  children?: React.ReactNode;
-  key: string;
-  text: string;
-  value: string;
-}
-
-export interface FormReviewProps {
-  step1: Step1State;
-  step2: Step2State;
-  step3: Step3State;
-}
-
-export const FormReview = ({ step1, step2, step3 }: FormReviewProps): JSX.Element => {
-  const { t, lang } = useTranslation();
-
-  const { data: demographic, isLoading: demographicIsLoading } = useDemographic(step2.demographicId as string);
-  const { data: discoveryChannel, isLoading: discoveryChannelIsLoading } = useDiscoveryChannel(step1.discoveryChannelId as string);
-  const { data: educationLevel, isLoading: educationLevelIsLoading } = useEducationLevel(step2.educationLevelId as string);
-  const { data: gender, isLoading: genderIsLoading } = useGender(step2.genderId as string);
-  const { data: language, isLoading: languageIsLoading } = useLanguage(step1.languageId as string);
-  const { data: province, isLoading: provinceIsLoading } = useProvince(step1.provinceId as string);
-
-  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
-
-  const formReviewItems: FormReviewItem[] = useMemo(() => {
-    const items: FormReviewItem[] = [];
-
-    // firstName
-    if (step1.firstName) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.firstName),
-        text: t(`application:field.${nameof<Step1State>((o) => o.firstName)}.label`),
-        value: step1.firstName,
-      });
-    }
-
-    // lastName
-    if (step1.lastName) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.lastName),
-        text: t(`application:field.${nameof<Step1State>((o) => o.lastName)}.label`),
-        value: step1.lastName,
-      });
-    }
-
-    // email
-    if (step1.email) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.email),
-        text: t(`application:field.${nameof<Step1State>((o) => o.email)}.label`),
-        value: step1.email,
-      });
-    }
-
-    // phone
-    if (step1.phoneNumber) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.phoneNumber),
-        text: t(`application:field.${nameof<Step1State>((o) => o.phoneNumber)}.label`),
-        value: step1.phoneNumber,
-      });
-    }
-
-    // birthYear
-    if (step1.birthYear) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.birthYear),
-        text: t(`application:field.${nameof<Step1State>((o) => o.birthYear)}.label`),
-        value: step1.birthYear.toString(),
-      });
-    }
-
-    // languageId
-    if (!languageIsLoading && language) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.languageId),
-        text: t(`application:field.${nameof<Step1State>((o) => o.languageId)}.label`),
-        value: getDescription(language),
-      });
-    }
-
-    // isCanadianCitizen
-    if (step1.isCanadianCitizen !== undefined) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.isCanadianCitizen),
-        text: t(`application:field.${nameof<Step1State>((o) => o.isCanadianCitizen)}.label`),
-        value: step1.isCanadianCitizen ? t('common:yes') : t('common:no'),
-      });
-    }
-
-    // provindId
-    if (!provinceIsLoading && province) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.provinceId),
-        text: t(`application:field.${nameof<Step1State>((o) => o.provinceId)}.label`),
-        value: getDescription(province),
-      });
-    }
-
-    // discoveryChannelId
-    if (!discoveryChannelIsLoading && discoveryChannel) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step1.discoveryChannelId),
-        text: t(`application:field.${nameof<Step1State>((o) => o.discoveryChannelId)}.label`),
-        value: getDescription(discoveryChannel),
-      });
-    }
-
-    // genderId
-    if (!genderIsLoading && gender) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step2.genderId),
-        text: t(`application:field.${nameof<Step2State>((o) => o.genderId)}.label`),
-        value: getDescription(gender),
-      });
-    }
-
-    // educationLevelId
-    if (!educationLevelIsLoading && educationLevel) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step2.educationLevelId),
-        text: t(`application:field.${nameof<Step2State>((o) => o.educationLevelId)}.label`),
-        value: getDescription(educationLevel),
-      });
-    }
-
-    // demographicId
-    if (!demographicIsLoading && demographic) {
-      items.push({
-        children: (
-          <ul className="tw-list-disc tw-list-inside tw-my-4">
-            {[
-              t('application:field.demographicId.children-items.item-1'),
-              t('application:field.demographicId.children-items.item-2'),
-              t('application:field.demographicId.children-items.item-3'),
-              t('application:field.demographicId.children-items.item-4'),
-              t('application:field.demographicId.children-items.item-5'),
-              t('application:field.demographicId.children-items.item-6'),
-              t('application:field.demographicId.children-items.item-7'),
-            ].map((val) => (
-              <li key={val} className="tw-mb-2">
-                {val}
-              </li>
-            ))}
-          </ul>
-        ),
-        key: nameof<ApplicationState>((o) => o.step2.demographicId),
-        text: t(`application:field.${nameof<Step2State>((o) => o.demographicId)}.label`),
-        value: getDescription(demographic),
-      });
-    }
-
-    // skillsInterest
-    if (step3.skillsInterest) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step3.skillsInterest),
-        text: t(`application:field.${nameof<Step3State>((o) => o.skillsInterest)}.label`),
-        value: step3.skillsInterest,
-      });
-    }
-
-    // communityInterest
-    if (step3.communityInterest) {
-      items.push({
-        key: nameof<ApplicationState>((o) => o.step3.communityInterest),
-        text: t(`application:field.${nameof<Step3State>((o) => o.communityInterest)}.label`),
-        value: step3.communityInterest,
-      });
-    }
-
-    return items;
-  }, [step1, step3, t, getDescription, demographic, demographicIsLoading, discoveryChannel, discoveryChannelIsLoading, educationLevel, educationLevelIsLoading, gender, genderIsLoading, language, languageIsLoading, province, provinceIsLoading]);
-
-  return (
-    <dl>
-      {formReviewItems.map(({ children, key, text, value }, index) => (
-        <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
-          {children}
-        </FormDefinitionListItem>
-      ))}
-    </dl>
-  );
 };
 
 export default Step4Page;
