@@ -13,6 +13,7 @@
     "/application/email-verification": ["email-verification"],
     "/application/email-verification/failed": ["email-verification"],
     "/application/email-verification/success": ["email-verification"],
-    "/management/applications": ["application"]
+    "/management/applications": ["application"],
+    "/management/applications/[id]": ["application"]
   }
 }

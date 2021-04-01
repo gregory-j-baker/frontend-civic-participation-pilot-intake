@@ -6,16 +6,10 @@
  */
 
 import { useSession, signIn } from 'next-auth/client';
-import { Session } from 'next-auth';
 import AccessDeniedPage from './AccessDeniedPage';
-import { Role } from '../common/types';
+import { AADSession, Role } from '../common/types';
 import { MainLayout } from './layouts/main/MainLayout';
 import { PageLoadingSpinner } from './PageLoadingSpinner';
-
-export interface AADSession extends Session {
-  roles: string[];
-  accessTokenExpires: number;
-}
 
 export interface PageSecurityGateProps {
   children: React.ReactNode;
@@ -35,7 +29,7 @@ export const PageSecurityGate = ({ children, requiredRoles, secured }: PageSecur
       );
     }
 
-    if (!session || Date.now() >= (session as AADSession).accessTokenExpires) {
+    if (!session || Date.now() >= (session as AADSession).accessTokenExpires || !session.accessToken) {
       signIn('azure-ad-b2c');
       return (
         <MainLayout>

@@ -9,6 +9,7 @@ const nextTranslate = require('next-translate');
 
 module.exports = nextTranslate({
   pageExtensions: ['tsx'],
+  future: { webpack5: true },
   redirects: async () => [
     {
       source: '/application',

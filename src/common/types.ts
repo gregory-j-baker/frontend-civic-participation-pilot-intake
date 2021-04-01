@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { Session } from 'next-auth';
 import { IncomingMessage } from 'node:http';
 
 /**
@@ -69,3 +70,8 @@ export interface NextContext {
 }
 
 export type SessionContext = NextContext & { triggerEvent?: boolean };
+
+export interface AADSession extends Session {
+  roles: string[];
+  accessTokenExpires: number;
+}

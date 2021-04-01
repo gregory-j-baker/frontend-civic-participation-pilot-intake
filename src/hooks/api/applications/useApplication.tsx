@@ -6,10 +6,10 @@
  */
 
 import { getSession } from 'next-auth/client';
-import type { QueryFunctionContext, UseQueryResult } from 'react-query';
-import { useQuery, QueryFunction } from 'react-query';
+import type { UseQueryResult } from 'react-query';
+import { useQuery } from 'react-query';
 import { fetchWrapperNotFound } from '../../../utils/fetch-wrapper';
-import type { SessionContext } from '../../../common/types';
+import type { AADSession, SessionContext } from '../../../common/types';
 import { Application, applicationsQueryKey, applicationsUri } from './types';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
 
@@ -18,14 +18,12 @@ export interface ApplicationResponse {
 }
 
 export const fetchApplication = async (applicationId: string, context?: SessionContext): Promise<ApplicationResponse | null> => {
-  const session = await getSession(context);
-  const accessToken = session?.accessToken;
-
-  if (!accessToken) throw new Error('No accessToken exists');
+  const session = (await getSession(context)) as AADSession;
+  if (!session || Date.now() >= session.accessTokenExpires || !session.accessToken) Error('Invalid session');
 
   return fetchWrapperNotFound<ApplicationResponse>(`${applicationsUri}/${applicationId}`, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${session.accessToken}`,
     },
   });
 };

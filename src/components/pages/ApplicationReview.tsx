@@ -188,7 +188,7 @@ export const ApplicationReview = ({ application }: ApplicationReviewProps): JSX.
   ]);
 
   return (
-    <dl>
+    <dl className="tw-m-0">
       {formReviewItems.map(({ children, key, text, value }, index) => (
         <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
           {children}
