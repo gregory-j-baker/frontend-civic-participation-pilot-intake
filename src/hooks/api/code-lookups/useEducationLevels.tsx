@@ -21,35 +21,36 @@ export interface EducationLevelsResponse extends HateoasCollection {
 
 export interface FetchEducationLevelsOptions {
   lang?: string;
+  onlyActive?: boolean;
 }
 
 export interface UseEducationLevelsOptions extends FetchEducationLevelsOptions {
   enabled?: boolean;
-  onlyActive?: boolean;
 }
 
-export const fetchEducationLevels = (options: FetchEducationLevelsOptions): Promise<EducationLevelsResponse> => {
-  const { lang } = options;
+export const fetchEducationLevels = async (options: FetchEducationLevelsOptions): Promise<EducationLevelsResponse> => {
+  const { lang, onlyActive } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<EducationLevel>((o) => o.uiDisplayOrderFr) : nameof<EducationLevel>((o) => o.uiDisplayOrderEn)}`];
 
-  return fetchWrapper<EducationLevelsResponse>(`${educationLevelsUri}?${queries.join('&')}`);
+  const data = await fetchWrapper<EducationLevelsResponse>(`${educationLevelsUri}?${queries.join('&')}`);
+
+  if (onlyActive) {
+    data._embedded.educationLevels = data._embedded.educationLevels.filter((educationLevel) => {
+      const active = educationLevel.activationDate ? beforeNow(new Date(educationLevel.activationDate)) : true;
+      const expired = educationLevel.expirationDate ? beforeNow(new Date(educationLevel.expirationDate)) : false;
+      return active && !expired;
+    });
+  }
+
+  return data;
 };
 
 export const useEducationLevels = (options: UseEducationLevelsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<EducationLevelsResponse, HttpClientResponseError> => {
-  const { enabled, onlyActive } = options;
+  const { enabled } = options;
   return useQuery([educationLevelsQueryKey, options], () => fetchEducationLevels(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,
-    onSuccess: (data) => {
-      if (onlyActive) {
-        data._embedded.educationLevels = data._embedded.educationLevels.filter((educationLevel) => {
-          const active = educationLevel.activationDate ? beforeNow(new Date(educationLevel.activationDate)) : true;
-          const expired = educationLevel.expirationDate ? beforeNow(new Date(educationLevel.expirationDate)) : false;
-          return active && !expired;
-        });
-      }
-    },
   });
 };

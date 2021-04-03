@@ -11,7 +11,7 @@ import { HttpClientResponseError } from '../../../common/HttpClientResponseError
 import type { HateoasCollection } from '../../../common/types';
 import { beforeNow } from '../../../utils/date-utils';
 import { fetchWrapper } from '../../../utils/fetch-wrapper';
-import { ApplicationStatus, applicationStatusesQueryKey, applicationStatusesUri } from './types';
+import { ApplicationStatus, ApplicationStatusEnum, applicationStatusesQueryKey, applicationStatusesUri } from './types';
 
 export interface ApplicationStatusesResponse extends HateoasCollection {
   _embedded: {
@@ -21,34 +21,38 @@ export interface ApplicationStatusesResponse extends HateoasCollection {
 
 export interface FetchApplicationStatusesOptions {
   lang?: string;
+  onlyActive?: boolean;
 }
 export interface UseApplicationStatusesOptions extends FetchApplicationStatusesOptions {
   enabled?: boolean;
-  onlyActive?: boolean;
 }
 
-export const fetchApplicationStatuses = (options: FetchApplicationStatusesOptions): Promise<ApplicationStatusesResponse> => {
-  const { lang } = options;
+export const fetchApplicationStatuses = async (options: FetchApplicationStatusesOptions): Promise<ApplicationStatusesResponse> => {
+  const { lang, onlyActive } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<ApplicationStatus>((o) => o.uiDisplayOrderFr) : nameof<ApplicationStatus>((o) => o.uiDisplayOrderEn)}`];
 
-  return fetchWrapper<ApplicationStatusesResponse>(`${applicationStatusesUri}?${queries.join('&')}`);
+  const data = await fetchWrapper<ApplicationStatusesResponse>(`${applicationStatusesUri}?${queries.join('&')}`);
+
+  // remove STALE
+  data._embedded.applicationStatuses = data._embedded.applicationStatuses.filter((applicationStatus) => applicationStatus.id !== ApplicationStatusEnum.STALE);
+
+  if (onlyActive) {
+    data._embedded.applicationStatuses = data._embedded.applicationStatuses.filter((applicationStatus) => {
+      const active = applicationStatus.activationDate ? beforeNow(new Date(applicationStatus.activationDate)) : true;
+      const expired = applicationStatus.expirationDate ? beforeNow(new Date(applicationStatus.expirationDate)) : false;
+      return active && !expired;
+    });
+  }
+
+  return data;
 };
 
 export const useApplicationStatuses = (options: UseApplicationStatusesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<ApplicationStatusesResponse, HttpClientResponseError> => {
-  const { enabled, onlyActive } = options;
+  const { enabled } = options;
   return useQuery([applicationStatusesQueryKey, options], () => fetchApplicationStatuses(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,
-    onSuccess: (data) => {
-      if (onlyActive) {
-        data._embedded.applicationStatuses = data._embedded.applicationStatuses.filter((applicationStatus) => {
-          const active = applicationStatus.activationDate ? beforeNow(new Date(applicationStatus.activationDate)) : true;
-          const expired = applicationStatus.expirationDate ? beforeNow(new Date(applicationStatus.expirationDate)) : false;
-          return active && !expired;
-        });
-      }
-    },
   });
 };

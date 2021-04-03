@@ -21,35 +21,36 @@ export interface GendersResponse extends HateoasCollection {
 
 export interface FetchGendersOptions {
   lang?: string;
+  onlyActive?: boolean;
 }
 
 export interface UseGendersOptions extends FetchGendersOptions {
   enabled?: boolean;
-  onlyActive?: boolean;
 }
 
-export const fetchGenders = (options: FetchGendersOptions): Promise<GendersResponse> => {
-  const { lang } = options;
+export const fetchGenders = async (options: FetchGendersOptions): Promise<GendersResponse> => {
+  const { lang, onlyActive } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<Gender>((o) => o.uiDisplayOrderFr) : nameof<Gender>((o) => o.uiDisplayOrderEn)}`];
 
-  return fetchWrapper<GendersResponse>(`${gendersUri}?${queries.join('&')}`);
+  const data = await fetchWrapper<GendersResponse>(`${gendersUri}?${queries.join('&')}`);
+
+  if (onlyActive) {
+    data._embedded.genders = data._embedded.genders.filter((gender) => {
+      const active = gender.activationDate ? beforeNow(new Date(gender.activationDate)) : true;
+      const expired = gender.expirationDate ? beforeNow(new Date(gender.expirationDate)) : false;
+      return active && !expired;
+    });
+  }
+
+  return data;
 };
 
 export const useGenders = (options: UseGendersOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<GendersResponse, HttpClientResponseError> => {
-  const { enabled, onlyActive } = options;
+  const { enabled } = options;
   return useQuery([gendersQueryKey, options], () => fetchGenders(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,
-    onSuccess: (data) => {
-      if (onlyActive) {
-        data._embedded.genders = data._embedded.genders.filter((gender) => {
-          const active = gender.activationDate ? beforeNow(new Date(gender.activationDate)) : true;
-          const expired = gender.expirationDate ? beforeNow(new Date(gender.expirationDate)) : false;
-          return active && !expired;
-        });
-      }
-    },
   });
 };

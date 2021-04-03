@@ -43,6 +43,7 @@ export interface ApplicationStatus extends Lookup {}
  */
 export enum ApplicationStatusEnum {
   NEW = 'b36a6695-4314-4fe1-bc16-bf4894b7a289',
+  STALE = 'fdcc0dd0-008a-4b7f-93c9-84eee92d6851',
 }
 
 /**

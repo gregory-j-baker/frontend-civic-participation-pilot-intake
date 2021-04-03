@@ -59,8 +59,6 @@ const handler: NextApiHandler = (req, res) => {
         return token;
       },
       session: async (session, userOrToken: UserOrToken) => {
-        console.log('/********* SESSION');
-        console.log(userOrToken);
         return {
           ...session,
           accessToken: userOrToken.accessToken,
