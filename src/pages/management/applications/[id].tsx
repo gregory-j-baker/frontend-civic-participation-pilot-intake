@@ -22,11 +22,14 @@ import { GetDescriptionFunc } from '../../application/types';
 import Error from '../../_error';
 import { TextAreaField } from '../../../components/form/TextAreaField';
 import { ButtonLink } from '../../../components/ButtonLink';
-import { Button } from '../../../components/Button';
-import * as Yup from 'yup';
+import { Button, ButtonOnClickEvent } from '../../../components/Button';
+import { Alert, AlertType } from '../../../components/Alert';
+import { ValidationError } from 'yup';
+import { applicationEditSchema } from '../../../yup/applicationEditSchema';
+import { YupCustomMessage } from '../../../yup/types';
 
 export interface ManagementEditApplicationPageState {
-  applicationStatueId: string;
+  applicationStatusId?: string;
   reasoning?: string;
 }
 
@@ -37,20 +40,45 @@ export interface ManagementEditApplicationPageProps {
 const ManagementEditApplicationPage = ({ application }: ManagementEditApplicationPageProps): JSX.Element => {
   const { t, lang } = useTranslation();
 
-  const [formState, setFormState] = useState<ManagementEditApplicationPageState>({ applicationStatueId: application.applicationStatusId });
+  const [formData, setFormData] = useState<ManagementEditApplicationPageState>({});
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({ lang });
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
+  const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
+
+  const handleSubmit: ButtonOnClickEvent = async (event) => {
+    event.preventDefault();
+
+    try {
+      await applicationEditSchema.validate(formData, { abortEarly: false });
+      setSchemaErrors(null);
+    } catch (err) {
+      if (!(err instanceof ValidationError)) throw err;
+      setSchemaErrors(err.inner);
+      document.getElementById('validation-error')?.focus();
+    }
+  };
+
+  const getSchemaError = (path: string): string | undefined => {
+    if (!schemaErrors || schemaErrors.length === 0) return undefined;
+
+    const index = schemaErrors.findIndex((err) => err.path === path);
+
+    if (index === -1) return undefined;
+
+    const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
+
+    return t('common:error-number', { number: index + 1 }) + t(`application:management.edit.field.${schemaErrors[index]?.path}.${key}`);
+  };
+
   // application statuse options
   const applicationStatuseOptions = useMemo<SelectFieldOption[]>(() => {
     if (isApplicationStatusesLoading || applicationStatusesError) return [];
-    return applicationStatuses?._embedded.applicationStatuses.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isApplicationStatusesLoading, applicationStatusesError, applicationStatuses, getDescription]);
-
-  const canSubmit = application.applicationStatusId !== formState.applicationStatueId && Yup.string().defined().isValidSync(formState.reasoning);
+    return applicationStatuses?._embedded.applicationStatuses.filter(({ id }) => id !== application.id).map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isApplicationStatusesLoading, applicationStatusesError, applicationStatuses, application.id, getDescription]);
 
   if (applicationStatusesError) {
     return <Error err={applicationStatusesError} />;
@@ -72,35 +100,55 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
       </ContentPaper>
 
       {!isApplicationStatusesLoading && (
-        <ContentPaper>
-          <SelectField
-            field="status"
-            label={t('application:management.edit.field.application-status')}
-            value={formState.applicationStatueId}
-            options={applicationStatuseOptions}
-            onChange={({ value }) => setFormState((prev) => ({ ...prev, applicationStatueId: value as string }))}
-            gutterBottom
-            required
-            className="tw-w-full sm:tw-w-6/12"
-          />
+        <>
+          {schemaErrors && schemaErrors.length > 0 && (
+            <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+              <ul className="tw-list-disc">
+                {schemaErrors.map(({ path }) => {
+                  const [field] = path?.split('.') ?? [];
 
-          <TextAreaField
-            field="status"
-            label={t('application:management.edit.field.reasoning')}
-            value={formState.reasoning}
-            onChange={({ value }) => setFormState((prev) => ({ ...prev, reasoning: value ?? undefined }))}
-            gutterBottom
-            required
-            className="tw-w-full"
-          />
+                  return path ? (
+                    <li key={path} className="tw-my-2">
+                      <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
+                    </li>
+                  ) : undefined;
+                })}
+              </ul>
+            </Alert>
+          )}
 
-          <Button className="tw-m-2" disabled={!canSubmit}>
-            {t('application:management.edit.submit')}
-          </Button>
-          <ButtonLink className="tw-m-2" href="/management/applications" outline>
-            {t('application:management.edit.cancel')}
-          </ButtonLink>
-        </ContentPaper>
+          <ContentPaper>
+            <SelectField
+              field={nameof<ManagementEditApplicationPageState>((o) => o.applicationStatusId)}
+              label={t('application:management.edit.field.applicationStatusId.label')}
+              value={formData.applicationStatusId}
+              options={applicationStatuseOptions}
+              onChange={({ value }) => setFormData((prev) => ({ ...prev, applicationStatusId: value ?? undefined }))}
+              error={getSchemaError(nameof<ManagementEditApplicationPageState>((o) => o.applicationStatusId))}
+              gutterBottom
+              required
+              className="tw-w-full sm:tw-w-6/12"
+            />
+
+            <TextAreaField
+              field={nameof<ManagementEditApplicationPageState>((o) => o.reasoning)}
+              label={t('application:management.edit.field.reasoning.label')}
+              value={formData.reasoning}
+              onChange={({ value }) => setFormData((prev) => ({ ...prev, reasoning: value ?? undefined }))}
+              error={getSchemaError(nameof<ManagementEditApplicationPageState>((o) => o.reasoning))}
+              gutterBottom
+              required
+              className="tw-w-full"
+            />
+
+            <Button className="tw-m-2" onClick={handleSubmit}>
+              {t('application:management.edit.submit')}
+            </Button>
+            <ButtonLink className="tw-m-2" href="/management/applications" outline>
+              {t('application:management.edit.cancel')}
+            </ButtonLink>
+          </ContentPaper>
+        </>
       )}
     </MainLayout>
   );

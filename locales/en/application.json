@@ -141,8 +141,14 @@
       "submit": "Save",
       "cancel": "Cancel",
       "field": {
-        "application-status": "Update application status",
-        "reasoning": "Reasoning"
+        "applicationStatusId": {
+          "label": "Update application status",
+          "required": "You must select an application status"
+        },
+        "reasoning": {
+          "label": "Reasoning",
+          "required": "You must provide a reasoning"
+        }
       }
     }
   }
