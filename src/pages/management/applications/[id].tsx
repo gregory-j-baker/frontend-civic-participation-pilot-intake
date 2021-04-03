@@ -80,6 +80,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
             options={applicationStatuseOptions}
             onChange={({ value }) => setFormState((prev) => ({ ...prev, applicationStatueId: value as string }))}
             gutterBottom
+            required
             className="tw-w-full sm:tw-w-6/12"
           />
 
@@ -89,6 +90,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
             value={formState.reasoning}
             onChange={({ value }) => setFormState((prev) => ({ ...prev, reasoning: value ?? undefined }))}
             gutterBottom
+            required
             className="tw-w-full"
           />
 

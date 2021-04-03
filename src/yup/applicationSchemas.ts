@@ -7,6 +7,8 @@
 
 import * as Yup from 'yup';
 import './yup-custom';
+import './yup-phone';
+import './yup-word';
 
 export interface WordLength {
   min: number;

@@ -7,11 +7,8 @@
 
 import * as Yup from 'yup';
 import './yup-custom';
-import './yup-phone';
 
-export const contactUsSchema = Yup.object().shape({
-  name: Yup.string().required(),
-  email: Yup.string().email().required(),
-  phoneNumber: Yup.string().phone(),
-  message: Yup.string().required(),
+export const applicationEditSchema = Yup.object().shape({
+  applicationStatusId: Yup.string().required(),
+  reasoning: Yup.string().required(),
 });

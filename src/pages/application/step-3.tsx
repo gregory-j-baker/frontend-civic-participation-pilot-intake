@@ -19,7 +19,7 @@ import { ApplicationState, Step3State, Constants } from './types';
 import { step3Schema, step2Schema, step1Schema, SkillsInterestWordLength } from '../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { PageLoadingSpinner } from '../../components/PageLoadingSpinner';
-import { YupCustomMessage } from '../../yup/yup-custom';
+import { YupCustomMessage } from '../../yup/types';
 import { GetStaticProps } from 'next';
 import { sleep } from '../../utils/misc-utils';
 

@@ -20,7 +20,7 @@ import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { apiConfig } from '../../../config';
 import { EmailVerificationAccessCodeData, useSubmitAccessCode } from '../../../hooks/api/email-verifications/useSubmitAccessCode';
 import { emailVerificationSchema } from '../../../yup/emailVerificationSchema';
-import { YupCustomMessage } from '../../../yup/yup-custom';
+import { YupCustomMessage } from '../../../yup/types';
 import Custom404 from '../../404';
 import Error from '../../_error';
 import { Constants } from '../types';
