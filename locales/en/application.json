@@ -149,6 +149,12 @@
           "label": "Reasoning",
           "required": "You must provide a reasoning"
         }
+      },
+      "confirm": {
+        "title": "Update application status?",
+        "message": "Please confirm you would like to change the status of application ({{name}}) from <label>{{current}}</label> to <label>{{new}}</label> for the following reason:",
+        "submit": "Confirm status change",
+        "cancel": "Cancel"
       }
     }
   }

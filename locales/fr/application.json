@@ -149,6 +149,12 @@
           "label": "Raisonnement",
           "required": "Vous devez fournir un raisonnement"
         }
+      },
+      "confirm": {
+        "title": "Mettre à jour le statut de l'application?",
+        "message": "Veuillez confirmer que vous souhaitez modifier le statut de l'application ({{name}}) de <label>{{current}}</label> à <label>{{new}}</label> pour la raison suivante\u00A0:",
+        "submit": "Confirmer le changement de statut",
+        "cancel": "Annuler"
       }
     }
   }

@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import { AADSession, Role } from '../../../common/types';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
@@ -27,6 +27,8 @@ import { Alert, AlertType } from '../../../components/Alert';
 import { ValidationError } from 'yup';
 import { applicationEditSchema } from '../../../yup/applicationEditSchema';
 import { YupCustomMessage } from '../../../yup/types';
+import { ApplicationStatus } from '../../../hooks/api/code-lookups/types';
+import Trans from 'next-translate/Trans';
 
 export interface ManagementEditApplicationPageState {
   applicationStatusId?: string;
@@ -41,6 +43,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
   const { t, lang } = useTranslation();
 
   const [formData, setFormData] = useState<ManagementEditApplicationPageState>({});
+  const [showConfirm, setShowConfirm] = useState<boolean>(false);
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
 
@@ -55,6 +58,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
     try {
       await applicationEditSchema.validate(formData, { abortEarly: false });
       setSchemaErrors(null);
+      setShowConfirm(true);
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
@@ -77,8 +81,8 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
   // application statuse options
   const applicationStatuseOptions = useMemo<SelectFieldOption[]>(() => {
     if (isApplicationStatusesLoading || applicationStatusesError) return [];
-    return applicationStatuses?._embedded.applicationStatuses.filter(({ id }) => id !== application.id).map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
-  }, [isApplicationStatusesLoading, applicationStatusesError, applicationStatuses, application.id, getDescription]);
+    return applicationStatuses?._embedded.applicationStatuses.filter(({ id }) => id !== application.applicationStatusId).map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
+  }, [isApplicationStatusesLoading, applicationStatusesError, applicationStatuses, application.applicationStatusId, getDescription]);
 
   if (applicationStatusesError) {
     return <Error err={applicationStatusesError} />;
@@ -95,12 +99,12 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
         {dateTimeFormat.format(new Date(application.createdDate))}
       </h3>
 
-      <ContentPaper className="tw-mb-10">
-        <ApplicationReview application={application} />
-      </ContentPaper>
-
-      {!isApplicationStatusesLoading && (
+      {!isApplicationStatusesLoading && !showConfirm && (
         <>
+          <ContentPaper className="tw-mb-10">
+            <ApplicationReview application={application} />
+          </ContentPaper>
+
           {schemaErrors && schemaErrors.length > 0 && (
             <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
               <ul className="tw-list-disc">
@@ -150,7 +154,69 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
           </ContentPaper>
         </>
       )}
+
+      {showConfirm && !schemaErrors && applicationStatuses && (
+        <Confirm
+          application={application}
+          applicationStatuses={applicationStatuses._embedded.applicationStatuses}
+          applicationStatusId={formData.applicationStatusId as string}
+          reasoning={formData.reasoning as string}
+          onCancelClick={() => setShowConfirm(false)}
+        />
+      )}
     </MainLayout>
+  );
+};
+
+export interface SubmitConfirmationProps {
+  application: Application;
+  applicationStatuses: ApplicationStatus[];
+  applicationStatusId: string;
+  onCancelClick?: ButtonOnClickEvent;
+  reasoning: string;
+}
+
+const Confirm = ({ application, applicationStatuses, applicationStatusId, onCancelClick, reasoning }: SubmitConfirmationProps): JSX.Element => {
+  const { t, lang } = useTranslation();
+  const wrapperEl = useRef<HTMLDivElement>(null);
+
+  const currentStatus = applicationStatuses.find(({ id }) => id === application.applicationStatusId) as ApplicationStatus;
+  const newStatus = applicationStatuses.find(({ id }) => id === applicationStatusId) as ApplicationStatus;
+
+  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
+
+  useEffect(() => {
+    wrapperEl.current?.querySelector('section')?.focus();
+  }, []);
+
+  return (
+    <div ref={wrapperEl}>
+      <ContentPaper tabIndex={-1} disablePadding>
+        <div className="tw-flex tw-flex-col">
+          <div className="tw-py-4 tw-px-6 tw-border-b-2">
+            <div className="tw-text-xl tw-font-bold tw-mb-8">{t('application:management.edit.confirm.title')}</div>
+            <p className="tw-mb-6">
+              <Trans
+                i18nKey="application:management.edit.confirm.message"
+                components={{ label: <span className="tw-font-bold" /> }}
+                values={{
+                  name: `${application.firstName} ${application.lastName}`,
+                  current: getDescription(currentStatus),
+                  new: getDescription(newStatus),
+                }}
+              />
+            </p>
+            <blockquote className="tw-border-green-600 tw-m-0">{reasoning}</blockquote>
+          </div>
+          <div className="tw-ml-auto tw-p-2">
+            <Button className="tw-m-2">{t('application:management.edit.confirm.submit')}</Button>
+            <Button className="tw-m-2" outline onClick={onCancelClick}>
+              {t('application:management.edit.confirm.cancel')}
+            </Button>
+          </div>
+        </div>
+      </ContentPaper>
+    </div>
   );
 };
 
