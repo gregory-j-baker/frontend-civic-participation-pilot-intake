@@ -29,13 +29,18 @@ export interface FormReviewItem {
   value: string | React.ReactNode;
 }
 
-export const ApplicationReview = ({ application }: ApplicationReviewProps): JSX.Element => {
+export const ApplicationReview = ({ application }: ApplicationReviewProps): JSX.Element => (
+  <>
+    <Step1Review application={application} />
+    <Step2Review application={application} />
+    <Step3Review application={application} />
+  </>
+);
+
+const Step1Review = ({ application }: ApplicationReviewProps): JSX.Element => {
   const { t, lang } = useTranslation();
 
-  const { data: demographic, isLoading: demographicIsLoading } = useDemographic(application.demographicId);
   const { data: discoveryChannel, isLoading: discoveryChannelIsLoading } = useDiscoveryChannel(application.discoveryChannelId);
-  const { data: educationLevel, isLoading: educationLevelIsLoading } = useEducationLevel(application.educationLevelId);
-  const { data: gender, isLoading: genderIsLoading } = useGender(application.genderId);
   const { data: language, isLoading: languageIsLoading } = useLanguage(application.languageId);
   const { data: province, isLoading: provinceIsLoading } = useProvince(application.provinceId);
 
@@ -109,6 +114,50 @@ export const ApplicationReview = ({ application }: ApplicationReviewProps): JSX.
       value: discoveryChannelIsLoading ? '' : discoveryChannel ? getDescription(discoveryChannel) : <DataNotFound />,
     });
 
+    return items;
+  }, [
+    t,
+    getDescription,
+    application.birthYear,
+    application.email,
+    application.firstName,
+    application.isCanadianCitizen,
+    application.lastName,
+    application.phoneNumber,
+    discoveryChannel,
+    discoveryChannelIsLoading,
+    language,
+    languageIsLoading,
+    province,
+    provinceIsLoading,
+  ]);
+
+  return (
+    <>
+      <header className="tw-font-bold tw-text-2xl tw-mb-8">{t('application:step-1.title')}</header>
+      <dl className="tw-mb-10">
+        {formReviewItems.map(({ children, key, text, value }, index) => (
+          <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
+            {children}
+          </FormDefinitionListItem>
+        ))}
+      </dl>
+    </>
+  );
+};
+
+const Step2Review = ({ application }: ApplicationReviewProps): JSX.Element => {
+  const { t, lang } = useTranslation();
+
+  const { data: demographic, isLoading: demographicIsLoading } = useDemographic(application.demographicId);
+  const { data: educationLevel, isLoading: educationLevelIsLoading } = useEducationLevel(application.educationLevelId);
+  const { data: gender, isLoading: genderIsLoading } = useGender(application.genderId);
+
+  const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
+
+  const formReviewItems: FormReviewItem[] = useMemo(() => {
+    const items: FormReviewItem[] = [];
+
     // genderId
     items.push({
       key: nameof<ApplicationBase>((o) => o.genderId),
@@ -147,6 +196,29 @@ export const ApplicationReview = ({ application }: ApplicationReviewProps): JSX.
       value: demographicIsLoading ? '' : demographic ? getDescription(demographic) : <DataNotFound />,
     });
 
+    return items;
+  }, [t, getDescription, demographic, demographicIsLoading, educationLevel, educationLevelIsLoading, gender, genderIsLoading]);
+
+  return (
+    <>
+      <header className="tw-font-bold tw-text-2xl tw-mb-8">{t('application:step-2.title')}</header>
+      <dl className="tw-mb-10">
+        {formReviewItems.map(({ children, key, text, value }, index) => (
+          <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
+            {children}
+          </FormDefinitionListItem>
+        ))}
+      </dl>
+    </>
+  );
+};
+
+const Step3Review = ({ application }: ApplicationReviewProps): JSX.Element => {
+  const { t } = useTranslation();
+
+  const formReviewItems: FormReviewItem[] = useMemo(() => {
+    const items: FormReviewItem[] = [];
+
     // skillsInterest
     const skillsInterestLines = nlToLines(application.skillsInterest);
     items.push({
@@ -172,39 +244,19 @@ export const ApplicationReview = ({ application }: ApplicationReviewProps): JSX.
     });
 
     return items;
-  }, [
-    t,
-    getDescription,
-    application.birthYear,
-    application.communityInterest,
-    application.email,
-    application.firstName,
-    application.isCanadianCitizen,
-    application.lastName,
-    application.phoneNumber,
-    application.skillsInterest,
-    demographic,
-    demographicIsLoading,
-    discoveryChannel,
-    discoveryChannelIsLoading,
-    educationLevel,
-    educationLevelIsLoading,
-    gender,
-    genderIsLoading,
-    language,
-    languageIsLoading,
-    province,
-    provinceIsLoading,
-  ]);
+  }, [t, application.communityInterest, application.skillsInterest]);
 
   return (
-    <dl className="tw-m-0">
-      {formReviewItems.map(({ children, key, text, value }, index) => (
-        <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
-          {children}
-        </FormDefinitionListItem>
-      ))}
-    </dl>
+    <>
+      <header className="tw-font-bold tw-text-2xl tw-mb-8">{t('application:step-3.title')}</header>
+      <dl className="tw-m-0">
+        {formReviewItems.map(({ children, key, text, value }, index) => (
+          <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
+            {children}
+          </FormDefinitionListItem>
+        ))}
+      </dl>
+    </>
   );
 };
 
