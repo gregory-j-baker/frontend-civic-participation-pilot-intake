@@ -16,6 +16,7 @@ import { useDiscoveryChannel } from '../../hooks/api/code-lookups/useDiscoveryCh
 import { useEducationLevel } from '../../hooks/api/code-lookups/useEducationLevel';
 import { useGender } from '../../hooks/api/code-lookups/useGender';
 import { ApplicationBase } from '../../hooks/api/applications/types';
+import { nlToLines } from '../../utils/misc-utils';
 
 export interface ApplicationReviewProps {
   application: ApplicationBase;
@@ -147,18 +148,27 @@ export const ApplicationReview = ({ application }: ApplicationReviewProps): JSX.
     });
 
     // skillsInterest
+    const skillsInterestLines = nlToLines(application.skillsInterest);
     items.push({
       key: nameof<ApplicationBase>((o) => o.skillsInterest),
       text: t(`application:field.${nameof<ApplicationBase>((o) => o.skillsInterest)}.label`),
-      value: application.skillsInterest,
+      value: skillsInterestLines.map((line, index) => (
+        <p key={`${index} - ${line}`} className={`tw-m-0 ${index + 1 < skillsInterestLines.length ? 'tw-mb-4' : ''}`}>
+          {line}
+        </p>
+      )),
     });
 
     // communityInterest
-
+    const communityInterestLines = nlToLines(application.communityInterest);
     items.push({
       key: nameof<ApplicationBase>((o) => o.communityInterest),
       text: t(`application:field.${nameof<ApplicationBase>((o) => o.communityInterest)}.label`),
-      value: application.communityInterest,
+      value: communityInterestLines.map((line, index) => (
+        <p key={`${index} - ${line}`} className={`tw-m-0 ${index + 1 < communityInterestLines.length ? 'tw-mb-4' : ''}`}>
+          {line}
+        </p>
+      )),
     });
 
     return items;

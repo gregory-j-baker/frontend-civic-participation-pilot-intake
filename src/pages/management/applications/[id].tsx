@@ -31,6 +31,7 @@ import { ApplicationStatus } from '../../../hooks/api/code-lookups/types';
 import Trans from 'next-translate/Trans';
 import { useSaveApplication } from '../../../hooks/api/applications/useSaveApplication';
 import { useRouter } from 'next/router';
+import { nlToLines } from '../../../utils/misc-utils';
 
 export interface ManagementEditApplicationPageState {
   applicationStatusId?: string;
@@ -212,6 +213,8 @@ const Confirm = ({ application, applicationStatuses, applicationStatusId, disabl
     wrapperEl.current?.querySelector('section')?.focus();
   }, []);
 
+  const reasoningLines = nlToLines(reasoning);
+
   return (
     <div ref={wrapperEl}>
       <ContentPaper tabIndex={-1} disablePadding>
@@ -229,7 +232,13 @@ const Confirm = ({ application, applicationStatuses, applicationStatusId, disabl
                 }}
               />
             </p>
-            <blockquote className="tw-border-green-600 tw-m-0">{reasoning}</blockquote>
+            <blockquote className="tw-border-green-600 tw-m-0">
+              {reasoningLines.map((line, index) => (
+                <p key={`${index} - ${line}`} className={`tw-m-0 ${index + 1 < reasoningLines.length ? 'tw-mb-4' : ''}`}>
+                  {line}
+                </p>
+              ))}
+            </blockquote>
           </div>
           <div className="tw-ml-auto tw-p-2">
             <Button className="tw-m-2" onClick={onConfirmClick} disabled={disabled}>

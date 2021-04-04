@@ -79,3 +79,8 @@ export const getKeyboardFocusableElements = (element?: Element): Element[] => {
   const el = element ?? document;
   return [...el.querySelectorAll('a, button, input, textarea, select, details,[tabindex]:not([tabindex="-1"])')].filter((el) => !el.hasAttribute('disabled'));
 };
+
+export const nlToLines = (text?: string, removeEmptyLines = true): string[] => {
+  if (!text) return [];
+  return text.split('\n').filter((line) => (removeEmptyLines ? line?.length > 0 : true));
+};
