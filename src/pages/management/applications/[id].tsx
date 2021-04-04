@@ -30,6 +30,7 @@ import { YupCustomMessage } from '../../../yup/types';
 import { ApplicationStatus } from '../../../hooks/api/code-lookups/types';
 import Trans from 'next-translate/Trans';
 import { useSaveApplication } from '../../../hooks/api/applications/useSaveApplication';
+import { useRouter } from 'next/router';
 
 export interface ManagementEditApplicationPageState {
   applicationStatusId?: string;
@@ -42,6 +43,7 @@ export interface ManagementEditApplicationPageProps {
 
 const ManagementEditApplicationPage = ({ application }: ManagementEditApplicationPageProps): JSX.Element => {
   const { t, lang } = useTranslation();
+  const router = useRouter();
 
   const [formData, setFormData] = useState<ManagementEditApplicationPageState>({});
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
@@ -55,8 +57,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
 
   const { mutate: saveApplication, error: saveApplicationError, reset: resetSaveApplicationError, isLoading: saveApplicationIsLoading, isSuccess: saveApplicationIsSuccess } = useSaveApplication(application.id, undefined, {
     onSuccess: () => {
-      alert('success');
-      //router.push('/application/email-verification/success');
+      router.push('/management/applications');
     },
     onError: (HttpClientResponseError) => {
       console.log(HttpClientResponseError);
