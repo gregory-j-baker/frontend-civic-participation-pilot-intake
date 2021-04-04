@@ -63,8 +63,3 @@ export const applicationSchema = Yup.object().shape({
   step3: step3Schema.required(),
   step4: step4Schema.required(),
 });
-
-export const saveApplicationSchema = Yup.object().shape({
-  applicationStatusId: Yup.string().nullable().defined(),
-  reasoning: Yup.string().required(),
-});

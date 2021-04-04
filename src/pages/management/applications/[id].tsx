@@ -12,7 +12,7 @@ import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { fetchApplication } from '../../../hooks/api/applications/useApplication';
 import { getSession, signIn } from 'next-auth/client';
 import { ApplicationReview } from '../../../components/pages/ApplicationReview';
-import { Application } from '../../../hooks/api/applications/types';
+import { Application, SaveApplicationData } from '../../../hooks/api/applications/types';
 import { ContentPaper } from '../../../components/ContentPaper';
 import useTranslation from 'next-translate/useTranslation';
 import { NextSeo } from 'next-seo';
@@ -29,6 +29,7 @@ import { applicationEditSchema } from '../../../yup/applicationEditSchema';
 import { YupCustomMessage } from '../../../yup/types';
 import { ApplicationStatus } from '../../../hooks/api/code-lookups/types';
 import Trans from 'next-translate/Trans';
+import { useSaveApplication } from '../../../hooks/api/applications/useSaveApplication';
 
 export interface ManagementEditApplicationPageState {
   applicationStatusId?: string;
@@ -52,6 +53,17 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
 
   const [schemaErrors, setSchemaErrors] = useState<ValidationError[] | null>();
 
+  const { mutate: saveApplication, error: saveApplicationError, reset: resetSaveApplicationError, isLoading: saveApplicationIsLoading, isSuccess: saveApplicationIsSuccess } = useSaveApplication(application.id, undefined, {
+    onSuccess: () => {
+      alert('success');
+      //router.push('/application/email-verification/success');
+    },
+    onError: (HttpClientResponseError) => {
+      console.log(HttpClientResponseError);
+      if (saveApplicationError) document.getElementById('validation-error')?.focus();
+    },
+  });
+
   const handleSubmit: ButtonOnClickEvent = async (event) => {
     event.preventDefault();
 
@@ -64,6 +76,18 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
       setSchemaErrors(err.inner);
       document.getElementById('validation-error')?.focus();
     }
+  };
+
+  const handleConfirmSubmit: ButtonOnClickEvent = async (event) => {
+    event.preventDefault();
+
+    // submit email verification form
+    const saveApplicationData: SaveApplicationData = {
+      applicationStatusId: formData.applicationStatusId as string,
+      reasonText: formData.reasoning as string,
+    };
+
+    saveApplication(saveApplicationData);
   };
 
   const getSchemaError = (path: string): string | undefined => {
@@ -161,6 +185,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
           applicationStatuses={applicationStatuses._embedded.applicationStatuses}
           applicationStatusId={formData.applicationStatusId as string}
           reasoning={formData.reasoning as string}
+          onConfirmClick={handleConfirmSubmit}
           onCancelClick={() => setShowConfirm(false)}
         />
       )}
@@ -172,11 +197,12 @@ export interface SubmitConfirmationProps {
   application: Application;
   applicationStatuses: ApplicationStatus[];
   applicationStatusId: string;
+  onConfirmClick?: ButtonOnClickEvent;
   onCancelClick?: ButtonOnClickEvent;
   reasoning: string;
 }
 
-const Confirm = ({ application, applicationStatuses, applicationStatusId, onCancelClick, reasoning }: SubmitConfirmationProps): JSX.Element => {
+const Confirm = ({ application, applicationStatuses, applicationStatusId, onConfirmClick, onCancelClick, reasoning }: SubmitConfirmationProps): JSX.Element => {
   const { t, lang } = useTranslation();
   const wrapperEl = useRef<HTMLDivElement>(null);
 
@@ -209,7 +235,9 @@ const Confirm = ({ application, applicationStatuses, applicationStatusId, onCanc
             <blockquote className="tw-border-green-600 tw-m-0">{reasoning}</blockquote>
           </div>
           <div className="tw-ml-auto tw-p-2">
-            <Button className="tw-m-2">{t('application:management.edit.confirm.submit')}</Button>
+            <Button className="tw-m-2" onClick={onConfirmClick}>
+              {t('application:management.edit.confirm.submit')}
+            </Button>
             <Button className="tw-m-2" outline onClick={onCancelClick}>
               {t('application:management.edit.confirm.cancel')}
             </Button>
