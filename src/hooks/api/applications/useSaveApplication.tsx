@@ -6,48 +6,50 @@
  */
 
 import { getSession } from 'next-auth/client';
-import { useMutation, UseMutationOptions, UseMutationResult } from 'react-query';
+import { useMutation, UseMutationOptions, UseMutationResult, QueryClient } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import type { AADSession, SessionContext } from '../../../common/types';
-import { Application, SaveApplicationData, applicationsUri } from './types';
+import type { AADSession } from '../../../common/types';
+import { applicationsQueryKey, applicationsUri } from './types';
 
-export interface ApplicationResponse {
-  application: Application;
-}
-
-export interface UpdateStatusData {
+export interface SaveApplicationData {
+  id: string;
   applicationStatusId: string;
   reasonText: string;
 }
 
-export const saveApplication = async (applicationId: string, saveApplicationData: SaveApplicationData, context?: SessionContext): Promise<void> => {
-  const session = (await getSession(context)) as AADSession;
-  if (!session || Date.now() >= session.accessTokenExpires || !session.accessToken) Error('Invalid session');
+export const useSaveApplication = (options?: UseMutationOptions<void, HttpClientResponseError, SaveApplicationData>): UseMutationResult<void, HttpClientResponseError, SaveApplicationData> => {
+  return useMutation(async (saveApplicationData): Promise<void> => {
+    const session = (await getSession()) as AADSession;
+    if (!session || Date.now() >= session.accessTokenExpires || !session.accessToken) Error('Invalid session');
 
-  const response = await fetch(`${applicationsUri}/${applicationId}`, {
-    body: JSON.stringify(saveApplicationData),
-    headers: {
-      Authorization: `Bearer ${session.accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    method: 'PUT',
-  });
+    const response = await fetch(`${applicationsUri}/${saveApplicationData.id}`, {
+      body: JSON.stringify({
+        applicationStatusId: saveApplicationData.applicationStatusId,
+        reasonText: saveApplicationData.reasonText,
+      }),
+      headers: {
+        Authorization: `Bearer ${session.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'PUT',
+    });
 
-  if (!response.ok) {
-    const responseJson = await response
-      .clone()
-      .json()
-      .catch(() => undefined);
+    if (!response.ok) {
+      const responseJson = await response
+        .clone()
+        .json()
+        .catch(() => undefined);
 
-    const responseText = await response
-      .clone()
-      .text()
-      .catch(() => undefined);
+      const responseText = await response
+        .clone()
+        .text()
+        .catch(() => undefined);
 
-    throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
-  }
-};
+      throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
+    }
 
-export const useSaveApplication = (applicationId: string, context?: SessionContext, options?: UseMutationOptions<void, HttpClientResponseError, SaveApplicationData>): UseMutationResult<void, HttpClientResponseError, SaveApplicationData> => {
-  return useMutation((saveApplicationData) => saveApplication(applicationId, saveApplicationData), options);
+    // on mutation succeeds, invalidate any queries
+    const queryClient = new QueryClient();
+    await queryClient.invalidateQueries(applicationsQueryKey);
+  }, options);
 };

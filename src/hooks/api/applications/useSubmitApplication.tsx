@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useMutation, UseMutationOptions, UseMutationResult } from 'react-query';
+import { QueryClient, useMutation, UseMutationOptions, UseMutationResult } from 'react-query';
 import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
-import { ApplicationSubmitData, applicationsUri } from './types';
+import { applicationsQueryKey, ApplicationSubmitData, applicationsUri } from './types';
 
 export const useSubmitApplication = (options?: UseMutationOptions<void, HttpClientResponseError, ApplicationSubmitData>): UseMutationResult<void, HttpClientResponseError, ApplicationSubmitData> => {
   return useMutation(async (applicationData): Promise<void> => {
@@ -32,5 +32,9 @@ export const useSubmitApplication = (options?: UseMutationOptions<void, HttpClie
 
       throw new HttpClientResponseError(response, 'Network response was not ok', responseJson, responseText);
     }
+
+    // on mutation succeeds, invalidate any queries
+    const queryClient = new QueryClient();
+    await queryClient.invalidateQueries(applicationsQueryKey);
   }, options);
 };
