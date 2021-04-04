@@ -10,7 +10,7 @@ import { GetStaticProps } from 'next';
 import { Role } from '../../../common/types';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
-import { PageSecurityGateProps } from '../../../components/PageSecurityGate';
+import { PageSecurityGate } from '../../../components/PageSecurityGate';
 import { useApplications } from '../../../hooks/api/applications/useApplications';
 import { useLanguages } from '../../../hooks/api/code-lookups/useLanguages';
 import { useProvinces } from '../../../hooks/api/code-lookups/useProvinces';
@@ -131,12 +131,16 @@ const ManagementApplicationsPage = (): JSX.Element => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async () => {
-  return {
-    props: {
-      ...({ secured: true, requiredRoles: [Role.CPP_Manage] } as PageSecurityGateProps),
-    },
-  };
+const SecuredPage = (): JSX.Element => {
+  return (
+    <PageSecurityGate requiredRoles={[Role.CPP_Manage]}>
+      <ManagementApplicationsPage />
+    </PageSecurityGate>
+  );
 };
 
-export default ManagementApplicationsPage;
+export const getStaticProps: GetStaticProps = async () => {
+  return { props: {} };
+};
+
+export default SecuredPage;

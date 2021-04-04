@@ -11,7 +11,6 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Hydrate } from 'react-query/hydration';
 import { AppInsightsPageViewTracking } from '../components/AppInsightsPageViewTracking';
-import { PageSecurityGate } from '../components/PageSecurityGate';
 import { nextSeoConfigEN, nextSeoConfigFR } from '../config';
 
 import '../styles/globals.css';
@@ -30,9 +29,7 @@ const MyApp = (props: AppProps): JSX.Element => {
       <Hydrate state={pageProps.dehydratedState}>
         <DefaultSeo {...defaultSeo} />
         <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
-        <PageSecurityGate {...pageProps}>
-          <Component {...pageProps} />
-        </PageSecurityGate>
+        <Component {...pageProps} />
         <AppInsightsPageViewTracking />
       </Hydrate>
     </QueryClientProvider>

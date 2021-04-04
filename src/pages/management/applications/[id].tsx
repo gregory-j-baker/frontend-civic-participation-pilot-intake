@@ -32,6 +32,7 @@ import Trans from 'next-translate/Trans';
 import { useSaveApplication } from '../../../hooks/api/applications/useSaveApplication';
 import { useRouter } from 'next/router';
 import { nlToLines } from '../../../utils/misc-utils';
+import { PageSecurityGate } from '../../../components/PageSecurityGate';
 
 export interface ManagementEditApplicationPageState {
   applicationStatusId?: string;
@@ -254,6 +255,14 @@ const Confirm = ({ application, applicationStatuses, applicationStatusId, disabl
   );
 };
 
+const SecuredPage = (props: ManagementEditApplicationPageProps): JSX.Element => {
+  return (
+    <PageSecurityGate requiredRoles={[Role.CPP_Manage]}>
+      <ManagementEditApplicationPage {...props} />
+    </PageSecurityGate>
+  );
+};
+
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = (await getSession(context)) as AADSession;
   if (!session || Date.now() >= session.accessTokenExpires || !session.accessToken) signIn('azure-ad-b2c');
@@ -274,4 +283,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default ManagementEditApplicationPage;
+export default SecuredPage;

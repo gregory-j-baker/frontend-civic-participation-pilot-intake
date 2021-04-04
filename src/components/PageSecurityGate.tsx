@@ -14,36 +14,33 @@ import { PageLoadingSpinner } from './PageLoadingSpinner';
 export interface PageSecurityGateProps {
   children: React.ReactNode;
   requiredRoles?: Role[];
-  secured?: boolean;
 }
 
-export const PageSecurityGate = ({ children, requiredRoles, secured }: PageSecurityGateProps): JSX.Element => {
+export const PageSecurityGate = ({ children, requiredRoles }: PageSecurityGateProps): JSX.Element => {
   const [session, loading] = useSession();
 
-  if (secured) {
-    if (loading) {
-      return (
-        <MainLayout>
-          <PageLoadingSpinner />
-        </MainLayout>
-      );
-    }
+  if (loading) {
+    return (
+      <MainLayout>
+        <PageLoadingSpinner />
+      </MainLayout>
+    );
+  }
 
-    if (!session || Date.now() >= (session as AADSession).accessTokenExpires || !session.accessToken) {
-      signIn('azure-ad-b2c');
-      return (
-        <MainLayout>
-          <PageLoadingSpinner />
-        </MainLayout>
-      );
-    }
+  if (!session || Date.now() >= (session as AADSession).accessTokenExpires || !session.accessToken) {
+    signIn('azure-ad-b2c');
+    return (
+      <MainLayout>
+        <PageLoadingSpinner />
+      </MainLayout>
+    );
+  }
 
-    // validate roles
-    if (requiredRoles && requiredRoles.length > 0) {
-      const sessionRoles = (session as AADSession).roles;
-      if (!sessionRoles || sessionRoles.length === 0) return <AccessDeniedPage />;
-      if (sessionRoles.filter((role) => requiredRoles.map((r) => r as string).includes(role)).length === 0) return <AccessDeniedPage />;
-    }
+  // validate roles
+  if (requiredRoles && requiredRoles.length > 0) {
+    const sessionRoles = (session as AADSession).roles;
+    if (!sessionRoles || sessionRoles.length === 0) return <AccessDeniedPage />;
+    if (sessionRoles.filter((role) => requiredRoles.map((r) => r as string).includes(role)).length === 0) return <AccessDeniedPage />;
   }
 
   return <>{children}</>;
