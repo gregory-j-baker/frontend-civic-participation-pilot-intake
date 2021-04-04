@@ -53,8 +53,6 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
     }
   };
 
-  const contentRows = (value ?? '').split('\n').length;
-
   return (
     <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
       <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
@@ -64,7 +62,7 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
       {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
-      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} maxLength={maxLength} className={className} rows={Math.max(contentRows, rows ?? 5)} />
+      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} maxLength={maxLength} className={className} rows={rows ?? 5} />
       {
         <div className="tw-italic tw-text-sm tw-px-4 tw-py-1 tw-border-l-4 tw--mt-2 tw-pt-3 tw-rounded tw-bg-gray-50 tw-border-gray-600 tw-shadow">
           {t(wordLimit ? 'common:textarea.word-count-limit' : 'common:textarea.word-count', { count: wordCount, limit: wordLimit ?? -1 })}
