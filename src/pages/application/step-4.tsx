@@ -18,6 +18,7 @@ import { Wizard, WizardOnPreviousClickEvent, WizardOnNextClickEvent } from '../.
 import { useSubmitApplication } from '../../hooks/api/applications/useSubmitApplication';
 import Error from '../_error';
 import { Alert, AlertType } from '../../components/Alert';
+import { SlimAlert, SlimAlertType } from '../../components/SlimAlert';
 import { ApplicationState, Step4State, Constants, Step1State, Step2State, Step3State } from './types';
 import { step4Schema, step3Schema, applicationSchema, step2Schema, step1Schema } from '../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
@@ -197,19 +198,12 @@ const Step4Page = (): JSX.Element => {
               disabled={submitApplicationIsLoading || submitApplicationIsSuccess}
               error={getSchemaError(nameof<Step4State>((o) => o.isInformationConsented))}
             />
-            <div className="tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow tw-flex tw-space-x-3 tw-items-center tw-bg-blue-50 tw-border-blue-600 tw-mt-10 ">
-              <div className="tw-w-5 tw-h-5 tw-text-blue-600 tw-inline-block tw-flex-shrink-0">
-                <svg className="tw-fill-current tw-w-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div>
-                {t('application:step-4.privacy-notice-statement.label') + ' '}
-                <Link href="/privacy-notice-statement">
-                  <a>{t('application:step-4.privacy-notice-statement.link')}</a>
-                </Link>
-              </div>
-            </div>
+            <SlimAlert type={SlimAlertType.info}>
+              {t('application:step-4.privacy-notice-statement.label') + ' '}
+              <Link href="/privacy-notice-statement">
+                <a>{t('application:step-4.privacy-notice-statement.link')}</a>
+              </Link>
+            </SlimAlert>
           </Wizard>
         </>
       )}

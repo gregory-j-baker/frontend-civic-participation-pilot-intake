@@ -185,6 +185,7 @@ const Step2Page = (): JSX.Element => {
             <RadiosField
               field={nameof<Step2State>((o) => o.demographicId)}
               label={t('application:field.demographicId.label')}
+              helperText={t('application:field.demographicId.helper-text')}
               value={formData.step2.demographicId}
               onChange={handleOnOptionsFieldChange}
               options={demographicOptions}
