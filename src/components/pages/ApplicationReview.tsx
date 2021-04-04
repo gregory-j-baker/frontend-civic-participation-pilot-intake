@@ -219,18 +219,6 @@ const Step3Review = ({ application }: ApplicationReviewProps): JSX.Element => {
   const formReviewItems: FormReviewItem[] = useMemo(() => {
     const items: FormReviewItem[] = [];
 
-    // skillsInterest
-    const skillsInterestLines = nlToLines(application.skillsInterest);
-    items.push({
-      key: nameof<ApplicationBase>((o) => o.skillsInterest),
-      text: t(`application:field.${nameof<ApplicationBase>((o) => o.skillsInterest)}.label`),
-      value: skillsInterestLines.map((line, index) => (
-        <p key={`${index} - ${line}`} className={`tw-m-0 ${index + 1 < skillsInterestLines.length ? 'tw-mb-4' : ''}`}>
-          {line}
-        </p>
-      )),
-    });
-
     // communityInterest
     const communityInterestLines = nlToLines(application.communityInterest);
     items.push({
@@ -238,6 +226,18 @@ const Step3Review = ({ application }: ApplicationReviewProps): JSX.Element => {
       text: t(`application:field.${nameof<ApplicationBase>((o) => o.communityInterest)}.label`),
       value: communityInterestLines.map((line, index) => (
         <p key={`${index} - ${line}`} className={`tw-m-0 ${index + 1 < communityInterestLines.length ? 'tw-mb-4' : ''}`}>
+          {line}
+        </p>
+      )),
+    });
+
+    // skillsInterest
+    const skillsInterestLines = nlToLines(application.skillsInterest);
+    items.push({
+      key: nameof<ApplicationBase>((o) => o.skillsInterest),
+      text: t(`application:field.${nameof<ApplicationBase>((o) => o.skillsInterest)}.label`),
+      value: skillsInterestLines.map((line, index) => (
+        <p key={`${index} - ${line}`} className={`tw-m-0 ${index + 1 < skillsInterestLines.length ? 'tw-mb-4' : ''}`}>
           {line}
         </p>
       )),
