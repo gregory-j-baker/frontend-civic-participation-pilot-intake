@@ -21,35 +21,36 @@ export interface DiscoveryChannelsResponse extends HateoasCollection {
 
 export interface FetchDiscoveryChannelsOptions {
   lang?: string;
+  onlyActive?: boolean;
 }
 
 export interface UseDiscoveryChannelsOptions extends FetchDiscoveryChannelsOptions {
   enabled?: boolean;
-  onlyActive?: boolean;
 }
 
-export const fetchDiscoveryChannels = (options: FetchDiscoveryChannelsOptions): Promise<DiscoveryChannelsResponse> => {
-  const { lang } = options;
+export const fetchDiscoveryChannels = async (options: FetchDiscoveryChannelsOptions): Promise<DiscoveryChannelsResponse> => {
+  const { lang, onlyActive } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<DiscoveryChannel>((o) => o.uiDisplayOrderFr) : nameof<DiscoveryChannel>((o) => o.uiDisplayOrderEn)}`];
 
-  return fetchWrapper<DiscoveryChannelsResponse>(`${discoveryChannelsUri}?${queries.join('&')}`);
+  const data = await fetchWrapper<DiscoveryChannelsResponse>(`${discoveryChannelsUri}?${queries.join('&')}`);
+
+  if (onlyActive) {
+    data._embedded.discoveryChannels = data._embedded.discoveryChannels.filter((discoveryChannel) => {
+      const active = discoveryChannel.activationDate ? beforeNow(new Date(discoveryChannel.activationDate)) : true;
+      const expired = discoveryChannel.expirationDate ? beforeNow(new Date(discoveryChannel.expirationDate)) : false;
+      return active && !expired;
+    });
+  }
+
+  return data;
 };
 
 export const useDiscoveryChannels = (options: UseDiscoveryChannelsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<DiscoveryChannelsResponse, HttpClientResponseError> => {
-  const { enabled, onlyActive } = options;
+  const { enabled } = options;
   return useQuery([discoveryChannelsQueryKey, options], () => fetchDiscoveryChannels(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,
-    onSuccess: (data) => {
-      if (onlyActive) {
-        data._embedded.discoveryChannels = data._embedded.discoveryChannels.filter((discoveryChannel) => {
-          const active = discoveryChannel.activationDate ? beforeNow(new Date(discoveryChannel.activationDate)) : true;
-          const expired = discoveryChannel.expirationDate ? beforeNow(new Date(discoveryChannel.expirationDate)) : false;
-          return active && !expired;
-        });
-      }
-    },
   });
 };

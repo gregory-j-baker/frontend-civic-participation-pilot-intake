@@ -22,7 +22,7 @@ import { ApplicationState, Step4State, Constants, Step1State, Step2State, Step3S
 import { step4Schema, step3Schema, applicationSchema, step2Schema, step1Schema } from '../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../common/HttpClientResponseError';
-import { YupCustomMessage } from '../../yup/yup-custom';
+import { YupCustomMessage } from '../../yup/types';
 import { GetStaticProps } from 'next';
 import { ApplicationSubmitData } from '../../hooks/api/applications/types';
 import { sleep } from '../../utils/misc-utils';

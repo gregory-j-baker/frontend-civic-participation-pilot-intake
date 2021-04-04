@@ -21,35 +21,36 @@ export interface DemographicsResponse extends HateoasCollection {
 
 export interface FetchDemographicsOptions {
   lang?: string;
+  onlyActive?: boolean;
 }
 
 export interface UseDemographicsOptions extends FetchDemographicsOptions {
   enabled?: boolean;
-  onlyActive?: boolean;
 }
 
-export const fetchDemographics = (options: FetchDemographicsOptions): Promise<DemographicsResponse> => {
-  const { lang } = options;
+export const fetchDemographics = async (options: FetchDemographicsOptions): Promise<DemographicsResponse> => {
+  const { lang, onlyActive } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<Demographic>((o) => o.uiDisplayOrderFr) : nameof<Demographic>((o) => o.uiDisplayOrderEn)}`];
 
-  return fetchWrapper<DemographicsResponse>(`${demographicsUri}?${queries.join('&')}`);
+  const data = await fetchWrapper<DemographicsResponse>(`${demographicsUri}?${queries.join('&')}`);
+
+  if (onlyActive) {
+    data._embedded.demographics = data._embedded.demographics.filter((demographic) => {
+      const active = demographic.activationDate ? beforeNow(new Date(demographic.activationDate)) : true;
+      const expired = demographic.expirationDate ? beforeNow(new Date(demographic.expirationDate)) : false;
+      return active && !expired;
+    });
+  }
+
+  return data;
 };
 
 export const useDemographics = (options: UseDemographicsOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<DemographicsResponse, HttpClientResponseError> => {
-  const { enabled, onlyActive } = options;
+  const { enabled } = options;
   return useQuery([demographicsQueryKey, options], () => fetchDemographics(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,
-    onSuccess: (data) => {
-      if (onlyActive) {
-        data._embedded.demographics = data._embedded.demographics.filter((demographic) => {
-          const active = demographic.activationDate ? beforeNow(new Date(demographic.activationDate)) : true;
-          const expired = demographic.expirationDate ? beforeNow(new Date(demographic.expirationDate)) : false;
-          return active && !expired;
-        });
-      }
-    },
   });
 };

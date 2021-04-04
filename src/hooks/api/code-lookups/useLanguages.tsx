@@ -21,34 +21,35 @@ export interface LanguagesResponse extends HateoasCollection {
 
 export interface FetchLanguagesOptions {
   lang?: string;
+  onlyActive?: boolean;
 }
 export interface UseLanguagesOptions extends FetchLanguagesOptions {
   enabled?: boolean;
-  onlyActive?: boolean;
 }
 
-export const fetchLanguages = (options: FetchLanguagesOptions): Promise<LanguagesResponse> => {
-  const { lang } = options;
+export const fetchLanguages = async (options: FetchLanguagesOptions): Promise<LanguagesResponse> => {
+  const { lang, onlyActive } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<Language>((o) => o.uiDisplayOrderFr) : nameof<Language>((o) => o.uiDisplayOrderEn)}`];
 
-  return fetchWrapper<LanguagesResponse>(`${languagesUri}?${queries.join('&')}`);
+  const data = await fetchWrapper<LanguagesResponse>(`${languagesUri}?${queries.join('&')}`);
+
+  if (onlyActive) {
+    data._embedded.languages = data._embedded.languages.filter((language) => {
+      const active = language.activationDate ? beforeNow(new Date(language.activationDate)) : true;
+      const expired = language.expirationDate ? beforeNow(new Date(language.expirationDate)) : false;
+      return active && !expired;
+    });
+  }
+
+  return data;
 };
 
 export const useLanguages = (options: UseLanguagesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<LanguagesResponse, HttpClientResponseError> => {
-  const { enabled, onlyActive } = options;
+  const { enabled } = options;
   return useQuery([languagesQueryKey, options], () => fetchLanguages(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,
-    onSuccess: (data) => {
-      if (onlyActive) {
-        data._embedded.languages = data._embedded.languages.filter((language) => {
-          const active = language.activationDate ? beforeNow(new Date(language.activationDate)) : true;
-          const expired = language.expirationDate ? beforeNow(new Date(language.expirationDate)) : false;
-          return active && !expired;
-        });
-      }
-    },
   });
 };

@@ -21,34 +21,35 @@ export interface ProvincesResponse extends HateoasCollection {
 
 export interface FetchProvincesOptions {
   lang?: string;
+  onlyActive?: boolean;
 }
 export interface UseProvincesOptions extends FetchProvincesOptions {
   enabled?: boolean;
-  onlyActive?: boolean;
 }
 
-export const fetchProvinces = (options: FetchProvincesOptions): Promise<ProvincesResponse> => {
-  const { lang } = options;
+export const fetchProvinces = async (options: FetchProvincesOptions): Promise<ProvincesResponse> => {
+  const { lang, onlyActive } = options;
 
   const queries: string[] = [`sort=${lang && lang === 'fr' ? nameof<Province>((o) => o.uiDisplayOrderFr) : nameof<Province>((o) => o.uiDisplayOrderEn)}`];
 
-  return fetchWrapper<ProvincesResponse>(`${provincesUri}?${queries.join('&')}`);
+  const data = await fetchWrapper<ProvincesResponse>(`${provincesUri}?${queries.join('&')}`);
+
+  if (onlyActive) {
+    data._embedded.provinces = data._embedded.provinces.filter((province) => {
+      const active = province.activationDate ? beforeNow(new Date(province.activationDate)) : true;
+      const expired = province.expirationDate ? beforeNow(new Date(province.expirationDate)) : false;
+      return active && !expired;
+    });
+  }
+
+  return data;
 };
 
 export const useProvinces = (options: UseProvincesOptions = { enabled: true, lang: 'en', onlyActive: true }): UseQueryResult<ProvincesResponse, HttpClientResponseError> => {
-  const { enabled, onlyActive } = options;
+  const { enabled } = options;
   return useQuery([provincesQueryKey, options], () => fetchProvinces(options), {
     enabled,
     cacheTime: Infinity,
     staleTime: Infinity,
-    onSuccess: (data) => {
-      if (onlyActive) {
-        data._embedded.provinces = data._embedded.provinces.filter((province) => {
-          const active = province.activationDate ? beforeNow(new Date(province.activationDate)) : true;
-          const expired = province.expirationDate ? beforeNow(new Date(province.expirationDate)) : false;
-          return active && !expired;
-        });
-      }
-    },
   });
 };

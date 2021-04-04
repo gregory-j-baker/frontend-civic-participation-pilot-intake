@@ -19,7 +19,7 @@ import { MainLayout } from '../../components/layouts/main/MainLayout';
 import { contactUsSchema } from '../../yup/contactUsSchema';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../common/HttpClientResponseError';
-import { YupCustomMessage } from '../../yup/yup-custom';
+import { YupCustomMessage } from '../../yup/types';
 import { GetStaticProps } from 'next';
 import { ContactUsData, useSubmitContactUs } from '../../hooks/api/contact-form/useSubmitContactUs';
 

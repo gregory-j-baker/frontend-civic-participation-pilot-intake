@@ -22,7 +22,7 @@ import { ApplicationState, GetDescriptionFunc, Step2State, Constants } from './t
 import { step2Schema, step1Schema } from '../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../common/HttpClientResponseError';
-import { YupCustomMessage } from '../../yup/yup-custom';
+import { YupCustomMessage } from '../../yup/types';
 import { GetStaticProps } from 'next';
 import { sleep } from '../../utils/misc-utils';
 import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../../components/form/RadiosField';

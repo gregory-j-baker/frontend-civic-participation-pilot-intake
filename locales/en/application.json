@@ -141,8 +141,20 @@
       "submit": "Save",
       "cancel": "Cancel",
       "field": {
-        "application-status": "Update application status",
-        "reasoning": "Reasoning"
+        "applicationStatusId": {
+          "label": "Update application status",
+          "required": "You must select an application status"
+        },
+        "reasoning": {
+          "label": "Reasoning",
+          "required": "You must provide a reasoning"
+        }
+      },
+      "confirm": {
+        "title": "Update application status?",
+        "message": "Please confirm you would like to change the status of application ({{name}}) from <label>{{current}}</label> to <label>{{new}}</label> for the following reason:",
+        "submit": "Confirm status change",
+        "cancel": "Cancel"
       }
     }
   }
