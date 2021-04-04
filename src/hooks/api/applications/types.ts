@@ -41,4 +41,9 @@ export interface Application extends ApplicationBase {
   lastModifiedDate: string;
 }
 
+export interface SaveApplicationData {
+  applicationStatusId: string;
+  reasonText: string;
+}
+
 export interface ApplicationSubmitData extends ApplicationBase {}

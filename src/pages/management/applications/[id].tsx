@@ -20,13 +20,18 @@ import { SelectField, SelectFieldOption } from '../../../components/form/SelectF
 import { useApplicationStatuses } from '../../../hooks/api/code-lookups/useApplicationStatuses';
 import { GetDescriptionFunc } from '../../application/types';
 import Error from '../../_error';
+import { SaveApplicationData } from '../../../hooks/api/applications/types';
+import { saveApplicationSchema } from '../../../yup/applicationSchemas';
 import { TextAreaField } from '../../../components/form/TextAreaField';
 import { ButtonLink } from '../../../components/ButtonLink';
-import { Button } from '../../../components/Button';
+import { Button, ButtonOnClickEvent } from '../../../components/Button';
 import * as Yup from 'yup';
+import { YupCustomMessage } from '../../../yup/yup-custom';
+import { useSaveApplication } from '../../../hooks/api/applications/useSaveApplication';
+import { Alert, AlertType } from '../../../components/Alert';
 
 export interface ManagementEditApplicationPageState {
-  applicationStatueId: string;
+  applicationStatusId: string;
   reasoning?: string;
 }
 
@@ -37,7 +42,8 @@ export interface ManagementEditApplicationPageProps {
 const ManagementEditApplicationPage = ({ application }: ManagementEditApplicationPageProps): JSX.Element => {
   const { t, lang } = useTranslation();
 
-  const [formState, setFormState] = useState<ManagementEditApplicationPageState>({ applicationStatueId: application.applicationStatusId });
+  const [formState, setFormState] = useState<ManagementEditApplicationPageState>({ applicationStatusId: application.applicationStatusId, reasoning: undefined });
+  const [schemaErrors, setSchemaErrors] = useState<Yup.ValidationError[] | null>();
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
 
@@ -50,7 +56,54 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
     return applicationStatuses?._embedded.applicationStatuses.map((el) => ({ value: el.id, text: getDescription(el) })) ?? [];
   }, [isApplicationStatusesLoading, applicationStatusesError, applicationStatuses, getDescription]);
 
-  const canSubmit = application.applicationStatusId !== formState.applicationStatueId && Yup.string().defined().isValidSync(formState.reasoning);
+  const canSubmit = application.applicationStatusId !== formState.applicationStatusId && Yup.string().defined().isValidSync(formState.reasoning);
+
+  const { mutate: saveApplication, error: saveApplicationError, reset: resetSaveApplicationError, isLoading: saveApplicationIsLoading, isSuccess: saveApplicationIsSuccess } = useSaveApplication(application.id, undefined, {
+    onSuccess: () => {
+      alert('success');
+      //router.push('/application/email-verification/success');
+    },
+    onError: (HttpClientResponseError) => {
+      console.log(HttpClientResponseError);
+      setFormState((prev) => ({ ...prev }));
+      if (saveApplicationError) document.getElementById('validation-error')?.focus();
+    },
+  });
+
+  const handleOnSubmit: ButtonOnClickEvent = async (event) => {
+    event.preventDefault();
+
+    //resetSubmitAccessCodeError();
+    //setSchemaErrors(null);
+
+    try {
+      await saveApplicationSchema.validate(formState, { abortEarly: false });
+
+      // submit email verification form
+      const saveApplicationData: SaveApplicationData = {
+        applicationStatusId: formState.applicationStatusId as string,
+        reasonText: formState.reasoning as string,
+      };
+
+      saveApplication(saveApplicationData);
+    } catch (err) {
+      if (!(err instanceof Yup.ValidationError)) throw err;
+      setSchemaErrors(err.inner);
+      document.getElementById('validation-error')?.focus();
+    }
+  };
+
+  const getSchemaError = (path: string): string | undefined => {
+    if (!schemaErrors || schemaErrors.length === 0) return undefined;
+
+    const index = schemaErrors.findIndex((err) => err.path === path);
+
+    if (index === -1) return undefined;
+
+    const { key } = (schemaErrors[index]?.message as unknown) as YupCustomMessage;
+
+    return t('common:error-number', { number: index + 1 }) + t(`email-verification:form.${schemaErrors[index]?.path}.${key}`);
+  };
 
   if (applicationStatusesError) {
     return <Error err={applicationStatusesError} />;
@@ -73,12 +126,28 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
 
       {!isApplicationStatusesLoading && (
         <ContentPaper>
+          {schemaErrors && schemaErrors.length > 0 && (
+            <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+              <ul className="tw-list-disc">
+                {schemaErrors.map(({ path }) => {
+                  const [field] = path?.split('.') ?? [];
+
+                  return path ? (
+                    <li key={path} className="tw-my-2">
+                      <a href={`#form-field-${field}`}>{getSchemaError(path)}</a>
+                    </li>
+                  ) : undefined;
+                })}
+              </ul>
+            </Alert>
+          )}
+
           <SelectField
             field="status"
             label={t('application:management.edit.field.application-status')}
-            value={formState.applicationStatueId}
+            value={formState.applicationStatusId}
             options={applicationStatuseOptions}
-            onChange={({ value }) => setFormState((prev) => ({ ...prev, applicationStatueId: value as string }))}
+            onChange={({ value }) => setFormState((prev) => ({ ...prev, applicationStatusId: value as string }))}
             gutterBottom
             className="tw-w-full sm:tw-w-6/12"
           />
@@ -92,7 +161,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
             className="tw-w-full"
           />
 
-          <Button className="tw-m-2" disabled={!canSubmit}>
+          <Button onClick={handleOnSubmit} className="tw-m-2" disabled={!canSubmit}>
             {t('application:management.edit.submit')}
           </Button>
           <ButtonLink className="tw-m-2" href="/management/applications" outline>
