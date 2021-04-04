@@ -23,6 +23,7 @@
     },
     "demographicId": {
       "label": "Vous identifiez-vous à une ou plusieurs des caractéristiques démographiques énumérées?",
+      "helper-text": "Les définitions détaillées de ces termes se trouvent ici (hyperlink)",
       "children-items": {
         "item-1": "minorités visibles/communauté racialisée",
         "item-2": "autochtone (Premières Nations, Inuit, Métis(es), ou non-affilié)",
@@ -66,12 +67,12 @@
       "required": "Vous devez indiquer si vous êtes un citoyen, un résident ou une personne protégée"
     },
     "isInformationConsented": {
-      "label": "À ma connaissance, tous les renseignements fournis (à la section 1) sont vrais et exacts, et je consens à ce que mes réponses soient communiquées à Emploi et Développement social Canada.",
+      "label": "Je certifie par la présente que, à ma connaissance, les informations figurant dans le formulaire de candidature (à la section 1) sont exactes, précises et complètes, et je consens à ce que mes réponses soient communiquées à Emploi et Développement social Canada",
       "required": "Vous devez donner votre consentement pour partager cette information",
       "must-be-true": "Vous devez donner votre consentement pour partager cette information"
     },
     "isProvinceMajorCertified": {
-      "label": "J'atteste que j'ai l'âge de la majorité dans la province ou le territoire où je réside",
+      "label": "J’atteste que j’ai l’âge de la majorité dans la province ou le territoire où je réside et âgés de 30 ans ou moins",
       "link": "Trouvez l'âge de la majorité dans votre province ou votre territoire",
       "required": "Vous devez certifier que vous avez atteint l'âge de la majorité",
       "must-be-true": "Vous devez certifier que vous avez atteint l'âge de la majorité"
@@ -102,18 +103,21 @@
     }
   },
   "step-1": {
-    "title": "Étape 1"
+    "title": "Étape 1",
+    "info-title": "Information",
+    "info-text": "Veuillez noter qu'une seule candidature par courriel sera acceptée."
   },
   "step-2": {
     "title": "Étape 2",
     "information-note": "Veuillez noter que les questions de cette section n'auront aucune incidence sur votre admissibilité au programme et qu'elles ne seront utilisées que pour l'analyse et l'évaluation du programme. Veuillez fournir la réponse qui, selon vous, s'applique le mieux à votre cas. Vous pouvez choisir de sélectionner « Je préfère ne pas répondre » pour toute question de cette section."
   },
   "step-3": {
-    "title": "Étape 3"
+    "title": "Étape 3",
+    "information-note": "Les questions de cette section seront utilisées pour guider l'élaboration des activités d'apprentissage et des ateliers, en veillant à ce que la programmation reflète les besoins et les intérêts des participants. Vous ne serez pas évalué sur la qualité de votre écriture, mais le minimum de mots doit être respecté. Les blasphèmes et/ou le langage irrespectueux ne seront pas tolérés."
   },
   "step-4": {
-    "title": "Examiner et soumettre la demande",
-    "header": "Examiner et soumettre la demande",
+    "title": "Vérifier vos réponses et soumettre la demande",
+    "header": "Vérifier vos réponses: Veuillez relire attentivement vos réponses. Une seule demande par adresse électronique sera acceptée et les demandes ne peuvent être modifiées après avoir été soumises.",
     "privacy-notice-statement": {
       "label": "Inquiet pour la vie privée? Découvrez notre ",
       "link": "déclaration d'avis de confidentialité"

@@ -127,6 +127,8 @@ const Step3Page = (): JSX.Element => {
           )}
 
           <Wizard activeStep={3} numberOfSteps={4} onNextClick={handleWizardOnNextClick} onPreviousClick={handleWizardOnPreviousClick}>
+            <p className="tw-m-0 tw-mb-10 tw-font-bold">{t('application:step-3.information-note')}</p>
+
             <TextAreaField
               field={nameof<Step3State>((o) => o.communityInterest)}
               label={t('application:field.communityInterest.label')}

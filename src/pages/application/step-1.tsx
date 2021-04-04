@@ -28,6 +28,7 @@ import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
 import { getYears } from '../../utils/misc-utils';
 import Error from '../_error';
 import { Alert, AlertType } from '../../components/Alert';
+import { SlimAlert, SlimAlertType } from '../../components/SlimAlert';
 import { ApplicationState, GetDescriptionFunc, Step1State, Constants } from './types';
 import { step1Schema } from '../../yup/applicationSchemas';
 import { ValidationError } from 'yup';
@@ -164,6 +165,8 @@ const Step1Page = (): JSX.Element => {
               </ul>
             </Alert>
           )}
+
+          {!schemaErrors && <SlimAlert description={t('application:step-1.info-text')} gutterBottom type={SlimAlertType.info} />}
 
           <Wizard activeStep={1} numberOfSteps={4} previousHidden onNextClick={handleWizardOnNextClick}>
             <TextField
