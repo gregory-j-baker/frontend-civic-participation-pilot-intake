@@ -201,7 +201,7 @@ const Step4Page = (): JSX.Element => {
             <SlimAlert type={SlimAlertType.info}>
               {t('application:step-4.privacy-notice-statement.label') + ' '}
               <Link href="/privacy-notice-statement">
-                <a>{t('application:step-4.privacy-notice-statement.link')}</a>
+                <a target="_blank">{t('application:step-4.privacy-notice-statement.link')}</a>
               </Link>
             </SlimAlert>
           </Wizard>
