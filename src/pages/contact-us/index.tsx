@@ -25,8 +25,9 @@ import { ContactUsData, useSubmitContactUs } from '../../hooks/api/contact-form/
 
 interface FormDataState {
   email?: string;
+  firstName?: string;
+  lastName?: string;
   message?: string;
-  name?: string;
   phoneNumber?: string;
 }
 
@@ -60,7 +61,8 @@ const ContactUsPage: NextPage = () => {
       const contactUsData: ContactUsData = {
         email: formData?.email as string,
         message: formData?.message as string,
-        name: formData?.name as string,
+        firstName: formData?.firstName as string,
+        lastName: formData?.lastName as string,
         phoneNumber: formData?.phoneNumber as string,
       };
 
@@ -111,12 +113,24 @@ const ContactUsPage: NextPage = () => {
       )}
 
       <TextField
-        field={nameof<FormDataState>((o) => o.name)}
-        label={t('contact-us:form.name.label')}
-        value={formData?.name}
+        field={nameof<FormDataState>((o) => o.firstName)}
+        label={t('contact-us:form.firstName.label')}
+        value={formData?.firstName}
         onChange={handleOnTextFieldChange}
         disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
-        error={getSchemaError(nameof<FormDataState>((o) => o.name))}
+        error={getSchemaError(nameof<FormDataState>((o) => o.firstName))}
+        required
+        gutterBottom
+        className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"
+      />
+
+      <TextField
+        field={nameof<FormDataState>((o) => o.lastName)}
+        label={t('contact-us:form.lastName.label')}
+        value={formData?.lastName}
+        onChange={handleOnTextFieldChange}
+        disabled={submitContactUsIsLoading || submitContactUsIsSuccess}
+        error={getSchemaError(nameof<FormDataState>((o) => o.lastName))}
         required
         gutterBottom
         className="tw-w-full sm:tw-w-8/12 md:tw-w-6/12"

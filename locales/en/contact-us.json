@@ -14,9 +14,13 @@
       "label": "Message",
       "required": "Message is required"
     },
-    "name": {
+    "firstName": {
       "label": "First name",
       "required": "First name is required"
+    },
+    "lastName": {
+      "label": "Last name",
+      "required": "Last name is required"
     },
     "phoneNumber": {
       "helper-text": "Acceptable format: 506-555-5555",

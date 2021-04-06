@@ -10,7 +10,8 @@ import './yup-custom';
 import './yup-phone';
 
 export const contactUsSchema = Yup.object().shape({
-  name: Yup.string().required(),
+  firstName: Yup.string().required(),
+  lastName: Yup.string().required(),
   email: Yup.string().email().required(),
   phoneNumber: Yup.string().phone(),
   message: Yup.string().required(),

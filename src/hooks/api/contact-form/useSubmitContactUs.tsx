@@ -11,8 +11,9 @@ import { apiConfig } from '../../../config';
 
 export interface ContactUsData {
   email: string;
+  firstName: string;
+  lastName: string;
   message: string;
-  name: string;
   phoneNumber?: string;
 }
 

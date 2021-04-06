@@ -14,9 +14,13 @@
       "label": "Message",
       "required": "Message est requis"
     },
-    "name": {
+    "firstName": {
       "label": "Prénom",
       "required": "Prénom est requis"
+    },
+    "lastName": {
+      "label": "Nom de famille",
+      "required": "Nom de famille est requis"
     },
     "phoneNumber": {
       "helper-text": "Format acceptable: 506-555-5555",
