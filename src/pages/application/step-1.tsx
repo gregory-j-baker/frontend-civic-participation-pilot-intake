@@ -236,7 +236,7 @@ const Step1Page = (): JSX.Element => {
               gutterBottom
               required>
               <div className="tw-pl-10">
-                <a href="http://example.com" target="_blank" rel="noreferrer">
+                <a href={t('application:field.isProvinceMajorCertified.link-url')} target="_blank" rel="noreferrer">
                   {t('application:field.isProvinceMajorCertified.link')}
                 </a>
               </div>

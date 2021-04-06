@@ -74,6 +74,7 @@
     "isProvinceMajorCertified": {
       "label": "J’atteste que j’ai l’âge de la majorité dans la province ou le territoire où je réside et âgés de 30 ans ou moins",
       "link": "Trouvez l'âge de la majorité dans votre province ou votre territoire",
+      "link-url": "https://www.canada.ca/fr/services/jeunesse/participation-civique/criteres-admissibilite.html#majorite",
       "required": "Vous devez certifier que vous avez atteint l'âge de la majorité",
       "must-be-true": "Vous devez certifier que vous avez atteint l'âge de la majorité"
     },

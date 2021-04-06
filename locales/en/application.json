@@ -74,6 +74,7 @@
     "isProvinceMajorCertified": {
       "label": "I certify that I am of the age of majority in my province or territory of residence and aged 30 or below",
       "link": "Find the age of majority in your province or territory",
+      "link-url": "https://www.canada.ca/en/services/youth/civic-participation/eligibility-requirements.html#majority",
       "required": "You must certify you are over the age of majority",
       "must-be-true": "You must certify you are over the age of majority"
     },

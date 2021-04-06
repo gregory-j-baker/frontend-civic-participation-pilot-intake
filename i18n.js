@@ -26,7 +26,7 @@ if (process.env.FRONTEND_FQDN_EN && process.env.FRONTEND_FQDN_FR) {
 
 module.exports = {
   locales: ['en', 'fr'],
-  ...(!domains && { defaultLocale: 'en' }),
+  defaultLocale: 'en',
   domains,
   pages: {
     '*': ['common', 'layouts', 'menu'],
