@@ -5,43 +5,94 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import type { GetServerSideProps, NextPage } from 'next';
-import { apiConfig } from '../../../config';
+import type { GetServerSideProps } from 'next';
 import { Params } from 'next/dist/next-server/server/router';
+import useTranslation from 'next-translate/useTranslation';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { MainLayout } from '../../../components/layouts/main/MainLayout';
+import { NextSeo } from 'next-seo';
+import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
+import { Button, ButtonOnClickEvent } from '../../../components/Button';
+import Image from 'next/image';
+import Custom404 from '../../404';
+import { useSubmitAccessToken } from '../../../hooks/api/email-verifications/useSubmitAccessToken';
+import { HttpClientResponseError } from '../../../common/HttpClientResponseError';
+import Error from '../../_error';
 
 interface EmailVerificationTokenData {
   accessToken: string;
 }
 
-const EmailVerficationTokenPage: NextPage = () => {
-  return <></>;
+export interface EmailVerficationTokenPageProps {
+  accessToken: string;
+}
+
+const EmailVerficationTokenPage = ({ accessToken }: EmailVerficationTokenPageProps): JSX.Element => {
+  const { t } = useTranslation('email-verification');
+  const router = useRouter();
+
+  const [pageLoading, setPageLoading] = useState<boolean>(true);
+
+  const { mutate: submitAccessToken, error: submitAccessTokenError, isLoading: submitAccessTokenIsLoading, isSuccess: submitAccessTokenIsSuccess } = useSubmitAccessToken({
+    onSuccess: () => {
+      router.push('/application/email-verification/success');
+    },
+  });
+
+  const handleOnSubmit: ButtonOnClickEvent = async (event) => {
+    event.preventDefault();
+
+    // submit email verification form
+    const emailVerificationTokenData: EmailVerificationTokenData = {
+      accessToken: accessToken,
+    };
+
+    submitAccessToken(emailVerificationTokenData);
+  };
+
+  useEffect(() => {
+    setPageLoading(false);
+  }, []);
+
+  if (submitAccessTokenError) {
+    return <Error err={submitAccessTokenError as HttpClientResponseError} />;
+  }
+
+  if (!pageLoading && !accessToken) return <Custom404 />;
+
+  return (
+    <MainLayout showAppTitle={false}>
+      <NextSeo title={t('email-verification:token.page.title')} />
+      {pageLoading ? (
+        <PageLoadingSpinner />
+      ) : (
+        <div className="tw-flex tw-space-x-10">
+          <div className="tw-w-full md:tw-w-1/2">
+            <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+              {t('email-verification:token.page.header')}
+            </h1>
+            <p className="tw-m-0 tw-mb-4">{t('email-verification:token.page.description')}</p>
+
+            <div className="tw-flex tw-flex-wrap">
+              <Button onClick={handleOnSubmit} disabled={submitAccessTokenIsLoading || submitAccessTokenIsSuccess} className="tw-m-2">
+                {t('email-verification:token.page.submit')}
+              </Button>
+            </div>
+          </div>
+          <div className="tw-hidden md:tw-block tw-w-1/2 tw-relative">
+            <Image src="/img/undraw_authentication_fsn5.svg" alt="" layout="fill" />
+          </div>
+        </div>
+      )}
+    </MainLayout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async ({ params }: Params) => {
-  const emailVerificationTokenData: EmailVerificationTokenData = {
-    accessToken: params.token,
-  };
-
-  const uri = `${apiConfig.baseUri}/email-validations/access-tokens`;
-
-  const res = await fetch(uri, {
-    body: JSON.stringify(emailVerificationTokenData),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
-  });
-
-  if (!res.ok || !res.json) {
-    return {
-      notFound: true,
-    };
-  }
-
   return {
-    redirect: {
-      destination: '/application/email-verification/success',
-      permanent: true,
+    props: {
+      accessToken: params.token,
     },
   };
 };
