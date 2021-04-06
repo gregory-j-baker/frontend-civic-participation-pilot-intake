@@ -124,7 +124,7 @@ export const ErrorMainContent = ({ lang }: ErrorMainContentProps): JSX.Element =
 
       {lang === 'fr' ? (
         <>
-          <p className="tw-m-0 tw-my-4">Nous éprouvons temporairement des difficultés d’ordre technique.</p>
+          <p className="tw-m-0 tw-my-4">Nous éprouvons temporairement des difficultés d'ordre technique.</p>
           <p className="tw-m-0 tw-my-4">Veuillez réessayer plus tard. Nous nous excusons des inconvénients que cela peut vous avoir causer.</p>
         </>
       ) : (

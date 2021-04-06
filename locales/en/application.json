@@ -23,7 +23,8 @@
     },
     "demographicId": {
       "label": "Do you identify with one or more of the demographic characteristics listed?",
-      "helper-text": "Detailed definitions of these terms can be found here (hyperlink to CSB page)",
+      "helper-text": "Detailed definitions of these terms can be found <link>here</link>",
+      "helper-text-url": "http://example.com",
       "children-items": {
         "item-1": "Visible minority/racialized",
         "item-2": "Indigenous (i.e. First Nations, Inuit (Inuk), Métis, or Non-Affiliated) ",
@@ -67,7 +68,7 @@
       "required": "You must indicate if you are a citizen, resident, or protected person"
     },
     "isInformationConsented": {
-      "label": "I hereby certify that, to the best of my knowledge, the information set out in the application form (in Section 1) is true, accurate and complete, and I consent to sharing my responses with Employment and Social Development Canada",
+      "label": "I hereby certify that, to the best of my knowledge, the information set out in the application form (in Section 1) is true, accurate and complete; I have read and understood the Privacy Notice Statement; I have all the necessary authorities, permissions and approvals to submit this application on behalf of myself or on behalf of the person identified on this form; and I consent to sharing all responses in the application form with Employment and Social Development Canada.",
       "required": "You must provide consent to share this information",
       "must-be-true": "You must provide consent to share this information"
     },
@@ -110,17 +111,17 @@
   },
   "step-2": {
     "title": "Step 2",
-    "information-note": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answers that you feel is most applicable to you. You may choose to select \"Prefer not to answer\" for any question in this section."
+    "information-note": "Please note that the questions in this section will not affect your eligibility for the program, and will be used only for program analysis and evaluation. Please provide the answers that you feel are most applicable to you. You may choose to select \"Prefer not to answer\" for any question in this section."
   },
   "step-3": {
     "title": "Step 3",
-    "information-note": "The questions in this section will be used to guide the development of learning activities and workshops, ensuring that programming reflects the needs and interests of participants. You will not be evaluated on the quality of your writing, but the minimum number of words must be respected. Profanity and/or disrespectful language will not be tolerated."
+    "information-note": "The questions in this section will be used to guide the development of learning activities and workshops, ensuring that programming reflects the needs and interests of participants. You will not be evaluated on the quality of your writing, but the word minimum must be respected. Profanities and/or disrespectful language will not be tolerated."
   },
   "step-4": {
     "title": "Review content and submit the application",
-    "header": "Review content: Please review your answers carefully. Only one application per email address will be accepted and applications cannot be modified after they have been submitted.",
+    "header": "Please review your answers carefully. Only one application per email address will be accepted and applications cannot be modified after they have been submitted.",
     "privacy-notice-statement": {
-      "label": "Worried about privacy? Check out our",
+      "label": "Check out our ",
       "link": "Privacy Notice Statement"
     }
   },

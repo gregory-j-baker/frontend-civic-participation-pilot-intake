@@ -20,13 +20,13 @@ export const ErrorPageLinks = ({ lang }: ErrorPageLinksProps): JSX.Element => {
     return (
       <ul className="tw-list-disc tw-list-inside">
         <ListItem>
-          Retournez à la <a href="https://www.canada.ca/fr.html">page d’accueil</a>;
+          Retournez à la <a href="https://www.canada.ca/fr.html">page d'accueil</a>;
         </ListItem>
         <ListItem>
           Consultez le <a href="https://www.canada.ca/fr/plan.html">plan du site</a>;
         </ListItem>
         <ListItem>
-          <a href="https://www.canada.ca/fr/contact.html">Communiquez avec nous</a> pour obtenir de l’aide.
+          <a href="https://www.canada.ca/fr/contact.html">Communiquez avec nous</a> pour obtenir de l'aide.
         </ListItem>
       </ul>
     );
