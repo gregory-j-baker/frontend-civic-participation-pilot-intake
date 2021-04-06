@@ -5,6 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { Provider as AuthProvider } from 'next-auth/client';
 import { DefaultSeo, NextSeo } from 'next-seo';
 import { AppProps } from 'next/app';
 import React from 'react';
@@ -25,14 +26,16 @@ const MyApp = (props: AppProps): JSX.Element => {
   const defaultSeo = (locale?.toLowerCase() ?? 'en') === 'fr' ? nextSeoConfigFR : nextSeoConfigEN;
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Hydrate state={pageProps.dehydratedState}>
-        <DefaultSeo {...defaultSeo} />
-        <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
-        <Component {...pageProps} />
-        <AppInsightsPageViewTracking />
-      </Hydrate>
-    </QueryClientProvider>
+    <AuthProvider session={pageProps.session}>
+      <QueryClientProvider client={queryClient}>
+        <Hydrate state={pageProps.dehydratedState}>
+          <DefaultSeo {...defaultSeo} />
+          <NextSeo additionalMetaTags={[{ name: 'viewport', content: 'minimum-scale=1, initial-scale=1, width=device-width' }]} />
+          <Component {...pageProps} />
+          <AppInsightsPageViewTracking />
+        </Hydrate>
+      </QueryClientProvider>
+    </AuthProvider>
   );
 };
 
