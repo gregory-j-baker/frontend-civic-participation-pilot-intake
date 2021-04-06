@@ -61,5 +61,10 @@
     "previous": "Previous",
     "info": "Showing <label>{{start}}</label> to <label>{{end}}</label> of <label>{{total}}</label> entries"
   },
-  "data-not-found": "Data not found"
+  "data-not-found": "Data not found",
+  "app-details": {
+    "date-modified": "Date modified:",
+    "git-commit": "gitCommit:",
+    "version": "Version:"
+  }
 }

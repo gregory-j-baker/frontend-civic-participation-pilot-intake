@@ -61,5 +61,10 @@
     "previous": "Précédente",
     "info": "Affichage <label>{{start}}</label> à <label>{{end}}</label> de <label>{{total}}</label> entrées"
   },
-  "data-not-found": "Données non trouvées"
+  "data-not-found": "Données non trouvées",
+  "app-details": {
+    "date-modified": "Date modifiée\u00A0:",
+    "git-commit": "gitCommit\u00A0:",
+    "version": "Version\u00A0:"
+  }
 }

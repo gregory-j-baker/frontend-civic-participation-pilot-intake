@@ -7,6 +7,7 @@
 
 import useTranslation from 'next-translate/useTranslation';
 import { ResponsiveHandler } from '../../ResponsiveHandler';
+import { AppDetails } from './AppDetails';
 import { GlobalFooter } from './GlobalFooter';
 import { GlobalHeader } from './GlobalHeader';
 
@@ -30,6 +31,7 @@ export const MainLayout = ({ children, showAppTitle = true }: MainLayoutProps): 
         )}
         {children}
       </main>
+      <AppDetails />
       <GlobalFooter />
     </div>
   );
