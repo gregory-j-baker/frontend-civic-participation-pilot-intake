@@ -27,7 +27,7 @@ pr:
 # Build using a linux agent (need docker).
 #
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-18.04'
 
 #
 # Variables used in multiple tasks.
