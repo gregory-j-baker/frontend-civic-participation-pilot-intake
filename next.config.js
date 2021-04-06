@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * Copyright (c) 2021 Her Majesty the Queen in Right of Canada, as represented by the Employment and Social Development Canada
  *
@@ -7,7 +8,7 @@
 
 const nextTranslate = require('next-translate');
 
-module.exports = nextTranslate({
+let nextConfig = {
   pageExtensions: ['tsx'],
   future: { webpack5: true },
   redirects: async () => [
@@ -16,17 +17,28 @@ module.exports = nextTranslate({
       destination: '/application/step-1',
       permanent: false,
     },
-    {
-      source: '/catchall',
-      destination: '/en',
-      locale: false,
-      permanent: true,
-    },
-    {
-      source: '/catchall/:slug*',
-      destination: '/en/:slug*',
-      locale: false,
-      permanent: true,
-    },
   ],
-});
+};
+
+/**
+ * @see https://nextjs.org/docs/advanced-features/i18n-routing
+ */
+if (process.env.FRONTEND_FQDN_EN && process.env.FRONTEND_FQDN_FR) {
+  nextConfig = {
+    ...nextConfig,
+    ...{
+      domains: [
+        {
+          domain: process.env.FRONTEND_FQDN_EN,
+          defaultLocale: 'en',
+        },
+        {
+          domain: process.env.FRONTEND_FQDN_FR,
+          defaultLocale: 'fr',
+        },
+      ],
+    },
+  };
+}
+
+module.exports = nextTranslate(nextConfig);

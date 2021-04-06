@@ -1,6 +1,6 @@
 {
-  "locales": ["en", "fr", "catchall"],
-  "defaultLocale": "catchall",
+  "locales": ["en", "fr"],
+  "defaultLocale": "en",
   "pages": {
     "*": ["common", "layouts", "menu"],
     "/application/confirmation": ["application"],
