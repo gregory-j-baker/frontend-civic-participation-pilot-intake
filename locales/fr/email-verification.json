@@ -35,5 +35,13 @@
     "form": {
       "submit": "Visiter notre site-web"
     }
+  },
+  "token": {
+    "page": {
+      "title": "Vérifier votre adresse courriel",
+      "header": "Vérifier votre adresse courriel",
+      "description": "Cliquez sur le bouton ci-dessous pour vérifier votre adresse courriel.",
+      "submit": "Soumettre"
+    }
   }
 }

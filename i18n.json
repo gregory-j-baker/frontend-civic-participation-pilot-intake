@@ -11,6 +11,7 @@
     "/contact-us": ["contact-us"],
     "/contact-us/success": ["contact-us"],
     "/application/email-verification": ["email-verification"],
+    "/application/email-verification/[token]": ["email-verification"],
     "/application/email-verification/failed": ["email-verification"],
     "/application/email-verification/success": ["email-verification"],
     "/management/applications": ["application"],
