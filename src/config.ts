@@ -12,7 +12,7 @@ import { getApplicationVersion, getDateModified, getGitCommit } from './utils/mi
  * Application specific configuration.
  */
 export const applicationConfig = {
-  appInsights_InstrumentationKey: process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY,
+  appInsightsInstrumentationKey: process.env.NEXT_PUBLIC_APPINSIGHTS_INSTRUMENTATIONKEY,
   canadaMenuUrl: {
     en: process.env.NEXT_PUBLIC_CANADA_MENU_URL_EN ?? 'https://www.canada.ca/content/dam/canada/sitemenu/sitemenu-v2-en.html',
     fr: process.env.NEXT_PUBLIC_CANADA_MENU_URL_FR ?? 'https://www.canada.ca/content/dam/canada/sitemenu/sitemenu-v2-fr.html',

@@ -10,13 +10,14 @@ import { ApplicationInsights as AppInsightsWeb } from '@microsoft/applicationins
 import { applicationConfig } from '../config';
 
 export const AppInsightsPageViewTracking = (): JSX.Element => {
-  const { appInsights_InstrumentationKey } = applicationConfig;
+  const { appInsightsInstrumentationKey } = applicationConfig;
 
+  console.log(applicationConfig);
   useEffect(() => {
-    if (appInsights_InstrumentationKey) {
+    if (appInsightsInstrumentationKey) {
       const appInsightsWeb = new AppInsightsWeb({
         config: {
-          instrumentationKey: appInsights_InstrumentationKey,
+          instrumentationKey: appInsightsInstrumentationKey,
           /* ...Other Configuration Options... */
         },
       });
@@ -24,7 +25,7 @@ export const AppInsightsPageViewTracking = (): JSX.Element => {
       appInsightsWeb.loadAppInsights();
       appInsightsWeb.trackPageView();
     }
-  }, [appInsights_InstrumentationKey]);
+  }, [appInsightsInstrumentationKey]);
 
   return <></>;
 };

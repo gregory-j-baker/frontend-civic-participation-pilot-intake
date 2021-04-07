@@ -26,17 +26,17 @@ export interface ErrorProps {
 }
 
 const Error: NextPage<ErrorProps> = ({ statusCode, err, source }) => {
-  const { appInsights_InstrumentationKey } = applicationConfig;
+  const { appInsightsInstrumentationKey } = applicationConfig;
   const { locale } = useRouter();
   const { t } = useTranslation();
 
   const lang = locale ?? 'en';
 
   useEffect(() => {
-    if (appInsights_InstrumentationKey) {
+    if (appInsightsInstrumentationKey) {
       const appInsightsWeb = new AppInsightsWeb({
         config: {
-          instrumentationKey: appInsights_InstrumentationKey,
+          instrumentationKey: appInsightsInstrumentationKey,
           /* ...Other Configuration Options... */
         },
       });
@@ -44,7 +44,7 @@ const Error: NextPage<ErrorProps> = ({ statusCode, err, source }) => {
       appInsightsWeb.loadAppInsights();
       appInsightsWeb.trackException({ exception: err === null ? undefined : err, properties: { statusCode, source } });
     }
-  }, [appInsights_InstrumentationKey, statusCode, err, source]);
+  }, [appInsightsInstrumentationKey, statusCode, err, source]);
 
   return (
     <div className="tw-flex tw-flex-col tw-h-screen">
