@@ -16,6 +16,18 @@ const nextConfig = {
       destination: '/application/step-1',
       permanent: false,
     },
+    {
+      source: '/catchall',
+      destination: '/en',
+      locale: false,
+      permanent: false,
+    },
+    {
+      source: '/catchall/:slug((?!favicon.ico)(?!img/).*)',
+      destination: '/en/:slug',
+      locale: false,
+      permanent: false,
+    },
   ],
 };
 
