@@ -220,7 +220,7 @@ const Confirm = ({ application, applicationStatuses, applicationStatusId, disabl
     <div ref={wrapperEl}>
       <ContentPaper tabIndex={-1} disablePadding>
         <div className="tw-flex tw-flex-col">
-          <div className="tw-py-4 tw-px-6 tw-border-b-2">
+          <div className="tw-border-b-2 tw-p-4 sm:tw-p-6">
             <div className="tw-text-xl tw-font-bold tw-mb-8">{t('application:management.edit.confirm.title')}</div>
             <p className="tw-mb-6">
               <Trans
@@ -241,7 +241,7 @@ const Confirm = ({ application, applicationStatuses, applicationStatusId, disabl
               ))}
             </blockquote>
           </div>
-          <div className="tw-ml-auto tw-p-2">
+          <div className="tw-ml-auto tw-p-2 sm:tw-p-4">
             <Button className="tw-m-2" onClick={onConfirmClick} disabled={disabled}>
               {t('application:management.edit.confirm.submit')}
             </Button>
