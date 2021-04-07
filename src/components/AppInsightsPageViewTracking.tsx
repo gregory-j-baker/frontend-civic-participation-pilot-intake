@@ -12,7 +12,6 @@ import { applicationConfig } from '../config';
 export const AppInsightsPageViewTracking = (): JSX.Element => {
   const { appInsightsInstrumentationKey } = applicationConfig;
 
-  console.log(applicationConfig);
   useEffect(() => {
     if (appInsightsInstrumentationKey) {
       const appInsightsWeb = new AppInsightsWeb({
