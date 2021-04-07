@@ -92,6 +92,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
                   <TableHeadCell>{t('application:management.list.table-header.province')}</TableHeadCell>
                   <TableHeadCell>{t('application:management.list.table-header.date-received')}</TableHeadCell>
                   <TableHeadCell>{t('application:management.list.table-header.status')}</TableHeadCell>
+                  <TableHeadCell>{t('application:management.list.table-header.is-email-validated')}</TableHeadCell>
                   <TableHeadCell>
                     <span className="tw-sr-only">{t('application:management.list.table-header.edit')}</span>
                   </TableHeadCell>
@@ -110,6 +111,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
                         <TableCell>{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</TableCell>
                         <TableCell className="tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</TableCell>
                         <TableCell>{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</TableCell>
+                        <TableCell>{application.isEmailValidated ? t('common:yes') : t('common:no')}</TableCell>
                         <TableCell className="tw-whitespace-nowrap tw-text-right tw-font-bold">
                           <Link href={`/management/applications/${application.id}`} passHref>
                             <a className="tw-text-indigo-600 hover:tw-text-indigo-900">{t('application:management.list.edit-link')}</a>
@@ -118,7 +120,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
                       </tr>
                     ))
                   ) : (
-                    <TableRowNoData colSpan={7} />
+                    <TableRowNoData colSpan={8} />
                   )}
                 </TableBody>
               )}

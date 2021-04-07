@@ -136,6 +136,7 @@
         "language": "Language",
         "province": "Province",
         "date-received": "Date de réception",
+        "is-email-validated": "Adresse courriel validée?",
         "status": "Statut",
         "edit": "Modifier"
       },
