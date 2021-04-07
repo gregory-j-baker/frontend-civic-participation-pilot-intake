@@ -6,28 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-/**
- * @see https://nextjs.org/docs/advanced-features/i18n-routing
- */
-let domains = undefined;
-
-if (process.env.FRONTEND_FQDN_EN && process.env.FRONTEND_FQDN_FR) {
-  domains = [
-    {
-      domain: process.env.FRONTEND_FQDN_EN,
-      defaultLocale: 'en',
-    },
-    {
-      domain: process.env.FRONTEND_FQDN_FR,
-      defaultLocale: 'fr',
-    },
-  ];
-}
-
 module.exports = {
-  locales: ['en', 'fr'],
-  defaultLocale: 'en',
-  domains,
+  locales: ['en', 'fr', 'catchall'],
+  defaultLocale: 'catchall',
   pages: {
     '*': ['common', 'layouts', 'menu'],
     '/application/confirmation': ['application'],
