@@ -52,7 +52,7 @@ export const Wizard = ({ activeStep, children, disabled, header, nextDisabled, n
             active: activeStep,
             length: numberOfSteps,
           })}`}</h3>
-          {header && <h4 className="tw-text-gray-500 tw-leading-tight tw-m-0 tw-mt-2 tw-text-lg">{header}</h4>}
+          {header && <p className="tw-text-gray-500 tw-leading-tight tw-m-0 tw-mt-4 tw-text-lg">{header}</p>}
         </header>
         <div className="tw-px-6 tw-py-6 sm:tw-py-8">{children}</div>
         <div className="tw-flex tw-flex-col sm:tw-flex-row tw-border-t-2 tw-p-4 sm:tw-p-6">

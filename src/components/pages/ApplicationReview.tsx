@@ -134,7 +134,7 @@ const Step1Review = ({ application }: ApplicationReviewProps): JSX.Element => {
 
   return (
     <>
-      <header className="tw-font-bold tw-text-2xl tw-mb-8">{t('application:step-1.title')}</header>
+      <h4 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{t('application:step-1.title')}</h4>
       <dl className="tw-mb-10">
         {formReviewItems.map(({ children, key, text, value }, index) => (
           <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
@@ -201,7 +201,7 @@ const Step2Review = ({ application }: ApplicationReviewProps): JSX.Element => {
 
   return (
     <>
-      <header className="tw-font-bold tw-text-2xl tw-mb-8">{t('application:step-2.title')}</header>
+      <h4 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{t('application:step-2.title')}</h4>
       <dl className="tw-mb-10">
         {formReviewItems.map(({ children, key, text, value }, index) => (
           <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
@@ -248,7 +248,7 @@ const Step3Review = ({ application }: ApplicationReviewProps): JSX.Element => {
 
   return (
     <>
-      <header className="tw-font-bold tw-text-2xl tw-mb-8">{t('application:step-3.title')}</header>
+      <h4 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{t('application:step-3.title')}</h4>
       <dl className="tw-m-0">
         {formReviewItems.map(({ children, key, text, value }, index) => (
           <FormDefinitionListItem key={key} even={index % 2 == 0} term={text} definition={value}>
