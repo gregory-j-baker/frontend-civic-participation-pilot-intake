@@ -7,7 +7,7 @@
 
 import React, { ChangeEventHandler } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import { ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
+import { FormGroup, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from './FieldErrorMessage';
 
 export type CheckboxeFieldOnChangeEvent = (event: { field: string; checked: boolean }) => void;
@@ -42,13 +42,13 @@ export const CheckboxeField = ({ children, className, checked, disabled, error, 
     <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
       <div className="checkbox tw-pl-5 tw-text-base">
         <input type="checkbox" id={fieldId} onChange={handleOnChange} checked={checked ?? false} disabled={disabled} className={className} />
-        <ControlLabel className={required ? 'required' : undefined}>
-          <span className={`field-name ${labelClassName} tw-mr-2`}>{label}</span>
-          {required && <strong className={`${labelClassName} required`}>{t('common:field-required')}</strong>}
-        </ControlLabel>
+        <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
+          <span className={`field-name tw-mr-2`}>{label}</span>
+          {required && <strong className="required">{t('common:field-required')}</strong>}
+        </label>
       </div>
       {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
     </FormGroup>
   );

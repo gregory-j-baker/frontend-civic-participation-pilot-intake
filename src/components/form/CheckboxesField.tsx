@@ -7,7 +7,7 @@
 
 import React, { ChangeEventHandler } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import { ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
+import { FormGroup, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from './FieldErrorMessage';
 
 export type CheckboxesFieldOnChangeEvent = (event: { field: string; value: string | null; checked: boolean }) => void;
@@ -50,12 +50,12 @@ export const CheckboxesField = ({ children, className, disabled, error, field, g
 
   return (
     <FormGroup className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
+      <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
-      </ControlLabel>
+      </label>
       {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <div>
         {options.map((el, idx) => (

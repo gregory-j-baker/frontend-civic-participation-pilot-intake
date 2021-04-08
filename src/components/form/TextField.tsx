@@ -6,7 +6,7 @@
  */
 
 import useTranslation from 'next-translate/useTranslation';
-import { FormGroup, ControlLabel, FormControl, HelpBlock } from 'react-bootstrap';
+import { FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from './FieldErrorMessage';
 
 export type TextFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
@@ -42,12 +42,12 @@ export const TextField = ({ children, className, disabled, error, field, gutterB
 
   return (
     <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
+      <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
-      </ControlLabel>
+      </label>
       {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock>{helperText}</HelpBlock>}
+      {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <FormControl type={type ?? 'text'} id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />
     </FormGroup>
