@@ -94,7 +94,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
                   <TableHeadCell>{t('application:management.list.table-header.status')}</TableHeadCell>
                   <TableHeadCell>{t('application:management.list.table-header.is-email-validated')}</TableHeadCell>
                   <TableHeadCell>
-                    <span className="tw-sr-only">{t('application:management.list.table-header.edit')}</span>
+                    <span className="sr-only">{t('application:management.list.table-header.edit')}</span>
                   </TableHeadCell>
                 </tr>
               </TableHead>

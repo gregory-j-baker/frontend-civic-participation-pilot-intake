@@ -15,7 +15,7 @@ export const NewWindowLink = ({ children, href }: NewWindowLinkProps): JSX.Eleme
         {children}
         {'\u00A0'}
         <i className="fas fa-external-link-square-alt"></i>
-        <span className="tw-sr-only">{t('common:launching-new-window')}</span>
+        <span className="sr-only">{t('common:launching-new-window')}</span>
       </a>
     </Link>
   );
