@@ -25,37 +25,27 @@ const PrivacyNoticeStatementEn = (): JSX.Element => {
       <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">Privacy Notice Statement</h2>
 
       <p>
-        The information you provide on this form is collected under the authority of the <em>Department of Employment and Social Development Canada Act</em> to determine your eligibility for and manage the Civic Participation Pilot -{' '}
-        <em>Youth Leadership Initiative</em>.The information you provide will be used for administrative purposes, and may be used for policy analysis, research and evaluation. Your information is protected by the{' '}
-        <em>Privacy Act and the Department of Employment and Social Development Act</em>.
+        The personal information you provide via this form is collected under the authority of the <em>Department of Employment and Social Development Canada Act</em> to determine your eligibility and for administrative purposes relating to the Civic
+        Participation Project. Your personal information may also be used in an anonymized format for policy analysis, research and evaluation, or some combination thereof to support future program development. Your personal information is administered in
+        accordance with the <em>Privacy Act and the Department of Employment and Social Development Act and other applicable laws</em>.
       </p>
 
       <h3>Use of your personal information</h3>
 
       <p>
-        To determine your eligibility and contact you, we collect your name, email address, year of birth to certify age of majority, official language of choice for participating in the pilot, citizenship status and province of residence. We request, but
-        do not require, other demographic information that will be aggregated and used to support the evaluation of the outreach method for the pilot and inform policy decisions. If you are selected to participate in the pilot, your answers to the
-        expression of interest questions may be used to guide pilot activities.
+        We collect your name, email address, year of birth, citizenship status, province or territory of residence, and choice of official language in order to determine your eligibility and to contact you should you be selected to participate. We request,
+        but do not require, other personal information that will be used in an anonymized format to assess program outreach effectiveness that may be used to inform similar initiatives in the future. If you are selected to participate in the pilot, this
+        anonymized personal information will also be used to guide the development of training material.{' '}
       </p>
 
       <h3>Disclosure of your personal information</h3>
 
-      <p>If you participate in the pilot, we may share your contact information with third parties contracted to support the delivery of the pilot, such as for technology supports and program evaluation.</p>
-
-      <h3>Your Privacy is Protected</h3>
-
-      <p>We’ve taken steps to protect your privacy and data. We will:</p>
-      <ul className="tw-list-disc tw-list-inside tw-my-4">
-        <li className="tw-mb-2">only collect information required</li>
-        <li className="tw-mb-2">keep your information safe</li>
-        <li className="tw-mb-2">keep accurate records</li>
-        <li className="tw-mb-2">never share your information without your explicit permission</li>
-      </ul>
+      <p>If you participate in the pilot, we may share your contact information with third parties contracted to support the delivery of the pilot, namely the digital platform and any related technology supports.</p>
 
       <p>You have ways to protect your information. You can at any time:</p>
+
       <ul className="tw-list-disc tw-list-inside tw-my-4">
         <li className="tw-mb-2">Ask to view your information</li>
-        <li className="tw-mb-2">Ask to change your information</li>
         <li className="tw-mb-2">Submit a complaint if you don’t think we’re handling your information appropriately.</li>
       </ul>
 
@@ -63,7 +53,7 @@ const PrivacyNoticeStatementEn = (): JSX.Element => {
         You can contact the Civic Participation Pilot – Youth Leadership Initiative team if you have questions or concerns:{' '}
         <a href="mailto:ESDC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca">ESDC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca</a>. If you have a complaint about how your information is handled by ESDC, you may file
         a complaint with the{' '}
-        <Link href="https://www.priv.gc.ca/en/">
+        <Link href="https://www.priv.gc.ca/en/#005">
           <a>Office of the Privacy Commissioner</a>
         </Link>
         .
