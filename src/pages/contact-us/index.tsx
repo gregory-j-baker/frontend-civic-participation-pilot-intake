@@ -91,7 +91,7 @@ const ContactUsPage: NextPage = () => {
     <MainLayout showAppTitle={false}>
       <NextSeo title={t('contact-us:page.title')} />
 
-      <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+      <h1 id="wb-cont" property="name" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
         {t('contact-us:page.header')}
       </h1>
       <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('contact-us:page.sub-header')}</h2>

@@ -21,7 +21,7 @@ const ContactUsSuccess: NextPage = () => {
       <div className="tw-flex tw-space-x-10">
         <div className="tw-w-full md:tw-w-1/2">
           <NextSeo title={t('contact-us:success.page.title')} />
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-16 tw-text-3xl">
+          <h1 id="wb-cont" property="name" className="tw-m-0 tw-border-none tw-mb-16 tw-text-3xl">
             {t('contact-us:success.page.header')}
           </h1>
           <h2 className="tw-m-0 tw-border-none tw-mb-8 tw-text-2xl">{t('contact-us:success.page.sub-header')}</h2>

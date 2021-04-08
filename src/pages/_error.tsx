@@ -118,7 +118,9 @@ export const ErrorMainContent = ({ lang }: ErrorMainContentProps): JSX.Element =
           <span className="glyphicon glyphicon-warning-sign glyphicon-error tw-flex-shrink-0"></span>
         </div>
         <div className="tw-flex-grow">
-          <h1 className="tw-m-0 tw-border-none">{lang === 'fr' ? 'Un problème est survenu' : 'A problem has occurred'}</h1>
+          <h1 id="wb-cont" property="name" className="tw-m-0 tw-border-none">
+            {lang === 'fr' ? 'Un problème est survenu' : 'A problem has occurred'}
+          </h1>
         </div>
       </div>
 

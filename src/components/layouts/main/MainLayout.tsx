@@ -25,7 +25,7 @@ export const MainLayout = ({ children, showAppTitle = true }: MainLayoutProps): 
       <GlobalHeader />
       <main property="mainContentOfPage" resource="#wb-main" typeof="WebPageElement" className="container tw-mb-auto tw-py-6 md:tw-py-8">
         {showAppTitle && (
-          <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-8 tw-text-3xl">
+          <h1 id="wb-cont" property="name" className="tw-m-0 tw-border-none tw-mb-8 tw-text-3xl">
             {t('common:app.title')}
           </h1>
         )}

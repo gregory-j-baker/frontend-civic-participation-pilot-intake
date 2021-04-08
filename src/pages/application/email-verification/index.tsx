@@ -118,7 +118,7 @@ const EmailVerficationPage: NextPage = () => {
       ) : (
         <div className="tw-flex tw-space-x-10">
           <div className="tw-w-full md:tw-w-1/2">
-            <h1 id="wb-cont" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
+            <h1 id="wb-cont" property="name" className="tw-m-0 tw-border-none tw-mb-10 tw-text-3xl">
               {t('email-verification:page.title')}
             </h1>
             <h2 className="tw-border-none tw-m-0 tw-mb-4 tw-text-2xl">{t('email-verification:page.header')}</h2>
