@@ -12,13 +12,15 @@ export const getApplicationVersion = (): string => preval`
 `;
 
 export const getDateModified = (): string => preval`
-  module.exports = new Date().toISOString();
+  module.exports =  require("child_process")
+  .execSync("git log -n 1 HEAD --date=iso-strict --format=%ad")
+  .toString().slice(0, -1);
 `;
 
 export const getGitCommit = (): string => preval`
   module.exports = require("child_process")
-    .execSync("git rev-parse HEAD")
-    .toString().substring(0, 8);
+    .execSync("git log -n 1 HEAD --format=%h")
+    .toString().slice(0, -1);
 `;
 
 export const sleep = (ms: number): Promise<number> => new Promise((resolve) => setTimeout(resolve, ms));
