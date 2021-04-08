@@ -17,7 +17,7 @@ export const TableRowNoData = ({ className, colSpan }: TableRowNoDataProps): JSX
   const { t } = useTranslation();
   return (
     <tr>
-      <TableCell className={`tw-whitespace-nowrap tw-text-center ${className}`} colSpan={colSpan}>
+      <TableCell className={`tw-whitespace-nowrap tw-text-center ${className ?? ''}`} colSpan={colSpan}>
         {t('common:pagination.no-data')}
       </TableCell>
     </tr>

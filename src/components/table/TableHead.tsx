@@ -11,5 +11,5 @@ export interface TableHeadProps {
 }
 
 export const TableHead = ({ children, className }: TableHeadProps): JSX.Element => {
-  return <thead className={`tw-bg-gray-50 ${className}`}>{children}</thead>;
+  return <thead className={`tw-bg-gray-50 ${className ?? ''}`}>{children}</thead>;
 };

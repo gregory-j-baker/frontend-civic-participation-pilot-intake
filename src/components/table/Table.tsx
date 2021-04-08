@@ -11,5 +11,5 @@ export interface TableProps {
 }
 
 export const Table = ({ children, className }: TableProps): JSX.Element => {
-  return <table className={`tw-min-w-full tw-divide-y tw-divide-gray-200 ${className}`}>{children}</table>;
+  return <table className={`tw-min-w-full tw-divide-y tw-divide-gray-200 ${className ?? ''}`}>{children}</table>;
 };

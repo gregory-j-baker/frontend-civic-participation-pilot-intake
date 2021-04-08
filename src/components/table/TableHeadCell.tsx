@@ -12,7 +12,7 @@ export interface TableHeadCellProps {
 
 export const TableHeadCell = ({ children, className }: TableHeadCellProps): JSX.Element => {
   return (
-    <th scope="col" className={`tw-px-4 tw-py-3 tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider ${className}`}>
+    <th scope="col" className={`tw-px-4 tw-py-3 tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider ${className ?? ''}`}>
       {children}
     </th>
   );

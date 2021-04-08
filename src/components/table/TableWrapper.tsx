@@ -12,7 +12,7 @@ export interface TableWrapperProps {
 
 export const TableWrapper = ({ children, className }: TableWrapperProps): JSX.Element => {
   return (
-    <div className={`tw-flex tw-flex-col ${className}`}>
+    <div className={`tw-flex tw-flex-col ${className ?? ''}`}>
       <div className="tw--my-2 tw-overflow-x-auto sm:tw--mx-6 lg:tw--mx-8">
         <div className="tw-py-2 tw-align-middle tw-inline-block tw-min-w-full sm:tw-px-6 lg:tw-px-8">
           <div className="tw-shadow tw-overflow-hidden tw-border-b tw-border-gray-200 sm:tw-rounded-lg">{children}</div>

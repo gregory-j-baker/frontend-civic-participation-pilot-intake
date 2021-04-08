@@ -11,5 +11,5 @@ export interface TableBodyProps {
 }
 
 export const TableBody = ({ children, className }: TableBodyProps): JSX.Element => {
-  return <tbody className={`tw-bg-white tw-divide-y tw-divide-gray-200 ${className}`}>{children}</tbody>;
+  return <tbody className={`tw-bg-white tw-divide-y tw-divide-gray-200 ${className ?? ''}`}>{children}</tbody>;
 };

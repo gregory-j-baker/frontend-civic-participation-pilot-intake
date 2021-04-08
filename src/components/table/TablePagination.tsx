@@ -24,7 +24,7 @@ export const TablePagination = ({ className, page }: TablePaginationProps): JSX.
   const showNext = page.number < page.totalPages;
 
   return (
-    <div className={`tw-bg-white tw-px-4 tw-py-3 tw-flex tw-flex-col sm:tw-flex-row sm:tw-items-center tw-space-y-2 sm:tw-space-y-0 tw-justify-between tw-border-t tw-border-gray-200 ${className}`}>
+    <div className={`tw-bg-white tw-px-4 tw-py-3 tw-flex tw-flex-col sm:tw-flex-row sm:tw-items-center tw-space-y-2 sm:tw-space-y-0 tw-justify-between tw-border-t tw-border-gray-200 ${className ?? ''}`}>
       <div className="tw-text-sm tw-text-gray-700">
         <Trans
           i18nKey="common:pagination.info"

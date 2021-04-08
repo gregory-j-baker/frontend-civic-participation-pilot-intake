@@ -13,7 +13,7 @@ export interface TableCellProps {
 
 export const TableCell = ({ children, colSpan, className }: TableCellProps): JSX.Element => {
   return (
-    <td className={`tw-px-4 tw-py-2 tw-text-sm ${className}`} colSpan={colSpan}>
+    <td className={`tw-px-4 tw-py-2 tw-text-sm ${className ?? ''}`} colSpan={colSpan}>
       {children}
     </td>
   );
