@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import { ControlLabel, FormGroup, HelpBlock, Radio } from 'react-bootstrap';
+import { ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from './FieldErrorMessage';
 
 export type RadiosFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
@@ -41,7 +41,7 @@ export const RadiosField = ({ children, className, disabled, error, field, gutte
   const fieldId = `form-field-${field}`;
   const groupName = `form-field-group-${field}`;
 
-  const handleOnChange: React.FormEventHandler<Radio> = (event) => {
+  const handleOnChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const target = event.target as HTMLInputElement;
     onChange({ field, value: target.value });
   };
@@ -49,28 +49,20 @@ export const RadiosField = ({ children, className, disabled, error, field, gutte
   const selectedValue = options.find((option) => option.value === value)?.value ?? '';
 
   return (
-    <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <ControlLabel className={`${labelClassName} ${required ? 'required' : ''}`}>
+    <FormGroup className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+      <ControlLabel className={`${labelClassName ?? ''} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
-        {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
+        {required && <strong className={`required ${labelClassName ?? ''}`}>{t('common:field-required')}</strong>}
       </ControlLabel>
       {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <div>
         {options.map((el, idx) => (
-          <Radio
-            key={el.value}
-            id={idx === 0 ? fieldId : `${fieldId}-${idx}`}
-            name={groupName}
-            value={el.value}
-            onChange={handleOnChange}
-            checked={el.value === selectedValue}
-            disabled={el.disabled || disabled}
-            className={`${inline ? 'tw-mr-4' : ''} ${className ?? ''}`}
-            inline={inline}>
+          <label key={el.value} htmlFor={`${fieldId}-${idx}`} className={`${inline ? 'tw-mr-4 radio-inline' : ''} ${className ?? ''}`}>
+            <input type="radio" id={`${fieldId}-${idx}`} name={groupName} value={el.value} onChange={handleOnChange} checked={el.value === selectedValue} disabled={el.disabled || disabled} />
             {el.text}
-          </Radio>
+          </label>
         ))}
       </div>
     </FormGroup>
