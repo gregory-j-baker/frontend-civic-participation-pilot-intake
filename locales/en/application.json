@@ -23,7 +23,7 @@
     },
     "demographicId": {
       "label": "Do you identify with one or more of the demographic characteristics listed?",
-      "helper-text": "Detailed definitions of these terms can be found <link>here</link>",
+      "helper-text": "Detailed definitions of these terms can be found <link>here</link>.",
       "helper-text-url": "http://example.com",
       "children-items": {
         "item-1": "Visible minority/racialized",
@@ -51,11 +51,11 @@
     },
     "email": {
       "email-invalid": "You must enter a valid email address",
-      "label": "Email Address",
+      "label": "Email address",
       "required": "You must enter an email address"
     },
     "firstName": {
-      "label": "First Name",
+      "label": "First name",
       "required": "You must enter your first name"
     },
     "genderId": {
@@ -68,7 +68,7 @@
       "required": "You must indicate if you are a citizen, resident, or protected person"
     },
     "isInformationConsented": {
-      "label": "I hereby certify that, to the best of my knowledge, the information set out in the application form (in Section 1) is true, accurate and complete; I have read and understood the Privacy Notice Statement; I have all the necessary authorities, permissions and approvals to submit this application on behalf of myself or on behalf of the person identified on this form; and I consent to sharing all responses in the application form with Employment and Social Development Canada.",
+      "label": "I hereby certify that: to the best of my knowledge, the information in Section 1 is true, accurate and complete; I have read and understood the Privacy Notice Statement; I have all the necessary authorities, permissions and approvals to submit this application on behalf of myself or on behalf of the person identified on this form; and I consent to sharing all responses in the application form with Employment and Social Development Canada.",
       "required": "You must provide consent to share this information",
       "must-be-true": "You must provide consent to share this information"
     },
@@ -84,11 +84,11 @@
       "required": "You must indicate your language preference"
     },
     "lastName": {
-      "label": "Last Name",
+      "label": "Last name",
       "required": "You must enter your last name"
     },
     "phoneNumber": {
-      "label": "Phone Number",
+      "label": "Phone number",
       "helper-text": "Acceptable format: 506-555-5555",
       "phone-invalid": "You must enter a valid ten-digit phone number"
     },

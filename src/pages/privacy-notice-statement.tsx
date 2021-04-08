@@ -114,7 +114,7 @@ const PrivacyNoticeStatementFr = (): JSX.Element => {
       </ul>
 
       <p>
-        Vous pouvez communiquer avec l&apos;équipe du Projet pilote de participation civique - Initiative de leadership pour les jeunes si vous avez des questions ou des préoccupations :
+        Vous pouvez communiquer avec l&apos;équipe du Projet pilote de participation civique - Initiative de leadership pour les jeunes si vous avez des questions ou des préoccupations :{' '}
         <a href="mailto:EDSC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca">EDSC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca</a>. Si vous avez une plainte à formuler concernant la façon dont vos renseignements
         personnels sont traités par EDSC, vous pouvez déposer une plainte auprès du{' '}
         <Link href="https://www.priv.gc.ca/fr/">

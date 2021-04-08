@@ -23,12 +23,12 @@
     },
     "demographicId": {
       "label": "Vous identifiez-vous à une ou plusieurs des caractéristiques démographiques énumérées?",
-      "helper-text": "Les définitions détaillées de ces termes se trouvent <link>ici</link>",
+      "helper-text": "Les définitions détaillées de ces termes se trouvent <link>ici</link>.",
       "helper-text-url": "http://example.com",
       "children-items": {
-        "item-1": "minorités visibles/communauté racialisée",
-        "item-2": "autochtone (Premières Nations, Inuit, Métis(es), ou non-affilié)",
-        "item-3": "personne handicapée",
+        "item-1": "Minorités visibles/communauté racialisée",
+        "item-2": "Autochtone (Premières Nations, Inuit, Métis(es), ou non-affilié)",
+        "item-3": "Personne handicapée",
         "item-4": "LGBTQ2",
         "item-5": "Nouvel arrivant au Canada (depuis moins de cinq ans)",
         "item-6": "Communauté de langue officielle en situation minoritaire",
@@ -63,7 +63,7 @@
       "required": "Vous devez sélectionner une réponse pour l'identité de genre"
     },
     "isCanadianCitizen": {
-      "label": "Êtes-vous un citoyen canadien, un résident permanent ou une personne protégée?",
+      "label": "Êtes-vous un citoyen Canadien, un résident permanent ou une personne protégée?",
       "helper-text": "Une personne protégée est une personne à qui l'asile est conféré en vertu de la Loi sur l'immigration et la protection des réfugiés, et dont la demande n'est pas ensuite réputée rejetée au titre des paragraphes 108(3), 109(3) ou 114(4) de la Loi.",
       "required": "Vous devez indiquer si vous êtes un citoyen, un résident ou une personne protégée"
     },
