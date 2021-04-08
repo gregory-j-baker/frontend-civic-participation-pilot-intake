@@ -35,7 +35,7 @@ import { ValidationError } from 'yup';
 import { HttpClientResponseError } from '../../common/HttpClientResponseError';
 import { YupCustomMessage } from '../../yup/types';
 import { GetStaticProps } from 'next';
-import { LaunchingNewWindow } from '../../components/LaunchingNewWindow';
+import { NewWindowLink } from '../../components/NewWindowLink';
 
 const Step1Page = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -237,9 +237,7 @@ const Step1Page = (): JSX.Element => {
               gutterBottom
               required>
               <div className="tw-pl-10">
-                <a href={t('application:field.isProvinceMajorCertified.link-url')} target="_blank" rel="noreferrer">
-                  {t('application:field.isProvinceMajorCertified.link')} <LaunchingNewWindow />
-                </a>
+                <NewWindowLink href={t('application:field.isProvinceMajorCertified.link-url')}>{t('application:field.isProvinceMajorCertified.link')}</NewWindowLink>
               </div>
             </CheckboxeField>
 

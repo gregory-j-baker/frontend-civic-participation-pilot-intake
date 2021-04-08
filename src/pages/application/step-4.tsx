@@ -7,7 +7,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { NextSeo } from 'next-seo';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useTranslation from 'next-translate/useTranslation';
 import type { CheckboxeFieldOnChangeEvent } from '../../components/form/CheckboxeField';
@@ -28,7 +27,7 @@ import { GetStaticProps } from 'next';
 import { ApplicationSubmitData } from '../../hooks/api/applications/types';
 import { sleep } from '../../utils/misc-utils';
 import { ApplicationReview } from '../../components/pages/ApplicationReview';
-import { LaunchingNewWindow } from '../../components/LaunchingNewWindow';
+import { NewWindowLink } from '../../components/NewWindowLink';
 
 const Step4Page = (): JSX.Element => {
   const { t } = useTranslation();
@@ -201,11 +200,7 @@ const Step4Page = (): JSX.Element => {
             />
             <SlimAlert type={SlimAlertType.info}>
               {t('application:step-4.privacy-notice-statement.label') + ' '}
-              <Link href="/privacy-notice-statement">
-                <a target="_blank" rel="noreferrer">
-                  {t('application:step-4.privacy-notice-statement.link')} <LaunchingNewWindow />
-                </a>
-              </Link>
+              <NewWindowLink href="/privacy-notice-statement">{t('application:step-4.privacy-notice-statement.link')}</NewWindowLink>
             </SlimAlert>
           </Wizard>
         </>

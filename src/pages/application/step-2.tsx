@@ -30,7 +30,7 @@ import { useDemographics } from '../../hooks/api/code-lookups/useDemographics';
 import { theme } from '../../config';
 import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
 import Trans from 'next-translate/Trans';
-import { LaunchingNewWindow } from '../../components/LaunchingNewWindow';
+import { NewWindowLink } from '../../components/NewWindowLink';
 
 const Step2Page = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -213,11 +213,10 @@ const Step2Page = (): JSX.Element => {
                   i18nKey="application:field.demographicId.helper-text"
                   components={{
                     link: (
-                      <a key="link" href={t('application:field.demographicId.helper-text-url')} target="_blank" rel="noreferrer">
+                      <NewWindowLink key="link" href={t('application:field.demographicId.helper-text-url')}>
                         link
-                      </a>
+                      </NewWindowLink>
                     ),
-                    blank: <LaunchingNewWindow />,
                   }}
                 />
               </span>

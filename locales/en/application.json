@@ -23,7 +23,7 @@
     },
     "demographicId": {
       "label": "Do you identify with one or more of the demographic characteristics listed?",
-      "helper-text": "Detailed definitions of these terms can be found <link>here <blank></blank></link>",
+      "helper-text": "Detailed definitions of these terms can be found <link>here</link>",
       "helper-text-url": "http://example.com",
       "children-items": {
         "item-1": "Visible minority/racialized",
