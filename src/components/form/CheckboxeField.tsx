@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import useTranslation from 'next-translate/useTranslation';
-import { Checkbox, ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
+import { ControlLabel, FormGroup, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from './FieldErrorMessage';
 
 export type CheckboxeFieldOnChangeEvent = (event: { field: string; checked: boolean }) => void;
@@ -33,19 +33,20 @@ export const CheckboxeField = ({ children, className, checked, disabled, error, 
 
   const fieldId = `form-field-${field}`;
 
-  const handleOnChange: React.FormEventHandler<Checkbox> = (event) => {
+  const handleOnChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     const target = event.target as HTMLInputElement;
     onChange({ field, checked: target.checked });
   };
 
   return (
     <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <Checkbox id={fieldId} onChange={handleOnChange} checked={checked ?? false} disabled={disabled} className={className} style={{ fontSize: 'inherit' }}>
+      <div className="checkbox tw-pl-5 tw-text-base">
+        <input type="checkbox" id={fieldId} onChange={handleOnChange} checked={checked ?? false} disabled={disabled} className={className} />
         <ControlLabel className={required ? 'required' : undefined}>
           <span className={`field-name ${labelClassName} tw-mr-2`}>{label}</span>
           {required && <strong className={`${labelClassName} required`}>{t('common:field-required')}</strong>}
         </ControlLabel>
-      </Checkbox>
+      </div>
       {children && <div className="tw-mb-4">{children}</div>}
       {helperText && <HelpBlock>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
