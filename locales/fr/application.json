@@ -24,7 +24,7 @@
     "demographicId": {
       "label": "Vous identifiez-vous à une ou plusieurs des caractéristiques démographiques énumérées?",
       "helper-text": "Trouvez les définitions détaillées de ces termes",
-      "helper-text-url": "http://example.com",
+      "helper-text-url": "https://www.canada.ca/fr/services/jeunesse/participation-civique/criteres-admissibilite.html#sous-representes",
       "children-items": {
         "item-1": "Minorités visibles/communauté racialisée",
         "item-2": "Autochtone (Premières Nations, Inuit, Métis(es), ou non-affilié)",
