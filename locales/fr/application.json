@@ -23,7 +23,7 @@
     },
     "demographicId": {
       "label": "Vous identifiez-vous à une ou plusieurs des caractéristiques démographiques énumérées?",
-      "helper-text": "Trouvez les définitions détaillées de ces termes",
+      "helper-text": "Définitions détaillées des caractéristiques démographiques",
       "helper-text-url": "https://www.canada.ca/fr/services/jeunesse/participation-civique/criteres-admissibilite.html#sous-representes",
       "children-items": {
         "item-1": "Minorités visibles/communauté racialisée",
@@ -73,7 +73,7 @@
       "must-be-true": "Vous devez donner votre consentement pour partager cette information"
     },
     "isProvinceMajorCertified": {
-      "label": "J'atteste que j'ai l'âge de la majorité dans la province ou le territoire où je réside et âgés de 30 ans ou moins",
+      "label": "J'atteste que j'ai l'âge de la majorité dans la province ou le territoire où je réside et que je suis âgé(e) de 30 ans ou moins",
       "link": "Trouvez l'âge de la majorité dans votre province ou votre territoire",
       "link-url": "https://www.canada.ca/fr/services/jeunesse/participation-civique/criteres-admissibilite.html#majorite",
       "required": "Vous devez certifier que vous avez atteint l'âge de la majorité",
@@ -97,7 +97,7 @@
       "required": "Vous devez sélectionner votre province ou territoire de résidence"
     },
     "skillsInterest": {
-      "label": "Quelles compétences et connaissances pensez-vous devoir acquérir pour aborder cette enjeu?",
+      "label": "Quelles compétences et connaissances pensez-vous devoir acquérir pour aborder cet enjeu?",
       "helper-text": "Texte libre, minimum de {{min}} mots et maximum de {{max}} mots",
       "min-word": "Vous devez fournir une réponse à la question 2 avec plus ou égale à {{min}} mots",
       "max-word": "Vous devez fournir une réponse à la question 2 avec moins ou égale à {{max}} mots",
@@ -107,7 +107,7 @@
   "step-1": {
     "title": "Étape 1",
     "info-title": "Information",
-    "info-text": "Veuillez noter qu'une seule candidature par courriel sera acceptée."
+    "info-text": "Veuillez noter qu'une seule candidature par adresse courriel sera acceptée."
   },
   "step-2": {
     "title": "Étape 2",
@@ -115,7 +115,7 @@
   },
   "step-3": {
     "title": "Étape 3",
-    "information-note": "Les questions de cette section seront utilisées pour guider l'élaboration des activités d'apprentissage et des ateliers, en veillant à ce que la programmation reflète les besoins et les intérêts des participants. Vous ne serez pas évalué sur la qualité de votre écriture, mais le minimum de mots doit être respecté. Les blasphèmes et/ou le langage irrespectueux ne seront pas tolérés."
+    "information-note": "Les questions de cette section seront utilisées pour guider l'élaboration des activités d'apprentissage et des ateliers, en veillant à ce que la programmation reflète les besoins et les intérêts des participants. Vous ne serez pas évalué sur la qualité de votre écriture, mais le minimum de mots doit être respecté. Les vulgarités et/ou le langage irrespectueux ne seront pas tolérés."
   },
   "step-4": {
     "title": "Vérifier vos réponses et soumettre la demande",

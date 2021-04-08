@@ -23,7 +23,7 @@
     },
     "demographicId": {
       "label": "Do you identify with one or more of the demographic characteristics listed?",
-      "helper-text": "Find the detailed definitions of these terms",
+      "helper-text": "Detailed definitions of demographic characteristics",
       "helper-text-url": "https://www.canada.ca/en/services/youth/civic-participation/eligibility-requirements.html#under-served",
       "children-items": {
         "item-1": "Visible minority/racialized",
@@ -115,7 +115,7 @@
   },
   "step-3": {
     "title": "Step 3",
-    "information-note": "The questions in this section will be used to guide the development of learning activities and workshops, ensuring that programming reflects the needs and interests of participants. You will not be evaluated on the quality of your writing, but the word minimum must be respected. Profanities and/or disrespectful language will not be tolerated."
+    "information-note": "The questions in this section will be used to guide the development of learning activities and workshops, ensuring that programming reflects the needs and interests of participants. You will not be evaluated on the quality of your writing, but the minimum number of words must be respected. Profanity and/or disrespectful language will not be tolerated."
   },
   "step-4": {
     "title": "Review content and submit the application",
