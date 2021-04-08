@@ -66,5 +66,6 @@
     "date-modified": "Date modifiée\u00A0:",
     "git-commit": "gitCommit\u00A0:",
     "version": "Version\u00A0:"
-  }
+  },
+  "launching-new-window": "lien s'ouvre dans une nouvelle fenêtre"
 }

@@ -23,7 +23,7 @@
     },
     "demographicId": {
       "label": "Vous identifiez-vous à une ou plusieurs des caractéristiques démographiques énumérées?",
-      "helper-text": "Les définitions détaillées de ces termes se trouvent <link>ici</link>.",
+      "helper-text": "Les définitions détaillées de ces termes se trouvent <link>ici <blank></blank></link>",
       "helper-text-url": "http://example.com",
       "children-items": {
         "item-1": "Minorités visibles/communauté racialisée",

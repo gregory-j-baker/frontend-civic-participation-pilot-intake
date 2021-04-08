@@ -30,6 +30,7 @@ import { useDemographics } from '../../hooks/api/code-lookups/useDemographics';
 import { theme } from '../../config';
 import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
 import Trans from 'next-translate/Trans';
+import { LaunchingNewWindow } from '../../components/LaunchingNewWindow';
 
 const Step2Page = (): JSX.Element => {
   const { lang, t } = useTranslation();
@@ -216,6 +217,7 @@ const Step2Page = (): JSX.Element => {
                         link
                       </a>
                     ),
+                    blank: <LaunchingNewWindow />,
                   }}
                 />
               </span>

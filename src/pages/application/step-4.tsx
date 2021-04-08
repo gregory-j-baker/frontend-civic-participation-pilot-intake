@@ -28,6 +28,7 @@ import { GetStaticProps } from 'next';
 import { ApplicationSubmitData } from '../../hooks/api/applications/types';
 import { sleep } from '../../utils/misc-utils';
 import { ApplicationReview } from '../../components/pages/ApplicationReview';
+import { LaunchingNewWindow } from '../../components/LaunchingNewWindow';
 
 const Step4Page = (): JSX.Element => {
   const { t } = useTranslation();
@@ -201,7 +202,9 @@ const Step4Page = (): JSX.Element => {
             <SlimAlert type={SlimAlertType.info}>
               {t('application:step-4.privacy-notice-statement.label') + ' '}
               <Link href="/privacy-notice-statement">
-                <a target="_blank">{t('application:step-4.privacy-notice-statement.link')}</a>
+                <a target="_blank" rel="noreferrer">
+                  {t('application:step-4.privacy-notice-statement.link')} <LaunchingNewWindow />
+                </a>
               </Link>
             </SlimAlert>
           </Wizard>
