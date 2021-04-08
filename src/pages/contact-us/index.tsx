@@ -70,6 +70,7 @@ const ContactUsPage: NextPage = () => {
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
       setSchemaErrors(err.inner);
+      document.getElementById('validation-error')?.focus();
     }
   };
 
@@ -97,7 +98,7 @@ const ContactUsPage: NextPage = () => {
       <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">{t('contact-us:page.sub-header')}</h2>
 
       {schemaErrors && schemaErrors.length > 0 && (
-        <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+        <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
           <ul className="tw-list-disc">
             {schemaErrors.map(({ path }) => {
               const [field] = path?.split('.') ?? [];

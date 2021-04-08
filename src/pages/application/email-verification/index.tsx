@@ -126,7 +126,7 @@ const EmailVerficationPage: NextPage = () => {
             <p className="tw-m-0 tw-mb-4">{t('email-verification:page.description')}</p>
 
             {schemaErrors && schemaErrors.length > 0 && (
-              <Alert title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
+              <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
                 <ul className="tw-list-disc">
                   {schemaErrors.map(({ path }) => {
                     const [field] = path?.split('.') ?? [];
@@ -142,7 +142,7 @@ const EmailVerficationPage: NextPage = () => {
             )}
 
             {submitAccessCodeError && (
-              <Alert title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
+              <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: 1 })} type={AlertType.danger}>
                 <ul className="tw-list-disc">
                   <li key="{path}" className="tw-my-2">
                     <a href="#form-field-accessCode">{t('email-verification:form.accessCode.invalid')}</a>
