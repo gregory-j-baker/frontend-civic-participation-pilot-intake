@@ -197,10 +197,11 @@ const Step4Page = (): JSX.Element => {
               onChange={handleOnCheckboxFieldChange}
               disabled={submitApplicationIsLoading || submitApplicationIsSuccess}
               error={getSchemaError(nameof<Step4State>((o) => o.isInformationConsented))}
+              required
+              className="tw-mb-4"
             />
             <SlimAlert type={SlimAlertType.info}>
-              {t('application:step-4.privacy-notice-statement.label') + ' '}
-              <NewWindowLink href="/privacy-notice-statement">{t('application:step-4.privacy-notice-statement.link')}</NewWindowLink>
+              <NewWindowLink href="/privacy-notice-statement">{t('application:step-4.privacy-notice-statement')}</NewWindowLink>
             </SlimAlert>
           </Wizard>
         </>

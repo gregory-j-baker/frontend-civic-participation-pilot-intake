@@ -29,7 +29,6 @@ import { RadiosField, RadiosFieldOnChangeEvent, RadiosFieldOption } from '../../
 import { useDemographics } from '../../hooks/api/code-lookups/useDemographics';
 import { theme } from '../../config';
 import { useCurrentBreakpoint } from '../../hooks/useCurrentBreakpoint';
-import Trans from 'next-translate/Trans';
 import { NewWindowLink } from '../../components/NewWindowLink';
 
 const Step2Page = (): JSX.Element => {
@@ -209,16 +208,7 @@ const Step2Page = (): JSX.Element => {
                 ))}
               </ul>
               <span className="help-block">
-                <Trans
-                  i18nKey="application:field.demographicId.helper-text"
-                  components={{
-                    link: (
-                      <NewWindowLink key="link" href={t('application:field.demographicId.helper-text-url')}>
-                        link
-                      </NewWindowLink>
-                    ),
-                  }}
-                />
+                <NewWindowLink href={t('application:field.demographicId.helper-text-url')}>{t('application:field.demographicId.helper-text')}</NewWindowLink>
               </span>
             </RadiosField>
           </Wizard>

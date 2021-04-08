@@ -23,7 +23,7 @@
     },
     "demographicId": {
       "label": "Do you identify with one or more of the demographic characteristics listed?",
-      "helper-text": "Detailed definitions of these terms can be found <link>here</link>",
+      "helper-text": "Find the detailed definitions of these terms",
       "helper-text-url": "http://example.com",
       "children-items": {
         "item-1": "Visible minority/racialized",
@@ -120,10 +120,7 @@
   "step-4": {
     "title": "Review content and submit the application",
     "header": "Please review your answers carefully. Only one application per email address will be accepted and applications cannot be modified after they have been submitted.",
-    "privacy-notice-statement": {
-      "label": "Check out our ",
-      "link": "Privacy Notice Statement"
-    }
+    "privacy-notice-statement": "Check out our Privacy Notice Statement"
   },
   "submit": "Submit application",
   "management": {

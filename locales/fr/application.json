@@ -23,7 +23,7 @@
     },
     "demographicId": {
       "label": "Vous identifiez-vous à une ou plusieurs des caractéristiques démographiques énumérées?",
-      "helper-text": "Les définitions détaillées de ces termes se trouvent <link>ici</link>",
+      "helper-text": "Trouvez les définitions détaillées de ces termes",
       "helper-text-url": "http://example.com",
       "children-items": {
         "item-1": "Minorités visibles/communauté racialisée",
@@ -120,10 +120,7 @@
   "step-4": {
     "title": "Vérifier vos réponses et soumettre la demande",
     "header": "Veuillez relire attentivement vos réponses. Une seule demande par adresse électronique sera acceptée et les demandes ne peuvent être modifiées après avoir été soumises.",
-    "privacy-notice-statement": {
-      "label": "Découvrez notre ",
-      "link": "déclaration d'avis de confidentialité"
-    }
+    "privacy-notice-statement": "Découvrez notre déclaration d'avis de confidentialité"
   },
   "submit": "Soumettre la demande",
   "management": {

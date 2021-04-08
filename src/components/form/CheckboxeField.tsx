@@ -39,10 +39,10 @@ export const CheckboxeField = ({ children, className, checked, disabled, error, 
   };
 
   return (
-    <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
+    <FormGroup controlId={fieldId} className={`${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'} ${className ?? ''}`}>
       <div className="checkbox tw-pl-5 tw-text-base">
-        <input type="checkbox" id={fieldId} onChange={handleOnChange} checked={checked ?? false} disabled={disabled} className={className} />
-        <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
+        <input type="checkbox" id={fieldId} onChange={handleOnChange} checked={checked ?? false} disabled={disabled} />
+        <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label ${labelClassName ?? ''} ${required ? 'required' : ''}`} style={{ fontWeight: 'bold' }}>
           <span className={`field-name tw-mr-2`}>{label}</span>
           {required && <strong className="required">{t('common:field-required')}</strong>}
         </label>
@@ -52,8 +52,4 @@ export const CheckboxeField = ({ children, className, checked, disabled, error, 
       {error && <FieldErrorMessage message={error} />}
     </FormGroup>
   );
-};
-
-CheckboxeField.defaultProps = {
-  labelClassName: 'tw-font-bold',
 };
