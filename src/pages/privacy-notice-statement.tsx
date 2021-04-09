@@ -53,7 +53,7 @@ const PrivacyNoticeStatementEn = (): JSX.Element => {
         You can contact the Civic Participation Pilot – Youth Leadership Initiative team if you have questions or concerns:{' '}
         <a href="mailto:ESDC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca">ESDC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca</a>. If you have a complaint about how your information is handled by ESDC, you may file
         a complaint with the{' '}
-        <Link href="https://www.priv.gc.ca/en/#005">
+        <Link href="https://www.priv.gc.ca/en/">
           <a>Office of the Privacy Commissioner</a>
         </Link>
         .
@@ -66,47 +66,40 @@ const PrivacyNoticeStatementFr = (): JSX.Element => {
   return (
     <>
       <NextSeo title={'Énoncé d’avis de confidentialité'} />
-      <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">Énoncé d’avis de confidentialité</h2>
+      <h2 className="tw-m-0 tw-mb-6 tw-text-2xl">Avis de confidentialité</h2>
 
       <p>
-        Les renseignements que vous fournissez dans ce formulaire sont recueillis en vertu de la <em>Loi sur le ministère de l&apos;Emploi et du Développement social Canada</em> afin de déterminer votre admissibilité et de gérer le Projet pilote de
-        participation civique - <em>Initiative de leadership pour les jeunes</em>. Les renseignements que vous fournissez seront utilisés à des fins administratives, et peuvent être utilisés pour l&apos;analyse, la recherche et l&apos;évaluation des
-        politiques. Vos renseignements sont protégés par la <em>Loi sur la protection des renseignements personnels et la Loi sur le ministère de l&apos;Emploi et du Développement social</em>.
+        Les renseignements personnels que vous fournissez via ce formulaire sont recueillis en vertu de la <em>Loi sur le ministère de l&apos;Emploi et du Développement social du Canada</em> afin de déterminer votre admissibilité au Projet pilote de la
+        participation civique et à des fins administratives. Vos renseignements personnels peuvent également être utilisés sous format anonyme pour l&apos;analyse, la recherche et l&apos;évaluation des politiques, ou une combinaison de ceux-ci pour
+        soutenir le développement futur du programme. Vos renseignements personnels sont administrés conformément à la Loi sur la protection des renseignements personnels, à la <em>Loi sur le ministère de l&apos;Emploi et du Développement social</em> et
+        aux autres lois applicables.
       </p>
 
       <h3>Utilisation de vos renseignements personnels</h3>
 
       <p>
-        Pour déterminer votre admissibilité et vous contacter, nous recueillons votre nom, votre adresse courriel, votre année de naissance pour certifier l&apos;âge de la majorité, la langue officielle de choix pour participer au projet pilote, le statut
-        de de citoyenneté et la province de résidence. Nous demandons, mais nexigeons pas, d&apos;autres informations démographiques qui seront agrégées et utilisées pour soutenir l&apos;évaluation de la méthode de sensibilisation pour le projet pilote et
-        éclairer décisions politiques. Si vous êtes sélectionné pour participer au projet pilote, vos réponses aux questions d&apos;expression d&apos;intérêt peuvent être utilisées pour guider les activités du projet pilote.
+        Nous recueillons votre nom, votre adresse électronique, votre année de naissance, statut de citoyenneté, province ou territoire de résidence et la langue officielle de votre choix pour déterminé votre éligibilité et pour vous contacter si vous êtes
+        sélectionné pour participer. Nous demandons, mais n&apos;exigeons pas, d&apos;autres renseignements personnels qui seront dans un format anonyme pour évaluer l&apos;efficacité de la méthode de sensibilisation pour informer des initiatives
+        similaires à l&apos;avenir. Si vous êtes sélectionné pour participer au projet pilote, ces informations personnelles rendues anonymes seront également utilisées pour guider l&apos;élaboration du matériel de formation.
       </p>
 
       <h3>Divulgation de vos renseignements personnels</h3>
 
-      <p>Si vous participez au projet pilote, nous pouvons partager vos coordonnées avec des tiers sous contrat pour soutenir la livraison du projet pilote, par exemple pour le soutien technologique et l&apos;évaluation du programme.</p>
+      <p>
+        Si vous participez au projet pilote, il se peut que nous partagions vos coordonnées avec des tierces parties engagés sous contrat pour soutenir la réalisation du projet pilote, à savoir la plate-forme numérique et tout support technologique
+        associé.
+      </p>
 
-      <h3>Votre vie privée est protégée</h3>
-
-      <p>Nous avons pris des mesures pour protéger votre vie privée et vos données. Nous :</p>
+      <p>Vous avez des moyens de protéger vos informations. Vous pouvez à tout moment :</p>
       <ul className="tw-list-disc tw-list-inside tw-my-4">
-        <li className="tw-mb-2">recueillerons uniquement les informations requises</li>
-        <li className="tw-mb-2">garderons vos renseignements personnels en sécurité</li>
-        <li className="tw-mb-2">tiendrons des registres précis</li>
-        <li className="tw-mb-2">ne partagerons jamais vos renseignements personnels sans votre autorisation explicite</li>
-      </ul>
-
-      <p>Vous disposez de moyens pour protéger vos renseignements personnels. Vous pouvez à tout moment :</p>
-      <ul className="tw-list-disc tw-list-inside tw-my-4">
-        <li className="tw-mb-2">demander à voir vos renseignements personnels</li>
-        <li className="tw-mb-2">demander à modifier vos renseignements personnels</li>
-        <li className="tw-mb-2">soumettre une réclamation si vous pensez que nous ne traitons pas vos renseignements personnels de manière appropriée.</li>
+        <li className="tw-mb-2">demander à consulter vos renseignements</li>
+        <li className="tw-mb-2">déposer une plainte si vous pensez que nous ne traitons pas vos renseignements de manière appropriée.</li>
       </ul>
 
       <p>
-        Vous pouvez communiquer avec l&apos;équipe du Projet pilote de participation civique - Initiative de leadership pour les jeunes si vous avez des questions ou des préoccupations :{' '}
-        <a href="mailto:EDSC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca">EDSC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca</a>. Si vous avez une plainte à formuler concernant la façon dont vos renseignements
-        personnels sont traités par EDSC, vous pouvez déposer une plainte auprès du{' '}
+        Vous pouvez contacter l'équipe du Projet pilote de la participation civique – Une initiative de leadership pour les jeunes si vous avez des questions ou des préoccupations :{' '}
+        <a href="mailto:EDSC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca">EDSC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca</a>. Si vous avez une plainte à formuler sur la façon dont vos renseignements sont
+        traités par EDSC, vous pouvez déposer une plainte auprès du{' '}
         <Link href="https://www.priv.gc.ca/fr/">
           <a>Commissariat à la protection de la vie privée</a>
         </Link>
