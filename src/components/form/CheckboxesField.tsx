@@ -55,14 +55,14 @@ export const CheckboxesField = ({ children, className, disabled, error, field, g
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </label>
       {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
+      {helperText && <HelpBlock id={fieldId + '-help-text'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <div>
         {options.map((el, idx) => {
           const id = idx === 0 ? fieldId : `${fieldId}-${idx + 1}`;
           return (
             <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 checkbox-inline' : ''} ${className ?? ''}`}>
-              <input type="checkbox" id={id} value={el.value} onChange={handleOnChange} checked={checkedValues.includes(el.value)} disabled={el.disabled || disabled} />
+              <input type="checkbox" id={id} aria-describedby={idx === 0 && helperText ? fieldId + '-help-text' : undefined} value={el.value} onChange={handleOnChange} checked={checkedValues.includes(el.value)} disabled={el.disabled || disabled} />
               {el.text}
             </label>
           );

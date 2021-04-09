@@ -55,14 +55,14 @@ export const RadiosField = ({ children, className, disabled, error, field, gutte
         {required && <strong className={`required ${labelClassName ?? ''}`}>{t('common:field-required')}</strong>}
       </label>
       {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
+      {helperText && <HelpBlock id={fieldId + '-help-text'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <div>
         {options.map((el, idx) => {
           const id = idx === 0 ? fieldId : `${fieldId}-${idx + 1}`;
           return (
             <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 radio-inline' : ''} ${className ?? ''}`}>
-              <input type="radio" id={id} name={groupName} value={el.value} onChange={handleOnChange} checked={el.value === selectedValue} disabled={el.disabled || disabled} />
+              <input type="radio" id={id} aria-describedby={idx === 0 && helperText ? fieldId + '-help-text' : undefined} name={groupName} value={el.value} onChange={handleOnChange} checked={el.value === selectedValue} disabled={el.disabled || disabled} />
               {el.text}
             </label>
           );
