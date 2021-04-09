@@ -64,7 +64,7 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
       {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
       <textarea
         id={fieldId}
-        aria-describedby={helperText ? fieldId + '-help-text' : undefined}
+        aria-describedby={`${helperText ? fieldId + '-help-text' : ''} ${fieldId + '-word-count'}`.trim()}
         value={value ?? ''}
         onChange={handleOnChange}
         disabled={disabled}
@@ -74,7 +74,7 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
         rows={rows ?? 5}
       />
       {
-        <div className="tw-italic tw-text-sm tw-px-4 tw-py-1 tw-border-l-4 tw--mt-2 tw-pt-3 tw-rounded tw-bg-gray-50 tw-border-gray-600 tw-shadow">
+        <div id={fieldId + '-word-count'} className="tw-italic tw-text-sm tw-px-4 tw-py-1 tw-border-l-4 tw--mt-2 tw-pt-3 tw-rounded tw-bg-gray-50 tw-border-gray-600 tw-shadow">
           {t(wordLimit ? 'common:textarea.word-count-limit' : 'common:textarea.word-count', { count: wordCount, limit: wordLimit ?? -1 })}
         </div>
       }
