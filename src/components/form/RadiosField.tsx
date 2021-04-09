@@ -61,8 +61,11 @@ export const RadiosField = ({ children, className, disabled, error, field, gutte
         <div>
           {options.map((el, idx) => {
             const id = idx === 0 ? fieldId : `${fieldId}-${idx + 1}`;
+            {
+              console.log(inline ? 'tw-mr-4 radio-inline' : 'block');
+            }
             return (
-              <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 radio-inline' : ''} ${className ?? ''}`}>
+              <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 radio-inline' : 'tw-block'} ${className ?? ''}`}>
                 <input
                   type="radio"
                   id={id}
@@ -73,7 +76,7 @@ export const RadiosField = ({ children, className, disabled, error, field, gutte
                   checked={el.value === selectedValue}
                   disabled={el.disabled || disabled}
                 />
-                {el.text}
+                {' ' + el.text}
               </label>
             );
           })}
