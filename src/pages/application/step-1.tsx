@@ -236,9 +236,7 @@ const Step1Page = (): JSX.Element => {
               error={getSchemaError(nameof<Step1State>((o) => o.isProvinceMajorCertified))}
               gutterBottom
               required>
-              <div className="tw-pl-10">
-                <NewWindowLink href={t('application:field.isProvinceMajorCertified.link-url')}>{t('application:field.isProvinceMajorCertified.link')}</NewWindowLink>
-              </div>
+              <NewWindowLink href={t('application:field.isProvinceMajorCertified.link-url')}>{t('application:field.isProvinceMajorCertified.link')}</NewWindowLink>
             </CheckboxeField>
 
             <RadiosField
