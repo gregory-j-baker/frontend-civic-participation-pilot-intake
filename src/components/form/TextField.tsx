@@ -7,8 +7,8 @@
 
 import useTranslation from 'next-translate/useTranslation';
 import { ChangeEventHandler } from 'react';
-import { FormGroup, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from './FieldErrorMessage';
+import { FieldHelpBlock } from './FieldHelpBlock';
 
 export type TextFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
 
@@ -42,14 +42,14 @@ export const TextField = ({ children, className, disabled, error, field, gutterB
   };
 
   return (
-    <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
+    <div className={`form-group ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}`}>
+      <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
+        {children && <div className="tw-my-2">{children}</div>}
+        {error && <FieldErrorMessage message={error} />}
       </label>
-      {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock id={fieldId + '-help-text'}>{helperText}</HelpBlock>}
-      {error && <FieldErrorMessage message={error} />}
+      {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
       <input
         type={type ?? 'text'}
         id={fieldId}
@@ -61,6 +61,6 @@ export const TextField = ({ children, className, disabled, error, field, gutterB
         placeholder={placeholder}
         className={`form-control ${className ?? ''}`}
       />
-    </FormGroup>
+    </div>
   );
 };

@@ -7,9 +7,9 @@
 
 import useTranslation from 'next-translate/useTranslation';
 import { ChangeEventHandler, useCallback, useMemo } from 'react';
-import { FormGroup, HelpBlock } from 'react-bootstrap';
 import { WordRegExp } from '../../common/WordRegExp';
 import { FieldErrorMessage } from './FieldErrorMessage';
+import { FieldHelpBlock } from './FieldHelpBlock';
 
 export type TextAreaFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
 
@@ -54,14 +54,14 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
   };
 
   return (
-    <FormGroup controlId={fieldId} className={gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}>
-      <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
+    <div className={`form-group ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}`}>
+      <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
+        {children && <div className="tw-my-2">{children}</div>}
+        {error && <FieldErrorMessage message={error} />}
       </label>
-      {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock id={fieldId + '-help-text'}>{helperText}</HelpBlock>}
-      {error && <FieldErrorMessage message={error} />}
+      {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
       <textarea
         id={fieldId}
         aria-describedby={helperText ? fieldId + '-help-text' : undefined}
@@ -78,6 +78,6 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
           {t(wordLimit ? 'common:textarea.word-count-limit' : 'common:textarea.word-count', { count: wordCount, limit: wordLimit ?? -1 })}
         </div>
       }
-    </FormGroup>
+    </div>
   );
 };

@@ -10,5 +10,5 @@ export interface FieldErrorMessageProps {
 }
 
 export const FieldErrorMessage = ({ message }: FieldErrorMessageProps): JSX.Element => {
-  return <div className="tw-font-bold tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow tw-mb-3 tw-bg-red-50 tw-border-red-600">{message}</div>;
+  return <div className="tw-font-bold tw-border-l-4 tw-rounded tw-px-4 tw-py-2 tw-shadow tw-my-2 tw-bg-red-50 tw-border-red-600">{message}</div>;
 };
