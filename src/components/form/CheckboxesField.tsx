@@ -58,12 +58,15 @@ export const CheckboxesField = ({ children, className, disabled, error, field, g
       {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
       <div>
-        {options.map((el, idx) => (
-          <label key={el.value} htmlFor={`${fieldId}-${idx}`} className={`${inline ? 'tw-mr-4 checkbox-inline' : ''} ${className ?? ''}`}>
-            <input type="checkbox" id={`${fieldId}-${idx}`} value={el.value} onChange={handleOnChange} checked={checkedValues.includes(el.value)} disabled={el.disabled || disabled} />
-            {el.text}
-          </label>
-        ))}
+        {options.map((el, idx) => {
+          const id = idx === 0 ? fieldId : `${fieldId}-${idx + 1}`;
+          return (
+            <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 checkbox-inline' : ''} ${className ?? ''}`}>
+              <input type="checkbox" id={id} value={el.value} onChange={handleOnChange} checked={checkedValues.includes(el.value)} disabled={el.disabled || disabled} />
+              {el.text}
+            </label>
+          );
+        })}
       </div>
     </FormGroup>
   );
