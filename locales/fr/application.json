@@ -119,7 +119,7 @@
   },
   "step-4": {
     "title": "Vérifier vos réponses et soumettre la demande",
-    "header": "Veuillez relire attentivement vos réponses. Une seule demande par adresse électronique sera acceptée et les demandes ne peuvent être modifiées après avoir été soumises.",
+    "header": "Veuillez relire attentivement vos réponses. Une seule demande par adresse électronique sera acceptée et les demandes ne peuvent pas être modifiées après avoir été soumises.",
     "privacy-notice-statement": "Découvrez notre déclaration d'avis de confidentialité"
   },
   "submit": "Soumettre la demande",

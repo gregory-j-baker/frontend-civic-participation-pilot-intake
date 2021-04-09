@@ -10,7 +10,6 @@ import { MainLayout } from '../components/layouts/main/MainLayout';
 import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
-import Link from 'next/link';
 
 const PrivacyNoticeStatementPage = (): JSX.Element => {
   const { locale } = useRouter();
@@ -27,7 +26,12 @@ const PrivacyNoticeStatementEn = (): JSX.Element => {
       <p>
         The personal information you provide via this form is collected under the authority of the <em>Department of Employment and Social Development Canada Act</em> to determine your eligibility and for administrative purposes relating to the Civic
         Participation Project. Your personal information may also be used in an anonymized format for policy analysis, research and evaluation, or some combination thereof to support future program development. Your personal information is administered in
-        accordance with the <em>Privacy Act and the Department of Employment and Social Development Act and other applicable laws</em>.
+        accordance with the <em>Privacy Act and the Department of Employment and Social Development Act and other applicable laws</em>. Your personal information will be described in the Personal Information Bank which is under development. You can learn
+        more about how to access this information by visiting the Government of Canada website{' '}
+        <em>
+          <a href="https://www.canada.ca/en/treasury-board-secretariat/services/access-information-privacy/access-information/information-about-programs-information-holdings.html">Information about programs and information holdings</a>
+        </em>
+        . You can also visit a Service Canada Centre to access this information.
       </p>
 
       <h3>Use of your personal information</h3>
@@ -35,7 +39,7 @@ const PrivacyNoticeStatementEn = (): JSX.Element => {
       <p>
         We collect your name, email address, year of birth, citizenship status, province or territory of residence, and choice of official language in order to determine your eligibility and to contact you should you be selected to participate. We request,
         but do not require, other personal information that will be used in an anonymized format to assess program outreach effectiveness that may be used to inform similar initiatives in the future. If you are selected to participate in the pilot, this
-        anonymized personal information will also be used to guide the development of training material.{' '}
+        anonymized personal information will also be used to guide the development of training material.
       </p>
 
       <h3>Disclosure of your personal information</h3>
@@ -52,11 +56,7 @@ const PrivacyNoticeStatementEn = (): JSX.Element => {
       <p>
         You can contact the Civic Participation Pilot – Youth Leadership Initiative team if you have questions or concerns:{' '}
         <a href="mailto:ESDC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca">ESDC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca</a>. If you have a complaint about how your information is handled by ESDC, you may file
-        a complaint with the{' '}
-        <Link href="https://www.priv.gc.ca/en/">
-          <a>Office of the Privacy Commissioner</a>
-        </Link>
-        .
+        a complaint with the <a href="https://www.priv.gc.ca/en/">Office of the Privacy Commissioner</a>.
       </p>
     </>
   );
@@ -71,8 +71,15 @@ const PrivacyNoticeStatementFr = (): JSX.Element => {
       <p>
         Les renseignements personnels que vous fournissez via ce formulaire sont recueillis en vertu de la <em>Loi sur le ministère de l&apos;Emploi et du Développement social du Canada</em> afin de déterminer votre admissibilité au Projet pilote de la
         participation civique et à des fins administratives. Vos renseignements personnels peuvent également être utilisés sous format anonyme pour l&apos;analyse, la recherche et l&apos;évaluation des politiques, ou une combinaison de ceux-ci pour
-        soutenir le développement futur du programme. Vos renseignements personnels sont administrés conformément à la Loi sur la protection des renseignements personnels, à la <em>Loi sur le ministère de l&apos;Emploi et du Développement social</em> et
-        aux autres lois applicables.
+        soutenir le développement futur du programme. Vos renseignements personnels sont administrés conformément à la Loi sur la protection des renseignements personnels, à la{' '}
+        <em>Loi sur le ministère de l&apos;Emploi et du Développement social et aux autres lois applicables</em>. Vos renseignements personnels seront décrits dans le Fichier de renseignements personnels qui est sous-développement. Pour en savoir plus sur
+        comment accéder à ces renseignements, visitez le site Web du gouvernement du Canada{' '}
+        <em>
+          <a href="https://www.canada.ca/fr/secretariat-conseil-tresor/services/acces-information-protection-reseignements-personnels/acces-information/renseignements-programmes-fonds-renseignements.html">
+            Renseignements sur les programmes et les fonds de renseignements
+          </a>
+        </em>
+        . Vous pouvez également visiter un Centre Service Canada pour accéder à ces renseignements.
       </p>
 
       <h3>Utilisation de vos renseignements personnels</h3>
@@ -97,13 +104,9 @@ const PrivacyNoticeStatementFr = (): JSX.Element => {
       </ul>
 
       <p>
-        Vous pouvez contacter l'équipe du Projet pilote de la participation civique – Une initiative de leadership pour les jeunes si vous avez des questions ou des préoccupations :{' '}
+        Vous pouvez contacter l&apos;équipe du Projet pilote de la participation civique – Une initiative de leadership pour les jeunes si vous avez des questions ou des préoccupations :{' '}
         <a href="mailto:EDSC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca">EDSC.CSC.Youth.Leadership-Leadership.Jeunes.SJC.EDSC@hrsdc-rhdcc.gc.ca</a>. Si vous avez une plainte à formuler sur la façon dont vos renseignements sont
-        traités par EDSC, vous pouvez déposer une plainte auprès du{' '}
-        <Link href="https://www.priv.gc.ca/fr/">
-          <a>Commissariat à la protection de la vie privée</a>
-        </Link>
-        .
+        traités par EDSC, vous pouvez déposer une plainte auprès du <a href="https://www.priv.gc.ca/fr/">Commissariat à la protection de la vie privée</a>.
       </p>
     </>
   );
