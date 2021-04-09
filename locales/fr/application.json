@@ -68,7 +68,7 @@
       "required": "Vous devez indiquer si vous êtes un citoyen, un résident ou une personne protégée"
     },
     "isInformationConsented": {
-      "label": "Je certifie par la présente que\u00A0: à ma connaissance, les renseignements fournis à la section 1 sont exactes, précises et complètes; j'ai lu et compris la déclaration de confidentialité; j'ai toutes les autorisations, permissions et approbations nécessaires pour présenter cette demande en mon nom ou au nom de la personne identifiée dans le formulaire; et je consens à ce que toutes les réponses fournies dans le formulaire soient communiquées à Emploi et Développement social Canada",
+      "label": "Je certifie par la présente que: à ma connaissance, les renseignements et les réponses aux questions fournis sur ce formulaire sont exactes, précises et complètes; j'ai lu et compris la déclaration de confidentialité; j'ai toutes les autorisations, permissions et approbations nécessaires pour présenter cette demande en mon nom ou au nom de la personne identifiée dans le formulaire; et je consens à ce que toutes les réponses fournies dans le formulaire soient communiquées à Emploi et Développement social Canada.",
       "required": "Vous devez donner votre consentement pour partager cette information",
       "must-be-true": "Vous devez donner votre consentement pour partager cette information"
     },

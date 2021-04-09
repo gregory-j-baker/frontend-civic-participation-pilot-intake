@@ -68,7 +68,7 @@
       "required": "You must indicate if you are a citizen, resident, or protected person"
     },
     "isInformationConsented": {
-      "label": "I hereby certify that: to the best of my knowledge, the information in Section 1 is true, accurate and complete; I have read and understood the Privacy Notice Statement; I have all the necessary authorities, permissions and approvals to submit this application on behalf of myself or on behalf of the person identified on this form; and I consent to sharing all responses in the application form with Employment and Social Development Canada.",
+      "label": "I hereby certify that: to the best of my knowledge, the information and responses to questions submitted on this form are true, accurate and complete; I have read and understood the Privacy Notice Statement; I have all the necessary authorities, permissions and approvals to submit this application on behalf of myself or on behalf of the person identified on this form; and I consent to sharing all responses in the application form with Employment and Social Development Canada.",
       "required": "You must provide consent to share this information",
       "must-be-true": "You must provide consent to share this information"
     },
