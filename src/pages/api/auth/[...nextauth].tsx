@@ -40,7 +40,7 @@ const handler: NextApiHandler = (req, res) => {
         clientSecret: process.env.ESDC_AD_CLIENT_SECRET ?? '',
         idToken: true,
         profile: (profile: AzureADB2CProfile) => ({ ...profile, id: profile.oid } as Profile),
-        scope: 'openid profile api://civic-participation-management/manage',
+        scope: `openid profile ${process.env.ESDC_AD_CLIENT_SCOPE}`,
         tenantId: process.env.ESDC_AD_TENANT_ID,
       }),
     ],
