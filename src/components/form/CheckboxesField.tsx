@@ -50,24 +50,26 @@ export const CheckboxesField = ({ children, className, disabled, error, field, g
 
   return (
     <div className={`form-group ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}`}>
-      <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
-        <span className="field-name tw-mr-2">{label}</span>
-        {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
-        {children && <div className="tw-my-2">{children}</div>}
-        {error && <FieldErrorMessage message={error} />}
-      </label>
-      {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
-      <div>
-        {options.map((el, idx) => {
-          const id = idx === 0 ? fieldId : `${fieldId}-${idx + 1}`;
-          return (
-            <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 checkbox-inline' : ''} ${className ?? ''}`}>
-              <input type="checkbox" id={id} aria-describedby={idx === 0 && helperText ? fieldId + '-help-text' : undefined} value={el.value} onChange={handleOnChange} checked={checkedValues.includes(el.value)} disabled={el.disabled || disabled} />
-              {el.text}
-            </label>
-          );
-        })}
-      </div>
+      <fieldset>
+        <legend className={`tw-text-base tw-font-bold tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
+          <span className="field-name tw-mr-2">{label}</span>
+          {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
+          {children && <div className="tw-my-2">{children}</div>}
+          {error && <FieldErrorMessage message={error} />}
+        </legend>
+        {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
+        <div>
+          {options.map((el, idx) => {
+            const id = idx === 0 ? fieldId : `${fieldId}-${idx + 1}`;
+            return (
+              <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 checkbox-inline' : ''} ${className ?? ''}`}>
+                <input type="checkbox" id={id} aria-describedby={idx === 0 && helperText ? fieldId + '-help-text' : undefined} value={el.value} onChange={handleOnChange} checked={checkedValues.includes(el.value)} disabled={el.disabled || disabled} />
+                {el.text}
+              </label>
+            );
+          })}
+        </div>
+      </fieldset>
     </div>
   );
 };

@@ -48,7 +48,7 @@ export const SelectField = ({ children, className, disabled, error, field, gutte
 
   return (
     <div className={`form-group ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}`}>
-      <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
+      <label htmlFor={fieldId} className={`control-label tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
         <span className="field-name tw-mr-2">{label}</span>
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
         {children && <div className="tw-my-2">{children}</div>}

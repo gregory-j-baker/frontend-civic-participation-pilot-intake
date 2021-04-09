@@ -42,7 +42,7 @@ export const CheckboxeField = ({ children, className, checked, disabled, error, 
     <div className={`form-group ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'} ${className ?? ''}`}>
       <div className="checkbox tw-pl-5 tw-text-base">
         <input type="checkbox" id={fieldId} aria-describedby={helperText ? fieldId + '-help-text' : undefined} onChange={handleOnChange} checked={checked ?? false} disabled={disabled} />
-        <label id={fieldId + '-label'} htmlFor={fieldId} className={`control-label tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`} style={{ fontWeight: 'bold' }}>
+        <label htmlFor={fieldId} className={`control-label tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`} style={{ fontWeight: 'bold' }}>
           <span className={`field-name tw-mr-2`}>{label}</span>
           {required && <strong className="required">{t('common:field-required')}</strong>}
           {children && <div className="tw-my-2">{children}</div>}
