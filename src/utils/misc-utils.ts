@@ -19,8 +19,8 @@ export const getDateModified = (): string => preval`
 
 export const getGitCommit = (): string => preval`
   module.exports = require("child_process")
-    .execSync("git log -n 1 HEAD --format=%h")
-    .toString().slice(0, -1);
+  .execSync("git rev-parse HEAD")
+  .toString().substring(0, 8);
 `;
 
 export const sleep = (ms: number): Promise<number> => new Promise((resolve) => setTimeout(resolve, ms));
