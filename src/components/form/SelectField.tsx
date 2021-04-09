@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-onchange */
 /**
  * Copyright (c) 2021 Her Majesty the Queen in Right of Canada, as represented by the Employment and Social Development Canada
  *
@@ -6,7 +7,8 @@
  */
 
 import useTranslation from 'next-translate/useTranslation';
-import { FormControl, FormGroup, HelpBlock } from 'react-bootstrap';
+import { FocusEventHandler } from 'react';
+import { FormGroup, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from './FieldErrorMessage';
 
 export type SelectFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
@@ -36,7 +38,7 @@ export const SelectField = ({ children, className, disabled, error, field, gutte
   const { t } = useTranslation();
   const fieldId = `form-field-${field}`;
 
-  const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
+  const handleOnChange: FocusEventHandler<HTMLSelectElement> = (event): void => {
     const target = event.target as HTMLSelectElement;
     const val = target.value;
     onChange({ field, value: val.length > 0 ? val : null });
@@ -51,9 +53,9 @@ export const SelectField = ({ children, className, disabled, error, field, gutte
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </label>
       {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
+      {helperText && <HelpBlock id={fieldId + '-help-text'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
-      <FormControl componentClass="select" id={fieldId} value={selectedValue} onChange={handleOnChange} disabled={disabled} className={className}>
+      <select id={fieldId} aria-describedby={helperText ? fieldId + '-help-text' : undefined} value={selectedValue} onChange={handleOnChange} disabled={disabled} className={`form-control ${className ?? ''}`}>
         <option value="" disabled hidden>
           {t('common:please-select')}
         </option>
@@ -62,7 +64,7 @@ export const SelectField = ({ children, className, disabled, error, field, gutte
             {el.text}
           </option>
         ))}
-      </FormControl>
+      </select>
     </FormGroup>
   );
 };

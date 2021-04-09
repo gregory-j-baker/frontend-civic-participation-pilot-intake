@@ -6,7 +6,8 @@
  */
 
 import useTranslation from 'next-translate/useTranslation';
-import { FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import { ChangeEventHandler } from 'react';
+import { FormGroup, HelpBlock } from 'react-bootstrap';
 import { FieldErrorMessage } from './FieldErrorMessage';
 
 export type TextFieldOnChangeEvent = (event: { field: string; value: string | null }) => void;
@@ -34,8 +35,8 @@ export const TextField = ({ children, className, disabled, error, field, gutterB
 
   const fieldId = `form-field-${field}`;
 
-  const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
-    const target = event.target as HTMLTextAreaElement;
+  const handleOnChange: ChangeEventHandler<HTMLInputElement> = (event): void => {
+    const target = event.target as HTMLInputElement;
     const val = target.value;
     onChange({ field, value: val.length > 0 ? val : null });
   };
@@ -47,9 +48,19 @@ export const TextField = ({ children, className, disabled, error, field, gutterB
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </label>
       {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
+      {helperText && <HelpBlock id={fieldId + '-help-text'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
-      <FormControl type={type ?? 'text'} id={fieldId} value={value ?? ''} onChange={handleOnChange} disabled={disabled} maxLength={maxLength} placeholder={placeholder} className={className} />
+      <input
+        type={type ?? 'text'}
+        id={fieldId}
+        aria-describedby={helperText ? fieldId + '-help-text' : undefined}
+        value={value ?? ''}
+        onChange={handleOnChange}
+        disabled={disabled}
+        maxLength={maxLength}
+        placeholder={placeholder}
+        className={`form-control ${className ?? ''}`}
+      />
     </FormGroup>
   );
 };

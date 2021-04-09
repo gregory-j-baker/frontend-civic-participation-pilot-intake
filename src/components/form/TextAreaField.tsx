@@ -6,8 +6,8 @@
  */
 
 import useTranslation from 'next-translate/useTranslation';
-import { useCallback, useMemo } from 'react';
-import { FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import { ChangeEventHandler, useCallback, useMemo } from 'react';
+import { FormGroup, HelpBlock } from 'react-bootstrap';
 import { WordRegExp } from '../../common/WordRegExp';
 import { FieldErrorMessage } from './FieldErrorMessage';
 
@@ -44,8 +44,8 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
 
   const wordCount = useMemo(() => getWordCount(value), [getWordCount, value]);
 
-  const handleOnChange: React.FormEventHandler<FormControl> = (event): void => {
-    const target = event.target as HTMLInputElement;
+  const handleOnChange: ChangeEventHandler<HTMLTextAreaElement> = (event): void => {
+    const target = event.target as HTMLTextAreaElement;
     const val = target.value;
 
     if (!wordLimit || getWordCount(val) <= wordLimit) {
@@ -60,11 +60,21 @@ export const TextAreaField = ({ children, className, disabled, error, field, gut
         {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
       </label>
       {children && <div className="tw-mb-4">{children}</div>}
-      {helperText && <HelpBlock aria-describedby={fieldId + '-label'}>{helperText}</HelpBlock>}
+      {helperText && <HelpBlock id={fieldId + '-help-text'}>{helperText}</HelpBlock>}
       {error && <FieldErrorMessage message={error} />}
-      <FormControl componentClass="textarea" id={fieldId} value={value ?? ''} disabled={disabled} onChange={handleOnChange} placeholder={placeholder} maxLength={maxLength} className={className} rows={rows ?? 5} />
+      <textarea
+        id={fieldId}
+        aria-describedby={helperText ? fieldId + '-help-text' : undefined}
+        value={value ?? ''}
+        onChange={handleOnChange}
+        disabled={disabled}
+        maxLength={maxLength}
+        placeholder={placeholder}
+        className={`form-control ${className ?? ''}`}
+        rows={rows ?? 5}
+      />
       {
-        <div className="tw-italic tw-text-sm tw-px-4 tw-py-1 tw-border-l-4 tw--mt-2 tw-pt-3 tw-rounded tw-bg-gray-50 tw-border-gray-600 tw-shadow" aria-describedby={fieldId + '-label'}>
+        <div className="tw-italic tw-text-sm tw-px-4 tw-py-1 tw-border-l-4 tw--mt-2 tw-pt-3 tw-rounded tw-bg-gray-50 tw-border-gray-600 tw-shadow">
           {t(wordLimit ? 'common:textarea.word-count-limit' : 'common:textarea.word-count', { count: wordCount, limit: wordLimit ?? -1 })}
         </div>
       }
