@@ -49,39 +49,61 @@ export const RadiosField = ({ children, className, disabled, error, field, gutte
   const selectedValue = options.find((option) => option.value === value)?.value ?? '';
 
   return (
-    <div className={`form-group ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}`}>
-      <fieldset>
-        <legend className={`tw-text-base tw-font-bold tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
-          <span className="field-name tw-mr-2">{label}</span>
-          {required && <strong className={`required ${labelClassName ?? ''}`}>{t('common:field-required')}</strong>}
-          {children && <div className="tw-my-2">{children}</div>}
-          {error && <FieldErrorMessage message={error} />}
-        </legend>
-        {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
-        <div>
-          {options.map((el, idx) => {
-            const id = idx === 0 ? fieldId : `${fieldId}-${idx + 1}`;
-            {
-              console.log(inline ? 'tw-mr-4 radio-inline' : 'block');
-            }
-            return (
-              <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 radio-inline' : 'tw-block'} ${className ?? ''}`}>
-                <input
-                  type="radio"
-                  id={id}
-                  aria-describedby={idx === 0 && helperText ? fieldId + '-help-text' : undefined}
-                  name={groupName}
-                  value={el.value}
-                  onChange={handleOnChange}
-                  checked={el.value === selectedValue}
-                  disabled={el.disabled || disabled}
-                />
-                {' ' + el.text}
-              </label>
-            );
-          })}
+    <fieldset className={`form-group tw-p-0 tw-border-none ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}`}>
+      <legend className={`tw-text-base tw-font-bold tw-w-full tw-mb-1 tw-float-none ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
+        <span className="field-name tw-mr-2">{label}</span>
+        {required && <strong className={`required ${labelClassName ?? ''}`}>{t('common:field-required')}</strong>}
+        {children && <div className="tw-my-2">{children}</div>}
+        {error && <FieldErrorMessage message={error} />}
+      </legend>
+      {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
+      {inline ? (
+        <div className="form-group">
+          {options.map((el, index) => (
+            <InputRadio key={el.value} {...{ className: 'radio-inline', disabled, fieldId, groupName, helperText, index, onChange: handleOnChange, option: el, selectedValue }} />
+          ))}
         </div>
-      </fieldset>
-    </div>
+      ) : (
+        options.map((el, index) => (
+          <div key={el.value} className="radio">
+            <InputRadio {...{ className, disabled, fieldId, groupName, helperText, index, onChange: handleOnChange, option: el, selectedValue }} />
+          </div>
+        ))
+      )}
+    </fieldset>
+  );
+};
+
+export interface InputRadioProps {
+  className?: string;
+  disabled?: boolean;
+  fieldId: string;
+  groupName: string;
+  helperText?: string;
+  index: number;
+  inline?: boolean;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+  option: RadiosFieldOption;
+  selectedValue: string;
+}
+
+export const InputRadio = ({ className, disabled, fieldId, groupName, helperText, index, onChange, option, selectedValue }: InputRadioProps): JSX.Element => {
+  const id = index === 0 ? fieldId : `${fieldId}-${index + 1}`;
+
+  return (
+    <label key={option.value} htmlFor={id} className={className}>
+      <input
+        type="radio"
+        id={id}
+        aria-describedby={index === 0 && helperText ? fieldId + '-help-text' : undefined}
+        name={groupName}
+        value={option.value}
+        onChange={onChange}
+        checked={option.value === selectedValue}
+        disabled={option.disabled || disabled}
+        title=""
+      />
+      {' ' + option.text}
+    </label>
   );
 };

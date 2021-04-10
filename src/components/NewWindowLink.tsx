@@ -4,14 +4,15 @@ import { UrlObject } from 'node:url';
 
 export interface NewWindowLinkProps {
   children: React.ReactNode;
+  className?: string;
   href: string | UrlObject;
 }
 
-export const NewWindowLink = ({ children, href }: NewWindowLinkProps): JSX.Element => {
+export const NewWindowLink = ({ children, className, href }: NewWindowLinkProps): JSX.Element => {
   const { t } = useTranslation();
   return (
     <Link href={href} passHref>
-      <a target="_blank" rel="noreferrer">
+      <a target="_blank" rel="noreferrer" className={className ?? ''}>
         {children}
         {'\u00A0'}
         <i className="fas fa-external-link-square-alt"></i>

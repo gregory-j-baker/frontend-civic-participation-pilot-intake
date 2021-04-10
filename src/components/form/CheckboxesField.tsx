@@ -49,27 +49,59 @@ export const CheckboxesField = ({ children, className, disabled, error, field, g
   const checkedValues = options?.map((el) => el.value).filter((value) => (values ?? []).includes(value)) ?? [];
 
   return (
-    <div className={`form-group ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}`}>
-      <fieldset>
-        <legend className={`tw-text-base tw-font-bold tw-w-full tw-mb-1 ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
-          <span className="field-name tw-mr-2">{label}</span>
-          {required && <strong className={`required ${labelClassName}`}>{t('common:field-required')}</strong>}
-          {children && <div className="tw-my-2">{children}</div>}
-          {error && <FieldErrorMessage message={error} />}
-        </legend>
-        {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
-        <div>
-          {options.map((el, idx) => {
-            const id = idx === 0 ? fieldId : `${fieldId}-${idx + 1}`;
-            return (
-              <label key={el.value} htmlFor={id} className={`${inline ? 'tw-mr-4 checkbox-inline' : ''} ${className ?? ''}`}>
-                <input type="checkbox" id={id} aria-describedby={idx === 0 && helperText ? fieldId + '-help-text' : undefined} value={el.value} onChange={handleOnChange} checked={checkedValues.includes(el.value)} disabled={el.disabled || disabled} />
-                {el.text}
-              </label>
-            );
-          })}
+    <fieldset className={`form-group tw-p-0 tw-border-none ${gutterBottom ? 'tw-mb-10' : 'tw-mb-0'}`}>
+      <legend className={`tw-text-base tw-font-bold tw-w-full tw-mb-1 tw-float-none ${labelClassName ?? ''} ${required ? 'required' : ''}`}>
+        <span className="field-name tw-mr-2">{label}</span>
+        {required && <strong className={`required ${labelClassName ?? ''}`}>{t('common:field-required')}</strong>}
+        {children && <div className="tw-my-2">{children}</div>}
+        {error && <FieldErrorMessage message={error} />}
+      </legend>
+      {helperText && <FieldHelpBlock id={fieldId + '-help-text'}>{helperText}</FieldHelpBlock>}
+      {inline ? (
+        <div className="form-group">
+          {options.map((el, index) => (
+            <InputCheckboxe key={el.value} {...{ checkedValues, className: 'checkbox-inline', disabled, fieldId, helperText, index, onChange: handleOnChange, option: el }} />
+          ))}
         </div>
-      </fieldset>
-    </div>
+      ) : (
+        options.map((el, index) => (
+          <div key={el.value} className="checkbox">
+            <InputCheckboxe {...{ checkedValues, className, disabled, fieldId, helperText, index, onChange: handleOnChange, option: el }} />
+          </div>
+        ))
+      )}
+    </fieldset>
+  );
+};
+
+export interface InputCheckboxeProps {
+  checkedValues: string[];
+  className?: string;
+  disabled?: boolean;
+  fieldId: string;
+  helperText?: string;
+  index: number;
+  inline?: boolean;
+  onChange: ChangeEventHandler<HTMLInputElement>;
+  option: CheckboxesFieldOption;
+}
+
+export const InputCheckboxe = ({ checkedValues, className, disabled, fieldId, helperText, index, onChange, option }: InputCheckboxeProps): JSX.Element => {
+  const id = index === 0 ? fieldId : `${fieldId}-${index + 1}`;
+
+  return (
+    <label key={option.value} htmlFor={id} className={className}>
+      <input
+        type="checkboxe"
+        id={id}
+        aria-describedby={index === 0 && helperText ? fieldId + '-help-text' : undefined}
+        value={option.value}
+        onChange={onChange}
+        checked={checkedValues.includes(option.value)}
+        disabled={option.disabled || disabled}
+        title=""
+      />
+      {' ' + option.text}
+    </label>
   );
 };

@@ -208,7 +208,9 @@ const Step2Page = (): JSX.Element => {
                 ))}
               </ul>
               <span className="help-block">
-                <NewWindowLink href={t('application:field.demographicId.helper-text-url')}>{t('application:field.demographicId.helper-text')}</NewWindowLink>
+                <NewWindowLink href={t('application:field.demographicId.helper-text-url')} className="tw-font-normal">
+                  {t('application:field.demographicId.helper-text')}
+                </NewWindowLink>
               </span>
             </RadiosField>
           </Wizard>
