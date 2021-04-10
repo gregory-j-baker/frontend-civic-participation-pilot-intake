@@ -123,7 +123,7 @@ const EmailVerficationPage: NextPage = () => {
             </h1>
             <h2 className="tw-border-none tw-m-0 tw-mb-4 tw-text-2xl">{t('email-verification:page.header')}</h2>
 
-            <p className="tw-m-0 tw-mb-4">{t('email-verification:page.description')}</p>
+            <p className="tw-m-0 tw-mb-16">{t('email-verification:page.description')}</p>
 
             {schemaErrors && schemaErrors.length > 0 && (
               <Alert id="validation-error" title={t('common:error-form-cannot-be-submitted', { count: schemaErrors.length })} type={AlertType.danger}>
@@ -151,7 +151,7 @@ const EmailVerficationPage: NextPage = () => {
               </Alert>
             )}
 
-            <div className="tw-my-16">
+            <div className="tw-mb-16">
               <TextField
                 field={nameof<FormDataState>((o) => o.accessCode)}
                 label={t('email-verification:form.accessCode.label')}
