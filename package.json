@@ -2,7 +2,9 @@
   "$schema": "https://json.schemastore.org/package",
   "name": "frontend-civic-participation-pilot-intake",
   "version": "0.0.0",
-  "private": true,
+  "publishConfig": {
+    "registry": "https://repository.youth-digital-gateway.ca/repository/npm-hosted/"
+  },
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
