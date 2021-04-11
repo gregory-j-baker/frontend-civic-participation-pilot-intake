@@ -34,3 +34,14 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
 
 Test:push.
+
+## Build for production
+
+**Important:** start by moving your `.env.local` file out of the project folder!!
+
+``` sh
+$ yarn build
+$ yarn publish # when prompted for version, specify the version that you are publishing
+$ docker build . --tag youthdigitalgateway.azurecr.io/civic-participation-pilot/frontend-intake:1.0.0
+$ docker push youthdigitalgateway.azurecr.io/civic-participation-pilot/frontend-intake:1.0.0
+```
