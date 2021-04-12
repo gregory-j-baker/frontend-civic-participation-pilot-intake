@@ -24,7 +24,7 @@
     "demographicId": {
       "label": "Do you identify with one or more of the demographic characteristics listed?",
       "helper-text": "Detailed definitions of demographic characteristics",
-      "helper-text-url": "https://www.canada.ca/en/services/youth/civic-participation/eligibility-requirements.html#under-served",
+      "helper-text-url": "https://www.canada.ca/en/services/youth/civic-participation/applications.html#under-served",
       "children-items": {
         "item-1": "Visible minority/racialized",
         "item-2": "Indigenous (i.e. First Nations, Inuit (Inuk), Métis, or Non-Affiliated) ",
