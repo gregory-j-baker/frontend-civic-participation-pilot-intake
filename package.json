@@ -5,6 +5,9 @@
   "publishConfig": {
     "registry": "https://repository.youth-digital-gateway.ca/repository/npm-hosted/"
   },
+  "files": [
+    ".next/**"
+  ],
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
