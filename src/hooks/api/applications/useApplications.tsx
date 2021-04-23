@@ -24,6 +24,7 @@ export interface FetchApplicationsOptions {
   applicationStatusId?: string;
   page?: number;
   size?: number;
+  sort?: string[];
 }
 
 export interface UseApplicationsOptions extends FetchApplicationsOptions {}
@@ -32,10 +33,13 @@ export const fetchApplications = async (options: FetchApplicationsOptions, conte
   const session = (await getSession(context)) as AADSession;
   if (!session || Date.now() >= session.accessTokenExpires || !session.accessToken) Error('Invalid session');
 
-  const { applicationStatusId, page, size } = options;
+  const { applicationStatusId, page, size, sort } = options;
 
   const queries: string[] = [`page=${page ?? 1}`, `size=${size ?? 20}`];
   if (applicationStatusId) queries.push(`applicationStatusId=${applicationStatusId}`);
+  if (sort) {
+    sort.forEach((sortItem) => queries.push(`sort=${sortItem}`));
+  }
 
   return fetchWrapper<ApplicationsResponse>(`${applicationsUri}?${queries.join('&')}`, {
     headers: {

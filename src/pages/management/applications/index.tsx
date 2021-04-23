@@ -7,7 +7,7 @@
 
 import { useCallback, useMemo } from 'react';
 import { GetStaticProps } from 'next';
-import { Role } from '../../../common/types';
+import { Role, Sorting } from '../../../common/types';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { PageSecurityGate } from '../../../components/PageSecurityGate';
@@ -31,10 +31,12 @@ import { TableHeadCell } from '../../../components/table/TableHeadCell';
 import { TableCell } from '../../../components/table/TableCell';
 import { TableRowNoData } from '../../../components/table/TableRowNoData';
 import { TablePagination } from '../../../components/table/TablePagination';
+import { TableSortButton, TableSortButtonOnClickEvent } from '../../../components/table/TableSortButton';
 
 interface RouterQuery {
   page?: number;
   status?: string;
+  sort?: string;
 }
 
 const ManagementApplicationsPage = (): JSX.Element => {
@@ -42,9 +44,9 @@ const ManagementApplicationsPage = (): JSX.Element => {
 
   const router = useRouter();
   const { query, pathname } = router;
-  const { page, status } = query as RouterQuery;
+  const { page, status, sort } = query as RouterQuery;
 
-  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW });
+  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW, sort: sort ? [sort] : ['createdDate,desc'] });
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({ lang });
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
@@ -52,6 +54,15 @@ const ManagementApplicationsPage = (): JSX.Element => {
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
+
+  const getSort = (field: string): Sorting | undefined => {
+    // if no sort, default to createdDate,desc
+    return query.sort ? (query.sort.indexOf(field) > -1 ? (query.sort.indexOf(Sorting.asc) > -1 ? Sorting.asc : Sorting.desc) : undefined) : field === 'createdDate' ? Sorting.desc : undefined;
+  };
+
+  const handleSort: TableSortButtonOnClickEvent = ({ field, nextSorting }) => {
+    router.push({ pathname, query: { ...query, sort: `${field},${nextSorting}` } });
+  };
 
   // application statuse options
   const applicationStatuseOptions = useMemo<SelectFieldOption[]>(() => {
@@ -87,12 +98,36 @@ const ManagementApplicationsPage = (): JSX.Element => {
             <Table>
               <TableHead>
                 <tr>
-                  <TableHeadCell>{t('application:management.list.table-header.name')}</TableHeadCell>
-                  <TableHeadCell>{t('application:management.list.table-header.language')}</TableHeadCell>
-                  <TableHeadCell>{t('application:management.list.table-header.province')}</TableHeadCell>
-                  <TableHeadCell>{t('application:management.list.table-header.date-received')}</TableHeadCell>
-                  <TableHeadCell>{t('application:management.list.table-header.status')}</TableHeadCell>
-                  <TableHeadCell>{t('application:management.list.table-header.is-email-validated')}</TableHeadCell>
+                  <TableHeadCell>
+                    <TableSortButton field="firstName" onClick={handleSort} sorting={getSort('firstName')}>
+                      {t('application:management.list.table-header.name')}
+                    </TableSortButton>
+                  </TableHeadCell>
+                  <TableHeadCell>
+                    <TableSortButton field="language" onClick={handleSort} sorting={getSort('language')}>
+                      {t('application:management.list.table-header.language')}
+                    </TableSortButton>
+                  </TableHeadCell>
+                  <TableHeadCell>
+                    <TableSortButton field="provinceId" onClick={handleSort} sorting={getSort('provinceId')}>
+                      {t('application:management.list.table-header.province')}
+                    </TableSortButton>
+                  </TableHeadCell>
+                  <TableHeadCell>
+                    <TableSortButton field="createdDate" onClick={handleSort} sorting={getSort('createdDate')}>
+                      {t('application:management.list.table-header.date-received')}
+                    </TableSortButton>
+                  </TableHeadCell>
+                  <TableHeadCell>
+                    <TableSortButton field="applicationStatusId" onClick={handleSort} sorting={getSort('applicationStatusId')}>
+                      {t('application:management.list.table-header.status')}
+                    </TableSortButton>
+                  </TableHeadCell>
+                  <TableHeadCell>
+                    <TableSortButton field="canadianCitizen" onClick={handleSort} sorting={getSort('canadianCitizen')}>
+                      {t('application:management.list.table-header.is-canadian-citizen')}
+                    </TableSortButton>
+                  </TableHeadCell>
                   <TableHeadCell>
                     <span className="sr-only">{t('application:management.list.table-header.edit')}</span>
                   </TableHeadCell>
@@ -111,9 +146,9 @@ const ManagementApplicationsPage = (): JSX.Element => {
                         <TableCell>{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</TableCell>
                         <TableCell className="tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</TableCell>
                         <TableCell>{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</TableCell>
-                        <TableCell>{application.isEmailValidated ? t('common:yes') : t('common:no')}</TableCell>
+                        <TableCell>{application.isCanadianCitizen ? t('common:yes') : t('common:no')}</TableCell>
                         <TableCell className="tw-whitespace-nowrap tw-text-right tw-font-bold">
-                          <Link href={`/management/applications/${application.id}`} passHref>
+                          <Link href={{ pathname: `/management/applications/${application.id}`, query: { ...query } }} passHref>
                             <a className="tw-text-indigo-600 hover:tw-text-indigo-900">{t('application:management.list.edit-link')}</a>
                           </Link>
                         </TableCell>
