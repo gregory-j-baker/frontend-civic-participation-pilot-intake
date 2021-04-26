@@ -36,7 +36,6 @@ import { TableSortButton, TableSortButtonOnClickEvent } from '../../../component
 interface RouterQuery {
   page?: number;
   status?: string;
-  sort?: string;
 }
 
 const ManagementApplicationsPage = (): JSX.Element => {
@@ -44,9 +43,20 @@ const ManagementApplicationsPage = (): JSX.Element => {
 
   const router = useRouter();
   const { query, pathname } = router;
-  const { page, status, sort } = query as RouterQuery;
+  const { page, status } = query as RouterQuery;
 
-  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW, sort: sort ? [sort] : ['createdDate,desc'] });
+  const sortedBy = useMemo(() => {
+    const fieldsWithDescriptions = ['applicationStatus', 'language', 'province']; // fields that needs descriptionEn or descriptionFr for sorting
+    let currentSort = undefined;
+    if (query.sort) {
+      const sortProperties = (query.sort as string).split(',');
+      const sortField = fieldsWithDescriptions.includes(sortProperties[0]) ? `${sortProperties[0]}.description${lang === 'fr' ? 'Fr' : 'En'}` : sortProperties[0];
+      currentSort = `${sortField},${sortProperties[1]}`;
+    }
+    return currentSort;
+  }, [query, lang]);
+
+  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW, sort: sortedBy ? [sortedBy] : ['createdDate,desc'] });
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({ lang });
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
@@ -55,7 +65,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
-  const getSort = (field: string): Sorting | undefined => {
+  const getCurrentSorting = (field: string): Sorting | undefined => {
     // if no sort, default to createdDate,desc
     return query.sort ? (query.sort.indexOf(field) > -1 ? (query.sort.indexOf(Sorting.asc) > -1 ? Sorting.asc : Sorting.desc) : undefined) : field === 'createdDate' ? Sorting.desc : undefined;
   };
@@ -99,32 +109,32 @@ const ManagementApplicationsPage = (): JSX.Element => {
               <TableHead>
                 <tr>
                   <TableHeadCell>
-                    <TableSortButton field="firstName" onClick={handleSort} sorting={getSort('firstName')}>
+                    <TableSortButton field="firstName" onClick={handleSort} sorting={getCurrentSorting('firstName')}>
                       {t('application:management.list.table-header.name')}
                     </TableSortButton>
                   </TableHeadCell>
                   <TableHeadCell>
-                    <TableSortButton field="language" onClick={handleSort} sorting={getSort('language')}>
+                    <TableSortButton field="language" onClick={handleSort} sorting={getCurrentSorting('language')}>
                       {t('application:management.list.table-header.language')}
                     </TableSortButton>
                   </TableHeadCell>
                   <TableHeadCell>
-                    <TableSortButton field="provinceId" onClick={handleSort} sorting={getSort('provinceId')}>
+                    <TableSortButton field="province" onClick={handleSort} sorting={getCurrentSorting('province')}>
                       {t('application:management.list.table-header.province')}
                     </TableSortButton>
                   </TableHeadCell>
                   <TableHeadCell>
-                    <TableSortButton field="createdDate" onClick={handleSort} sorting={getSort('createdDate')}>
+                    <TableSortButton field="createdDate" onClick={handleSort} sorting={getCurrentSorting('createdDate')}>
                       {t('application:management.list.table-header.date-received')}
                     </TableSortButton>
                   </TableHeadCell>
                   <TableHeadCell>
-                    <TableSortButton field="applicationStatusId" onClick={handleSort} sorting={getSort('applicationStatusId')}>
+                    <TableSortButton field="applicationStatus" onClick={handleSort} sorting={getCurrentSorting('applicationStatus')}>
                       {t('application:management.list.table-header.status')}
                     </TableSortButton>
                   </TableHeadCell>
                   <TableHeadCell>
-                    <TableSortButton field="canadianCitizen" onClick={handleSort} sorting={getSort('canadianCitizen')}>
+                    <TableSortButton field="canadianCitizen" onClick={handleSort} sorting={getCurrentSorting('canadianCitizen')}>
                       {t('application:management.list.table-header.is-canadian-citizen')}
                     </TableSortButton>
                   </TableHeadCell>
