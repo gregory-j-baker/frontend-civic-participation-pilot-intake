@@ -25,11 +25,11 @@ export const TableSortButton = ({ children, field, onClick, sorting }: TableSort
   };
 
   return (
-    <button className="tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider tw-flex tw-flex-nowrap tw-content-evenly" onClick={handleOnClick}>
+    <button className="tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider tw-flex tw-flex-nowrap tw-content-center tw-items-center" onClick={handleOnClick}>
       <span>{children}</span>
-      {sorting === Sorting.asc && <span className="tw-ml-1 glyphicon glyphicon-sort-by-attributes" aria-hidden="true" />}
-      {sorting === Sorting.desc && <span className="tw-ml-1 glyphicon glyphicon-sort-by-attributes-alt" aria-hidden="true" />}
-      {sorting === undefined && <span className="tw-ml-1 glyphicon glyphicon-sort tw-opacity-60" aria-hidden="true" />}
+      {sorting === Sorting.asc && <span className="tw-ml-1 glyphicon glyphicon-sort-by-attributes" style={{ top: 0 }} aria-hidden="true" />}
+      {sorting === Sorting.desc && <span className="tw-ml-1 glyphicon glyphicon-sort-by-attributes-alt" style={{ top: 0 }} aria-hidden="true" />}
+      {sorting === undefined && <span className="tw-ml-1 glyphicon glyphicon-sort tw-opacity-60" style={{ top: 0 }} aria-hidden="true" />}
     </button>
   );
 };
