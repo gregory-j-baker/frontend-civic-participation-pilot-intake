@@ -168,9 +168,6 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
             <Button className="tw-m-2" onClick={handleSubmit}>
               {t('application:management.edit.submit')}
             </Button>
-            {/* <ButtonLink className="tw-m-2" href={{ pathname: '/management/applications', query: { ...query } }} outline>
-              {t('application:management.edit.cancel')}
-            </ButtonLink> */}
             <Button className="tw-m-2" onClick={() => router.back()} outline>
               {t('application:management.edit.cancel')}
             </Button>
