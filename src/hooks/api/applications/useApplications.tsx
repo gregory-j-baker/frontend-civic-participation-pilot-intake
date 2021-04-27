@@ -37,9 +37,7 @@ export const fetchApplications = async (options: FetchApplicationsOptions, conte
 
   const queries: string[] = [`page=${page ?? 1}`, `size=${size ?? 20}`];
   if (applicationStatusId) queries.push(`applicationStatusId=${applicationStatusId}`);
-  if (sort) {
-    sort.forEach((sortItem) => queries.push(`sort=${sortItem}`));
-  }
+  if (sort) sort.forEach((sortItem) => queries.push(`sort=${sortItem}`));
 
   return fetchWrapper<ApplicationsResponse>(`${applicationsUri}?${queries.join('&')}`, {
     headers: {

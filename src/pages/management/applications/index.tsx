@@ -47,16 +47,15 @@ const ManagementApplicationsPage = (): JSX.Element => {
 
   const sortedBy = useMemo(() => {
     const fieldsWithDescriptions = ['applicationStatus', 'language', 'province']; // fields that needs descriptionEn or descriptionFr for sorting
-    let currentSort = undefined;
     if (query.sort) {
       const sortProperties = (query.sort as string).split(',');
       const sortField = fieldsWithDescriptions.includes(sortProperties[0]) ? `${sortProperties[0]}.description${lang === 'fr' ? 'Fr' : 'En'}` : sortProperties[0];
-      currentSort = `${sortField},${sortProperties[1]}`;
+      return [`${sortField},${sortProperties[1]}`];
     }
-    return currentSort;
+    return ['createdDate,desc']; // default sort;
   }, [query, lang]);
 
-  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW, sort: sortedBy ? [sortedBy] : ['createdDate,desc'] });
+  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW, sort: sortedBy });
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({ lang });
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
