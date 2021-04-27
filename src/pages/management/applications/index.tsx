@@ -45,17 +45,15 @@ const ManagementApplicationsPage = (): JSX.Element => {
   const { query, pathname } = router;
   const { page, status } = query as RouterQuery;
 
-  const sortedBy = useMemo(() => {
+  const sort = useMemo(() => {
     const fieldsWithDescriptions = ['applicationStatus', 'language', 'province']; // fields that needs descriptionEn or descriptionFr for sorting
-    if (query.sort) {
-      const sortProperties = (query.sort as string).split(',');
-      const sortField = fieldsWithDescriptions.includes(sortProperties[0]) ? `${sortProperties[0]}.description${lang === 'fr' ? 'Fr' : 'En'}` : sortProperties[0];
-      return [`${sortField},${sortProperties[1]}`];
-    }
-    return ['createdDate,desc']; // default sort;
+    if (!query.sort) return ['createdDate,desc']; // default sort;
+    const sortProperties = (query.sort as string).split(',');
+    const sortField = fieldsWithDescriptions.includes(sortProperties[0]) ? `${sortProperties[0]}.description${lang === 'fr' ? 'Fr' : 'En'}` : sortProperties[0];
+    return [`${sortField},${sortProperties[1]}`];
   }, [query, lang]);
 
-  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW, sort: sortedBy });
+  const { data: applicationsResponse, isLoading: isApplicationsLoading, error: applicationsError } = useApplications({ page, applicationStatusId: status ?? ApplicationStatusEnum.NEW, sort });
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({ lang });
   const { data: languages, isLoading: isLanguagesLoading, error: languagesError } = useLanguages();
