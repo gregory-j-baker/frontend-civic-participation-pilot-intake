@@ -134,6 +134,7 @@
         "province": "Province",
         "date-received": "Date received",
         "is-email-validated": "Email address validated?",
+        "is-canadian-citizen": "Canadian Citizen",
         "status": "Status",
         "edit": "Edit"
       },

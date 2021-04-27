@@ -21,7 +21,6 @@ import { useApplicationStatuses } from '../../../hooks/api/code-lookups/useAppli
 import { GetDescriptionFunc } from '../../application/types';
 import Error from '../../_error';
 import { TextAreaField } from '../../../components/form/TextAreaField';
-import { ButtonLink } from '../../../components/ButtonLink';
 import { Button, ButtonOnClickEvent } from '../../../components/Button';
 import { Alert, AlertType } from '../../../components/Alert';
 import { ValidationError } from 'yup';
@@ -59,7 +58,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
 
   const { mutate: saveApplication, error: saveApplicationError, isLoading: saveApplicationIsLoading } = useSaveApplication({
     onSuccess: () => {
-      router.push(`/management/applications?status=${application.applicationStatusId}`);
+      router.back();
     },
   });
 
@@ -169,9 +168,9 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
             <Button className="tw-m-2" onClick={handleSubmit}>
               {t('application:management.edit.submit')}
             </Button>
-            <ButtonLink className="tw-m-2" href={`/management/applications?status=${application.applicationStatusId}`} outline>
+            <Button className="tw-m-2" onClick={() => router.back()} outline>
               {t('application:management.edit.cancel')}
-            </ButtonLink>
+            </Button>
           </ContentPaper>
         </>
       )}

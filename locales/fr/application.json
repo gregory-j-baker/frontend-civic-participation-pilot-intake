@@ -134,6 +134,7 @@
         "province": "Province",
         "date-received": "Date de réception",
         "is-email-validated": "Adresse courriel validée?",
+        "is-canadian-citizen": "Citoyen(ne) canadien(ne)",
         "status": "Statut",
         "edit": "Modifier"
       },

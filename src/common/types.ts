@@ -75,3 +75,11 @@ export interface AADSession extends Session {
   roles?: string[];
   accessTokenExpires: number;
 }
+
+/**
+ * Sortable table column direction
+ */
+export enum Sorting {
+  asc = 'asc',
+  desc = 'desc',
+}
