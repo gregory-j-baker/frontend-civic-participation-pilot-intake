@@ -138,7 +138,8 @@
         "status": "Statut",
         "edit": "Modifier"
       },
-      "edit-link": "Modifier"
+      "edit-link": "Modifier",
+      "select-link": "Effectuer selection aléatoire"
     },
     "edit": {
       "title": "Modifier l'application",
@@ -161,6 +162,19 @@
         "submit": "Confirmer le changement de statut",
         "cancel": "Annuler"
       }
+    },
+    "select": {
+      "title": "Sélection aléatoire",
+      "header": "Effectuer selection aléatoire",
+      "currentCount": "Nombre actuel de participants: {{number}}",
+      "attestation": "J’atteste, par la présente, que j’ai l’autorité nécessaire pour exécuter le processus de sélection aléatoire et je comprends qu'une fois exécuté, les résultats ne peuvent pas être annulés.",
+      "submit": "Exécuter la loteriey",
+      "abort": "Abandonner",
+      "countLabel": "Indiquez le numéro à sélectionner:",
+      "errorTitle": "Erreur lors de la sélection!",
+      "successTitle": "Sélection réussie!",
+      "successMessage": "{{number}} d’applications selectionnés.",
+      "applicationsList": "Liste d’applications"
     }
   }
 }

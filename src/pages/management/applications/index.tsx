@@ -22,6 +22,7 @@ import { ApplicationStatus, ApplicationStatusEnum, Language, Province } from '..
 import { useApplicationStatuses } from '../../../hooks/api/code-lookups/useApplicationStatuses';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
+import { ButtonLink } from '../../../components/ButtonLink';
 import { SelectField, SelectFieldOption } from '../../../components/form/SelectField';
 import { TableWrapper } from '../../../components/table/TableWrapper';
 import { Table } from '../../../components/table/Table';
@@ -100,75 +101,79 @@ const ManagementApplicationsPage = (): JSX.Element => {
             gutterBottom
             className="tw-w-full sm:tw-w-6/12"
           />
-
-          <TableWrapper>
-            <Table>
-              <TableHead>
-                <tr>
-                  <TableHeadCell>
-                    <TableSortButton field="firstName" onClick={handleSort} sorting={getCurrentSorting('firstName')}>
-                      {t('application:management.list.table-header.name')}
-                    </TableSortButton>
-                  </TableHeadCell>
-                  <TableHeadCell>
-                    <TableSortButton field="language" onClick={handleSort} sorting={getCurrentSorting('language')}>
-                      {t('application:management.list.table-header.language')}
-                    </TableSortButton>
-                  </TableHeadCell>
-                  <TableHeadCell>
-                    <TableSortButton field="province" onClick={handleSort} sorting={getCurrentSorting('province')}>
-                      {t('application:management.list.table-header.province')}
-                    </TableSortButton>
-                  </TableHeadCell>
-                  <TableHeadCell>
-                    <TableSortButton field="createdDate" onClick={handleSort} sorting={getCurrentSorting('createdDate')}>
-                      {t('application:management.list.table-header.date-received')}
-                    </TableSortButton>
-                  </TableHeadCell>
-                  <TableHeadCell>
-                    <TableSortButton field="applicationStatus" onClick={handleSort} sorting={getCurrentSorting('applicationStatus')}>
-                      {t('application:management.list.table-header.status')}
-                    </TableSortButton>
-                  </TableHeadCell>
-                  <TableHeadCell>
-                    <TableSortButton field="canadianCitizen" onClick={handleSort} sorting={getCurrentSorting('canadianCitizen')}>
-                      {t('application:management.list.table-header.is-canadian-citizen')}
-                    </TableSortButton>
-                  </TableHeadCell>
-                  <TableHeadCell>
-                    <span className="sr-only">{t('application:management.list.table-header.edit')}</span>
-                  </TableHeadCell>
-                </tr>
-              </TableHead>
-              {applicationsResponse && (
-                <TableBody>
-                  {applicationsResponse._embedded.applications.length > 0 ? (
-                    applicationsResponse._embedded.applications.map((application) => (
-                      <tr key={application.id}>
-                        <TableCell className="tw-px-4 tw-py-2 tw-whitespace-nowrap">
-                          <div className="tw-text-sm tw-font-bold tw-text-gray-900">{`${application.firstName} ${application.lastName}`}</div>
-                          <div className="tw-text-sm tw-text-gray-500">{`${application.email}`}</div>
-                        </TableCell>
-                        <TableCell>{languages && getDescription(languages._embedded.languages.find((obj) => obj.id === application.languageId) as Language)}</TableCell>
-                        <TableCell>{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</TableCell>
-                        <TableCell className="tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</TableCell>
-                        <TableCell>{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</TableCell>
-                        <TableCell>{application.isCanadianCitizen ? t('common:yes') : t('common:no')}</TableCell>
-                        <TableCell className="tw-whitespace-nowrap tw-text-right tw-font-bold">
-                          <Link href={{ pathname: `/management/applications/${application.id}`, query: { ...query } }} passHref>
-                            <a className="tw-text-indigo-600 hover:tw-text-indigo-900">{t('application:management.list.edit-link')}</a>
-                          </Link>
-                        </TableCell>
-                      </tr>
-                    ))
-                  ) : (
-                    <TableRowNoData colSpan={8} />
-                  )}
-                </TableBody>
-              )}
-            </Table>
-            {applicationsResponse?.page && <TablePagination page={applicationsResponse.page} />}
-          </TableWrapper>
+          <div className="tw-space-y-5">
+            <TableWrapper>
+              <Table>
+                <TableHead>
+                  <tr>
+                    <TableHeadCell>
+                      <TableSortButton field="firstName" onClick={handleSort} sorting={getCurrentSorting('firstName')}>
+                        {t('application:management.list.table-header.name')}
+                      </TableSortButton>
+                    </TableHeadCell>
+                    <TableHeadCell>
+                      <TableSortButton field="language" onClick={handleSort} sorting={getCurrentSorting('language')}>
+                        {t('application:management.list.table-header.language')}
+                      </TableSortButton>
+                    </TableHeadCell>
+                    <TableHeadCell>
+                      <TableSortButton field="province" onClick={handleSort} sorting={getCurrentSorting('province')}>
+                        {t('application:management.list.table-header.province')}
+                      </TableSortButton>
+                    </TableHeadCell>
+                    <TableHeadCell>
+                      <TableSortButton field="createdDate" onClick={handleSort} sorting={getCurrentSorting('createdDate')}>
+                        {t('application:management.list.table-header.date-received')}
+                      </TableSortButton>
+                    </TableHeadCell>
+                    <TableHeadCell>
+                      <TableSortButton field="applicationStatus" onClick={handleSort} sorting={getCurrentSorting('applicationStatus')}>
+                        {t('application:management.list.table-header.status')}
+                      </TableSortButton>
+                    </TableHeadCell>
+                    <TableHeadCell>
+                      <TableSortButton field="canadianCitizen" onClick={handleSort} sorting={getCurrentSorting('canadianCitizen')}>
+                        {t('application:management.list.table-header.is-canadian-citizen')}
+                      </TableSortButton>
+                    </TableHeadCell>
+                    <TableHeadCell>
+                      <span className="sr-only">{t('application:management.list.table-header.edit')}</span>
+                    </TableHeadCell>
+                  </tr>
+                </TableHead>
+                {applicationsResponse && (
+                  <TableBody>
+                    {applicationsResponse._embedded.applications.length > 0 ? (
+                      applicationsResponse._embedded.applications.map((application) => (
+                        <tr key={application.id}>
+                          <TableCell className="tw-px-4 tw-py-2 tw-whitespace-nowrap">
+                            <div className="tw-text-sm tw-font-bold tw-text-gray-900">{`${application.firstName} ${application.lastName}`}</div>
+                            <div className="tw-text-sm tw-text-gray-500">{`${application.email}`}</div>
+                          </TableCell>
+                          <TableCell>{languages && getDescription(languages._embedded.languages.find((obj) => obj.id === application.languageId) as Language)}</TableCell>
+                          <TableCell>{provinces && getDescription(provinces._embedded.provinces.find((obj) => obj.id === application.provinceId) as Province)}</TableCell>
+                          <TableCell className="tw-whitespace-nowrap">{dateTimeFormat.format(new Date(application.createdDate))}</TableCell>
+                          <TableCell>{applicationStatuses && getDescription(applicationStatuses._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}</TableCell>
+                          <TableCell>{application.isCanadianCitizen ? t('common:yes') : t('common:no')}</TableCell>
+                          <TableCell className="tw-whitespace-nowrap tw-text-right tw-font-bold">
+                            <Link href={{ pathname: `/management/applications/${application.id}`, query: { ...query } }} passHref>
+                              <a className="tw-text-indigo-600 hover:tw-text-indigo-900">{t('application:management.list.edit-link')}</a>
+                            </Link>
+                          </TableCell>
+                        </tr>
+                      ))
+                    ) : (
+                      <TableRowNoData colSpan={8} />
+                    )}
+                  </TableBody>
+                )}
+              </Table>
+              {applicationsResponse?.page && <TablePagination page={applicationsResponse.page} />}
+            </TableWrapper>
+            <ButtonLink className="tw-float-right" href="/management/applications/select">
+              {t('application:management.list.select-link')}
+            </ButtonLink>
+          </div>
         </>
       )}
     </MainLayout>

@@ -138,7 +138,8 @@
         "status": "Status",
         "edit": "Edit"
       },
-      "edit-link": "Edit"
+      "edit-link": "Edit",
+      "select-link": "Perform Random Selection"
     },
     "edit": {
       "title": "Edit application",
@@ -161,6 +162,19 @@
         "submit": "Confirm status change",
         "cancel": "Cancel"
       }
+    },
+    "select": {
+      "title": "Random selection",
+      "header": "Perform random selection",
+      "currentCount": "Current participant count: {{number}}",
+      "attestation": "I hereby attest that I have the necessary authority to run the random selection process and understand that once executed, the results cannot be undone.",
+      "submit": "Execute Lottery",
+      "abort": "Abort",
+      "countLabel": "Indicate number to be selected:",
+      "errorTitle": "Error performing selection!",
+      "successTitle": "Selection successful!",
+      "successMessage": "Selected {{number}} applications.",
+      "applicationsList": "Applications List"
     }
   }
 }

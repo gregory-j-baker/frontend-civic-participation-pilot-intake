@@ -24,5 +24,6 @@ module.exports = {
     '/application/email-verification/success': ['email-verification'],
     '/management/applications': ['application'],
     '/management/applications/[id]': ['application'],
+    '/management/applications/select': ['application'],
   },
 };
