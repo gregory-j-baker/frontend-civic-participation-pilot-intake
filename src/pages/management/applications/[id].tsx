@@ -32,6 +32,8 @@ import { useSaveApplication } from '../../../hooks/api/applications/useSaveAppli
 import { useRouter } from 'next/router';
 import { nlToLines } from '../../../utils/misc-utils';
 import { PageSecurityGate } from '../../../components/PageSecurityGate';
+import { ApplicationHistory } from '../../../components/pages/ApplicationHistory';
+import { ApplicationHeader } from '../../../components/pages/ApplicationHeader';
 
 export interface ManagementEditApplicationPageState {
   applicationStatusId?: string;
@@ -48,8 +50,6 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
 
   const [formData, setFormData] = useState<ManagementEditApplicationPageState>({});
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
-
-  const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
 
   const { data: applicationStatuses, isLoading: isApplicationStatusesLoading, error: applicationStatusesError } = useApplicationStatuses({ lang });
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
@@ -114,13 +114,11 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
 
       <h2 className="tw-m-0 tw-mb-8 tw-text-2xl">{t('application:management.edit.header')}</h2>
 
-      <h3 className="tw-m-0 tw-mb-8 tw-text-xxl tw-text-gray-500">
-        <span className="tw-block tw-mb-2">{`${application.firstName} ${application.lastName}`}</span>
-        {dateTimeFormat.format(new Date(application.createdDate))}
-      </h3>
-
       {!isApplicationStatusesLoading && !showConfirm && (
         <>
+          <ContentPaper className="tw-mb-10">
+            <ApplicationHeader application={application} />
+          </ContentPaper>
           <ContentPaper className="tw-mb-10">
             <ApplicationReview application={application} />
           </ContentPaper>
@@ -141,7 +139,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
             </Alert>
           )}
 
-          <ContentPaper>
+          <ContentPaper className="tw-mb-10">
             <SelectField
               field={nameof<ManagementEditApplicationPageState>((o) => o.applicationStatusId)}
               label={t('application:management.edit.field.applicationStatusId.label')}
@@ -171,6 +169,10 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
             <Button className="tw-m-2" onClick={() => router.back()} outline>
               {t('application:management.edit.cancel')}
             </Button>
+          </ContentPaper>
+
+          <ContentPaper>
+            <ApplicationHistory applicationId={application.id} />
           </ContentPaper>
         </>
       )}
