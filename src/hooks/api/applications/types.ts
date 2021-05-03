@@ -25,6 +25,7 @@ export interface ApplicationBase {
   lastName: string;
   phoneNumber?: string;
   provinceId: string;
+  reasonText?: string;
   skillsInterest: string;
 }
 
@@ -42,3 +43,12 @@ export interface Application extends ApplicationBase {
 }
 
 export interface ApplicationSubmitData extends ApplicationBase {}
+
+export interface ApplicationStatusHistory {
+  applicationId: string;
+  applicationStatusId: string;
+  id: string;
+  lastModifiedBy?: string;
+  lastModifiedDate?: string;
+  reasonText: string;
+}

@@ -130,7 +130,7 @@
       "filter-by": "Filtrer par\u00A0:",
       "table-header": {
         "name": "Nom",
-        "language": "Language",
+        "language": "Langue",
         "province": "Province",
         "date-received": "Date de réception",
         "is-email-validated": "Adresse courriel validée?",
@@ -156,12 +156,23 @@
           "required": "Vous devez fournir un raisonnement"
         }
       },
+      "history": {
+        "title": "Historique du statut de l'application",
+        "table-header": {
+          "modified-date": "Date modifié",
+          "modified-by": "Modifié par",
+          "reasoning": "Raisonnement",
+          "status": "Statut"
+        }
+      },
       "confirm": {
         "title": "Mettre à jour le statut de l'application?",
         "message": "Veuillez confirmer que vous souhaitez modifier le statut de l'application ({{name}}) de <label>{{current}}</label> à <label>{{new}}</label> pour la raison suivante\u00A0:",
         "submit": "Confirmer le changement de statut",
         "cancel": "Annuler"
-      }
+      },
+      "modified-by": "Modifié par\u00A0:",
+      "reasoning": "Raisonnement\u00A0:"
     },
     "select": {
       "title": "Sélection aléatoire",

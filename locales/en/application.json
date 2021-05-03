@@ -16,7 +16,7 @@
     },
     "communityInterest": {
       "label": "If you could make a positive impact on one issue in your community what issue would you want to address and why?",
-      "helper-text": "Open text, minimum {{min}} words, maxium {{max}} words",
+      "helper-text": "Open text, minimum {{min}} words, maximum {{max}} words",
       "min-word": "You must provide a response to question #1 with more or equal to {{min}} words",
       "max-word": "You must provide a response to question #1 with less or equal to {{max}} words",
       "required": "You must provide a response to question #1"
@@ -98,7 +98,7 @@
     },
     "skillsInterest": {
       "label": "What skills and knowledge do you think you would need to learn to address this issue?",
-      "helper-text": "Open text, minimum {{min}} words, maxium {{max}} words",
+      "helper-text": "Open text, minimum {{min}} words, maximum {{max}} words",
       "min-word": "You must provide a response to question #2 with more or equal to {{min}} words",
       "max-word": "You must provide a response to question #2 with less or equal to {{max}} words",
       "required": "You must provide a response to question #2"
@@ -156,12 +156,23 @@
           "required": "You must provide a reasoning"
         }
       },
+      "history": {
+        "title": "Application status history",
+        "table-header": {
+          "modified-date": "Date modified",
+          "modified-by": "Modified by",
+          "reasoning": "Reasoning",
+          "status": "Status"
+        }
+      },
       "confirm": {
         "title": "Update application status?",
         "message": "Please confirm you would like to change the status of application ({{name}}) from <label>{{current}}</label> to <label>{{new}}</label> for the following reason:",
         "submit": "Confirm status change",
         "cancel": "Cancel"
-      }
+      },
+      "modified-by": "Modified by:",
+      "reasoning": "Reasoning:"
     },
     "select": {
       "title": "Random selection",
