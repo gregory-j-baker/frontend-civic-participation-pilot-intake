@@ -120,7 +120,7 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
                 </div>
               </ContentPaper>
               <ButtonLink color={TailwindColor.red} href="/management/applications">
-                {t('application:management.select.abort')}
+                {t('application:management.select.cancel')}
               </ButtonLink>
               <Button className="tw-float-right" disabled={!selectState.attested} onClick={handleSelectionSubmit}>
                 {t('application:management.select.submit')}

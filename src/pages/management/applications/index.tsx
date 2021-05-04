@@ -126,11 +126,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
                         {t('application:management.list.table-header.date-received')}
                       </TableSortButton>
                     </TableHeadCell>
-                    <TableHeadCell>
-                      <TableSortButton field="applicationStatus" onClick={handleSort} sorting={getCurrentSorting('applicationStatus')}>
-                        {t('application:management.list.table-header.status')}
-                      </TableSortButton>
-                    </TableHeadCell>
+                    <TableHeadCell>{t('application:management.list.table-header.status')}</TableHeadCell>
                     <TableHeadCell>
                       <TableSortButton field="canadianCitizen" onClick={handleSort} sorting={getCurrentSorting('canadianCitizen')}>
                         {t('application:management.list.table-header.is-canadian-citizen')}

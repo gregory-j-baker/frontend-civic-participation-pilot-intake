@@ -139,7 +139,7 @@
         "edit": "Edit"
       },
       "edit-link": "Edit",
-      "select-link": "Perform Random Selection"
+      "select-link": "Execute random selection"
     },
     "edit": {
       "title": "Edit application",
@@ -176,11 +176,11 @@
     },
     "select": {
       "title": "Random selection",
-      "header": "Perform random selection",
+      "header": "Execute random selection",
       "currentCount": "Current participant count: {{number}}",
       "attestation": "I hereby attest that I have the necessary authority to run the random selection process and understand that once executed, the results cannot be undone.",
-      "submit": "Execute Lottery",
-      "abort": "Abort",
+      "submit": "Execute random selection",
+      "cancel": "Cancel",
       "countLabel": "Indicate number to be selected:",
       "errorTitle": "Error performing selection!",
       "successTitle": "Selection successful!",
