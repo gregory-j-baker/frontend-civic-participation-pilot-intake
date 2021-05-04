@@ -171,8 +171,10 @@
         "submit": "Confirmer le changement de statut",
         "cancel": "Annuler"
       },
-      "modified-by": "Modifié par\u00A0:",
-      "reasoning": "Raisonnement\u00A0:"
+      "modified-by": "Modifié par",
+      "reasoning": "Raisonnement",
+      "application-status": "Statut",
+      "modified-date": "Date de modification"
     },
     "select": {
       "title": "Sélection aléatoire",
