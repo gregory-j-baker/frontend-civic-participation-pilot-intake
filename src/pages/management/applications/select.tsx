@@ -105,7 +105,7 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
           {selectionResult < 0 && (
             <ContentPaper className="tw-space-y-10">
               <h3 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{t('application:management.select.currentCount', { number: participantCount ?? 0 })}</h3>
-              <div>
+              <div className="tw-mb-10">
                 <label htmlFor="selectionCountInput" className="tw-block w-full text-gray-700 text-sm font-semibold">
                   {t('application:management.select.countLabel')}
                 </label>
@@ -118,9 +118,7 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
                   onChange={handleCountChange}
                 />
               </div>
-              <div className="tw-flex tw-flex-row tw-items-center tw-space-x-10">
-                <CheckboxeField field="attested" label={t('application:management.select.attestation')} checked={selectState.attested} onChange={({ checked }) => setSelectState((prev) => ({ ...prev, attested: checked }))} required gutterBottom />
-              </div>
+              <CheckboxeField field="attested" label={t('application:management.select.attestation')} checked={selectState.attested} onChange={({ checked }) => setSelectState((prev) => ({ ...prev, attested: checked }))} required gutterBottom />
               <div>
                 <ButtonLink className="tw-m-2" href="/management/applications" outline>
                   {t('application:management.select.cancel')}
