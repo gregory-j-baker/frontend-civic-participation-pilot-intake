@@ -10,6 +10,8 @@ import { Application } from '../../hooks/api/applications/types';
 import { ApplicationStatus } from '../../hooks/api/code-lookups/types';
 import { useApplicationStatuses } from '../../hooks/api/code-lookups/useApplicationStatuses';
 import { GetDescriptionFunc } from '../../pages/application/types';
+import { nlToLines } from '../../utils/misc-utils';
+import { FormDefinitionListItem } from '../FormDefinitionListItem';
 
 export interface ApplicationReviewProps {
   application: Application;
@@ -24,24 +26,32 @@ export const ApplicationHeader = ({ application }: ApplicationReviewProps): JSX.
 
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
 
+  const reasonTextLines = useMemo<string[]>(() => nlToLines(application.reasonText), [application.reasonText]);
+
   return (
     <>
-      <h4 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-2">
-        <span className="tw-block tw-mb-2">{`${application.firstName} ${application.lastName}`}</span>
-      </h4>
-      <span className="tw-block tw-mb-2 tw-font-medium tw-text-gray-500">
-        {!isApplicationStatusesLoading && getDescription(applicationStatuses?._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)} (
-        {dateTimeFormat.format(new Date(application.lastModifiedDate ?? application.createdDate))})
-      </span>
-      {application.lastModifiedDate ? (
-        <div className="tw-font-medium tw-text-gray-500">
-          <span className="tw-block tw-mb-2">{`${t('application:management.edit.modified-by')} ${application.lastModifiedBy}`}</span>
-          <span className="tw-block tw-mb-2">{t('application:management.edit.reasoning')}</span>
-          <span className="tw-block tw-ml-4">{application.reasonText}</span>
-        </div>
-      ) : (
-        <></>
-      )}
+      <h4 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{`${application.firstName} ${application.lastName}`}</h4>
+      <dl>
+        <FormDefinitionListItem
+          even
+          term={t('application:management.edit.application-status')}
+          definition={!isApplicationStatusesLoading && getDescription(applicationStatuses?._embedded.applicationStatuses.find((obj) => obj.id === application.applicationStatusId) as ApplicationStatus)}
+        />
+        <FormDefinitionListItem term={t('application:management.edit.modified-date')} definition={dateTimeFormat.format(new Date(application.lastModifiedDate ?? application.createdDate))} />
+        {application.lastModifiedDate && (
+          <>
+            <FormDefinitionListItem even term={t('application:management.edit.modified-by')} definition={application.lastModifiedBy} />
+            <FormDefinitionListItem
+              term={t('application:management.edit.reasoning')}
+              definition={reasonTextLines.map((line, index) => (
+                <p key={`${index} - ${line}`} className={`tw-m-0 ${index + 1 < reasonTextLines.length ? 'tw-mb-4' : ''}`}>
+                  {line}
+                </p>
+              ))}
+            />
+          </>
+        )}
+      </dl>
     </>
   );
 };

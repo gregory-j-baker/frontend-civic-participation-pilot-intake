@@ -171,8 +171,10 @@
         "submit": "Confirm status change",
         "cancel": "Cancel"
       },
-      "modified-by": "Modified by:",
-      "reasoning": "Reasoning:"
+      "modified-by": "Modified by",
+      "reasoning": "Reasoning",
+      "application-status": "Status",
+      "modified-date": "Modified date"
     },
     "select": {
       "title": "Random selection",

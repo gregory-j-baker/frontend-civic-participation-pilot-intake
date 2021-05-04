@@ -8,7 +8,7 @@
 export interface FormDefinitionListItemProps {
   children?: React.ReactNode;
   definition: string | React.ReactNode;
-  even: boolean;
+  even?: boolean;
   term: string;
 }
 
