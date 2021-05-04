@@ -34,5 +34,7 @@ export const fetchParticipantCount = async (context?: SessionContext): Promise<n
 export const useParticipantCount = (successCallback: (data: number) => void): UseQueryResult<number, HttpClientResponseError> => {
   return useQuery<number, HttpClientResponseError>([applicationsQueryKey], () => fetchParticipantCount(), {
     onSuccess: (data) => successCallback(data),
+    cacheTime: Infinity,
+    staleTime: Infinity,
   });
 };
