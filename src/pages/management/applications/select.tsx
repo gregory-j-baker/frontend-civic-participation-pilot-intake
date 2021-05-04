@@ -62,10 +62,11 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
     try {
       await applicationSelectionSchema.validate({ attested: selectState.attested, count: value });
       if (!isNaN(Number(value))) {
-        setSelectState((prev: SelectionState) => ({ ...prev, count: Number(value) }));
+        setSelectState((prev) => ({ ...prev, count: Number(value) }));
       }
     } catch (err) {
       if (!(err instanceof ValidationError)) throw err;
+      setSelectState((prev) => ({ ...prev, count: 0 }));
     }
   };
 
@@ -110,7 +111,14 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
                   {t('application:management.select.countLabel')}
                 </label>
                 <div className="tw-flex tw-h-10">
-                  <input className="border border-transparent focus:outline-none focus:tw-ring-2 focus:tw-ring-green-600 focus:tw-border-transparent" type="number" min={0} name="selectionCountInput" value={selectState.count} onChange={handleCountChange} />
+                  <input
+                    className={`border border-transparent tw-ring-2 ${selectState.count > 0 ? 'tw-ring-green-600' : 'tw-ring-red-600'} focus:outline-none focus:tw-border-transparent`}
+                    type="number"
+                    min={0}
+                    name="selectionCountInput"
+                    value={selectState.count}
+                    onChange={handleCountChange}
+                  />
                 </div>
               </ContentPaper>
               <ContentPaper>
@@ -122,7 +130,7 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
               <ButtonLink color={TailwindColor.red} href="/management/applications">
                 {t('application:management.select.cancel')}
               </ButtonLink>
-              <Button className="tw-float-right" disabled={!selectState.attested} onClick={handleSelectionSubmit}>
+              <Button className="tw-float-right" disabled={!selectState.attested || !(selectState.count > 0)} onClick={handleSelectionSubmit}>
                 {t('application:management.select.submit')}
               </Button>
             </div>
