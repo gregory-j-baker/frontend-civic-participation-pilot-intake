@@ -21,6 +21,7 @@ import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { ValidationError } from 'yup';
 import { applicationSelectionSchema } from '../../../yup/applicationSelectionSchema';
 import { Alert, AlertType } from '../../../components/Alert';
+import { CheckboxeField } from '../../../components/form/CheckboxeField';
 
 interface SelectionState {
   attested: boolean;
@@ -31,20 +32,20 @@ interface SelectionState {
 const ManagementApplicationsSelectPage = (): JSX.Element => {
   const { t } = useTranslation();
 
-  const [selectState, setSelectState] = useState({ attested: false, count: 0, error: '' });
-  const [selectionResult, setSelectionResult] = useState(-1);
+  const [selectState, setSelectState] = useState<SelectionState>({ attested: false, count: 0, error: '' });
+  const [selectionResult, setSelectionResult] = useState<number>(-1);
 
   const { mutate: selectApplications, isLoading: selectionInProgress } = useSelectApplications({
     onSuccess: (data) => {
       setSelectionResult(data);
     },
     onError: (error) => {
-      setSelectState((prev: SelectionState) => ({ ...prev, error: error.message }));
+      setSelectState((prev) => ({ ...prev, error: error.message }));
     },
   });
 
   const currentSelectionReceived = (current: number): void => {
-    setSelectState((prev: SelectionState) => ({ ...prev, count: 200 - current }));
+    setSelectState((prev) => ({ ...prev, count: 200 - current }));
   };
 
   const { data: participantCount, isLoading: participantCountLoading } = useParticipantCount(currentSelectionReceived);
@@ -102,38 +103,33 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
             </div>
           )}
           {selectionResult < 0 && (
-            <div className="tw-space-y-5">
-              <ContentPaper>
-                <p className="tw-text-gray-700 tw-text-3xl tw-font-bold">{t('application:management.select.currentCount', { number: participantCount ?? 0 })}</p>
-              </ContentPaper>
-              <ContentPaper>
-                <label htmlFor="selectionCountInput" className="w-full text-gray-700 text-sm font-semibold">
+            <ContentPaper className="tw-space-y-10">
+              <h3 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{t('application:management.select.currentCount', { number: participantCount ?? 0 })}</h3>
+              <div>
+                <label htmlFor="selectionCountInput" className="tw-block w-full text-gray-700 text-sm font-semibold">
                   {t('application:management.select.countLabel')}
                 </label>
-                <div className="tw-flex tw-h-10">
-                  <input
-                    className={`border border-transparent tw-ring-2 ${selectState.count > 0 ? 'tw-ring-green-600' : 'tw-ring-red-600'} focus:outline-none focus:tw-border-transparent`}
-                    type="number"
-                    min={0}
-                    name="selectionCountInput"
-                    value={selectState.count}
-                    onChange={handleCountChange}
-                  />
-                </div>
-              </ContentPaper>
-              <ContentPaper>
-                <div className="tw-flex tw-flex-row tw-items-center tw-space-x-10">
-                  <input type="checkbox" checked={selectState.attested} onChange={() => setSelectState((prev: SelectionState) => ({ ...prev, attested: !prev.attested }))} />
-                  <p>{t('application:management.select.attestation')}</p>
-                </div>
-              </ContentPaper>
-              <ButtonLink color={TailwindColor.red} href="/management/applications">
-                {t('application:management.select.cancel')}
-              </ButtonLink>
-              <Button className="tw-float-right" disabled={!selectState.attested || !(selectState.count > 0)} onClick={handleSelectionSubmit}>
-                {t('application:management.select.submit')}
-              </Button>
-            </div>
+                <input
+                  className={`border border-transparent tw-ring-2 ${selectState.count > 0 ? 'tw-ring-green-600' : 'tw-ring-red-600'} focus:tw-outline-none focus:tw-border-transparent`}
+                  type="number"
+                  min={0}
+                  name="selectionCountInput"
+                  value={selectState.count}
+                  onChange={handleCountChange}
+                />
+              </div>
+              <div className="tw-flex tw-flex-row tw-items-center tw-space-x-10">
+                <CheckboxeField field="attested" label={t('application:management.select.attestation')} checked={selectState.attested} onChange={({ checked }) => setSelectState((prev) => ({ ...prev, attested: checked }))} required gutterBottom />
+              </div>
+              <div>
+                <ButtonLink className="tw-m-2" href="/management/applications" outline>
+                  {t('application:management.select.cancel')}
+                </ButtonLink>
+                <Button className="tw-m-2 tw-float-right" onClick={handleSelectionSubmit} disabled={!selectState.attested || !(selectState.count > 0)}>
+                  {t('application:management.select.submit')}
+                </Button>
+              </div>
+            </ContentPaper>
           )}
         </>
       )}
