@@ -110,6 +110,7 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
                   {t('application:management.select.countLabel')}
                 </label>
                 <input
+                  id="selectionCountInput"
                   className={`border border-transparent tw-ring-2 ${selectState.count > 0 ? 'tw-ring-green-600' : 'tw-ring-red-600'} focus:tw-outline-none focus:tw-border-transparent`}
                   type="number"
                   min={0}
