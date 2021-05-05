@@ -141,8 +141,8 @@
       "edit-link": "Edit",
       "select-link": "Execute random selection",
       "sort": {
-        "ascending": "Sorted ascending",
-        "descending": "Sorted descending",
+        "ascending-instruction": "activate for ascending sort",
+        "descending-instruction": "activate for descending sort",
         "none": "Unsorted",
         "undefined": "Not sortable"
       }
