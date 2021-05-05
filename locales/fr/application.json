@@ -141,8 +141,8 @@
       "edit-link": "Modifier",
       "select-link": "Exécuter une sélection aléatoire",
       "sort": {
-        "ascending": "Tri par ordre croissant",
-        "descending": "Tri par ordre décroissant",
+        "ascending-instruction": "activer pour le tri croissant",
+        "descending-instruction": "activer pour le tri décroissant",
         "none": "Non trié",
         "undefined": "Non triable"
       }
