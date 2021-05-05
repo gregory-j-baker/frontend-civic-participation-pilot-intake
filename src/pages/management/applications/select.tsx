@@ -119,14 +119,18 @@ const ManagementApplicationsSelectPage = (): JSX.Element => {
                 />
               </div>
               <CheckboxeField field="attested" label={t('application:management.select.attestation')} checked={selectState.attested} onChange={({ checked }) => setSelectState((prev) => ({ ...prev, attested: checked }))} required gutterBottom />
-              <div>
-                <ButtonLink className="tw-m-2" href="/management/applications" outline>
-                  {t('application:management.select.cancel')}
-                </ButtonLink>
-                <Button className="tw-m-2 tw-float-right" onClick={handleSelectionSubmit} disabled={!selectState.attested || !(selectState.count > 0)}>
-                  {t('application:management.select.submit')}
-                </Button>
-              </div>
+              <ul className="tw-flex tw-justify-between">
+                <li>
+                  <ButtonLink className="tw-m-2" href="/management/applications" outline>
+                    {t('application:management.select.cancel')}
+                  </ButtonLink>
+                </li>
+                <li>
+                  <Button className="tw-m-2" onClick={handleSelectionSubmit} disabled={!selectState.attested || !(selectState.count > 0)}>
+                    {t('application:management.select.submit')}
+                  </Button>
+                </li>
+              </ul>
             </ContentPaper>
           )}
         </>

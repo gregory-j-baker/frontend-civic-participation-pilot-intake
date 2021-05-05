@@ -228,7 +228,7 @@ const Confirm = ({ application, applicationStatuses, applicationStatusId, disabl
       <ContentPaper tabIndex={-1} disablePadding>
         <div className="tw-flex tw-flex-col">
           <div className="tw-border-b-2 tw-p-4 sm:tw-p-6">
-            <div className="tw-text-xl tw-font-bold tw-mb-8">{t('application:management.edit.confirm.title')}</div>
+            <h3 className="tw-text-xl tw-font-bold tw-mb-8">{t('application:management.edit.confirm.title')}</h3>
             <p className="tw-mb-6">
               <Trans
                 i18nKey="application:management.edit.confirm.message"
@@ -248,14 +248,18 @@ const Confirm = ({ application, applicationStatuses, applicationStatusId, disabl
               ))}
             </blockquote>
           </div>
-          <div className="tw-ml-auto tw-p-2 sm:tw-p-4">
-            <Button className="tw-m-2" onClick={onConfirmClick} disabled={disabled}>
-              {t('application:management.edit.confirm.submit')}
-            </Button>
-            <Button className="tw-m-2" outline onClick={onCancelClick} disabled={disabled}>
-              {t('application:management.edit.confirm.cancel')}
-            </Button>
-          </div>
+          <ul className="tw-flex tw-ml-auto tw-p-2 sm:tw-p-4">
+            <li>
+              <Button className="tw-m-2" onClick={onConfirmClick} disabled={disabled}>
+                {t('application:management.edit.confirm.submit')}
+              </Button>
+            </li>
+            <li>
+              <Button className="tw-m-2" outline onClick={onCancelClick} disabled={disabled}>
+                {t('application:management.edit.confirm.cancel')}
+              </Button>
+            </li>
+          </ul>
         </div>
       </ContentPaper>
     </div>
