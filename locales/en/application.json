@@ -139,7 +139,13 @@
         "edit": "Edit"
       },
       "edit-link": "Edit",
-      "select-link": "Execute random selection"
+      "select-link": "Execute random selection",
+      "sort": {
+        "ascending": "Sorted ascending",
+        "descending": "Sorted descending",
+        "none": "Unsorted",
+        "undefined": "Not sortable"
+      }
     },
     "edit": {
       "title": "Edit application",

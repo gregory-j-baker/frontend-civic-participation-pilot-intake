@@ -27,9 +27,9 @@ export const TableSortButton = ({ children, field, onClick, sorting }: TableSort
   return (
     <button className="tw-text-left tw-text-xs tw-text-gray-500 tw-uppercase tw-tracking-wider tw-flex tw-flex-nowrap tw-content-center tw-items-center" onClick={handleOnClick}>
       <span>{children}</span>
-      {sorting === Sorting.asc && <span className="glyphicon glyphicon-sort-by-attributes" style={{ top: -2, paddingLeft: 1, paddingTop: 2 }} aria-hidden="true" />}
-      {sorting === Sorting.desc && <span className="glyphicon glyphicon-sort-by-attributes-alt" style={{ top: -2, paddingLeft: 1, paddingTop: 2 }} aria-hidden="true" />}
-      {sorting === undefined && <span className="glyphicon glyphicon-sort tw-opacity-60" style={{ top: -2, paddingLeft: 1, paddingTop: 2 }} aria-hidden="true" />}
+      {sorting === Sorting.asc && <span className="glyphicon glyphicon-sort-by-attributes" style={{ top: -2, paddingLeft: 1, paddingTop: 2 }} />}
+      {sorting === Sorting.desc && <span className="glyphicon glyphicon-sort-by-attributes-alt" style={{ top: -2, paddingLeft: 1, paddingTop: 2 }} />}
+      {sorting === undefined && <span className="glyphicon glyphicon-sort tw-opacity-60" style={{ top: -2, paddingLeft: 1, paddingTop: 2 }} />}
     </button>
   );
 };

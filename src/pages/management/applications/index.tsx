@@ -115,33 +115,33 @@ const ManagementApplicationsPage = (): JSX.Element => {
               <Table>
                 <TableHead>
                   <tr>
-                    <TableHeadCell ariaSort={getAriaSort('firstName')}>
+                    <TableHeadCell label={t('application:management.list.table-header.name')} ariaSort={getAriaSort('firstName')}>
                       <TableSortButton field="firstName" onClick={handleSort} sorting={getCurrentSorting('firstName')}>
                         {t('application:management.list.table-header.name')}
                       </TableSortButton>
                     </TableHeadCell>
-                    <TableHeadCell ariaSort={getAriaSort('language')}>
+                    <TableHeadCell label={t('application:management.list.table-header.language')} ariaSort={getAriaSort('language')}>
                       <TableSortButton field="language" onClick={handleSort} sorting={getCurrentSorting('language')}>
                         {t('application:management.list.table-header.language')}
                       </TableSortButton>
                     </TableHeadCell>
-                    <TableHeadCell ariaSort={getAriaSort('province')}>
+                    <TableHeadCell label={t('application:management.list.table-header.province')} ariaSort={getAriaSort('province')}>
                       <TableSortButton field="province" onClick={handleSort} sorting={getCurrentSorting('province')}>
                         {t('application:management.list.table-header.province')}
                       </TableSortButton>
                     </TableHeadCell>
-                    <TableHeadCell ariaSort={getAriaSort('createdDate')}>
+                    <TableHeadCell label={t('application:management.list.table-header.date-received')} ariaSort={getAriaSort('createdDate')}>
                       <TableSortButton field="createdDate" onClick={handleSort} sorting={getCurrentSorting('createdDate')}>
                         {t('application:management.list.table-header.date-received')}
                       </TableSortButton>
                     </TableHeadCell>
-                    <TableHeadCell>{t('application:management.list.table-header.status')}</TableHeadCell>
-                    <TableHeadCell ariaSort={getAriaSort('canadianCitizen')}>
+                    <TableHeadCell label={t('application:management.list.table-header.status')}>{t('application:management.list.table-header.status')}</TableHeadCell>
+                    <TableHeadCell label={t('application:management.list.table-header.citizen')} ariaSort={getAriaSort('canadianCitizen')}>
                       <TableSortButton field="canadianCitizen" onClick={handleSort} sorting={getCurrentSorting('canadianCitizen')}>
                         {t('application:management.list.table-header.is-canadian-citizen')}
                       </TableSortButton>
                     </TableHeadCell>
-                    <TableHeadCell>
+                    <TableHeadCell label={t('application:management.list.table-header.edit')}>
                       <span className="sr-only">{t('application:management.list.table-header.edit')}</span>
                     </TableHeadCell>
                   </tr>

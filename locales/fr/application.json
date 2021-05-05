@@ -139,7 +139,13 @@
         "edit": "Modifier"
       },
       "edit-link": "Modifier",
-      "select-link": "Exécuter une sélection aléatoire"
+      "select-link": "Exécuter une sélection aléatoire",
+      "sort": {
+        "ascending": "Tri par ordre croissant",
+        "descending": "Tri par ordre décroissant",
+        "none": "Non trié",
+        "undefined": "Non triable"
+      }
     },
     "edit": {
       "title": "Modifier l'application",
