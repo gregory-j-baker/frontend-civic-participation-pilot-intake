@@ -44,10 +44,12 @@ export const ApplicationHistory = ({ applicationId }: ApplicationStatusHistoryPr
           <Table>
             <TableHead>
               <tr>
-                <TableHeadCell>{t('application:management.edit.history.table-header.status')}</TableHeadCell>
-                <TableHeadCell className="tw-w-2/4">{t('application:management.edit.history.table-header.reasoning')}</TableHeadCell>
-                <TableHeadCell>{t('application:management.edit.history.table-header.modified-by')}</TableHeadCell>
-                <TableHeadCell>{t('application:management.edit.history.table-header.modified-date')}</TableHeadCell>
+                <TableHeadCell label={t('application:management.edit.history.table-header.status')}>{t('application:management.edit.history.table-header.status')}</TableHeadCell>
+                <TableHeadCell label={t('application:management.edit.history.table-header.reasoning')} className="tw-w-2/4">
+                  {t('application:management.edit.history.table-header.reasoning')}
+                </TableHeadCell>
+                <TableHeadCell label={t('application:management.edit.history.table-header.modified-by')}>{t('application:management.edit.history.table-header.modified-by')}</TableHeadCell>
+                <TableHeadCell label={t('application:management.edit.history.table-header.modified-date')}>{t('application:management.edit.history.table-header.modified-date')}</TableHeadCell>
               </tr>
             </TableHead>
             {applicationStatusHistoriesResponse && (
