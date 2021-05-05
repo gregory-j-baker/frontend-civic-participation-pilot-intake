@@ -37,32 +37,36 @@ export const TablePagination = ({ className, page }: TablePaginationProps): JSX.
         />
       </div>
       {(showPrevious || showNext) && (
-        <div className="tw-flex tw-items-center tw-justify-between tw-space-x-4">
+        <ul className="tw-flex tw-items-center tw-justify-between tw-space-x-4">
           {showPrevious && (
-            <Link
-              href={{
-                pathname,
-                query: { ...query, page: page.number - 1 },
-              }}
-              passHref>
-              <a className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-text-sm tw-font-bold tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-rounded-md tw-text-gray-700 visited:tw-text-gray-700 tw-bg-white hover:tw-text-gray-500 focus:tw-text-gray-500">
-                {t('common:pagination.previous')}
-              </a>
-            </Link>
+            <li>
+              <Link
+                href={{
+                  pathname,
+                  query: { ...query, page: page.number - 1 },
+                }}
+                passHref>
+                <a className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-text-sm tw-font-bold tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-rounded-md tw-text-gray-700 visited:tw-text-gray-700 tw-bg-white hover:tw-text-gray-500 focus:tw-text-gray-500">
+                  {t('common:pagination.previous')}
+                </a>
+              </Link>
+            </li>
           )}
           {showNext && (
-            <Link
-              href={{
-                pathname,
-                query: { ...query, page: page.number + 1 },
-              }}
-              passHref>
-              <a className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-text-sm tw-font-bold tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-rounded-md tw-text-gray-700 visited:tw-text-gray-700 tw-bg-white hover:tw-text-gray-500 focus:tw-text-gray-500">
-                {t('common:pagination.next')}
-              </a>
-            </Link>
+            <li>
+              <Link
+                href={{
+                  pathname,
+                  query: { ...query, page: page.number + 1 },
+                }}
+                passHref>
+                <a className="tw-relative tw-inline-flex tw-items-center tw-px-4 tw-py-2 tw-border tw-border-gray-300 tw-text-sm tw-font-bold tw-no-underline hover:tw-no-underline focus:tw-no-underline tw-rounded-md tw-text-gray-700 visited:tw-text-gray-700 tw-bg-white hover:tw-text-gray-500 focus:tw-text-gray-500">
+                  {t('common:pagination.next')}
+                </a>
+              </Link>
+            </li>
           )}
-        </div>
+        </ul>
       )}
     </div>
   );

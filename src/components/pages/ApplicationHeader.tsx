@@ -30,7 +30,7 @@ export const ApplicationHeader = ({ application }: ApplicationReviewProps): JSX.
 
   return (
     <>
-      <h4 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{`${application.firstName} ${application.lastName}`}</h4>
+      <h3 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{`${application.firstName} ${application.lastName}`}</h3>
       <dl>
         <FormDefinitionListItem
           even

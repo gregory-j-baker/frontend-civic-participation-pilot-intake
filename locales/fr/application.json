@@ -146,9 +146,10 @@
       "header": "Application",
       "submit": "Sauvegarder",
       "cancel": "Annuler",
+      "updateHeader": "Mettre à jour le statut de l'application",
       "field": {
         "applicationStatusId": {
-          "label": "Mettre à jour le statut de l'application",
+          "label": "Sélectionnez un statut d'application",
           "required": "Vous devez sélectionner un statut d'application"
         },
         "reasoning": {

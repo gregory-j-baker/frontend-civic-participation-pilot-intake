@@ -146,9 +146,10 @@
       "header": "Application",
       "submit": "Save",
       "cancel": "Cancel",
+      "updateHeader": "Update application status",
       "field": {
         "applicationStatusId": {
-          "label": "Update application status",
+          "label": "Select an application status",
           "required": "You must select an application status"
         },
         "reasoning": {

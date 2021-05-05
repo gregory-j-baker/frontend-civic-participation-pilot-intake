@@ -140,6 +140,7 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
           )}
 
           <ContentPaper className="tw-mb-10">
+            <h3 className="tw-font-bold tw-text-xl tw-m-0 tw-mb-8">{t('application:management.edit.updateHeader')}</h3>
             <SelectField
               field={nameof<ManagementEditApplicationPageState>((o) => o.applicationStatusId)}
               label={t('application:management.edit.field.applicationStatusId.label')}
@@ -162,13 +163,18 @@ const ManagementEditApplicationPage = ({ application }: ManagementEditApplicatio
               required
               className="tw-w-full"
             />
-
-            <Button className="tw-m-2" onClick={handleSubmit}>
-              {t('application:management.edit.submit')}
-            </Button>
-            <Button className="tw-m-2" onClick={() => router.back()} outline>
-              {t('application:management.edit.cancel')}
-            </Button>
+            <ul className="tw-flex">
+              <li>
+                <Button className="tw-m-2" onClick={handleSubmit}>
+                  {t('application:management.edit.submit')}
+                </Button>
+              </li>
+              <li>
+                <Button className="tw-m-2" onClick={() => router.back()} outline>
+                  {t('application:management.edit.cancel')}
+                </Button>
+              </li>
+            </ul>
           </ContentPaper>
 
           <ContentPaper>
