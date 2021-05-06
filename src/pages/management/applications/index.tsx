@@ -136,7 +136,7 @@ const ManagementApplicationsPage = (): JSX.Element => {
                             <Link href={{ pathname: `/management/applications/${application.id}`, query: { ...query } }} passHref>
                               <a className="tw-text-indigo-600 hover:tw-text-indigo-900">
                                 {t('application:management.list.edit-link')}
-                                <span className="tw-hidden">{`${application.firstName} ${application.lastName}`}</span>
+                                <span className="sr-only">{`${application.firstName} ${application.lastName}`}</span>
                               </a>
                             </Link>
                           </TableCell>
