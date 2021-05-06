@@ -31,10 +31,13 @@ export const fetchParticipantCount = async (context?: SessionContext): Promise<n
 
 // I know there's a way to make the callback optional, but out of time to fight with typescript, and only gets used on my
 // page, so making it part of the function signature.
+// We set these cache/stale values to that:
+// A) It will never refetch the data while the user is sitting on the page (stale = infinite).
+// B) It will ALWAYS refetch the data when the user navigates away/to the page (0 cache).
 export const useParticipantCount = (successCallback: (data: number) => void): UseQueryResult<number, HttpClientResponseError> => {
   return useQuery<number, HttpClientResponseError>([applicationsQueryKey], () => fetchParticipantCount(), {
     onSuccess: (data) => successCallback(data),
-    cacheTime: Infinity,
+    cacheTime: 0,
     staleTime: Infinity,
   });
 };
