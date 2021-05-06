@@ -5,9 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { GetStaticProps } from 'next';
-import { Role, Sorting } from '../../../common/types';
+import { Role } from '../../../common/types';
 import { MainLayout } from '../../../components/layouts/main/MainLayout';
 import { PageLoadingSpinner } from '../../../components/PageLoadingSpinner';
 import { PageSecurityGate } from '../../../components/PageSecurityGate';
@@ -32,7 +32,7 @@ import { TableHeadCell } from '../../../components/table/TableHeadCell';
 import { TableCell } from '../../../components/table/TableCell';
 import { TableRowNoData } from '../../../components/table/TableRowNoData';
 import { TablePagination } from '../../../components/table/TablePagination';
-import { TableSortButton, TableSortButtonOnClickEvent } from '../../../components/table/TableSortButton';
+import { TableHeadCellSortable } from '../../../components/table/TableHeadCellSortable';
 
 interface RouterQuery {
   page?: number;
@@ -62,24 +62,6 @@ const ManagementApplicationsPage = (): JSX.Element => {
 
   const dateTimeFormat = useMemo(() => new Intl.DateTimeFormat(`${lang}-CA`), [lang]);
   const getDescription: GetDescriptionFunc = useCallback(({ descriptionFr, descriptionEn }) => (lang === 'fr' ? descriptionFr : descriptionEn), [lang]);
-
-  const getCurrentSorting = (field: string): Sorting | undefined => {
-    // if no sort, default to createdDate,desc
-    return query.sort ? (query.sort.indexOf(field) > -1 ? (query.sort.indexOf(Sorting.asc) > -1 ? Sorting.asc : Sorting.desc) : undefined) : field === 'createdDate' ? Sorting.desc : undefined;
-  };
-
-  const getAriaSort = (field: string): 'ascending' | 'descending' | undefined => {
-    const currentSort = getCurrentSorting(field);
-
-    if (!currentSort) return undefined;
-    else if (currentSort == Sorting.asc) return 'ascending';
-
-    return 'descending';
-  };
-
-  const handleSort: TableSortButtonOnClickEvent = ({ field, nextSorting }) => {
-    router.push({ pathname, query: { ...query, sort: `${field},${nextSorting}` } });
-  };
 
   // application statuse options
   const applicationStatuseOptions = useMemo<SelectFieldOption[]>(() => {
@@ -115,32 +97,22 @@ const ManagementApplicationsPage = (): JSX.Element => {
               <Table>
                 <TableHead>
                   <tr>
-                    <TableHeadCell label={t('application:management.list.table-header.name')} ariaSort={getAriaSort('firstName')} sortable>
-                      <TableSortButton field="firstName" onClick={handleSort} sorting={getCurrentSorting('firstName')}>
-                        {t('application:management.list.table-header.name')}
-                      </TableSortButton>
-                    </TableHeadCell>
-                    <TableHeadCell label={t('application:management.list.table-header.language')} ariaSort={getAriaSort('language')} sortable>
-                      <TableSortButton field="language" onClick={handleSort} sorting={getCurrentSorting('language')}>
-                        {t('application:management.list.table-header.language')}
-                      </TableSortButton>
-                    </TableHeadCell>
-                    <TableHeadCell label={t('application:management.list.table-header.province')} ariaSort={getAriaSort('province')} sortable>
-                      <TableSortButton field="province" onClick={handleSort} sorting={getCurrentSorting('province')}>
-                        {t('application:management.list.table-header.province')}
-                      </TableSortButton>
-                    </TableHeadCell>
-                    <TableHeadCell label={t('application:management.list.table-header.date-received')} ariaSort={getAriaSort('createdDate')} sortable>
-                      <TableSortButton field="createdDate" onClick={handleSort} sorting={getCurrentSorting('createdDate')}>
-                        {t('application:management.list.table-header.date-received')}
-                      </TableSortButton>
-                    </TableHeadCell>
+                    <TableHeadCellSortable label={t('application:management.list.table-header.name')} field={'firstName'}>
+                      {t('application:management.list.table-header.name')}
+                    </TableHeadCellSortable>
+                    <TableHeadCellSortable label={t('application:management.list.table-header.language')} field={'language'}>
+                      {t('application:management.list.table-header.language')}
+                    </TableHeadCellSortable>
+                    <TableHeadCellSortable label={t('application:management.list.table-header.province')} field={'province'}>
+                      {t('application:management.list.table-header.province')}
+                    </TableHeadCellSortable>
+                    <TableHeadCellSortable label={t('application:management.list.table-header.date-received')} field={'createdDate'}>
+                      {t('application:management.list.table-header.date-received')}
+                    </TableHeadCellSortable>
                     <TableHeadCell label={t('application:management.list.table-header.status')}>{t('application:management.list.table-header.status')}</TableHeadCell>
-                    <TableHeadCell label={t('application:management.list.table-header.is-canadian-citizen')} ariaSort={getAriaSort('canadianCitizen')} sortable>
-                      <TableSortButton field="canadianCitizen" onClick={handleSort} sorting={getCurrentSorting('canadianCitizen')}>
-                        {t('application:management.list.table-header.is-canadian-citizen')}
-                      </TableSortButton>
-                    </TableHeadCell>
+                    <TableHeadCellSortable label={t('application:management.list.table-header.is-canadian-citizen')} field={'canadianCitizen'}>
+                      {t('application:management.list.table-header.is-canadian-citizen')}
+                    </TableHeadCellSortable>
                     <TableHeadCell label={t('application:management.list.table-header.edit')}>
                       <span className="sr-only">{t('application:management.list.table-header.edit')}</span>
                     </TableHeadCell>
@@ -162,7 +134,10 @@ const ManagementApplicationsPage = (): JSX.Element => {
                           <TableCell>{application.isCanadianCitizen ? t('common:yes') : t('common:no')}</TableCell>
                           <TableCell className="tw-whitespace-nowrap tw-text-right tw-font-bold">
                             <Link href={{ pathname: `/management/applications/${application.id}`, query: { ...query } }} passHref>
-                              <a className="tw-text-indigo-600 hover:tw-text-indigo-900">{t('application:management.list.edit-link')}</a>
+                              <a className="tw-text-indigo-600 hover:tw-text-indigo-900">
+                                {t('application:management.list.edit-link')}
+                                <span className="tw-hidden">{`${application.firstName} ${application.lastName}`}</span>
+                              </a>
                             </Link>
                           </TableCell>
                         </tr>
